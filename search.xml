@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Analyzing Transformer Models: Flops</title>
+    <url>/2022/09/28/ATM_flops/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>Transformer</tag>
+        <tag>AIGC</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Analyzing Transformer Models: Parameters</title>
     <url>/2022/09/28/ATM_parameter/</url>
     <content><![CDATA[<p>Recently, OpenAI’s release of ChatGPT has demonstrated outstanding performance, sparking a research frenzy in the field of Large Language Models (LLMs). The “large” in Large Language Models is reflected in two aspects: the scale of model parameters and the scale of training data. Taking GPT-3 as an example, it boasts a staggering 175 billion parameters and was trained on a colossal dataset of 570 GB. Consequently, training Large Language Models faces two primary challenges: GPU memory efficiency and computational efficiency.</p>
@@ -107,19 +120,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Analyzing Transformer Models: Flops</title>
-    <url>/2022/09/28/ATM_flops/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>Transformer</tag>
-        <tag>AIGC</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CodeBear: Your Personal AI Coding Assitant</title>
     <url>/2022/09/28/CodeBear/</url>
     <content><![CDATA[<p>this is title.	</p>
@@ -142,24 +142,6 @@
       <tags>
         <tag>Transformer</tag>
         <tag>AIGC</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Speculative Sampling</title>
-    <url>/2023/09/28/Speculative%20Decoding/</url>
-    <content><![CDATA[<p>Remember the Hacker News thread when GPT-4 was released? It mentioned the use of speculative sampling in GPT-4 to accelerate inference. So, what exactly is speculative sampling?</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/202312070010475.png"></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="Refference"><a href="#Refference" class="headerlink" title="Refference"></a>Refference</h2><ol>
-<li><a class="link" href="https://zhuanlan.zhihu.com/p/651359908">https://zhuanlan.zhihu.com/p/651359908 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>Transformer</tag>
-        <tag>LLM</tag>
       </tags>
   </entry>
   <entry>
@@ -245,6 +227,24 @@
       </categories>
       <tags>
         <tag>Transformer</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Speculative Sampling</title>
+    <url>/2023/09/28/Speculative%20Decoding/</url>
+    <content><![CDATA[<p>Remember the Hacker News thread when GPT-4 was released? It mentioned the use of speculative sampling in GPT-4 to accelerate inference. So, what exactly is speculative sampling?</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/202312070010475.png"></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="Refference"><a href="#Refference" class="headerlink" title="Refference"></a>Refference</h2><ol>
+<li><a class="link" href="https://zhuanlan.zhihu.com/p/651359908">https://zhuanlan.zhihu.com/p/651359908 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>Transformer</tag>
+        <tag>LLM</tag>
       </tags>
   </entry>
 </search>
