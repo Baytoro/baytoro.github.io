@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Analyzing Transformer Models: Flops</title>
+    <url>/2022/09/28/ATM_flops/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>Transformer</tag>
+        <tag>AIGC</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Analyzing Transformer Models: Parameters</title>
     <url>/2022/09/28/ATM_parameter/</url>
     <content><![CDATA[<p>Recently, OpenAI’s release of ChatGPT has demonstrated outstanding performance, sparking a research frenzy in the field of Large Language Models (LLMs). The “large” in Large Language Models is reflected in two aspects: the scale of model parameters and the scale of training data. Taking GPT-3 as an example, it boasts a staggering 175 billion parameters and was trained on a colossal dataset of 570 GB. Consequently, training Large Language Models faces two primary challenges: GPU memory efficiency and computational efficiency.</p>
@@ -232,19 +245,6 @@
       </categories>
       <tags>
         <tag>Transformer</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Analyzing Transformer Models: Flops</title>
-    <url>/2022/09/28/ATM_flops/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>Transformer</tag>
-        <tag>AIGC</tag>
       </tags>
   </entry>
 </search>
