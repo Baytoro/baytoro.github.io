@@ -18,6 +18,6 @@ https://hjchen-thu.github.io/tags/Attention/
 https://hjchen-thu.github.io/tags/CUDA/
 https://hjchen-thu.github.io/tags/Triton/
 https://hjchen-thu.github.io/categories/Work-hard/
-https://hjchen-thu.github.io/categories/Play-hard/
 https://hjchen-thu.github.io/categories/Work-hard/Note/
 https://hjchen-thu.github.io/categories/Work-hard/Research/
+https://hjchen-thu.github.io/categories/Play-hard/
