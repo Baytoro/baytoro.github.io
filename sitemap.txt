@@ -1,10 +1,10 @@
+https://hjchen-thu.github.io/about/index.html
 https://hjchen-thu.github.io/2023/09/28/Speculative%20Decoding/
 https://hjchen-thu.github.io/2023/03/28/AccLLMs/
 https://hjchen-thu.github.io/2020/09/28/Template/
 https://hjchen-thu.github.io/2022/09/28/CodeBear/
 https://hjchen-thu.github.io/2022/09/28/ATM_parameter/
 https://hjchen-thu.github.io/2022/09/28/ATM_flops/
-https://hjchen-thu.github.io/about/index.html
 https://hjchen-thu.github.io/tags/index.html
 https://hjchen-thu.github.io/essays/index.html
 https://hjchen-thu.github.io/categories/index.html
@@ -18,6 +18,6 @@ https://hjchen-thu.github.io/tags/Attention/
 https://hjchen-thu.github.io/tags/CUDA/
 https://hjchen-thu.github.io/tags/Triton/
 https://hjchen-thu.github.io/categories/Work-hard/
-https://hjchen-thu.github.io/categories/Play-hard/
 https://hjchen-thu.github.io/categories/Work-hard/Note/
 https://hjchen-thu.github.io/categories/Work-hard/Research/
+https://hjchen-thu.github.io/categories/Play-hard/
