@@ -145,24 +145,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Speculative Sampling</title>
-    <url>/2023/09/28/Speculative%20Decoding/</url>
-    <content><![CDATA[<p>Remember the Hacker News thread when GPT-4 was released? It mentioned the use of speculative sampling in GPT-4 to accelerate inference. So, what exactly is speculative sampling?</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/202312070010475.png"></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="Refference"><a href="#Refference" class="headerlink" title="Refference"></a>Refference</h2><ol>
-<li><a class="link" href="https://zhuanlan.zhihu.com/p/651359908">https://zhuanlan.zhihu.com/p/651359908 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>Transformer</tag>
-        <tag>LLM</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>This is Title</title>
     <url>/2020/09/28/Template/</url>
     <content><![CDATA[<p>This is abstract.</p>
@@ -245,6 +227,24 @@
       </categories>
       <tags>
         <tag>Transformer</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Speculative Sampling</title>
+    <url>/2023/09/28/Speculative%20Decoding/</url>
+    <content><![CDATA[<p>Remember the Hacker News thread when GPT-4 was released? It mentioned the use of speculative sampling in GPT-4 to accelerate inference. So, what exactly is speculative sampling?</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/202312070010475.png"></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="Refference"><a href="#Refference" class="headerlink" title="Refference"></a>Refference</h2><ol>
+<li><a class="link" href="https://zhuanlan.zhihu.com/p/651359908">https://zhuanlan.zhihu.com/p/651359908 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>Transformer</tag>
+        <tag>LLM</tag>
       </tags>
   </entry>
 </search>
