@@ -25,11 +25,19 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Neural Architecture Search with Reinforcement Learning evolves effective network designs via reinforcement, outperforming prior methods in efficiency and accuracy on CIFAR-10 and Penn Treebank dataset">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330092934794.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330102426278.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330102447850.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330102503614.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330102532285.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330102622433.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330102649905.png">
 <meta property="article:published_time" content="2020-01-01T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-03-30T01:22:49.547Z">
+<meta property="article:modified_time" content="2024-03-30T02:28:01.590Z">
 <meta property="article:author" content="H.J. Chen">
 <meta property="article:tag" content="NAS">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330092934794.png">
     
     
     <!--- Icon Part-->
@@ -485,8 +493,8 @@ mjx-container[display="true"] + br {
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2024-03-30 09:22:49</span>
-            <span class="mobile">2024-03-30 09:22:49</span> -->
+            <!-- <span class="desktop">2024-03-30 10:28:01</span>
+            <span class="mobile">2024-03-30 10:28:01</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -510,7 +518,7 @@ mjx-container[display="true"] + br {
                             <li>></li>
                         
                         <li>
-                            <a href="/categories/Work-hard/Note/">Note</a>&nbsp;
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
                         </li>
                     
                     
@@ -550,7 +558,36 @@ mjx-container[display="true"] + br {
 
 
         <div class="article-content markdown-body">
-            <h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2>
+            <blockquote>
+<p>Zoph B, Le Q V. Neural architecture search with reinforcement learning[J]. arXiv preprint arXiv:1611.01578, 2016.</p>
+</blockquote>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Imagine you’re on a quest to build the ultimate digital brain, a neural network so smart it could tackle the toughest challenges in image recognition and language understanding. Sounds like a job for the world’s brightest minds, right? That’s what it used to be. But designing neural networks by hand is a grind, involving endless trial and error, and a whole lot of coffee-fueled late nights.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330092934794.png" alt="image-20240330092934794"></p>
+<p>This paper kicks off a revolution. It’s about Neural Architecture Search with Reinforcement Learning - think of it as a neural network that designs other neural networks. We’re talking about a game-changer here, a way to automate the process of creating these complex networks, which have been the backbone of many AI breakthroughs.</p>
+<p>The motivation? To free researchers from the tedious task of manual design and let them focus on the big picture. The authors saw a gap: current methods are either too rigid or too slow to keep up with the ever-growing scale of neural networks. They needed something flexible, something scalable, and something that could learn from its successes and failures.</p>
+<p>So, they came up with an approach that treats architecture design as a reinforcement learning problem. It’s like teaching an AI to be an architect, learning from experience and getting better over time. The result? A system that can craft neural networks that are not only top-performing but also more efficient than ever before. It’s a bold step towards a future where AI can design itself, and this paper is where it all begins.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>The main contribution of this paper is a method that uses a recurrent neural network (RNN), think of it as a creative AI artist, to generate the blueprints for new neural networks. Then, it employs reinforcement learning to train this RNN, aiming to maximize the accuracy of these newly minted architectures on a validation set.</p>
+<p>The results are nothing short of impressive. On the CIFAR-10 dataset, a benchmark for image recognition, the method crafted a novel network architecture that outperforms existing designs, achieving a test error rate of 3.65%. That’s not just a win on paper; it’s 1.05 times faster than the previous state-of-the-art model.</p>
+<p>But that’s not all. On the Penn Treebank dataset, a language modeling task, the method composed a novel recurrent cell that outshines the widely-used LSTM cell. This new cell achieved a test set perplexity of 62.4, a significant 3.6 perplexity improvement over the previous best model.</p>
+<p>The paper also dives into the nitty-gritty of the method, discussing how it can be accelerated with parallelism and asynchronous updates, and how it can increase architecture complexity with skip connections and other layer types. It even shows how the same method can be adapted to generate recurrent cell architectures, further expanding its versatility.</p>
+<p>In a nutshell, this paper is a giant leap towards making neural network design more accessible and efficient, opening up new possibilities for AI research and applications. It’s like handing the keys to the AI kingdom to the next generation of machine learning enthusiasts.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>Here’s where it gets interesting: this director, or controller RNN, is trained using reinforcement learning. It’s like training a newbie director by rewarding it for good takes (in this case, network designs that perform well on a validation set) and giving it constructive feedback (updating the RNN parameters) to help it improve shot after shot, design after design.</p>
+<img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330102426278.png" alt="image-20240330102426278" style="zoom:33%;">
+
+<img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330102447850.png" alt="image-20240330102447850" style="zoom:33%;">
+
+<img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330102503614.png" alt="image-20240330102503614" style="zoom:33%;">
+
+<p>The method starts with a simple premise: a neural network’s structure can be described by a variable-length string, which the RNN controller generates. It’s like the director writing the script for a movie. Once the script is written, it’s time to film the movie, which in this context means training the ‘child network’ on real data. The performance of the child network on a validation set is then used as a reward signal to train the director RNN.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330102532285.png" alt="image-20240330102532285"></p>
+<p>The paper presents a few key improvements to this core approach. One is the introduction of skip connections and other layer types to increase the complexity of the generated architectures. It’s like allowing the director to experiment with different cinematography techniques to make the movie more engaging.</p>
+<p>Another trick up the paper’s sleeve is using a parameter server approach for distributed training. Imagine having a team of production assistants who can handle different parts of the movie simultaneously. This speeds up the process of shooting the film and allows the director to try out more scenes in less time.</p>
+<p>The paper also talks about generating recurrent cell architectures, which is like directing a movie with complex plotlines that loop back on themselves. The controller RNN has to figure out how to best connect the plot points (or layers) to create a coherent narrative (or functioning neural network).</p>
+<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330102622433.png" alt="image-20240330102622433"></p>
+<p>On the CIFAR-10 dataset, a playground for image recognition, the method brewed up a novel network architecture that outperforms the best human-invented recipes. The newly minted model sizzled with a test error rate of 3.65%, outclassing the previous state-of-the-art model by a whisker and cooking up results 1.05 times faster.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330102649905.png" alt="image-20240330102649905"></p>
+<p>But the authors weren’t content with just dishing out success in image recognition. They turned to the Penn Treebank dataset, a staple in language modeling, and whipped up a recurrent cell architecture that dethroned the reigning LSTM cell. This new cell architecture achieved a test set perplexity of 62.4, besting the previous record by a solid 3.6 perplexity points.</p>
+
         </div>
 
         
@@ -573,13 +610,13 @@ mjx-container[display="true"] + br {
                     <div class="article-prev">
                         <a class="prev"
                         rel="prev"
-                        href="/2020/01/05/Enas./"
+                        href="/2020/01/12/Enas./"
                         >
                             <span class="left arrow-icon flex justify-center items-center">
                                 <i class="fa-solid fa-chevron-left"></i>
                             </span>
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">paper</span>
+                                <span class="post-nav-title-item">Efficient Neural Architecture Search via Parameter Sharing</span>
                                 <span class="post-nav-item">Prev posts</span>
                             </span>
                         </a>

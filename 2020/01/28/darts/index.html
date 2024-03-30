@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330012324666.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330012701560.png">
 <meta property="article:published_time" content="2020-01-27T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-03-30T01:14:55.077Z">
+<meta property="article:modified_time" content="2024-03-30T01:39:27.112Z">
 <meta property="article:author" content="H.J. Chen">
 <meta property="article:tag" content="NAS">
 <meta name="twitter:card" content="summary">
@@ -491,8 +491,8 @@ mjx-container[display="true"] + br {
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2024-03-30 09:14:55</span>
-            <span class="mobile">2024-03-30 09:14:55</span> -->
+            <!-- <span class="desktop">2024-03-30 09:39:27</span>
+            <span class="mobile">2024-03-30 09:39:27</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -516,7 +516,7 @@ mjx-container[display="true"] + br {
                             <li>></li>
                         
                         <li>
-                            <a href="/categories/Work-hard/Note/">Note</a>&nbsp;
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
                         </li>
                     
                     
@@ -556,7 +556,10 @@ mjx-container[display="true"] + br {
 
 
         <div class="article-content markdown-body">
-            <h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>The quest for state-of-the-art neural network architectures has traditionally demanded substantial human expertise and computational resources. The manual process of architecture design has been a bottleneck, prompting the development of automated algorithmic solutions. While these have achieved competitive performance, existing architecture search algorithms like reinforcement learning (RL) and evolution are computationally intensive, often requiring thousands of GPU days. This has led to an inherent scalability challenge, as the search is treated as a black-box optimization problem over a discrete domain, necessitating a large number of architecture evaluations. The drive to overcome these limitations and the desire to automate the design process with increased efficiency and reduced computational costs have been the key motivators behind the development of the DARTS method.</p>
+            <blockquote>
+<p>Liu H, Simonyan K, Yang Y. Darts: Differentiable architecture search[J]. arXiv preprint arXiv:1806.09055, 2018.</p>
+</blockquote>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>The quest for state-of-the-art neural network architectures has traditionally demanded substantial human expertise and computational resources. The manual process of architecture design has been a bottleneck, prompting the development of automated algorithmic solutions. While these have achieved competitive performance, existing architecture search algorithms like reinforcement learning (RL) and evolution are computationally intensive, often requiring thousands of GPU days. This has led to an inherent scalability challenge, as the search is treated as a black-box optimization problem over a discrete domain, necessitating a large number of architecture evaluations. The drive to overcome these limitations and the desire to automate the design process with increased efficiency and reduced computational costs have been the key motivators behind the development of the DARTS method.</p>
 <h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>DARTS (Differentiable ARchiTecture Search) revolutionizes the field by formulating architecture search as a differentiable problem, enabling the use of gradient descent for optimization. This novel algorithm is based on bilevel optimization and is applicable to both convolutional and recurrent architectures. DARTS stands out by matching or even surpassing the performance of state-of-the-art methods while using orders of magnitude less computation resources. It also outperforms ENAS, another efficient architecture search method, by discovering cells with comparable error rates but fewer parameters. Furthermore, DARTS demonstrates the transferability of learned architectures from CIFAR-10 and PTB to ImageNet and WikiText-2, respectively, showcasing its versatility and robustness.</p>
 <h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330012026177.png" alt="image-20240330012026177"></p>
 <p>DARTS represents the computation procedure of an architecture as a directed acyclic graph, with nodes as latent representations and edges as operations. By relaxing the categorical choice of operations to a softmax distribution, the architecture search is reduced to learning a set of continuous variables. DARTS employs a bilevel optimization strategy to jointly optimize the architecture and its weights, using gradient descent to minimize validation loss. An approximation technique is introduced to manage computational complexity, leading to an iterative process that converges to a final architecture.</p>
@@ -608,10 +611,10 @@ mjx-container[display="true"] + br {
                     <div class="article-next">
                         <a class="next"
                         rel="next"
-                        href="/2020/01/05/Enas./"
+                        href="/2020/01/17/metaqnn/"
                         >
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">paper</span>
+                                <span class="post-nav-title-item">Designing Neural Network Architectures using Reinforcement Learning</span>
                                 <span class="post-nav-item">Next posts</span>
                             </span>
                             <span class="right arrow-icon flex justify-center items-center">

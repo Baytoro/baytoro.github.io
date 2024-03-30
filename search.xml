@@ -14,49 +14,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Accelerating LLMs Inference</title>
-    <url>/2023/03/28/AccLLMs/</url>
-    <content><![CDATA[<p>Welcome to <a class="link" href="https://hexo.io/">Hexo <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>! This is your very first post. Check <a class="link" href="https://hexo.io/docs/">documentation <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> for more info. If you get any problems when using Hexo, you can find the answer in <a class="link" href="https://hexo.io/docs/troubleshooting.html">troubleshooting <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> or you can ask me on <a class="link" href="https://github.com/hexojs/hexo/issues">GitHub <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.   Asdf</p>
-<pre class="mermaid">  graph TD;
-          1(Distributed)===A;
-          2(Batching)===A;
-          #3(hh1)===A;
-          4(hh1)===A(Accelerating LLMs Inference);
-      A===B(High-Performance Computing);
-      A===C(Quantization);
-      A===D(Block-wise parallen decoding);
-      A===E(hh1);</pre>
-
-
-
-
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/writing.html">Writing <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/server.html">Server <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/generating.html">Generating <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/one-command-deployment.html">Deployment <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>Research</category>
-      </categories>
-      <tags>
-        <tag>Transformer</tag>
-        <tag>LLM</tag>
-        <tag>Quantization</tag>
-        <tag>Attention</tag>
-        <tag>CUDA</tag>
-        <tag>Triton</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Analyzing Transformer Models: Parameters</title>
     <url>/2022/09/28/ATM_parameter/</url>
     <content><![CDATA[<p>Recently, OpenAI’s release of ChatGPT has demonstrated outstanding performance, sparking a research frenzy in the field of Large Language Models (LLMs). The “large” in Large Language Models is reflected in two aspects: the scale of model parameters and the scale of training data. Taking GPT-3 as an example, it boasts a staggering 175 billion parameters and was trained on a colossal dataset of 570 GB. Consequently, training Large Language Models faces two primary challenges: GPU memory efficiency and computational efficiency.</p>
@@ -120,9 +77,22 @@
       </tags>
   </entry>
   <entry>
-    <title>CodeBear: Your Personal AI Coding Assitant</title>
-    <url>/2022/09/28/CodeBear/</url>
-    <content><![CDATA[<p>this is title.	</p>
+    <title>Accelerating LLMs Inference</title>
+    <url>/2023/03/28/AccLLMs/</url>
+    <content><![CDATA[<p>Welcome to <a class="link" href="https://hexo.io/">Hexo <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>! This is your very first post. Check <a class="link" href="https://hexo.io/docs/">documentation <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> for more info. If you get any problems when using Hexo, you can find the answer in <a class="link" href="https://hexo.io/docs/troubleshooting.html">troubleshooting <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> or you can ask me on <a class="link" href="https://github.com/hexojs/hexo/issues">GitHub <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.   Asdf</p>
+<pre class="mermaid">  graph TD;
+          1(Distributed)===A;
+          2(Batching)===A;
+          #3(hh1)===A;
+          4(hh1)===A(Accelerating LLMs Inference);
+      A===B(High-Performance Computing);
+      A===C(Quantization);
+      A===D(Block-wise parallen decoding);
+      A===E(hh1);</pre>
+
+
+
+
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure></div>
 
 <p>More info: <a class="link" href="https://hexo.io/docs/writing.html">Writing <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
@@ -137,11 +107,95 @@
 <p>More info: <a class="link" href="https://hexo.io/docs/one-command-deployment.html">Deployment <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 ]]></content>
       <categories>
-        <category>Play hard</category>
+        <category>Work hard</category>
+        <category>Research</category>
       </categories>
       <tags>
         <tag>Transformer</tag>
-        <tag>AIGC</tag>
+        <tag>LLM</tag>
+        <tag>Quantization</tag>
+        <tag>Attention</tag>
+        <tag>CUDA</tag>
+        <tag>Triton</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Efficient Neural Architecture Search via Parameter Sharing</title>
+    <url>/2020/01/12/Enas./</url>
+    <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/1802.03268.pdf">https://arxiv.org/pdf/1802.03268.pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Neural Architecture Search (NAS) has emerged as a revolutionary approach to automate the design of neural network architectures, offering the potential to discover high-performing models without the need for manual trial and error. However, the computational cost and time consumption associated with NAS have been prohibitive, often requiring hundreds of GPUs and days of training to find optimal architectures.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330144354863.png" alt="image-20240330144354863"></p>
+<p>The motivation behind Efficient Neural Architecture Search (ENAS) stems from the need to address these challenges and make NAS more accessible and efficient. By introducing a paradigm where a controller discovers neural network architectures within a large computational graph through parameter sharing, ENAS dramatically reduces the resources required for the search process. This innovative method not only maintains the empirical performance of traditional NAS but also achieves it with a fraction of the computational expense, using only a single GPU and a matter of hours.</p>
+<p>ENAS’s ability to share parameters among child models during the search process is a key factor in its efficiency. This design choice allows for a more stable and effective learning process for the controller, which in turn can explore a vast search space of architectures more thoroughly and rapidly than its counterparts. The result is a method that not only discovers state-of-the-art architectures for tasks like image classification and language modeling but also does so in a way that is practical and scalable.</p>
+<p>By democratizing access to advanced neural network design through ENAS, researchers and practitioners can now focus more on innovation and less on the resource-intensive process of architecture search. This shift has the potential to accelerate advancements in machine learning and artificial intelligence, unlocking new possibilities and applications that were previously out of reach due to the computational barriers of traditional NAS methods.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>Efficient Neural Architecture Search (ENAS) makes several significant contributions to the field of automated machine learning (AutoML). Firstly, it introduces a novel approach to neural architecture search by leveraging parameter sharing among a multitude of child models. This innovative strategy allows ENAS to explore a vast design space with remarkable efficiency, using a single GPU and within a few hours, which is a stark contrast to the extensive computational resources required by traditional NAS methods.</p>
+<p>Secondly, ENAS demonstrates that parameter sharing not only reduces computational costs but also leads to competitive model performance. The method achieves state-of-the-art results on established benchmarks such as the Penn Treebank dataset for language modeling and the CIFAR-10 dataset for image classification, matching or even surpassing the performance of architectures found by more expensive NAS methods.</p>
+<p>Thirdly, ENAS presents a flexible framework that can be applied to various types of neural networks, from recurrent neural networks (RNNs) for sequential data to convolutional neural networks (CNNs) for image data. This versatility is a testament to the general applicability of ENAS and its potential to impact a wide range of domains within machine learning.</p>
+<p>Lastly, ENAS’s contributions extend to the methodology of neural architecture search itself. By improving the efficiency of the search process, ENAS opens up new possibilities for research and experimentation. It enables more researchers to engage in neural architecture research, fostering innovation and potentially leading to the discovery of even more efficient and effective methods in the future. The impact of ENAS is thus both immediate, through its superior performance and efficiency, and long-term, as it paves the way for further advancements in the field of AutoML.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>In the pursuit of enhancing the efficiency of Neural Architecture Search (NAS), the paper introduces Efficient Neural Architecture Search (ENAS), a groundbreaking method that stands out for its innovative use of parameter sharing and computational graph optimization. The specific methodologies employed in ENAS can be summarized as follows:</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330144735504.png" alt="image-20240330144735504"></p>
+<ol>
+<li><p><strong>Controller and Child Models</strong>: At the heart of ENAS lies a controller, typically an LSTM RNN, which is responsible for sampling decisions to construct child models. These child models are subgraphs within a larger computational graph, and they share the same set of parameters, which drastically reduces the computational resources needed to search for and train new architectures.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330144757765.png"></p>
+</li>
+<li><p><strong>Parameter Sharing</strong>: A pivotal concept in ENAS is the sharing of parameters across all child models. This is achieved by defining the search space as a directed acyclic graph (DAG) where nodes represent local computations and edges represent the flow of information. Each node in the DAG has its own set of parameters, which are used when the node is active in a child model. By sharing parameters, ENAS minimizes redundancy and maximizes the efficiency of the search process.</p>
+</li>
+<li><p><strong>Policy Gradient for Controller Training</strong>: The controller is trained using policy gradient methods, specifically the REINFORCE algorithm. It selects subgraphs (child models) that are expected to yield high rewards on a validation set. The reward function is designed to encourage the selection of models that generalize well, steering the search towards architectures that perform well on unseen data.</p>
+</li>
+<li><p><strong>Training Procedure</strong>: ENAS employs a two-phase training process. The first phase involves training the shared parameters (ω) of the child models on the entire training dataset. The second phase focuses on training the controller’s parameters (θ) to optimize the policy that selects child models. These phases are interleaved, with the controller learning from the performance of the child models it generates.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330144826654.png" alt="image-20240330144826654"></p>
+</li>
+<li><p><strong>Designing Recurrent and Convolutional Cells</strong>: ENAS provides a flexible framework for designing both recurrent and convolutional architectures. For recurrent cells, the controller decides on the connections and operations within a DAG, allowing for the creation of complex RNN structures. Similarly, for convolutional architectures, the controller makes decisions on connecting previous nodes and choosing computation operations, facilitating the formation of intricate CNN structures.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330144855741.png" alt="image-20240330144855741"></p>
+</li>
+<li><p><strong>Efficient Search Space Representation</strong>: The search space in ENAS is represented as a DAG, where each possible architecture is a subgraph of this larger structure. This representation allows for an exponential number of configurations, making the search space comprehensive and diverse, yet tractable due to parameter sharing.</p>
+</li>
+<li><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330144921006.png" alt="image-20240330144921006"></p>
+</li>
+<li><p><strong>Deriving Final Architectures</strong>: Once the controller is trained, ENAS derives final architectures by sampling from the policy and selecting the model with the highest expected reward for further training. This process can be repeated with different samples to explore the search space more thoroughly, although the paper demonstrates that even a single sample can yield competitive results.</p>
+</li>
+</ol>
+<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330145132477.png" alt="image-20240330145132477"></p>
+<p>The experimental results presented in the paper on Efficient Neural Architecture Search (ENAS) are both compelling and insightful, showcasing the method’s effectiveness in discovering high-performing neural network architectures while significantly reducing computational costs. Here’s a summary of the key findings:</p>
+<ol>
+<li><p><strong>Penn Treebank Dataset</strong>: ENAS was applied to design recurrent neural network (RNN) cells for language modeling on the Penn Treebank dataset. The method successfully discovered a novel architecture that achieved a test perplexity of 55.8, setting a new state-of-the-art among methods without post-training processing. This result was particularly impressive given that ENAS required only 1000x less GPU hours compared to standard NAS approaches.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330145308528.png"></p>
+</li>
+<li><p><strong>CIFAR-10 Dataset</strong>: For image classification, ENAS was utilized to find novel convolutional network architectures on the CIFAR-10 dataset. The method identified an architecture that achieved a test error of 2.89%, which is comparable to the 2.65% test error of NASNet, a highly-regarded architecture discovered through extensive computational search.</p>
+</li>
+<li><p><strong>Efficiency and Performance</strong>: A notable aspect of ENAS’s experimental results is the balance between efficiency and performance. The method demonstrated that it is possible to conduct a thorough search for neural network architectures without incurring the high computational costs associated with traditional NAS. This was evidenced by the fact that ENAS could discover competitive architectures using a single Nvidia GTX 1080Ti GPU in under 16 hours.</p>
+</li>
+<li><p><strong>Comparison with Other Methods</strong>: The paper also includes an ablation study and comparison with other approaches, such as DenseNet and NAS, to validate ENAS’s effectiveness. The results consistently show that ENAS can match or exceed the performance of other methods while using a fraction of the resources.</p>
+</li>
+<li><p><strong>Search Space Complexity</strong>: ENAS’s ability to handle complex search spaces was demonstrated by its application to both RNN cells and convolutional networks. The method’s flexibility in designing different types of neural networks highlights its potential for widespread use in various machine learning tasks.</p>
+</li>
+</ol>
+<p>In conclusion, the experiments conducted in the paper provide strong evidence of ENAS’s capabilities. They not only validate the method’s efficiency in terms of computational resource usage but also confirm its ability to discover state-of-the-art neural network architectures that are competitive with those found by more expensive search methods. These results position ENAS as a promising approach for democratizing access to advanced neural architecture search and accelerating innovation in the field of machine learning.</p>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>PaperReading</category>
+      </categories>
+      <tags>
+        <tag>NAS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Speculative Sampling</title>
+    <url>/2023/09/28/Speculative%20Decoding/</url>
+    <content><![CDATA[<p>Remember the Hacker News thread when GPT-4 was released? It mentioned the use of speculative sampling in GPT-4 to accelerate inference. So, what exactly is speculative sampling?</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/202312070010475.png"></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="Refference"><a href="#Refference" class="headerlink" title="Refference"></a>Refference</h2><ol>
+<li><a class="link" href="https://zhuanlan.zhihu.com/p/651359908">https://zhuanlan.zhihu.com/p/651359908 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>Transformer</tag>
+        <tag>LLM</tag>
       </tags>
   </entry>
   <entry>
@@ -230,9 +284,128 @@
       </tags>
   </entry>
   <entry>
+    <title>Designing Neural Network Architectures using Reinforcement Learning</title>
+    <url>/2020/01/17/metaqnn/</url>
+    <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/1611.02167.pdf">https://arxiv.org/pdf/1611.02167.pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330145949057.png" alt="image-20240330145949057"></p>
+<p>In the realm of machine learning, the design of effective convolutional neural network (CNN) architectures has traditionally required significant human expertise and labor. The process involves a meticulous trial-and-error approach, where researchers draw upon theoretical insights and empirical observations to craft networks that perform well on specific tasks. As the complexity of CNNs has grown, so too has the design space, making manual exploration infeasible due to the combinatorial explosion of possible configurations.</p>
+<p>The paper “Designing Neural Network Architectures Using Reinforcement Learning” addresses this challenge by introducing MetaQNN, a meta-modeling algorithm that leverages reinforcement learning to automate the generation of high-performing CNN architectures. The motivation behind this approach is to reduce the manual effort involved in CNN design and to potentially discover novel architectures that humans might overlook.</p>
+<p>MetaQNN employs a Q-learning agent that learns to select CNN layers sequentially, guided by an ε-greedy exploration strategy and experience replay to navigate the large but finite space of architectural possibilities. The agent’s goal is to optimize the network’s performance on a given learning task, as measured by validation accuracy, which serves as the reward signal.</p>
+<p>This research is motivated by the desire to streamline the process of network design, enabling the development of tailored CNNs for various tasks without extensive human intervention. By automating this process, researchers can focus on higher-level tasks and insights, while the algorithm handles the intricacies of architecture optimization. The potential applications of this work are vast, as it could lead to more efficient and effective machine learning solutions across a range of domains.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>The paper “Designing Neural Network Architectures Using Reinforcement Learning” makes several significant contributions to the field of automated machine learning (AutoML). Firstly, it introduces MetaQNN, a novel algorithm that applies reinforcement learning to the design of convolutional neural network (CNN) architectures. This algorithm is capable of discovering high-performing CNNs without human intervention, addressing the labor-intensive nature of manual network design.</p>
+<p>Secondly, the paper demonstrates that MetaQNN can compete with, and even outperform, state-of-the-art methods that use more complex layer types. This is achieved by exploring a large but finite space of possible architectures and iteratively improving upon the designs based on validation accuracy.</p>
+<p>Additionally, the paper shows that the networks designed by MetaQNN are not only optimized for the task they were trained on but also exhibit strong transfer learning capabilities. This indicates that the algorithm can produce versatile network architectures that are applicable to various image classification tasks.</p>
+<p>Lastly, the research provides a new perspective on neural network design, suggesting that reinforcement learning can be an effective tool for automating the process. This opens up new avenues for future research in AutoML, where the goal is to further automate and optimize the machine learning pipeline.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330150424604.png" alt="image-20240330150424604"></p>
+<p>The primary methodological innovation of the paper “Designing Neural Network Architectures Using Reinforcement Learning” is the MetaQNN algorithm, which utilizes Q-learning to automate the process of designing convolutional neural network (CNN) architectures. The core concept is to treat the selection of CNN layers as a Markov Decision Process (MDP), where the learning agent explores the space of possible network topologies to find high-performing architectures.</p>
+<p>The MetaQNN agent is trained using Q-learning, a model-free reinforcement learning technique that focuses on learning the optimal policy through interaction with the environment. The agent operates in a state space defined by the parameters of the CNN layers and an action space that corresponds to the choices of adding a particular layer type. The agent starts with a random exploration of the architecture space, gradually transitioning to more informed decisions as it learns from experience.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330150453009.png" alt="image-20240330150453009"></p>
+<p>A key component of the method is the ε-greedy exploration strategy, which balances exploration and exploitation. The agent initially explores widely by selecting actions randomly, with a probability ε. As the agent accumulates experience, it exploits its knowledge by choosing the action with the highest estimated Q-value with probability 1-ε. The value of ε is gradually decreased over time, shifting the agent’s behavior from exploration to exploitation.</p>
+<p>To enhance learning efficiency, the MetaQNN algorithm employs experience replay, a technique where the agent’s past experiences are stored in a replay memory. The agent periodically samples from this memory to update its Q-values, allowing it to learn from its past actions more effectively.</p>
+<p>The agent’s performance is evaluated based on the validation accuracy of the CNN architectures it designs. The architectures that yield higher validation accuracy are considered more desirable, and the agent’s Q-values are updated accordingly. The process continues until the agent converges on a policy that consistently produces high-performing CNN architectures.</p>
+<p>This method represents a significant departure from traditional manual design processes, offering a data-driven approach to network architecture optimization. By automating the design process, MetaQNN has the potential to accelerate the development of CNNs and to discover novel architectures that could outperform those designed by human experts.</p>
+<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330150952925.png" alt="image-20240330150952925"></p>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>PaperReading</category>
+      </categories>
+      <tags>
+        <tag>NAS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Neural Architecture Search with Reinforcement Learning</title>
+    <url>/2020/01/02/nas/</url>
+    <content><![CDATA[<blockquote>
+<p>Zoph B, Le Q V. Neural architecture search with reinforcement learning[J]. arXiv preprint arXiv:1611.01578, 2016.</p>
+</blockquote>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Imagine you’re on a quest to build the ultimate digital brain, a neural network so smart it could tackle the toughest challenges in image recognition and language understanding. Sounds like a job for the world’s brightest minds, right? That’s what it used to be. But designing neural networks by hand is a grind, involving endless trial and error, and a whole lot of coffee-fueled late nights.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330092934794.png" alt="image-20240330092934794"></p>
+<p>This paper kicks off a revolution. It’s about Neural Architecture Search with Reinforcement Learning - think of it as a neural network that designs other neural networks. We’re talking about a game-changer here, a way to automate the process of creating these complex networks, which have been the backbone of many AI breakthroughs.</p>
+<p>The motivation? To free researchers from the tedious task of manual design and let them focus on the big picture. The authors saw a gap: current methods are either too rigid or too slow to keep up with the ever-growing scale of neural networks. They needed something flexible, something scalable, and something that could learn from its successes and failures.</p>
+<p>So, they came up with an approach that treats architecture design as a reinforcement learning problem. It’s like teaching an AI to be an architect, learning from experience and getting better over time. The result? A system that can craft neural networks that are not only top-performing but also more efficient than ever before. It’s a bold step towards a future where AI can design itself, and this paper is where it all begins.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>The main contribution of this paper is a method that uses a recurrent neural network (RNN), think of it as a creative AI artist, to generate the blueprints for new neural networks. Then, it employs reinforcement learning to train this RNN, aiming to maximize the accuracy of these newly minted architectures on a validation set.</p>
+<p>The results are nothing short of impressive. On the CIFAR-10 dataset, a benchmark for image recognition, the method crafted a novel network architecture that outperforms existing designs, achieving a test error rate of 3.65%. That’s not just a win on paper; it’s 1.05 times faster than the previous state-of-the-art model.</p>
+<p>But that’s not all. On the Penn Treebank dataset, a language modeling task, the method composed a novel recurrent cell that outshines the widely-used LSTM cell. This new cell achieved a test set perplexity of 62.4, a significant 3.6 perplexity improvement over the previous best model.</p>
+<p>The paper also dives into the nitty-gritty of the method, discussing how it can be accelerated with parallelism and asynchronous updates, and how it can increase architecture complexity with skip connections and other layer types. It even shows how the same method can be adapted to generate recurrent cell architectures, further expanding its versatility.</p>
+<p>In a nutshell, this paper is a giant leap towards making neural network design more accessible and efficient, opening up new possibilities for AI research and applications. It’s like handing the keys to the AI kingdom to the next generation of machine learning enthusiasts.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>Here’s where it gets interesting: this director, or controller RNN, is trained using reinforcement learning. It’s like training a newbie director by rewarding it for good takes (in this case, network designs that perform well on a validation set) and giving it constructive feedback (updating the RNN parameters) to help it improve shot after shot, design after design.</p>
+<img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330102426278.png" alt="image-20240330102426278" style="zoom:33%;">
+
+<img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330102447850.png" alt="image-20240330102447850" style="zoom:33%;">
+
+<img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330102503614.png" alt="image-20240330102503614" style="zoom:33%;">
+
+<p>The method starts with a simple premise: a neural network’s structure can be described by a variable-length string, which the RNN controller generates. It’s like the director writing the script for a movie. Once the script is written, it’s time to film the movie, which in this context means training the ‘child network’ on real data. The performance of the child network on a validation set is then used as a reward signal to train the director RNN.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330102532285.png" alt="image-20240330102532285"></p>
+<p>The paper presents a few key improvements to this core approach. One is the introduction of skip connections and other layer types to increase the complexity of the generated architectures. It’s like allowing the director to experiment with different cinematography techniques to make the movie more engaging.</p>
+<p>Another trick up the paper’s sleeve is using a parameter server approach for distributed training. Imagine having a team of production assistants who can handle different parts of the movie simultaneously. This speeds up the process of shooting the film and allows the director to try out more scenes in less time.</p>
+<p>The paper also talks about generating recurrent cell architectures, which is like directing a movie with complex plotlines that loop back on themselves. The controller RNN has to figure out how to best connect the plot points (or layers) to create a coherent narrative (or functioning neural network).</p>
+<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330102622433.png" alt="image-20240330102622433"></p>
+<p>On the CIFAR-10 dataset, a playground for image recognition, the method brewed up a novel network architecture that outperforms the best human-invented recipes. The newly minted model sizzled with a test error rate of 3.65%, outclassing the previous state-of-the-art model by a whisker and cooking up results 1.05 times faster.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330102649905.png" alt="image-20240330102649905"></p>
+<p>But the authors weren’t content with just dishing out success in image recognition. They turned to the Penn Treebank dataset, a staple in language modeling, and whipped up a recurrent cell architecture that dethroned the reigning LSTM cell. This new cell architecture achieved a test set perplexity of 62.4, besting the previous record by a solid 3.6 perplexity points.</p>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>PaperReading</category>
+      </categories>
+      <tags>
+        <tag>NAS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CodeBear: Your Personal AI Coding Assitant</title>
+    <url>/2022/09/28/CodeBear/</url>
+    <content><![CDATA[<p>this is title.	</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/writing.html">Writing <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/server.html">Server <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/generating.html">Generating <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/one-command-deployment.html">Deployment <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+]]></content>
+      <categories>
+        <category>Play hard</category>
+      </categories>
+      <tags>
+        <tag>Transformer</tag>
+        <tag>AIGC</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>paper</title>
+    <url>/2019/01/28/paper/</url>
+    <content><![CDATA[<blockquote>
+<p>#Nas</p>
+<p>#eNAs</p>
+<p>monas</p>
+<p>#darts</p>
+</blockquote>
+<p>Metaqnn</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2>]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>PaperReading</category>
+      </categories>
+      <tags>
+        <tag>NAS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title> DARTS: Differentiable Architecture Search</title>
     <url>/2020/01/28/darts/</url>
-    <content><![CDATA[<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>The quest for state-of-the-art neural network architectures has traditionally demanded substantial human expertise and computational resources. The manual process of architecture design has been a bottleneck, prompting the development of automated algorithmic solutions. While these have achieved competitive performance, existing architecture search algorithms like reinforcement learning (RL) and evolution are computationally intensive, often requiring thousands of GPU days. This has led to an inherent scalability challenge, as the search is treated as a black-box optimization problem over a discrete domain, necessitating a large number of architecture evaluations. The drive to overcome these limitations and the desire to automate the design process with increased efficiency and reduced computational costs have been the key motivators behind the development of the DARTS method.</p>
+    <content><![CDATA[<blockquote>
+<p>Liu H, Simonyan K, Yang Y. Darts: Differentiable architecture search[J]. arXiv preprint arXiv:1806.09055, 2018.</p>
+</blockquote>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>The quest for state-of-the-art neural network architectures has traditionally demanded substantial human expertise and computational resources. The manual process of architecture design has been a bottleneck, prompting the development of automated algorithmic solutions. While these have achieved competitive performance, existing architecture search algorithms like reinforcement learning (RL) and evolution are computationally intensive, often requiring thousands of GPU days. This has led to an inherent scalability challenge, as the search is treated as a black-box optimization problem over a discrete domain, necessitating a large number of architecture evaluations. The drive to overcome these limitations and the desire to automate the design process with increased efficiency and reduced computational costs have been the key motivators behind the development of the DARTS method.</p>
 <h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>DARTS (Differentiable ARchiTecture Search) revolutionizes the field by formulating architecture search as a differentiable problem, enabling the use of gradient descent for optimization. This novel algorithm is based on bilevel optimization and is applicable to both convolutional and recurrent architectures. DARTS stands out by matching or even surpassing the performance of state-of-the-art methods while using orders of magnitude less computation resources. It also outperforms ENAS, another efficient architecture search method, by discovering cells with comparable error rates but fewer parameters. Furthermore, DARTS demonstrates the transferability of learned architectures from CIFAR-10 and PTB to ImageNet and WikiText-2, respectively, showcasing its versatility and robustness.</p>
 <h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330012026177.png" alt="image-20240330012026177"></p>
 <p>DARTS represents the computation procedure of an architecture as a directed acyclic graph, with nodes as latent representations and edges as operations. By relaxing the categorical choice of operations to a softmax distribution, the architecture search is reduced to learning a set of continuous variables. DARTS employs a bilevel optimization strategy to jointly optimize the architecture and its weights, using gradient descent to minimize validation loss. An approximation technique is introduced to manage computational complexity, leading to an iterative process that converges to a final architecture.</p>
@@ -248,58 +421,10 @@
 ]]></content>
       <categories>
         <category>Work hard</category>
-        <category>Note</category>
+        <category>PaperReading</category>
       </categories>
       <tags>
         <tag>NAS</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Neural Architecture Search with Reinforcement Learning</title>
-    <url>/2020/01/02/nas/</url>
-    <content><![CDATA[<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2>]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>NAS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>paper</title>
-    <url>/2020/01/05/Enas./</url>
-    <content><![CDATA[<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2>]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>Note</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Speculative Sampling</title>
-    <url>/2023/09/28/Speculative%20Decoding/</url>
-    <content><![CDATA[<p>Remember the Hacker News thread when GPT-4 was released? It mentioned the use of speculative sampling in GPT-4 to accelerate inference. So, what exactly is speculative sampling?</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/202312070010475.png"></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="Refference"><a href="#Refference" class="headerlink" title="Refference"></a>Refference</h2><ol>
-<li><a class="link" href="https://zhuanlan.zhihu.com/p/651359908">https://zhuanlan.zhihu.com/p/651359908 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>Transformer</tag>
-        <tag>LLM</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>paper</title>
-    <url>/2019/01/28/paper/</url>
-    <content><![CDATA[<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2>]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>Note</category>
-      </categories>
   </entry>
 </search>
