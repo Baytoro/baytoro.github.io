@@ -107,31 +107,6 @@
       </tags>
   </entry>
   <entry>
-    <title>CodeBear: Your Personal AI Coding Assitant</title>
-    <url>/2022/09/28/CodeBear/</url>
-    <content><![CDATA[<p>this is title.	</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/writing.html">Writing <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/server.html">Server <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/generating.html">Generating <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/one-command-deployment.html">Deployment <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-]]></content>
-      <categories>
-        <category>Play hard</category>
-      </categories>
-      <tags>
-        <tag>Transformer</tag>
-        <tag>AIGC</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ChamNet: Towards Efficient Network Design through Platform-Aware Model Adaptation</title>
     <url>/2020/02/20/ChamNet./</url>
     <content><![CDATA[<p><a class="link" href="https://openaccess.thecvf.com/content_CVPR_2019/papers/Dai_ChamNet_Towards_Efficient_Network_Design_Through_Platform-Aware_Model_Adaptation_CVPR_2019_paper.pdf">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
@@ -172,6 +147,31 @@
       </categories>
       <tags>
         <tag>NAS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CodeBear: Your Personal AI Coding Assitant</title>
+    <url>/2022/09/28/CodeBear/</url>
+    <content><![CDATA[<p>this is title.	</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/writing.html">Writing <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/server.html">Server <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/generating.html">Generating <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/one-command-deployment.html">Deployment <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+]]></content>
+      <categories>
+        <category>Play hard</category>
+      </categories>
+      <tags>
+        <tag>Transformer</tag>
+        <tag>AIGC</tag>
       </tags>
   </entry>
   <entry>
@@ -219,6 +219,51 @@
       <tags>
         <tag>NAS</tag>
         <tag>FL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Edd: Efficient differentiable dnn architecture and implementation co-search for embedded ai solutions</title>
+    <url>/2021/08/28/Edd/</url>
+    <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/2005.02563.pdf">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>In the rapidly evolving field of Artificial Intelligence (AI), the quest for high-quality AI solutions has led to a growing interest in the joint optimization of AI algorithms and their hardware implementations. Deep Neural Networks (DNNs), the workhorse of modern AI, have demonstrated remarkable achievements but are often limited by the efficiency of their hardware deployment. Traditional approaches to enhance algorithm quality, such as neural architecture search (NAS), have focused on developing DNNs that surpass human-designed architectures. However, these methods often overlook the simultaneous optimization of hardware implementations, which is crucial for improving performance metrics like latency, throughput, and energy efficiency.</p>
+<p>Recent advancements in hardware-aware NAS and hardware/software co-design have begun to address this gap by considering hardware features in DNN design. Yet, there remains a significant opportunity to further optimize by integrating the hardware implementation search within the NAS process. This integration can provide more accurate performance evaluations and instant guidance for hardware-aware DNN design.</p>
+<p>The motivation behind this research is to bridge this gap by proposing a novel methodology that performs a fully simultaneous and efficient co-search for DNN architecture and hardware implementation. This approach aims to maximize both algorithm accuracy and hardware implementation quality, offering a unified solution applicable to various devices and performance objectives. By fusing DNN search variables with hardware implementation variables into a single solution space and leveraging differentiable formulations, the methodology enables the use of gradient descent algorithms, significantly reducing search time and optimizing AI solutions for embedded AI applications.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181325138.png" alt="image-20240330181325138"></p>
+<p>This research introduces a groundbreaking methodology that addresses the critical need for a simultaneous and efficient approach to co-search for DNN architecture and hardware implementation. The primary contributions of the study are manifold:</p>
+<ol>
+<li><p>It pioneers a mathematical formulation that unifies the search space for DNN architecture and hardware implementation, aiming to maximize DNN accuracy and implementation performance concurrently. This formulation is differentiable, allowing for the application of gradient descent algorithms and significantly expediting the search process.</p>
+</li>
+<li><p>The proposed formulation is versatile, applicable across various hardware platforms such as GPUs, FPGAs, and dedicated accelerators. It is designed to target diverse performance objectives, including latency, throughput, and energy efficiency, while also considering resource usage and sharing constraints.</p>
+</li>
+<li><p>The methodology demonstrates its effectiveness through experiments that search for representative DNNs tailored for low-latency GPU implementation and FPGA implementations with both recursive and pipelined architectures. Each model produced achieves comparable accuracy to state-of-the-art NAS methods but with superior performance within a short search timeframe.</p>
+</li>
+<li><p>The study also presents a novel approach to differentiable quantization and performance/resource formulation, which is crucial for the co-search process. This allows for the optimization of data precision in DNNs, leading to more efficient computation and resource utilization.</p>
+</li>
+</ol>
+<p>These contributions collectively push the boundaries of AI research by providing a comprehensive framework that enhances the quality and efficiency of AI solutions, particularly for embedded systems where performance and resource constraints are paramount.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>The methodology at the core of this research is an innovative approach to the co-search problem, which integrates the search for optimal DNN architectures with the search for efficient hardware implementations. This is achieved through a differentiable framework that allows for a unified optimization process.</p>
+<p>At the outset, the research introduces a mathematical formulation that combines DNN search variables, which define the structure and parameters of the network, with hardware implementation variables, which pertain to the physical realization of the DNN on various devices. This fusion creates a unified solution space where both algorithm accuracy and hardware performance are optimized simultaneously.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181352045.png" alt="image-20240330181352045"></p>
+<p>The key innovation lies in the differentiability of the formulation. By ensuring that the objective function, which includes both accuracy loss and performance loss, is differentiable with respect to the fused variables, gradient descent algorithms can be applied. This enables efficient optimization, significantly reducing the search time compared to traditional exhaustive search methods.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181403203.png" alt="image-20240330181403203"></p>
+<p>The methodology also introduces a unique approach to differentiable quantization, a critical aspect of hardware implementation. Quantization involves reducing the precision of data to increase computational efficiency, but it must be carefully balanced with the impact on DNN accuracy. The proposed method uses a Gumbel-Softmax function to convert the discrete, non-differentiable sampling of quantization into a continuous, differentiable process. This allows for the optimization of quantization levels in tandem with the DNN architecture.</p>
+<p>Furthermore, the methodology provides a comprehensive performance and resource formulation that captures the intermediate performance and resource usage of each DNN operation and block. This includes the latency of operations under different quantization schemes and the resource requirements in terms of hardware-specific parameters, such as the number of DSPs on an FPGA.</p>
+<p>The co-search process is carried out in a bilevel fashion. In the first level, the DNN weights are optimized on the training dataset to minimize the training loss. In the second level, the DNN architecture and implementation variables are updated by minimizing the objective function on the validation set. This iterative process continues until convergence or a fixed number of epochs is reached.</p>
+<p>The research demonstrates the effectiveness of the methodology through extensive experiments on three different hardware platforms: GPUs, recursive FPGA accelerators, and pipelined FPGA accelerators. For each platform, a representative DNN model is searched and optimized, achieving competitive accuracy while significantly improving performance metrics such as latency and throughput.</p>
+<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p>The experimental setup of this research is meticulously designed to validate the effectiveness of the proposed co-search methodology. The experiments are conducted on a subset of the ImageNet dataset, which is a standard benchmark for evaluating DNN models. The models searched by the methodology are trained from scratch on the entire ImageNet dataset, which consists of 1000 classes, to ensure a comprehensive assessment of their performance.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181427801.png" alt="image-20240330181427801"></p>
+<p>Three distinct DNN models, referred to as EDD-Nets, are targeted in the experiments: EDD-Net-1 for low-latency GPU implementation, EDD-Net-2 for recursive FPGA architecture, and EDD-Net-3 for pipelined FPGA architecture. The initial DNN for the search consists of 20 MBConv blocks, with each block offering a variety of operation candidates defined by different filter sizes and channel expansion ratios. The DNN weights and activations are optimized for each hardware platform, considering the specific constraints and capabilities of GPUs and FPGAs.</p>
+<p>The experiments utilize a fixed number of epochs for the EDD search process, with the DNN weights updated through stochastic gradient descent. The architecture and implementation variables are optimized using a bilevel approach, where the DNN weights are first fixed and the objective function is minimized over the validation set. This process is repeated until the training converges or the predefined number of epochs is completed.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181441030.png" alt="image-20240330181441030"></p>
+<p>The results of the experiments demonstrate the efficacy of the co-search methodology. EDD-Net-1 achieves a top-1 test error of 25.3% and a latency of 11.17 ms on the Titan RTX GPU, outperforming existing hardware-aware NAS approaches in terms of inference speed. When re-trained and fine-tuned on an Nvidia 1080 Ti GPU, EDD-Net-1 shows a latency reduction across different data precisions, with the shortest latency of 1.74 ms achieved using 8-bit integer precision.</p>
+<p>For FPGA implementations, EDD-Net-2 and EDD-Net-3 are compared with state-of-the-art solutions. EDD-Net-2, optimized for a recursive FPGA accelerator, delivers a latency of 7.96 ms on the Xilinx ZCU102 FPGA, outperforming other models by a significant margin. EDD-Net-3, designed for a pipelined FPGA architecture, achieves a throughput of 40.2 frames per second on the ZC706 FPGA, indicating a 1.45倍 increase in performance over the previous best solution.</p>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>PaperReading</category>
+      </categories>
+      <tags>
+        <tag>NAS</tag>
       </tags>
   </entry>
   <entry>
@@ -273,51 +318,6 @@
 </li>
 </ol>
 <p>In conclusion, the experiments conducted in the paper provide strong evidence of ENAS’s capabilities. They not only validate the method’s efficiency in terms of computational resource usage but also confirm its ability to discover state-of-the-art neural network architectures that are competitive with those found by more expensive search methods. These results position ENAS as a promising approach for democratizing access to advanced neural architecture search and accelerating innovation in the field of machine learning.</p>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>PaperReading</category>
-      </categories>
-      <tags>
-        <tag>NAS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Edd: Efficient differentiable dnn architecture and implementation co-search for embedded ai solutions</title>
-    <url>/2021/08/28/Edd/</url>
-    <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/2005.02563.pdf">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>In the rapidly evolving field of Artificial Intelligence (AI), the quest for high-quality AI solutions has led to a growing interest in the joint optimization of AI algorithms and their hardware implementations. Deep Neural Networks (DNNs), the workhorse of modern AI, have demonstrated remarkable achievements but are often limited by the efficiency of their hardware deployment. Traditional approaches to enhance algorithm quality, such as neural architecture search (NAS), have focused on developing DNNs that surpass human-designed architectures. However, these methods often overlook the simultaneous optimization of hardware implementations, which is crucial for improving performance metrics like latency, throughput, and energy efficiency.</p>
-<p>Recent advancements in hardware-aware NAS and hardware/software co-design have begun to address this gap by considering hardware features in DNN design. Yet, there remains a significant opportunity to further optimize by integrating the hardware implementation search within the NAS process. This integration can provide more accurate performance evaluations and instant guidance for hardware-aware DNN design.</p>
-<p>The motivation behind this research is to bridge this gap by proposing a novel methodology that performs a fully simultaneous and efficient co-search for DNN architecture and hardware implementation. This approach aims to maximize both algorithm accuracy and hardware implementation quality, offering a unified solution applicable to various devices and performance objectives. By fusing DNN search variables with hardware implementation variables into a single solution space and leveraging differentiable formulations, the methodology enables the use of gradient descent algorithms, significantly reducing search time and optimizing AI solutions for embedded AI applications.</p>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181325138.png" alt="image-20240330181325138"></p>
-<p>This research introduces a groundbreaking methodology that addresses the critical need for a simultaneous and efficient approach to co-search for DNN architecture and hardware implementation. The primary contributions of the study are manifold:</p>
-<ol>
-<li><p>It pioneers a mathematical formulation that unifies the search space for DNN architecture and hardware implementation, aiming to maximize DNN accuracy and implementation performance concurrently. This formulation is differentiable, allowing for the application of gradient descent algorithms and significantly expediting the search process.</p>
-</li>
-<li><p>The proposed formulation is versatile, applicable across various hardware platforms such as GPUs, FPGAs, and dedicated accelerators. It is designed to target diverse performance objectives, including latency, throughput, and energy efficiency, while also considering resource usage and sharing constraints.</p>
-</li>
-<li><p>The methodology demonstrates its effectiveness through experiments that search for representative DNNs tailored for low-latency GPU implementation and FPGA implementations with both recursive and pipelined architectures. Each model produced achieves comparable accuracy to state-of-the-art NAS methods but with superior performance within a short search timeframe.</p>
-</li>
-<li><p>The study also presents a novel approach to differentiable quantization and performance/resource formulation, which is crucial for the co-search process. This allows for the optimization of data precision in DNNs, leading to more efficient computation and resource utilization.</p>
-</li>
-</ol>
-<p>These contributions collectively push the boundaries of AI research by providing a comprehensive framework that enhances the quality and efficiency of AI solutions, particularly for embedded systems where performance and resource constraints are paramount.</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>The methodology at the core of this research is an innovative approach to the co-search problem, which integrates the search for optimal DNN architectures with the search for efficient hardware implementations. This is achieved through a differentiable framework that allows for a unified optimization process.</p>
-<p>At the outset, the research introduces a mathematical formulation that combines DNN search variables, which define the structure and parameters of the network, with hardware implementation variables, which pertain to the physical realization of the DNN on various devices. This fusion creates a unified solution space where both algorithm accuracy and hardware performance are optimized simultaneously.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181352045.png" alt="image-20240330181352045"></p>
-<p>The key innovation lies in the differentiability of the formulation. By ensuring that the objective function, which includes both accuracy loss and performance loss, is differentiable with respect to the fused variables, gradient descent algorithms can be applied. This enables efficient optimization, significantly reducing the search time compared to traditional exhaustive search methods.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181403203.png" alt="image-20240330181403203"></p>
-<p>The methodology also introduces a unique approach to differentiable quantization, a critical aspect of hardware implementation. Quantization involves reducing the precision of data to increase computational efficiency, but it must be carefully balanced with the impact on DNN accuracy. The proposed method uses a Gumbel-Softmax function to convert the discrete, non-differentiable sampling of quantization into a continuous, differentiable process. This allows for the optimization of quantization levels in tandem with the DNN architecture.</p>
-<p>Furthermore, the methodology provides a comprehensive performance and resource formulation that captures the intermediate performance and resource usage of each DNN operation and block. This includes the latency of operations under different quantization schemes and the resource requirements in terms of hardware-specific parameters, such as the number of DSPs on an FPGA.</p>
-<p>The co-search process is carried out in a bilevel fashion. In the first level, the DNN weights are optimized on the training dataset to minimize the training loss. In the second level, the DNN architecture and implementation variables are updated by minimizing the objective function on the validation set. This iterative process continues until convergence or a fixed number of epochs is reached.</p>
-<p>The research demonstrates the effectiveness of the methodology through extensive experiments on three different hardware platforms: GPUs, recursive FPGA accelerators, and pipelined FPGA accelerators. For each platform, a representative DNN model is searched and optimized, achieving competitive accuracy while significantly improving performance metrics such as latency and throughput.</p>
-<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p>The experimental setup of this research is meticulously designed to validate the effectiveness of the proposed co-search methodology. The experiments are conducted on a subset of the ImageNet dataset, which is a standard benchmark for evaluating DNN models. The models searched by the methodology are trained from scratch on the entire ImageNet dataset, which consists of 1000 classes, to ensure a comprehensive assessment of their performance.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181427801.png" alt="image-20240330181427801"></p>
-<p>Three distinct DNN models, referred to as EDD-Nets, are targeted in the experiments: EDD-Net-1 for low-latency GPU implementation, EDD-Net-2 for recursive FPGA architecture, and EDD-Net-3 for pipelined FPGA architecture. The initial DNN for the search consists of 20 MBConv blocks, with each block offering a variety of operation candidates defined by different filter sizes and channel expansion ratios. The DNN weights and activations are optimized for each hardware platform, considering the specific constraints and capabilities of GPUs and FPGAs.</p>
-<p>The experiments utilize a fixed number of epochs for the EDD search process, with the DNN weights updated through stochastic gradient descent. The architecture and implementation variables are optimized using a bilevel approach, where the DNN weights are first fixed and the objective function is minimized over the validation set. This process is repeated until the training converges or the predefined number of epochs is completed.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181441030.png" alt="image-20240330181441030"></p>
-<p>The results of the experiments demonstrate the efficacy of the co-search methodology. EDD-Net-1 achieves a top-1 test error of 25.3% and a latency of 11.17 ms on the Titan RTX GPU, outperforming existing hardware-aware NAS approaches in terms of inference speed. When re-trained and fine-tuned on an Nvidia 1080 Ti GPU, EDD-Net-1 shows a latency reduction across different data precisions, with the shortest latency of 1.74 ms achieved using 8-bit integer precision.</p>
-<p>For FPGA implementations, EDD-Net-2 and EDD-Net-3 are compared with state-of-the-art solutions. EDD-Net-2, optimized for a recursive FPGA accelerator, delivers a latency of 7.96 ms on the Xilinx ZCU102 FPGA, outperforming other models by a significant margin. EDD-Net-3, designed for a pipelined FPGA architecture, achieves a throughput of 40.2 frames per second on the ZC706 FPGA, indicating a 1.45倍 increase in performance over the previous best solution.</p>
 ]]></content>
       <categories>
         <category>Work hard</category>
@@ -553,6 +553,24 @@
       </tags>
   </entry>
   <entry>
+    <title>Speculative Sampling</title>
+    <url>/2023/09/28/Speculative%20Decoding/</url>
+    <content><![CDATA[<p>Remember the Hacker News thread when GPT-4 was released? It mentioned the use of speculative sampling in GPT-4 to accelerate inference. So, what exactly is speculative sampling?</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/202312070010475.png"></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="Refference"><a href="#Refference" class="headerlink" title="Refference"></a>Refference</h2><ol>
+<li><a class="link" href="https://zhuanlan.zhihu.com/p/651359908">https://zhuanlan.zhihu.com/p/651359908 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>Transformer</tag>
+        <tag>LLM</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>BlockQNN: Efficient Block-wise Neural Network Architecture Generation</title>
     <url>/2020/01/30/blockqnn/</url>
     <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/1808.05584.pdf">https://arxiv.org/pdf/1808.05584.pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
@@ -608,62 +626,6 @@
 <p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330012701560.png" alt="image-20240330012701560"></p>
 <p>One of the key findings is the transferability of the architectures learned by DARTS. The authors demonstrate that a convolutional cell learned on CIFAR-10 can be transferred to ImageNet with competitive performance, and a recurrent cell learned on Penn Treebank can be transferred to WikiText-2. This transferability is crucial as it shows the versatility of DARTS in discovering architectures that are not only optimal for a specific dataset but also generalizable to other tasks.</p>
 <p>The authors also compare DARTS with existing state-of-the-art methods, such as NASNet, AmoebaNet, and ENAS. The results show that DARTS can match or even outperform these methods while using orders of magnitude fewer computational resources. For instance, while NASNet required 2000 GPU days and AmoebaNet required 3150 GPU days to achieve state-of-the-art results, DARTS achieved comparable performance in just a few GPU days.</p>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>PaperReading</category>
-      </categories>
-      <tags>
-        <tag>NAS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Speculative Sampling</title>
-    <url>/2023/09/28/Speculative%20Decoding/</url>
-    <content><![CDATA[<p>Remember the Hacker News thread when GPT-4 was released? It mentioned the use of speculative sampling in GPT-4 to accelerate inference. So, what exactly is speculative sampling?</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/202312070010475.png"></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="Refference"><a href="#Refference" class="headerlink" title="Refference"></a>Refference</h2><ol>
-<li><a class="link" href="https://zhuanlan.zhihu.com/p/651359908">https://zhuanlan.zhihu.com/p/651359908 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>Transformer</tag>
-        <tag>LLM</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Designing Neural Network Architectures using Reinforcement Learning</title>
-    <url>/2020/01/17/metaqnn/</url>
-    <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/1611.02167.pdf">https://arxiv.org/pdf/1611.02167.pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330145949057.png" alt="image-20240330145949057"></p>
-<p>In the realm of machine learning, the design of effective convolutional neural network (CNN) architectures has traditionally required significant human expertise and labor. The process involves a meticulous trial-and-error approach, where researchers draw upon theoretical insights and empirical observations to craft networks that perform well on specific tasks. As the complexity of CNNs has grown, so too has the design space, making manual exploration infeasible due to the combinatorial explosion of possible configurations.</p>
-<p>The paper “Designing Neural Network Architectures Using Reinforcement Learning” addresses this challenge by introducing MetaQNN, a meta-modeling algorithm that leverages reinforcement learning to automate the generation of high-performing CNN architectures. The motivation behind this approach is to reduce the manual effort involved in CNN design and to potentially discover novel architectures that humans might overlook.</p>
-<p>MetaQNN employs a Q-learning agent that learns to select CNN layers sequentially, guided by an ε-greedy exploration strategy and experience replay to navigate the large but finite space of architectural possibilities. The agent’s goal is to optimize the network’s performance on a given learning task, as measured by validation accuracy, which serves as the reward signal.</p>
-<p>This research is motivated by the desire to streamline the process of network design, enabling the development of tailored CNNs for various tasks without extensive human intervention. By automating this process, researchers can focus on higher-level tasks and insights, while the algorithm handles the intricacies of architecture optimization. The potential applications of this work are vast, as it could lead to more efficient and effective machine learning solutions across a range of domains.</p>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>The paper “Designing Neural Network Architectures Using Reinforcement Learning” makes several significant contributions to the field of automated machine learning (AutoML). Firstly, it introduces MetaQNN, a novel algorithm that applies reinforcement learning to the design of convolutional neural network (CNN) architectures. This algorithm is capable of discovering high-performing CNNs without human intervention, addressing the labor-intensive nature of manual network design.</p>
-<p>Secondly, the paper demonstrates that MetaQNN can compete with, and even outperform, state-of-the-art methods that use more complex layer types. This is achieved by exploring a large but finite space of possible architectures and iteratively improving upon the designs based on validation accuracy.</p>
-<p>Additionally, the paper shows that the networks designed by MetaQNN are not only optimized for the task they were trained on but also exhibit strong transfer learning capabilities. This indicates that the algorithm can produce versatile network architectures that are applicable to various image classification tasks.</p>
-<p>Lastly, the research provides a new perspective on neural network design, suggesting that reinforcement learning can be an effective tool for automating the process. This opens up new avenues for future research in AutoML, where the goal is to further automate and optimize the machine learning pipeline.</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330150424604.png" alt="image-20240330150424604"></p>
-<p>The primary methodological innovation of the paper “Designing Neural Network Architectures Using Reinforcement Learning” is the MetaQNN algorithm, which utilizes Q-learning to automate the process of designing convolutional neural network (CNN) architectures. The core concept is to treat the selection of CNN layers as a Markov Decision Process (MDP), where the learning agent explores the space of possible network topologies to find high-performing architectures.</p>
-<p>The MetaQNN agent is trained using Q-learning, a model-free reinforcement learning technique that focuses on learning the optimal policy through interaction with the environment. The agent operates in a state space defined by the parameters of the CNN layers and an action space that corresponds to the choices of adding a particular layer type. The agent starts with a random exploration of the architecture space, gradually transitioning to more informed decisions as it learns from experience.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330150453009.png" alt="image-20240330150453009"></p>
-<p>A key component of the method is the ε-greedy exploration strategy, which balances exploration and exploitation. The agent initially explores widely by selecting actions randomly, with a probability ε. As the agent accumulates experience, it exploits its knowledge by choosing the action with the highest estimated Q-value with probability 1-ε. The value of ε is gradually decreased over time, shifting the agent’s behavior from exploration to exploitation.</p>
-<p>To enhance learning efficiency, the MetaQNN algorithm employs experience replay, a technique where the agent’s past experiences are stored in a replay memory. The agent periodically samples from this memory to update its Q-values, allowing it to learn from its past actions more effectively.</p>
-<p>The agent’s performance is evaluated based on the validation accuracy of the CNN architectures it designs. The architectures that yield higher validation accuracy are considered more desirable, and the agent’s Q-values are updated accordingly. The process continues until the agent converges on a policy that consistently produces high-performing CNN architectures.</p>
-<p>This method represents a significant departure from traditional manual design processes, offering a data-driven approach to network architecture optimization. By automating the design process, MetaQNN has the potential to accelerate the development of CNNs and to discover novel architectures that could outperform those designed by human experts.</p>
-<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330150952925.png" alt="image-20240330150952925"></p>
-<p>The experimental setup involves training a learning agent to sequentially choose CNN layers using Q-learning, with the goal of maximizing the validation accuracy on the given datasets. The agent’s state space is defined by the parameters of different layer types, such as convolution, pooling, and fully connected layers, and the action space is determined by the possible layer selections. The agent employs an ε-greedy strategy to balance exploration and exploitation, with ε gradually reduced over time to shift from random exploration to informed exploitation.</p>
-<p>The training process for the agent involves aggressive training schemes with quick convergence, using techniques like dropout and learning rate adjustments to prevent overfitting and to ensure efficient learning. The agent’s performance is evaluated based on the validation accuracy of the CNN architectures it designs, which serves as the reward signal for the Q-learning updates.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330151218241.png" alt="image-20240330151218241"></p>
-<p>The experimental results are highly promising. The networks designed by the MetaQNN agent outperform existing networks that use the same layer types, demonstrating the agent’s ability to make informed architectural decisions. Moreover, these networks are competitive with state-of-the-art methods that incorporate more complex layer types and training procedures, showcasing the potential of the MetaQNN approach to match or even surpass human-designed architectures.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330151313064.png" alt="image-20240330151313064"></p>
-<p>In terms of transfer learning, the best MetaQNN model on CIFAR-10 dataset shows good performance when trained on other datasets, indicating the versatility of the architectures discovered by the algorithm. The ensemble of top models selected by the agent also leads to a significant boost in prediction performance, further validating the effectiveness of the MetaQNN approach.</p>
-<p>Overall, the experiments in the paper provide strong evidence that reinforcement learning can be effectively applied to the automated design of neural network architectures, offering a promising direction for future research in automating the machine learning process. The success of MetaQNN in discovering high-performing and transferable CNN architectures underscores the potential of this approach to revolutionize the way we design neural networks for various tasks.</p>
 ]]></content>
       <categories>
         <category>Work hard</category>
@@ -761,6 +723,44 @@
       </categories>
       <tags>
         <tag>Quantization</tag>
+        <tag>NAS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Designing Neural Network Architectures using Reinforcement Learning</title>
+    <url>/2020/01/17/metaqnn/</url>
+    <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/1611.02167.pdf">https://arxiv.org/pdf/1611.02167.pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330145949057.png" alt="image-20240330145949057"></p>
+<p>In the realm of machine learning, the design of effective convolutional neural network (CNN) architectures has traditionally required significant human expertise and labor. The process involves a meticulous trial-and-error approach, where researchers draw upon theoretical insights and empirical observations to craft networks that perform well on specific tasks. As the complexity of CNNs has grown, so too has the design space, making manual exploration infeasible due to the combinatorial explosion of possible configurations.</p>
+<p>The paper “Designing Neural Network Architectures Using Reinforcement Learning” addresses this challenge by introducing MetaQNN, a meta-modeling algorithm that leverages reinforcement learning to automate the generation of high-performing CNN architectures. The motivation behind this approach is to reduce the manual effort involved in CNN design and to potentially discover novel architectures that humans might overlook.</p>
+<p>MetaQNN employs a Q-learning agent that learns to select CNN layers sequentially, guided by an ε-greedy exploration strategy and experience replay to navigate the large but finite space of architectural possibilities. The agent’s goal is to optimize the network’s performance on a given learning task, as measured by validation accuracy, which serves as the reward signal.</p>
+<p>This research is motivated by the desire to streamline the process of network design, enabling the development of tailored CNNs for various tasks without extensive human intervention. By automating this process, researchers can focus on higher-level tasks and insights, while the algorithm handles the intricacies of architecture optimization. The potential applications of this work are vast, as it could lead to more efficient and effective machine learning solutions across a range of domains.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>The paper “Designing Neural Network Architectures Using Reinforcement Learning” makes several significant contributions to the field of automated machine learning (AutoML). Firstly, it introduces MetaQNN, a novel algorithm that applies reinforcement learning to the design of convolutional neural network (CNN) architectures. This algorithm is capable of discovering high-performing CNNs without human intervention, addressing the labor-intensive nature of manual network design.</p>
+<p>Secondly, the paper demonstrates that MetaQNN can compete with, and even outperform, state-of-the-art methods that use more complex layer types. This is achieved by exploring a large but finite space of possible architectures and iteratively improving upon the designs based on validation accuracy.</p>
+<p>Additionally, the paper shows that the networks designed by MetaQNN are not only optimized for the task they were trained on but also exhibit strong transfer learning capabilities. This indicates that the algorithm can produce versatile network architectures that are applicable to various image classification tasks.</p>
+<p>Lastly, the research provides a new perspective on neural network design, suggesting that reinforcement learning can be an effective tool for automating the process. This opens up new avenues for future research in AutoML, where the goal is to further automate and optimize the machine learning pipeline.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330150424604.png" alt="image-20240330150424604"></p>
+<p>The primary methodological innovation of the paper “Designing Neural Network Architectures Using Reinforcement Learning” is the MetaQNN algorithm, which utilizes Q-learning to automate the process of designing convolutional neural network (CNN) architectures. The core concept is to treat the selection of CNN layers as a Markov Decision Process (MDP), where the learning agent explores the space of possible network topologies to find high-performing architectures.</p>
+<p>The MetaQNN agent is trained using Q-learning, a model-free reinforcement learning technique that focuses on learning the optimal policy through interaction with the environment. The agent operates in a state space defined by the parameters of the CNN layers and an action space that corresponds to the choices of adding a particular layer type. The agent starts with a random exploration of the architecture space, gradually transitioning to more informed decisions as it learns from experience.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330150453009.png" alt="image-20240330150453009"></p>
+<p>A key component of the method is the ε-greedy exploration strategy, which balances exploration and exploitation. The agent initially explores widely by selecting actions randomly, with a probability ε. As the agent accumulates experience, it exploits its knowledge by choosing the action with the highest estimated Q-value with probability 1-ε. The value of ε is gradually decreased over time, shifting the agent’s behavior from exploration to exploitation.</p>
+<p>To enhance learning efficiency, the MetaQNN algorithm employs experience replay, a technique where the agent’s past experiences are stored in a replay memory. The agent periodically samples from this memory to update its Q-values, allowing it to learn from its past actions more effectively.</p>
+<p>The agent’s performance is evaluated based on the validation accuracy of the CNN architectures it designs. The architectures that yield higher validation accuracy are considered more desirable, and the agent’s Q-values are updated accordingly. The process continues until the agent converges on a policy that consistently produces high-performing CNN architectures.</p>
+<p>This method represents a significant departure from traditional manual design processes, offering a data-driven approach to network architecture optimization. By automating the design process, MetaQNN has the potential to accelerate the development of CNNs and to discover novel architectures that could outperform those designed by human experts.</p>
+<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330150952925.png" alt="image-20240330150952925"></p>
+<p>The experimental setup involves training a learning agent to sequentially choose CNN layers using Q-learning, with the goal of maximizing the validation accuracy on the given datasets. The agent’s state space is defined by the parameters of different layer types, such as convolution, pooling, and fully connected layers, and the action space is determined by the possible layer selections. The agent employs an ε-greedy strategy to balance exploration and exploitation, with ε gradually reduced over time to shift from random exploration to informed exploitation.</p>
+<p>The training process for the agent involves aggressive training schemes with quick convergence, using techniques like dropout and learning rate adjustments to prevent overfitting and to ensure efficient learning. The agent’s performance is evaluated based on the validation accuracy of the CNN architectures it designs, which serves as the reward signal for the Q-learning updates.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330151218241.png" alt="image-20240330151218241"></p>
+<p>The experimental results are highly promising. The networks designed by the MetaQNN agent outperform existing networks that use the same layer types, demonstrating the agent’s ability to make informed architectural decisions. Moreover, these networks are competitive with state-of-the-art methods that incorporate more complex layer types and training procedures, showcasing the potential of the MetaQNN approach to match or even surpass human-designed architectures.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330151313064.png" alt="image-20240330151313064"></p>
+<p>In terms of transfer learning, the best MetaQNN model on CIFAR-10 dataset shows good performance when trained on other datasets, indicating the versatility of the architectures discovered by the algorithm. The ensemble of top models selected by the agent also leads to a significant boost in prediction performance, further validating the effectiveness of the MetaQNN approach.</p>
+<p>Overall, the experiments in the paper provide strong evidence that reinforcement learning can be effectively applied to the automated design of neural network architectures, offering a promising direction for future research in automating the machine learning process. The success of MetaQNN in discovering high-performing and transferable CNN architectures underscores the potential of this approach to revolutionize the way we design neural networks for various tasks.</p>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>PaperReading</category>
+      </categories>
+      <tags>
         <tag>NAS</tag>
       </tags>
   </entry>
