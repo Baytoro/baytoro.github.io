@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="H.J. Chen">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://hjchen-thu.github.io/2020/01/16/monasnet/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="Multi-Objective Neural Architecture Search for Efficient CNNs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MONAS: Multi-Objective Neural Architecture Search">
+<meta property="og:url" content="https://hjchen-thu.github.io/2020/01/16/monasnet/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Multi-Objective Neural Architecture Search for Efficient CNNs">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330155922697.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160020944.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160105915.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160154008.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160230178.png">
+<meta property="article:published_time" content="2020-01-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-03-30T08:02:37.394Z">
+<meta property="article:author" content="H.J. Chen">
+<meta property="article:tag" content="NAS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330155922697.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/personal/avatar.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/personal/avatar.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/personal/avatar.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            MONAS: Multi-Objective Neural Architecture Search -
+        
+        H.J. Chen&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+        <link href="" rel="stylesheet">
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"hjchen-thu.github.io","root":"/","language":"en","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":false,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/picture/s1.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":true,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Welcome, traveler :)","subtitle":{"text":["May you find inspiration and joy here (scroll down ↓)"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":60,"backing_speed":10,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":"https://github.com/hjchen-thu","zhihu":"https://www.zhihu.com/people/baytoro","email":"guaguabear@hotmail.com"},"qrs":null}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"MapleStory Title","artist":"MapleStory","url":"/music/MapleStory Title.mp3","cover":"/picture/maple.jpeg"},{"name":"Above the Treetops","artist":"MapleStory","url":"/music/Above the Treetops.mp3","cover":"/picture/maple.jpeg"},{"name":"When the Morning Comes","artist":"MapleStory","url":"/music/When the Morning Comes.mp3","cover":"/picture/maple.jpeg"},{"name":"Missing You","artist":"MapleStory","url":"/music/Missing You.mp3","cover":"/picture/maple.jpeg"},{"name":"Shinin' Harbor","artist":"MapleStory","url":"/music/Shinin' Harbor.mp3","cover":"/picture/maple.jpeg"},{"name":"Snowy Village","artist":"MapleStory","url":"/music/Snowy Village.mp3","cover":"/picture/maple.jpeg"}]},"mermaid":{"enable":true,"version":"9.3.0"}},"version":"2.5.0","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"About":{"path":"/about","icon":"fa-regular fa-user"},"Archives":{"icon":"fa-regular fa-archive","submenus":{"Posts":"/archives","Categories":"/categories","Tags":"/tags"}},"GitHub":{"icon":"fa-brands fa-github","path":"https://github.com/hjchen-thu"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"info","menu_title":"Links","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":5}},"footerStart":"2020/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                H.J. Chen&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/about"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/archives">POSTS
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/categories">CATEGORIES
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/tags">TAGS
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    target="_blank" rel="noopener" href="https://github.com/hjchen-thu"  >
+                                    
+                                        
+                                            <i class="fa-brands fa-github"></i>
+                                        
+                                        GITHUB
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i></div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/about"  >
+                             
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/archives">POSTS</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/categories">CATEGORIES</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/tags">TAGS</a>
+                            </li>
+                        
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        target="_blank" rel="noopener" href="https://github.com/hjchen-thu"  >
+                             
+                                
+                                    <i class="fa-brands fa-github"></i>
+                                
+                                GITHUB
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            
+                
+                
+                <img src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330155414281.png" alt="MONAS: Multi-Objective Neural Architecture Search" class="max-w-none"/>
+                
+                <h1 class="article-title-cover">MONAS: Multi-Objective Neural Architecture Search</h1>
+            
+            </div>
+            
+                    
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/personal/avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">H.J. Chen</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2020-01-16</span>
+        <span class="mobile">2020-01-16</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <!-- <span class="article-date article-meta-item"> -->
+            <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
+            <!-- <span class="desktop">2024-03-30 16:02:37</span>
+            <span class="mobile">2024-03-30 16:02:37</span> -->
+            <!-- <span class="hover-info">Updated</span> -->
+        <!-- </span> -->
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/NAS/">NAS</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body">
+            <p><a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/1806.10332.pdf">https://arxiv.org/pdf/1806.10332.pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Despite the advancements in NAS, most existing works focus on optimizing models for high prediction accuracy, which often results in complex architectures that may not be suitable for deployment in computing environments with limited resources, such as battery-powered mobile devices. This limitation has motivated the development of MONAS (Multi-Objective Neural Architecture Search), a novel framework that extends the capabilities of NAS by considering not only prediction accuracy but also other critical objectives like power consumption during the search for neural network architectures.</p>
+<p>The primary motivation behind MONAS is to bridge the gap between high-performance models and deployability in resource-constrained settings. By integrating multi-objective optimization, MONAS allows for the search process to be guided by various performance metrics and application-specific constraints, leading to the discovery of networks that offer a balance between accuracy and efficiency. This approach aims to democratize the development of neural network architectures by making them accessible to a wider range of platforms and applications without compromising on performance.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>The paper introduces MONAS, a pioneering framework for Multi-Objective Neural Architectural Search, which stands out with its unique contributions to the field of neural network optimization. Firstly, it proposes a multi-objective approach that simultaneously considers prediction accuracy and additional critical objectives, such as energy consumption. This dual focus addresses the limitations of previous NAS methods, which often overlooked the trade-offs between performance and deployability in resource-constrained environments.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330155922697.png" alt="image-20240330155922697"></p>
+<p>Secondly, MONAS demonstrates adaptability by allowing users to incorporate customized constraints that reflect the specific requirements of different applications or platforms. This flexibility ensures that the search process is guided by a diverse set of objectives, leading to a broader spectrum of optimized architectures.</p>
+<p>Additionally, the paper presents MONAS-S, an extension of the original framework, designed to enhance scalability and speed. By adopting weight-sharing techniques, MONAS-S is capable of searching larger design spaces more efficiently, significantly reducing the time required to find optimal network architectures.</p>
+<p>The empirical results of the study show that models discovered by MONAS not only achieve comparable or better classification accuracy on computer vision tasks but also satisfy additional objectives such as peak power consumption. This evidences the effectiveness of MONAS in guiding the search process towards architectures that meet predefined constraints, outperforming state-of-the-art models in both accuracy and energy efficiency.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160020944.png" alt="image-20240330160020944"></p>
+<p>The MONAS framework is meticulously crafted to address the multifaceted challenges of neural architecture search. At its core, MONAS employs a two-stage framework that leverages reinforcement learning to navigate the complex landscape of neural network design. The first stage involves the generation of candidate architectures through a recurrent neural network (RNN), which serves as the “robot network” in the search process. This RNN generates a sequence of hyperparameters for a CNN, which are then used to construct and train the “target network” in the second stage. The performance of the target network, in terms of both accuracy and energy consumption, is feedback to the robot network as a reward signal, guiding the search process.</p>
+<p>One of the distinguishing features of MONAS is its adaptability. It allows users to define customized constraints that can be seamlessly integrated into the search process as additional objectives. These constraints are transformed into reward functions that work in tandem with the primary objectives of accuracy and efficiency, ensuring that the search is aligned with the specific needs of various applications and platforms.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160105915.png" alt="image-20240330160105915"></p>
+<p>To enhance scalability, MONAS introduces a weight-sharing technique, which is further developed into MONAS-S. This extension pre-trains a directed acyclic graph (DAG) that encompasses all possible networks, allowing for a more efficient search process. The controller, which is the RNN in MONAS, is updated using the REINFORCE policy learning method, where the validation accuracy and other objective measures serve as the reward signal.</p>
+<p>The reward function in MONAS is carefully designed to reflect the trade-offs between different objectives. It includes a mixed reward that balances accuracy and energy consumption, as well as constraints on peak power and Multiply-ACcumulate (MAC) operations, which serve as a proxy for power usage. This nuanced approach to the reward function enables MONAS to discover architectures that not only perform well in terms of accuracy but also meet the energy efficiency requirements.</p>
+<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160154008.png" alt="image-20240330160154008"></p>
+<p>The experimental setup of the MONAS framework is designed to thoroughly evaluate its performance and efficacy in searching for neural network architectures that balance prediction accuracy with energy efficiency. The experiments are conducted using Python with the TensorFlow library, running on a system equipped with an Intel XEON E5-2620v4 processor and GeForce GTX1080Ti GPU cards. The NVIDIA profiling tool, nvprof, is utilized to measure the peak power and energy consumption of the target networks, which are crucial for updating the robot network’s weights.</p>
+<p>The CIFAR-10 dataset is chosen to validate the target networks, with 5000 randomly selected images from the training set used as the validation set. The validation accuracy is taken as an objective in the reward function. The Multiply-ACcumulate (MAC) operations of a sampled target network are calculated based on the approach described in MnasNet, providing a measure of the computational cost.</p>
+<p>The experimental results demonstrate the adaptability and efficiency of MONAS in guiding the search process. When constraints are applied to limit peak power or require a minimum accuracy, MONAS successfully directs its search to regions that satisfy these conditions. For instance, out of 600 iterations, a significant number of target networks fall within the specified power or accuracy thresholds, indicating the framework’s ability to adapt to different reward functions.</p>
+<p>The paper also explores how the Pareto Front changes under different reward functions, showing that MONAS can discover architectures with either higher accuracy or lower energy consumption depending on the weightage given to each objective. Notably, MONAS outperforms random search in finding better architectures within a limited search time, highlighting its efficiency.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160230178.png" alt="image-20240330160230178"></p>
+<p>In terms of discovering noteworthy architectures, MONAS is compared with state-of-the-art models like CondenseNet, demonstrating that it can find models with higher accuracy and lower energy consumption. The best-performing models discovered by MONAS are reported, along with their hyperparameters and energy costs per 1000 inferences, providing evidence of the framework’s capability to surpass existing solutions.</p>
+<p>The scalability of MONAS is further validated through MONAS-S, which is applied to a search space of 1.6 × 10^29 possible networks in a 12-layered architecture. Even in this vast search space, MONAS-S successfully guides the search, finding models that require fewer MAC operations while maintaining high accuracy.</p>
+
+        </div>
+
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/NAS/">#NAS</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2020/01/17/metaqnn/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Designing Neural Network Architectures using Reinforcement Learning</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2020/01/12/Enas./"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Efficient Neural Architecture Search via Parameter Sharing</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">MONAS: Multi-Objective Neural Architecture Search</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Figures-Conclusion"><span class="nav-text">Figures &amp; Conclusion</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">H.J. Chen</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.0</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/libs/mermaid.min.js"></script>
+
+    
+<script src="/js/plugins/mermaid.js"></script>
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+    <div id="aplayer"></div>
+
+<script src="/js/libs/APlayer.min.js"></script>
+
+
+<script src="/js/plugins/aplayer.js"></script>
+
+
+</body>
+</html>

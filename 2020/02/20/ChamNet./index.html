@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="H.J. Chen">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://hjchen-thu.github.io/2020/02/20/chamnet./"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="Efficient neural network design via platform-aware model adaptation, leveraging resource constraints for optimized performance.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ChamNet: Towards Efficient Network Design through Platform-Aware Model Adaptation">
+<meta property="og:url" content="https://hjchen-thu.github.io/2020/02/20/ChamNet./index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Efficient neural network design via platform-aware model adaptation, leveraging resource constraints for optimized performance.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330164901236.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330164914312.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165002398.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165104157.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165115265.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165156604.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165206854.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165220972.png">
+<meta property="article:published_time" content="2020-02-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-03-30T08:52:25.125Z">
+<meta property="article:author" content="H.J. Chen">
+<meta property="article:tag" content="NAS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330164901236.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/personal/avatar.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/personal/avatar.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/personal/avatar.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            ChamNet: Towards Efficient Network Design through Platform-Aware Model Adaptation -
+        
+        H.J. Chen&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+        <link href="" rel="stylesheet">
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"hjchen-thu.github.io","root":"/","language":"en","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":false,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/picture/s1.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":true,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Welcome, traveler :)","subtitle":{"text":["May you find inspiration and joy here (scroll down ↓)"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":60,"backing_speed":10,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":"https://github.com/hjchen-thu","zhihu":"https://www.zhihu.com/people/baytoro","email":"guaguabear@hotmail.com"},"qrs":null}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"MapleStory Title","artist":"MapleStory","url":"/music/MapleStory Title.mp3","cover":"/picture/maple.jpeg"},{"name":"Above the Treetops","artist":"MapleStory","url":"/music/Above the Treetops.mp3","cover":"/picture/maple.jpeg"},{"name":"When the Morning Comes","artist":"MapleStory","url":"/music/When the Morning Comes.mp3","cover":"/picture/maple.jpeg"},{"name":"Missing You","artist":"MapleStory","url":"/music/Missing You.mp3","cover":"/picture/maple.jpeg"},{"name":"Shinin' Harbor","artist":"MapleStory","url":"/music/Shinin' Harbor.mp3","cover":"/picture/maple.jpeg"},{"name":"Snowy Village","artist":"MapleStory","url":"/music/Snowy Village.mp3","cover":"/picture/maple.jpeg"}]},"mermaid":{"enable":true,"version":"9.3.0"}},"version":"2.5.0","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"About":{"path":"/about","icon":"fa-regular fa-user"},"Archives":{"icon":"fa-regular fa-archive","submenus":{"Posts":"/archives","Categories":"/categories","Tags":"/tags"}},"GitHub":{"icon":"fa-brands fa-github","path":"https://github.com/hjchen-thu"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"info","menu_title":"Links","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":5}},"footerStart":"2020/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                H.J. Chen&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/about"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/archives">POSTS
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/categories">CATEGORIES
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/tags">TAGS
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    target="_blank" rel="noopener" href="https://github.com/hjchen-thu"  >
+                                    
+                                        
+                                            <i class="fa-brands fa-github"></i>
+                                        
+                                        GITHUB
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i></div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/about"  >
+                             
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/archives">POSTS</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/categories">CATEGORIES</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/tags">TAGS</a>
+                            </li>
+                        
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        target="_blank" rel="noopener" href="https://github.com/hjchen-thu"  >
+                             
+                                
+                                    <i class="fa-brands fa-github"></i>
+                                
+                                GITHUB
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            
+                
+                
+                <img src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330163534457.png" alt="ChamNet: Towards Efficient Network Design through Platform-Aware Model Adaptation" class="max-w-none"/>
+                
+                <h1 class="article-title-cover">ChamNet: Towards Efficient Network Design through Platform-Aware Model Adaptation</h1>
+            
+            </div>
+            
+                    
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/personal/avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">H.J. Chen</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2020-02-20</span>
+        <span class="mobile">2020-02-20</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <!-- <span class="article-date article-meta-item"> -->
+            <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
+            <!-- <span class="desktop">2024-03-30 16:52:25</span>
+            <span class="mobile">2024-03-30 16:52:25</span> -->
+            <!-- <span class="hover-info">Updated</span> -->
+        <!-- </span> -->
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/NAS/">NAS</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body">
+            <p><a class="link" target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content_CVPR_2019/papers/Dai_ChamNet_Towards_Efficient_Network_Design_Through_Platform-Aware_Model_Adaptation_CVPR_2019_paper.pdf">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>The rapid advancement of neural networks has led to breakthroughs in various domains such as computer vision, speech recognition, and natural language processing. However, the deployment of these powerful models is often hindered by the computational intensity and resource demands they impose, making them incompatible with resource-constrained platforms like mobile devices and IoT edge devices.</p>
+<p>The key challenge lies in the significant variance in hardware characteristics across different platforms, which necessitates neural network architectures that can be efficiently adapted to leverage these traits. Furthermore, real-world applications often impose diverse constraints, such as strict latency requirements for real-time processing or energy efficiency for extended battery life, further complicating the design and deployment of neural networks.</p>
+<p>To address these challenges, the paper introduces Chameleon, a novel framework for efficient neural network architecture design that prioritizes given resource constraints. Chameleon eschews the traditional approaches of developing new building blocks or employing computationally expensive reinforcement learning algorithms. Instead, it focuses on the strategic allocation of computation resources, adapting to the hardware traits of the target platform, and aligning with specific latency and energy constraints.</p>
+<p>The framework operates within an optimization framework, utilizing predictive models for accuracy, latency, and energy to expedite the search for optimal architectures. By harnessing Gaussian Process with Bayesian optimization, Chameleon significantly reduces the time required to produce state-of-the-art models that excel in various platforms and scenarios, without the need for special features or extensive computational resources. This innovative methodology promises a new era of efficient neural network design, offering improved performance while respecting the limitations of real-world deployment environments.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>Firstly, it introduces a novel concept of computation distribution, demonstrating that adapting computation resources to building blocks is crucial for model performance. This insight allows the Chameleon framework to achieve substantial accuracy improvements over existing handcrafted and automatically designed architectures, without incorporating any special features.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330164901236.png" alt="image-20240330164901236"></p>
+<p>Secondly, the paper proposes an efficient algorithm for searching optimal architectures through accurate and resource predictors. This algorithm leverages Gaussian Process with Bayesian optimization to enable a more effective search, outperforming reinforcement learning-based approaches in terms of search efficiency and effectiveness.</p>
+<p>Additionally, the authors present a scalable and automated methodology for neural network architecture adaptation. The Chameleon framework, with its predictive models for accuracy, latency, and energy consumption, significantly reduces the search time and computational overhead. It achieves this by bypassing the need for extensive network training and direct performance metric measurements, which are typically required in traditional NAS and SMBO methods.</p>
+<p>Lastly, the paper showcases the adaptability and generality of the Chameleon framework through extensive experiments on various hardware platforms, including mobile CPUs, DSPs, and GPUs. The results consistently show higher accuracy and reduced runtime latency compared to state-of-the-art models, highlighting the framework’s potential for large-scale heterogeneous deployment in real-world applications.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330164914312.png" alt="image-20240330164914312"></p>
+<p>The methodology use a comprehensive framework designed to efficiently adapt neural network architectures to specific platforms and constraints. This approach, known as Chameleon, is centered around the concept of platform-aware model adaptation, which involves several key components and steps.</p>
+<p><strong>Platform-aware Model Adaptation:</strong><br>The Chameleon framework begins by taking a default neural network architecture and a specific use scenario, which includes the target platform and resource budget. It then generates an adapted architecture that fits the scenario through an efficient evolutionary search (EES). This search is based on an adaptive genetic algorithm, where each architecture is represented by a vector of hyperparameters. The fitness of each candidate architecture is evaluated based on predictive models, and the best-performing ones are selected for the next generation through mutation and crossover operators.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165002398.png" alt="image-20240330165002398"></p>
+<p><strong>Predictive Models:</strong><br>To expedite the search process, Chameleon employs predictive models for accuracy, latency, and energy consumption. These models bypass the time-consuming training and measurement process, allowing for immediate performance metric estimation. The accuracy predictor is built on a Gaussian Process (GP) regressor with Bayesian optimization, which provides reliable predictions and uncertainty estimations, guiding the sample architecture selection for training.</p>
+<p><strong>Efficient Accuracy Predictor:</strong><br>The accuracy predictor is designed to estimate the final accuracy of a model without actual training. It uses a GP regressor, chosen for its reliability with scarce training data and its ability to produce predictions with uncertainty estimations. The sample architecture selection process is enhanced with Bayesian optimization, focusing on exploitation and exploration samples to improve convergence speed and sample efficiency.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165104157.png" alt="image-20240330165104157"></p>
+<p><strong>Latency Predictor:</strong><br>Latency is a critical performance metric, and Chameleon constructs an operator latency look-up table (LUT) for fast and accurate latency estimation. This LUT, supported by a latency database from real-device benchmarks, allows for the summation of operator-level latencies to estimate the network-level latency. This method significantly reduces the time required for latency estimation compared to direct hardware measurements.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165115265.png" alt="image-20240330165115265"></p>
+<p><strong>Energy Predictor:</strong><br>For devices with limited energy budgets, Chameleon includes an energy predictor. Similar to the accuracy predictor, it uses a GP model and Bayesian optimization but focuses solely on exploration samples to increase prediction confidence across the search space.</p>
+<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><strong>Experimental Setup:</strong> The authors employ a range of neural network architectures, including MobileNetV2 and ResNet, as the base models for adaptation. These models are chosen for their widespread use and proven performance in computer vision tasks. The experimental platforms include the Snapdragon 835 mobile CPU, Hexagon v62 DSP, Intel Xeon Broadwell CPU, and Nvidia GTX 1060 GPU. These diverse platforms allow for a comprehensive evaluation of the Chameleon framework’s ability to adapt to different hardware characteristics.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165156604.png" alt="image-20240330165156604"></p>
+<p>The framework is tested under various latency and energy constraints to mimic real-world deployment scenarios. For mobile platforms, the constraints range from 4ms to 30ms, while for server models, they vary from 50ms to 400ms. Energy constraints are also set for mobile models, ranging from 15mJ to 150mJ, to reflect the energy limitations of battery-powered devices.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165206854.png" alt="image-20240330165206854"></p>
+<p>The experiments utilize the ImageNet dataset, a standard benchmark for image classification, consisting of 1.2 million training images and 50,000 validation images. The dataset’s complexity and diversity provide a robust testbed for evaluating the adapted models’ accuracy.</p>
+<p><strong>Experimental Results:</strong> The results of the experiments demonstrate that the Chameleon framework consistently outperforms existing models in terms of accuracy under the given constraints. For mobile platforms, the adapted ChamNet-Mobile models achieve top-1 accuracy rates of 73.8% and 75.3% on the Snapdragon 835 CPU and Hexagon v62 DSP, respectively, at 20ms latency. These rates represent significant improvements over baseline models like MobileNetV2 and MnasNet.</p>
+<p>On server platforms, the ChamNet-Res models also show superior performance, with top-1 accuracy rates improving from 72.7% to 78.5% on an Intel CPU under 400ms latency constraint, and from 70.8% to 78.6% on an Nvidia GPU under 15ms latency constraint.</p>
+<p>In the energy-driven adaptation experiments, ChamNet-Mobile demonstrates a notable improvement in the accuracy-energy trade-off. For instance, the model achieves 60.0% accuracy at only 14mJ per run, a 26% reduction in energy consumption compared to the MobileNetV2 0.75x baseline.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165220972.png" alt="image-20240330165220972"></p>
+<p>The paper also compares Chameleon with alternative adaptation and compression approaches, such as MNAS, AMC, NetAdapt, and MorphNet. The comparisons show that Chameleon offers the most favorable accuracy-latency trade-offs and reduces the computational cost from O(m · n · k) to O(m + n), where m, n, and k represent the number of network models, distinct platforms, and use scenarios, respectively.</p>
+<p>In conclusion, the experimental results validate the Chameleon framework’s capability to efficiently adapt neural network architectures to meet specific performance and resource constraints. The consistent improvements in accuracy and efficiency across various platforms and scenarios highlight the practicality and potential of the Chameleon approach for real-world applications.</p>
+
+        </div>
+
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/NAS/">#NAS</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2021/08/28/Edd/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Edd: Efficient differentiable dnn architecture and implementation co-search for embedded ai solutions</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2020/02/13/SingeNas/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Single-Path NAS: Designing Hardware-Efficient ConvNets in less than 4 Hours</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">ChamNet: Towards Efficient Network Design through Platform-Aware Model Adaptation</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Figures-Conclusion"><span class="nav-text">Figures &amp; Conclusion</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">H.J. Chen</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.0</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/libs/mermaid.min.js"></script>
+
+    
+<script src="/js/plugins/mermaid.js"></script>
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+    <div id="aplayer"></div>
+
+<script src="/js/libs/APlayer.min.js"></script>
+
+
+<script src="/js/plugins/aplayer.js"></script>
+
+
+</body>
+</html>
