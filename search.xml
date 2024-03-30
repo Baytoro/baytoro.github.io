@@ -64,49 +64,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Accelerating LLMs Inference</title>
-    <url>/2023/03/28/AccLLMs/</url>
-    <content><![CDATA[<p>Welcome to <a class="link" href="https://hexo.io/">Hexo <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>! This is your very first post. Check <a class="link" href="https://hexo.io/docs/">documentation <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> for more info. If you get any problems when using Hexo, you can find the answer in <a class="link" href="https://hexo.io/docs/troubleshooting.html">troubleshooting <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> or you can ask me on <a class="link" href="https://github.com/hexojs/hexo/issues">GitHub <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.   Asdf</p>
-<pre class="mermaid">  graph TD;
-          1(Distributed)===A;
-          2(Batching)===A;
-          #3(hh1)===A;
-          4(hh1)===A(Accelerating LLMs Inference);
-      A===B(High-Performance Computing);
-      A===C(Quantization);
-      A===D(Block-wise parallen decoding);
-      A===E(hh1);</pre>
-
-
-
-
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/writing.html">Writing <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/server.html">Server <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/generating.html">Generating <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/one-command-deployment.html">Deployment <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>Research</category>
-      </categories>
-      <tags>
-        <tag>Transformer</tag>
-        <tag>LLM</tag>
-        <tag>Quantization</tag>
-        <tag>Attention</tag>
-        <tag>CUDA</tag>
-        <tag>Triton</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ChamNet: Towards Efficient Network Design through Platform-Aware Model Adaptation</title>
     <url>/2020/02/20/ChamNet./</url>
     <content><![CDATA[<p><a class="link" href="https://openaccess.thecvf.com/content_CVPR_2019/papers/Dai_ChamNet_Towards_Efficient_Network_Design_Through_Platform-Aware_Model_Adaptation_CVPR_2019_paper.pdf">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
@@ -147,6 +104,49 @@
       </categories>
       <tags>
         <tag>NAS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Accelerating LLMs Inference</title>
+    <url>/2023/03/28/AccLLMs/</url>
+    <content><![CDATA[<p>Welcome to <a class="link" href="https://hexo.io/">Hexo <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>! This is your very first post. Check <a class="link" href="https://hexo.io/docs/">documentation <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> for more info. If you get any problems when using Hexo, you can find the answer in <a class="link" href="https://hexo.io/docs/troubleshooting.html">troubleshooting <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> or you can ask me on <a class="link" href="https://github.com/hexojs/hexo/issues">GitHub <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.   Asdf</p>
+<pre class="mermaid">  graph TD;
+          1(Distributed)===A;
+          2(Batching)===A;
+          #3(hh1)===A;
+          4(hh1)===A(Accelerating LLMs Inference);
+      A===B(High-Performance Computing);
+      A===C(Quantization);
+      A===D(Block-wise parallen decoding);
+      A===E(hh1);</pre>
+
+
+
+
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/writing.html">Writing <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/server.html">Server <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/generating.html">Generating <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/one-command-deployment.html">Deployment <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>Research</category>
+      </categories>
+      <tags>
+        <tag>Transformer</tag>
+        <tag>LLM</tag>
+        <tag>Quantization</tag>
+        <tag>Attention</tag>
+        <tag>CUDA</tag>
+        <tag>Triton</tag>
       </tags>
   </entry>
   <entry>
@@ -722,8 +722,8 @@
         <category>PaperReading</category>
       </categories>
       <tags>
-        <tag>Quantization</tag>
         <tag>NAS</tag>
+        <tag>Quantization</tag>
       </tags>
   </entry>
   <entry>
@@ -765,40 +765,6 @@
       </tags>
   </entry>
   <entry>
-    <title>MONAS: Multi-Objective Neural Architecture Search</title>
-    <url>/2020/01/16/monasnet/</url>
-    <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/1806.10332.pdf">https://arxiv.org/pdf/1806.10332.pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Despite the advancements in NAS, most existing works focus on optimizing models for high prediction accuracy, which often results in complex architectures that may not be suitable for deployment in computing environments with limited resources, such as battery-powered mobile devices. This limitation has motivated the development of MONAS (Multi-Objective Neural Architecture Search), a novel framework that extends the capabilities of NAS by considering not only prediction accuracy but also other critical objectives like power consumption during the search for neural network architectures.</p>
-<p>The primary motivation behind MONAS is to bridge the gap between high-performance models and deployability in resource-constrained settings. By integrating multi-objective optimization, MONAS allows for the search process to be guided by various performance metrics and application-specific constraints, leading to the discovery of networks that offer a balance between accuracy and efficiency. This approach aims to democratize the development of neural network architectures by making them accessible to a wider range of platforms and applications without compromising on performance.</p>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>The paper introduces MONAS, a pioneering framework for Multi-Objective Neural Architectural Search, which stands out with its unique contributions to the field of neural network optimization. Firstly, it proposes a multi-objective approach that simultaneously considers prediction accuracy and additional critical objectives, such as energy consumption. This dual focus addresses the limitations of previous NAS methods, which often overlooked the trade-offs between performance and deployability in resource-constrained environments.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330155922697.png" alt="image-20240330155922697"></p>
-<p>Secondly, MONAS demonstrates adaptability by allowing users to incorporate customized constraints that reflect the specific requirements of different applications or platforms. This flexibility ensures that the search process is guided by a diverse set of objectives, leading to a broader spectrum of optimized architectures.</p>
-<p>Additionally, the paper presents MONAS-S, an extension of the original framework, designed to enhance scalability and speed. By adopting weight-sharing techniques, MONAS-S is capable of searching larger design spaces more efficiently, significantly reducing the time required to find optimal network architectures.</p>
-<p>The empirical results of the study show that models discovered by MONAS not only achieve comparable or better classification accuracy on computer vision tasks but also satisfy additional objectives such as peak power consumption. This evidences the effectiveness of MONAS in guiding the search process towards architectures that meet predefined constraints, outperforming state-of-the-art models in both accuracy and energy efficiency.</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160020944.png" alt="image-20240330160020944"></p>
-<p>The MONAS framework is meticulously crafted to address the multifaceted challenges of neural architecture search. At its core, MONAS employs a two-stage framework that leverages reinforcement learning to navigate the complex landscape of neural network design. The first stage involves the generation of candidate architectures through a recurrent neural network (RNN), which serves as the “robot network” in the search process. This RNN generates a sequence of hyperparameters for a CNN, which are then used to construct and train the “target network” in the second stage. The performance of the target network, in terms of both accuracy and energy consumption, is feedback to the robot network as a reward signal, guiding the search process.</p>
-<p>One of the distinguishing features of MONAS is its adaptability. It allows users to define customized constraints that can be seamlessly integrated into the search process as additional objectives. These constraints are transformed into reward functions that work in tandem with the primary objectives of accuracy and efficiency, ensuring that the search is aligned with the specific needs of various applications and platforms.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160105915.png" alt="image-20240330160105915"></p>
-<p>To enhance scalability, MONAS introduces a weight-sharing technique, which is further developed into MONAS-S. This extension pre-trains a directed acyclic graph (DAG) that encompasses all possible networks, allowing for a more efficient search process. The controller, which is the RNN in MONAS, is updated using the REINFORCE policy learning method, where the validation accuracy and other objective measures serve as the reward signal.</p>
-<p>The reward function in MONAS is carefully designed to reflect the trade-offs between different objectives. It includes a mixed reward that balances accuracy and energy consumption, as well as constraints on peak power and Multiply-ACcumulate (MAC) operations, which serve as a proxy for power usage. This nuanced approach to the reward function enables MONAS to discover architectures that not only perform well in terms of accuracy but also meet the energy efficiency requirements.</p>
-<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160154008.png" alt="image-20240330160154008"></p>
-<p>The experimental setup of the MONAS framework is designed to thoroughly evaluate its performance and efficacy in searching for neural network architectures that balance prediction accuracy with energy efficiency. The experiments are conducted using Python with the TensorFlow library, running on a system equipped with an Intel XEON E5-2620v4 processor and GeForce GTX1080Ti GPU cards. The NVIDIA profiling tool, nvprof, is utilized to measure the peak power and energy consumption of the target networks, which are crucial for updating the robot network’s weights.</p>
-<p>The CIFAR-10 dataset is chosen to validate the target networks, with 5000 randomly selected images from the training set used as the validation set. The validation accuracy is taken as an objective in the reward function. The Multiply-ACcumulate (MAC) operations of a sampled target network are calculated based on the approach described in MnasNet, providing a measure of the computational cost.</p>
-<p>The experimental results demonstrate the adaptability and efficiency of MONAS in guiding the search process. When constraints are applied to limit peak power or require a minimum accuracy, MONAS successfully directs its search to regions that satisfy these conditions. For instance, out of 600 iterations, a significant number of target networks fall within the specified power or accuracy thresholds, indicating the framework’s ability to adapt to different reward functions.</p>
-<p>The paper also explores how the Pareto Front changes under different reward functions, showing that MONAS can discover architectures with either higher accuracy or lower energy consumption depending on the weightage given to each objective. Notably, MONAS outperforms random search in finding better architectures within a limited search time, highlighting its efficiency.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160230178.png" alt="image-20240330160230178"></p>
-<p>In terms of discovering noteworthy architectures, MONAS is compared with state-of-the-art models like CondenseNet, demonstrating that it can find models with higher accuracy and lower energy consumption. The best-performing models discovered by MONAS are reported, along with their hyperparameters and energy costs per 1000 inferences, providing evidence of the framework’s capability to surpass existing solutions.</p>
-<p>The scalability of MONAS is further validated through MONAS-S, which is applied to a search space of 1.6 × 10^29 possible networks in a 12-layered architecture. Even in this vast search space, MONAS-S successfully guides the search, finding models that require fewer MAC operations while maintaining high accuracy.</p>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>PaperReading</category>
-      </categories>
-      <tags>
-        <tag>NAS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Neural Architecture Search with Reinforcement Learning</title>
     <url>/2020/01/02/nas/</url>
     <content><![CDATA[<blockquote>
@@ -830,6 +796,40 @@
 <p>On the CIFAR-10 dataset, a playground for image recognition, the method brewed up a novel network architecture that outperforms the best human-invented recipes. The newly minted model sizzled with a test error rate of 3.65%, outclassing the previous state-of-the-art model by a whisker and cooking up results 1.05 times faster.</p>
 <p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330102649905.png" alt="image-20240330102649905"></p>
 <p>But the authors weren’t content with just dishing out success in image recognition. They turned to the Penn Treebank dataset, a staple in language modeling, and whipped up a recurrent cell architecture that dethroned the reigning LSTM cell. This new cell architecture achieved a test set perplexity of 62.4, besting the previous record by a solid 3.6 perplexity points.</p>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>PaperReading</category>
+      </categories>
+      <tags>
+        <tag>NAS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MONAS: Multi-Objective Neural Architecture Search</title>
+    <url>/2020/01/16/monasnet/</url>
+    <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/1806.10332.pdf">https://arxiv.org/pdf/1806.10332.pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Despite the advancements in NAS, most existing works focus on optimizing models for high prediction accuracy, which often results in complex architectures that may not be suitable for deployment in computing environments with limited resources, such as battery-powered mobile devices. This limitation has motivated the development of MONAS (Multi-Objective Neural Architecture Search), a novel framework that extends the capabilities of NAS by considering not only prediction accuracy but also other critical objectives like power consumption during the search for neural network architectures.</p>
+<p>The primary motivation behind MONAS is to bridge the gap between high-performance models and deployability in resource-constrained settings. By integrating multi-objective optimization, MONAS allows for the search process to be guided by various performance metrics and application-specific constraints, leading to the discovery of networks that offer a balance between accuracy and efficiency. This approach aims to democratize the development of neural network architectures by making them accessible to a wider range of platforms and applications without compromising on performance.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>The paper introduces MONAS, a pioneering framework for Multi-Objective Neural Architectural Search, which stands out with its unique contributions to the field of neural network optimization. Firstly, it proposes a multi-objective approach that simultaneously considers prediction accuracy and additional critical objectives, such as energy consumption. This dual focus addresses the limitations of previous NAS methods, which often overlooked the trade-offs between performance and deployability in resource-constrained environments.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330155922697.png" alt="image-20240330155922697"></p>
+<p>Secondly, MONAS demonstrates adaptability by allowing users to incorporate customized constraints that reflect the specific requirements of different applications or platforms. This flexibility ensures that the search process is guided by a diverse set of objectives, leading to a broader spectrum of optimized architectures.</p>
+<p>Additionally, the paper presents MONAS-S, an extension of the original framework, designed to enhance scalability and speed. By adopting weight-sharing techniques, MONAS-S is capable of searching larger design spaces more efficiently, significantly reducing the time required to find optimal network architectures.</p>
+<p>The empirical results of the study show that models discovered by MONAS not only achieve comparable or better classification accuracy on computer vision tasks but also satisfy additional objectives such as peak power consumption. This evidences the effectiveness of MONAS in guiding the search process towards architectures that meet predefined constraints, outperforming state-of-the-art models in both accuracy and energy efficiency.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160020944.png" alt="image-20240330160020944"></p>
+<p>The MONAS framework is meticulously crafted to address the multifaceted challenges of neural architecture search. At its core, MONAS employs a two-stage framework that leverages reinforcement learning to navigate the complex landscape of neural network design. The first stage involves the generation of candidate architectures through a recurrent neural network (RNN), which serves as the “robot network” in the search process. This RNN generates a sequence of hyperparameters for a CNN, which are then used to construct and train the “target network” in the second stage. The performance of the target network, in terms of both accuracy and energy consumption, is feedback to the robot network as a reward signal, guiding the search process.</p>
+<p>One of the distinguishing features of MONAS is its adaptability. It allows users to define customized constraints that can be seamlessly integrated into the search process as additional objectives. These constraints are transformed into reward functions that work in tandem with the primary objectives of accuracy and efficiency, ensuring that the search is aligned with the specific needs of various applications and platforms.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160105915.png" alt="image-20240330160105915"></p>
+<p>To enhance scalability, MONAS introduces a weight-sharing technique, which is further developed into MONAS-S. This extension pre-trains a directed acyclic graph (DAG) that encompasses all possible networks, allowing for a more efficient search process. The controller, which is the RNN in MONAS, is updated using the REINFORCE policy learning method, where the validation accuracy and other objective measures serve as the reward signal.</p>
+<p>The reward function in MONAS is carefully designed to reflect the trade-offs between different objectives. It includes a mixed reward that balances accuracy and energy consumption, as well as constraints on peak power and Multiply-ACcumulate (MAC) operations, which serve as a proxy for power usage. This nuanced approach to the reward function enables MONAS to discover architectures that not only perform well in terms of accuracy but also meet the energy efficiency requirements.</p>
+<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160154008.png" alt="image-20240330160154008"></p>
+<p>The experimental setup of the MONAS framework is designed to thoroughly evaluate its performance and efficacy in searching for neural network architectures that balance prediction accuracy with energy efficiency. The experiments are conducted using Python with the TensorFlow library, running on a system equipped with an Intel XEON E5-2620v4 processor and GeForce GTX1080Ti GPU cards. The NVIDIA profiling tool, nvprof, is utilized to measure the peak power and energy consumption of the target networks, which are crucial for updating the robot network’s weights.</p>
+<p>The CIFAR-10 dataset is chosen to validate the target networks, with 5000 randomly selected images from the training set used as the validation set. The validation accuracy is taken as an objective in the reward function. The Multiply-ACcumulate (MAC) operations of a sampled target network are calculated based on the approach described in MnasNet, providing a measure of the computational cost.</p>
+<p>The experimental results demonstrate the adaptability and efficiency of MONAS in guiding the search process. When constraints are applied to limit peak power or require a minimum accuracy, MONAS successfully directs its search to regions that satisfy these conditions. For instance, out of 600 iterations, a significant number of target networks fall within the specified power or accuracy thresholds, indicating the framework’s ability to adapt to different reward functions.</p>
+<p>The paper also explores how the Pareto Front changes under different reward functions, showing that MONAS can discover architectures with either higher accuracy or lower energy consumption depending on the weightage given to each objective. Notably, MONAS outperforms random search in finding better architectures within a limited search time, highlighting its efficiency.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160230178.png" alt="image-20240330160230178"></p>
+<p>In terms of discovering noteworthy architectures, MONAS is compared with state-of-the-art models like CondenseNet, demonstrating that it can find models with higher accuracy and lower energy consumption. The best-performing models discovered by MONAS are reported, along with their hyperparameters and energy costs per 1000 inferences, providing evidence of the framework’s capability to surpass existing solutions.</p>
+<p>The scalability of MONAS is further validated through MONAS-S, which is applied to a search space of 1.6 × 10^29 possible networks in a 12-layered architecture. Even in this vast search space, MONAS-S successfully guides the search, finding models that require fewer MAC operations while maintaining high accuracy.</p>
 ]]></content>
       <categories>
         <category>Work hard</category>
