@@ -1,12 +1,10 @@
 https://hjchen-thu.github.io/2020/01/17/metaqnn/
-https://hjchen-thu.github.io/2019/01/28/paper/
 https://hjchen-thu.github.io/2020/01/12/Enas./
 https://hjchen-thu.github.io/2020/01/02/nas/
 https://hjchen-thu.github.io/2020/01/28/darts/
 https://hjchen-thu.github.io/about/index.html
 https://hjchen-thu.github.io/2023/09/28/Speculative%20Decoding/
 https://hjchen-thu.github.io/2023/03/28/AccLLMs/
-https://hjchen-thu.github.io/2020/09/28/Template/
 https://hjchen-thu.github.io/2022/09/28/CodeBear/
 https://hjchen-thu.github.io/2022/09/28/ATM_parameter/
 https://hjchen-thu.github.io/2022/09/28/ATM_flops/
