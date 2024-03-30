@@ -1,3 +1,7 @@
+https://hjchen-thu.github.io/2020/01/02/nas/
+https://hjchen-thu.github.io/2020/01/05/Enas./
+https://hjchen-thu.github.io/2020/01/28/darts/
+https://hjchen-thu.github.io/2019/01/28/paper/
 https://hjchen-thu.github.io/about/index.html
 https://hjchen-thu.github.io/2023/09/28/Speculative%20Decoding/
 https://hjchen-thu.github.io/2023/03/28/AccLLMs/
@@ -17,6 +21,7 @@ https://hjchen-thu.github.io/tags/Quantization/
 https://hjchen-thu.github.io/tags/Attention/
 https://hjchen-thu.github.io/tags/CUDA/
 https://hjchen-thu.github.io/tags/Triton/
+https://hjchen-thu.github.io/tags/NAS/
 https://hjchen-thu.github.io/categories/Work-hard/
 https://hjchen-thu.github.io/categories/Play-hard/
 https://hjchen-thu.github.io/categories/Work-hard/Note/
