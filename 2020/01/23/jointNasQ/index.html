@@ -13,18 +13,36 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://hjchen-thu.github.io/categories/work-hard/paperreading/page/2/"/>
+    <link rel="canonical" href="https://hjchen-thu.github.io/2020/01/23/jointnasq/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="https://hjchen-thu.github.io/categories/Work-hard/PaperReading/page/2/index.html">
+        <meta name="description" content="Automate neural network design and compression for efficient mobile deployment.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Joint neural architecture search and quantization">
+<meta property="og:url" content="https://hjchen-thu.github.io/2020/01/23/jointNasQ/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Automate neural network design and compression for efficient mobile deployment.">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330185955896.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190012000.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190022869.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190033602.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190049055.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190102680.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190216448.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190226229.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330185939879.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190120339.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190137729.png">
+<meta property="article:published_time" content="2020-01-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-03-30T11:02:29.354Z">
 <meta property="article:author" content="H.J. Chen">
+<meta property="article:tag" content="Quantization">
+<meta property="article:tag" content="NAS">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330185955896.png">
     
     
     <!--- Icon Part-->
@@ -36,7 +54,7 @@
     
     <title>
         
-            Category: PaperReading -
+            Joint neural architecture search and quantization -
         
         H.J. Chen&#39;s Blog
     </title>
@@ -93,7 +111,119 @@
     
     
     
-<meta name="generator" content="Hexo 6.3.0"></head>
+<meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
 
 
 <body>
@@ -332,101 +462,220 @@
             <div class="main-content">
 
                 
-                    <div class="category-container">
-    <div class="category-name">
-        <i class="fa-solid fa-folder"></i>&nbsp;PaperReading
-    </div>
-    <div class="category-post-list">
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            
+                
+                
+                <img src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330185234116.png" alt="Joint neural architecture search and quantization" class="max-w-none"/>
+                
+                <h1 class="article-title-cover">Joint neural architecture search and quantization</h1>
+            
+            </div>
+            
+                    
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/personal/avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">H.J. Chen</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2020-01-23</span>
+        <span class="mobile">2020-01-23</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <!-- <span class="article-date article-meta-item"> -->
+            <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
+            <!-- <span class="desktop">2024-03-30 19:02:29</span>
+            <span class="mobile">2024-03-30 19:02:29</span> -->
+            <!-- <span class="hover-info">Updated</span> -->
+        <!-- </span> -->
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Quantization/">Quantization</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/NAS/">NAS</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
         
 
-<div class="archive-list-container">
-    
-        <section class="archive-item">
-            <div class="archive-item-header">
-                <span class="archive-year">2020</span>
-                <span class="archive-year-post-count">[7]</span>
-            </div>
-            <ul class="article-list">
-              
+        
+
+
+        <div class="article-content markdown-body">
+            <p><a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/1811.09426.pdf">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>In the realm of deep learning, designing efficient neural network architectures and compressing models for mobile deployment present significant challenges. Traditional approaches require extensive expertise and iterative trial-and-error, which is both time-consuming and resource-intensive. The advent of mobile devices with limited computational capabilities has further exacerbated the need for compact models that maintain high performance.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330185955896.png" alt="image-20240330185955896"></p>
+<p>To address these issues, the paper introduces a unified framework that integrates neural architecture search (NAS) with model compression strategies, aiming to automate the discovery of compact, high-performing neural networks suitable for mobile platforms. By leveraging a multi-objective evolutionary search algorithm, the framework balances model size and accuracy, leading to the development of models that outperform existing methods in terms of efficiency and effectiveness.</p>
+<p>The motivation behind this research is to alleviate the burden on human experts and to bridge the gap between cutting-edge AI research and real-world applications. By automating the process, the framework not only accelerates the development of neural networks but also paves the way for wider adoption of deep learning technologies across various mobile devices, despite their constrained resources.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>This research makes several pivotal contributions to the field of neural network optimization for mobile applications. Firstly, it presents a novel method that seamlessly integrates neural architecture search (NAS) with quantization policies, enabling the co-evolution of network topology and compression strategies. This joint approach is shown to yield models that are not only compact but also maintain superior performance, surpassing the capabilities of methods that focus solely on either architecture or quantization.</p>
+<p>Secondly, the paper introduces a multi-objective evolutionary algorithm that effectively balances model size and accuracy, resulting in the discovery of high-accuracy, small-footprint models that are ideal for resource-constrained environments. The algorithm’s efficiency is demonstrated through its ability to complete the joint search within a short timeframe, using minimal computational resources.</p>
+<p>Additionally, the research provides learning-based quantization policies for existing networks, significantly improving their performance on mobile platforms. The proposed method is not only effective for new architecture design but also offers a valuable tool for enhancing the performance of pre-trained models, making it a versatile solution for mobile deep learning applications.</p>
+<p>Overall, these contributions represent a significant step forward in making deep learning more accessible and efficient for mobile devices, potentially revolutionizing the way AI models are developed and deployed in real-world scenarios.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190012000.png" alt="image-20240330190012000" style="zoom:50%;">
+
+<img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190022869.png" alt="image-20240330190022869" style="zoom:50%;">
+
+<p>The methodology at the core of this research is an innovative integration of neural architecture search (NAS) and model quantization, designed to optimize the design of neural networks for mobile deployment. The approach is centered around a multi-objective evolutionary algorithm that aims to maximize the accuracy of neural networks while minimizing their size, thereby addressing the computational constraints of mobile devices.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190033602.png" alt="image-20240330190033602"></p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190049055.png" alt="image-20240330190049055"></p>
+<p>The framework begins by defining a search space that encompasses both architectural choices and quantization policies. The architecture search space is inspired by existing NAS methods, utilizing a cell-based approach with Inception-like modules, including both normal and reduction cells. These cells are stacked in specific patterns to form the overall network structure. The quantization policy search space, on the other hand, focuses on determining the optimal bit allocation for each cell in the network, allowing for different layers to have varying levels of quantization based on their redundancy.</p>
+<p>The evolutionary algorithm operates on a population of models, initializing them randomly and then iteratively improving them through selection, mutation, and training. During each iteration, a subset of the population is sampled, and their fitness, based on a multi-objective function, is evaluated. This function prioritizes accuracy but penalizes excessive model growth, ensuring that the search remains focused on compact models.</p>
+<p>Mutation in the algorithm involves altering the architectural combinations and quantization bits, introducing diversity into the population and facilitating exploration of the search space. The models are then trained on a dataset, quantized according to their assigned policies, and evaluated on a validation set to measure their accuracy and size. The best-performing models are carried over to the next generation, while the least fit are discarded.</p>
+<p>A key aspect of the methodology is its flexibility. It can be applied to existing networks, providing tailored quantization policies to enhance their performance on mobile devices. Furthermore, the joint search for architecture and quantization policies allows for the discovery of entirely new models, termed JASQNet and JASQNet-Small, which demonstrate competitive accuracy and significantly reduced size compared to existing methods.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190102680.png" alt="image-20240330190102680"></p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190216448.png" alt="image-20240330190216448"></p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190226229.png" alt="image-20240330190226229"></p>
+<p>The quantization process itself is meticulous, involving linear scaling of weight vectors, bucketing to manage magnitude imbalance, and rounding to the nearest quantization point. This attention to detail ensures that the compression of models does not come at the cost of significant accuracy loss.</p>
+<p>The experimental results showcase the effectiveness of the methodology. The approach is tested on CIFAR-10 and ImageNet, with the resulting JASQNet models outperforming their counterparts in terms of error rates and model size. The method also proves capable of improving the performance of pre-trained networks like ResNet and MobileNet when applied with learned quantization policies.</p>
+<p>In summary, the methodology presented in this research is a significant advancement in the field of neural network optimization. It offers a systematic and automated approach to designing and compressing neural networks for mobile applications, resulting in models that are both efficient and effective.</p>
+<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330185939879.png" alt="image-20240330185939879"></p>
+<p>The experimental setup in this research is meticulously designed to validate the effectiveness of the proposed methodology. The experiments are divided into two main phases: first, the application of the method to existing networks to provide tailored quantization policies, and second, the joint search for architecture and quantization policies to discover new models.</p>
+<p>In the initial phase, the method is applied to a variety of state-of-the-art networks, including ResNet, DenseNet, and MobileNet architectures. The goal here is to demonstrate the ability of the method to enhance the performance of pre-trained models by learning optimal quantization policies. The networks are evaluated on the ImageNet dataset, and the results are compared against their non-quantized (float) counterparts as well as other quantization strategies, such as 2-bit, 4-bit, 8-bit, and 16-bit models.</p>
+<p>The second phase involves a joint search for architecture and quantization policies on the CIFAR-10 dataset, aiming to discover new models, referred to as JASQNet and JASQNet-Small. The search space is vast, combining the architectural choices and quantization levels, and the evolutionary algorithm is run for a number of iterations to allow for thorough exploration.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190120339.png" alt="image-20240330190120339"></p>
+<p>The experimental results are highly promising. For existing networks, the method successfully improves accuracy and reduces model size. For instance, the quantized ResNet18 model achieves a higher accuracy than the float model while having significantly fewer parameters. Similarly, MobileNet-v1 and MobileNet-v2 see improvements in accuracy when applying the learned quantization policies, outperforming their 8-bit and float counterparts.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190137729.png" alt="image-20240330190137729"></p>
+<p>In the joint search experiments, the discovered JASQNet models demonstrate competitive accuracy on both CIFAR-10 and ImageNet datasets, with JASQNet-Small showing particularly impressive results in terms of model size reduction. These models achieve lower error rates with smaller footprints compared to other methods that focus solely on architecture search. The JASQNet models also maintain a better balance between accuracy and size when compared to models resulting from only quantization search.</p>
+<p>Overall, the experimental results substantiate the effectiveness of the proposed methodology in optimizing neural networks for mobile deployment. The method not only enhances existing models but also has the capability to discover new, efficient architectures that are well-suited for resource-constrained environments. These findings pave the way for more widespread adoption of deep learning on mobile platforms, potentially leading to advancements in various mobile-based applications.</p>
+
+        </div>
+
+        
+
+        
+            <ul class="post-tags-box">
                 
-                    
-                    <li class="article-item" date-is='01-28'>
+                    <li class="tag-item">
+                        <a href="/tags/Quantization/">#Quantization</a>&nbsp;
+                    </li>
                 
+                    <li class="tag-item">
+                        <a href="/tags/NAS/">#NAS</a>&nbsp;
+                    </li>
                 
-                    <a href="/2020/01/28/darts/">
-                        <span class="article-title"> DARTS: Differentiable Architecture Search</span>
-                    </a>
-                
-              
-                
-                    
-                    <li class="article-item" date-is='01-23'>
-                
-                
-                    <a href="/2020/01/23/jointNasQ/">
-                        <span class="article-title">Joint neural architecture search and quantization</span>
-                    </a>
-                
-              
-                
-                    
-                    <li class="article-item" date-is='01-17'>
-                
-                
-                    <a href="/2020/01/17/metaqnn/">
-                        <span class="article-title">Designing Neural Network Architectures using Reinforcement Learning</span>
-                    </a>
-                
-              
-                
-                    
-                    <li class="article-item" date-is='01-16'>
-                
-                
-                    <a href="/2020/01/16/monasnet/">
-                        <span class="article-title">MONAS: Multi-Objective Neural Architecture Search</span>
-                    </a>
-                
-              
-                
-                    
-                    <li class="article-item" date-is='01-12'>
-                
-                
-                    <a href="/2020/01/12/Enas./">
-                        <span class="article-title">Efficient Neural Architecture Search via Parameter Sharing</span>
-                    </a>
-                
-              
-                
-                
-                    <a href="/2020/01/12/Nasnet/">
-                        <span class="article-title">Learning Transferable Architectures forScalable Image Recognition</span>
-                    </a>
-                
-              
-                
-                    
-                    <li class="article-item" date-is='01-02'>
-                
-                
-                    <a href="/2020/01/02/nas/">
-                        <span class="article-title">Neural Architecture Search with Reinforcement Learning</span>
-                    </a>
-                
-              
             </ul>
-        </section>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2020/01/28/darts/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item"> DARTS: Differentiable Architecture Search</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2020/01/17/metaqnn/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Designing Neural Network Architectures using Reinforcement Learning</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
     
-</div>
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Joint neural architecture search and quantization</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Figures-Conclusion"><span class="nav-text">Figures &amp; Conclusion</span></a></li></ol>
 
     </div>
 </div>
-<div class="category-paginator">
-    <div class="paginator">
-    <a class="extend prev" rel="prev" href="/categories/Work-hard/PaperReading/"><i class="fa-regular fa-angle-left"></i></a><a class="page-number" href="/categories/Work-hard/PaperReading/">1</a><span class="page-number current">2</span>
-</div>
-
+        </div>
+    
 </div>
 
 
@@ -502,6 +751,23 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-side-tools-container">

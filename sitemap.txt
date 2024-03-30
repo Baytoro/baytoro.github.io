@@ -1,4 +1,6 @@
-https://hjchen-thu.github.io/2019/01/28/proxylessnas/
+https://hjchen-thu.github.io/2020/01/12/Nasnet/
+https://hjchen-thu.github.io/2020/01/23/jointNasQ/
+https://hjchen-thu.github.io/2020/02/07/proxylessnas/
 https://hjchen-thu.github.io/2021/10/02/fedevo/
 https://hjchen-thu.github.io/2022/01/01/DFNAs/
 https://hjchen-thu.github.io/2021/09/03/FedMask/
