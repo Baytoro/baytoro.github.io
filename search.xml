@@ -14,49 +14,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Accelerating LLMs Inference</title>
-    <url>/2023/03/28/AccLLMs/</url>
-    <content><![CDATA[<p>Welcome to <a class="link" href="https://hexo.io/">Hexo <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>! This is your very first post. Check <a class="link" href="https://hexo.io/docs/">documentation <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> for more info. If you get any problems when using Hexo, you can find the answer in <a class="link" href="https://hexo.io/docs/troubleshooting.html">troubleshooting <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> or you can ask me on <a class="link" href="https://github.com/hexojs/hexo/issues">GitHub <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.   Asdf</p>
-<pre class="mermaid">  graph TD;
-          1(Distributed)===A;
-          2(Batching)===A;
-          #3(hh1)===A;
-          4(hh1)===A(Accelerating LLMs Inference);
-      A===B(High-Performance Computing);
-      A===C(Quantization);
-      A===D(Block-wise parallen decoding);
-      A===E(hh1);</pre>
-
-
-
-
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/writing.html">Writing <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/server.html">Server <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/generating.html">Generating <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/one-command-deployment.html">Deployment <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>Research</category>
-      </categories>
-      <tags>
-        <tag>Transformer</tag>
-        <tag>LLM</tag>
-        <tag>Quantization</tag>
-        <tag>Attention</tag>
-        <tag>CUDA</tag>
-        <tag>Triton</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Analyzing Transformer Models: Parameters</title>
     <url>/2022/09/28/ATM_parameter/</url>
     <content><![CDATA[<p>Recently, OpenAI’s release of ChatGPT has demonstrated outstanding performance, sparking a research frenzy in the field of Large Language Models (LLMs). The “large” in Large Language Models is reflected in two aspects: the scale of model parameters and the scale of training data. Taking GPT-3 as an example, it boasts a staggering 175 billion parameters and was trained on a colossal dataset of 570 GB. Consequently, training Large Language Models faces two primary challenges: GPU memory efficiency and computational efficiency.</p>
@@ -120,21 +77,46 @@
       </tags>
   </entry>
   <entry>
-    <title>Speculative Sampling</title>
-    <url>/2023/09/28/Speculative%20Decoding/</url>
-    <content><![CDATA[<p>Remember the Hacker News thread when GPT-4 was released? It mentioned the use of speculative sampling in GPT-4 to accelerate inference. So, what exactly is speculative sampling?</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/202312070010475.png"></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="Refference"><a href="#Refference" class="headerlink" title="Refference"></a>Refference</h2><ol>
-<li><a class="link" href="https://zhuanlan.zhihu.com/p/651359908">https://zhuanlan.zhihu.com/p/651359908 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-</ol>
+    <title>Accelerating LLMs Inference</title>
+    <url>/2023/03/28/AccLLMs/</url>
+    <content><![CDATA[<p>Welcome to <a class="link" href="https://hexo.io/">Hexo <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>! This is your very first post. Check <a class="link" href="https://hexo.io/docs/">documentation <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> for more info. If you get any problems when using Hexo, you can find the answer in <a class="link" href="https://hexo.io/docs/troubleshooting.html">troubleshooting <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> or you can ask me on <a class="link" href="https://github.com/hexojs/hexo/issues">GitHub <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.   Asdf</p>
+<pre class="mermaid">  graph TD;
+          1(Distributed)===A;
+          2(Batching)===A;
+          #3(hh1)===A;
+          4(hh1)===A(Accelerating LLMs Inference);
+      A===B(High-Performance Computing);
+      A===C(Quantization);
+      A===D(Block-wise parallen decoding);
+      A===E(hh1);</pre>
+
+
+
+
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/writing.html">Writing <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/server.html">Server <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/generating.html">Generating <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/one-command-deployment.html">Deployment <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 ]]></content>
       <categories>
         <category>Work hard</category>
-        <category>Note</category>
+        <category>Research</category>
       </categories>
       <tags>
         <tag>Transformer</tag>
         <tag>LLM</tag>
+        <tag>Quantization</tag>
+        <tag>Attention</tag>
+        <tag>CUDA</tag>
+        <tag>Triton</tag>
       </tags>
   </entry>
   <entry>
@@ -160,6 +142,24 @@
       <tags>
         <tag>Transformer</tag>
         <tag>AIGC</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Speculative Sampling</title>
+    <url>/2023/09/28/Speculative%20Decoding/</url>
+    <content><![CDATA[<p>Remember the Hacker News thread when GPT-4 was released? It mentioned the use of speculative sampling in GPT-4 to accelerate inference. So, what exactly is speculative sampling?</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/202312070010475.png"></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="Refference"><a href="#Refference" class="headerlink" title="Refference"></a>Refference</h2><ol>
+<li><a class="link" href="https://zhuanlan.zhihu.com/p/651359908">https://zhuanlan.zhihu.com/p/651359908 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>Transformer</tag>
+        <tag>LLM</tag>
       </tags>
   </entry>
   <entry>
@@ -358,6 +358,13 @@
 <p>The agent’s performance is evaluated based on the validation accuracy of the CNN architectures it designs. The architectures that yield higher validation accuracy are considered more desirable, and the agent’s Q-values are updated accordingly. The process continues until the agent converges on a policy that consistently produces high-performing CNN architectures.</p>
 <p>This method represents a significant departure from traditional manual design processes, offering a data-driven approach to network architecture optimization. By automating the design process, MetaQNN has the potential to accelerate the development of CNNs and to discover novel architectures that could outperform those designed by human experts.</p>
 <h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330150952925.png" alt="image-20240330150952925"></p>
+<p>The experimental setup involves training a learning agent to sequentially choose CNN layers using Q-learning, with the goal of maximizing the validation accuracy on the given datasets. The agent’s state space is defined by the parameters of different layer types, such as convolution, pooling, and fully connected layers, and the action space is determined by the possible layer selections. The agent employs an ε-greedy strategy to balance exploration and exploitation, with ε gradually reduced over time to shift from random exploration to informed exploitation.</p>
+<p>The training process for the agent involves aggressive training schemes with quick convergence, using techniques like dropout and learning rate adjustments to prevent overfitting and to ensure efficient learning. The agent’s performance is evaluated based on the validation accuracy of the CNN architectures it designs, which serves as the reward signal for the Q-learning updates.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330151218241.png" alt="image-20240330151218241"></p>
+<p>The experimental results are highly promising. The networks designed by the MetaQNN agent outperform existing networks that use the same layer types, demonstrating the agent’s ability to make informed architectural decisions. Moreover, these networks are competitive with state-of-the-art methods that incorporate more complex layer types and training procedures, showcasing the potential of the MetaQNN approach to match or even surpass human-designed architectures.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330151313064.png" alt="image-20240330151313064"></p>
+<p>In terms of transfer learning, the best MetaQNN model on CIFAR-10 dataset shows good performance when trained on other datasets, indicating the versatility of the architectures discovered by the algorithm. The ensemble of top models selected by the agent also leads to a significant boost in prediction performance, further validating the effectiveness of the MetaQNN approach.</p>
+<p>Overall, the experiments in the paper provide strong evidence that reinforcement learning can be effectively applied to the automated design of neural network architectures, offering a promising direction for future research in automating the machine learning process. The success of MetaQNN in discovering high-performing and transferable CNN architectures underscores the potential of this approach to revolutionize the way we design neural networks for various tasks.</p>
 ]]></content>
       <categories>
         <category>Work hard</category>
