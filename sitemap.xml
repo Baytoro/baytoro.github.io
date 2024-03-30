@@ -245,21 +245,14 @@
 
   
   <url>
-    <loc>https://hjchen-thu.github.io/tags/Transformer/</loc>
-    <lastmod>2024-03-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://hjchen-thu.github.io/tags/AIGC/</loc>
-    <lastmod>2024-03-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://hjchen-thu.github.io/tags/LLM/</loc>
+    <lastmod>2024-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjchen-thu.github.io/tags/Transformer/</loc>
     <lastmod>2024-03-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -288,6 +281,13 @@
   
   <url>
     <loc>https://hjchen-thu.github.io/tags/Triton/</loc>
+    <lastmod>2024-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjchen-thu.github.io/tags/AIGC/</loc>
     <lastmod>2024-03-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -331,14 +331,14 @@
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/categories/Work-hard/Note/</loc>
+    <loc>https://hjchen-thu.github.io/categories/Work-hard/Research/</loc>
     <lastmod>2024-03-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/categories/Work-hard/Research/</loc>
+    <loc>https://hjchen-thu.github.io/categories/Work-hard/Note/</loc>
     <lastmod>2024-03-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
