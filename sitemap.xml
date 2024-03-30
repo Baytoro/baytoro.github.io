@@ -259,6 +259,13 @@
   </url>
   
   <url>
+    <loc>https://hjchen-thu.github.io/tags/NAS/</loc>
+    <lastmod>2024-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://hjchen-thu.github.io/tags/LLM/</loc>
     <lastmod>2024-03-30</lastmod>
     <changefreq>weekly</changefreq>
@@ -288,13 +295,6 @@
   
   <url>
     <loc>https://hjchen-thu.github.io/tags/Triton/</loc>
-    <lastmod>2024-03-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://hjchen-thu.github.io/tags/NAS/</loc>
     <lastmod>2024-03-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
