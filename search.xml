@@ -120,6 +120,24 @@
       </tags>
   </entry>
   <entry>
+    <title>Speculative Sampling</title>
+    <url>/2023/09/28/Speculative%20Decoding/</url>
+    <content><![CDATA[<p>Remember the Hacker News thread when GPT-4 was released? It mentioned the use of speculative sampling in GPT-4 to accelerate inference. So, what exactly is speculative sampling?</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/202312070010475.png"></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="Refference"><a href="#Refference" class="headerlink" title="Refference"></a>Refference</h2><ol>
+<li><a class="link" href="https://zhuanlan.zhihu.com/p/651359908">https://zhuanlan.zhihu.com/p/651359908 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>Transformer</tag>
+        <tag>LLM</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CodeBear: Your Personal AI Coding Assitant</title>
     <url>/2022/09/28/CodeBear/</url>
     <content><![CDATA[<p>this is title.	</p>
@@ -142,67 +160,6 @@
       <tags>
         <tag>Transformer</tag>
         <tag>AIGC</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Efficient Neural Architecture Search via Parameter Sharing</title>
-    <url>/2020/01/12/Enas./</url>
-    <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/1802.03268.pdf">https://arxiv.org/pdf/1802.03268.pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Neural Architecture Search (NAS) has emerged as a revolutionary approach to automate the design of neural network architectures, offering the potential to discover high-performing models without the need for manual trial and error. However, the computational cost and time consumption associated with NAS have been prohibitive, often requiring hundreds of GPUs and days of training to find optimal architectures.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330144354863.png" alt="image-20240330144354863"></p>
-<p>The motivation behind Efficient Neural Architecture Search (ENAS) stems from the need to address these challenges and make NAS more accessible and efficient. By introducing a paradigm where a controller discovers neural network architectures within a large computational graph through parameter sharing, ENAS dramatically reduces the resources required for the search process. This innovative method not only maintains the empirical performance of traditional NAS but also achieves it with a fraction of the computational expense, using only a single GPU and a matter of hours.</p>
-<p>ENAS’s ability to share parameters among child models during the search process is a key factor in its efficiency. This design choice allows for a more stable and effective learning process for the controller, which in turn can explore a vast search space of architectures more thoroughly and rapidly than its counterparts. The result is a method that not only discovers state-of-the-art architectures for tasks like image classification and language modeling but also does so in a way that is practical and scalable.</p>
-<p>By democratizing access to advanced neural network design through ENAS, researchers and practitioners can now focus more on innovation and less on the resource-intensive process of architecture search. This shift has the potential to accelerate advancements in machine learning and artificial intelligence, unlocking new possibilities and applications that were previously out of reach due to the computational barriers of traditional NAS methods.</p>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>Efficient Neural Architecture Search (ENAS) makes several significant contributions to the field of automated machine learning (AutoML). Firstly, it introduces a novel approach to neural architecture search by leveraging parameter sharing among a multitude of child models. This innovative strategy allows ENAS to explore a vast design space with remarkable efficiency, using a single GPU and within a few hours, which is a stark contrast to the extensive computational resources required by traditional NAS methods.</p>
-<p>Secondly, ENAS demonstrates that parameter sharing not only reduces computational costs but also leads to competitive model performance. The method achieves state-of-the-art results on established benchmarks such as the Penn Treebank dataset for language modeling and the CIFAR-10 dataset for image classification, matching or even surpassing the performance of architectures found by more expensive NAS methods.</p>
-<p>Thirdly, ENAS presents a flexible framework that can be applied to various types of neural networks, from recurrent neural networks (RNNs) for sequential data to convolutional neural networks (CNNs) for image data. This versatility is a testament to the general applicability of ENAS and its potential to impact a wide range of domains within machine learning.</p>
-<p>Lastly, ENAS’s contributions extend to the methodology of neural architecture search itself. By improving the efficiency of the search process, ENAS opens up new possibilities for research and experimentation. It enables more researchers to engage in neural architecture research, fostering innovation and potentially leading to the discovery of even more efficient and effective methods in the future. The impact of ENAS is thus both immediate, through its superior performance and efficiency, and long-term, as it paves the way for further advancements in the field of AutoML.</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>In the pursuit of enhancing the efficiency of Neural Architecture Search (NAS), the paper introduces Efficient Neural Architecture Search (ENAS), a groundbreaking method that stands out for its innovative use of parameter sharing and computational graph optimization. The specific methodologies employed in ENAS can be summarized as follows:</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330144735504.png" alt="image-20240330144735504"></p>
-<ol>
-<li><p><strong>Controller and Child Models</strong>: At the heart of ENAS lies a controller, typically an LSTM RNN, which is responsible for sampling decisions to construct child models. These child models are subgraphs within a larger computational graph, and they share the same set of parameters, which drastically reduces the computational resources needed to search for and train new architectures.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330144757765.png"></p>
-</li>
-<li><p><strong>Parameter Sharing</strong>: A pivotal concept in ENAS is the sharing of parameters across all child models. This is achieved by defining the search space as a directed acyclic graph (DAG) where nodes represent local computations and edges represent the flow of information. Each node in the DAG has its own set of parameters, which are used when the node is active in a child model. By sharing parameters, ENAS minimizes redundancy and maximizes the efficiency of the search process.</p>
-</li>
-<li><p><strong>Policy Gradient for Controller Training</strong>: The controller is trained using policy gradient methods, specifically the REINFORCE algorithm. It selects subgraphs (child models) that are expected to yield high rewards on a validation set. The reward function is designed to encourage the selection of models that generalize well, steering the search towards architectures that perform well on unseen data.</p>
-</li>
-<li><p><strong>Training Procedure</strong>: ENAS employs a two-phase training process. The first phase involves training the shared parameters (ω) of the child models on the entire training dataset. The second phase focuses on training the controller’s parameters (θ) to optimize the policy that selects child models. These phases are interleaved, with the controller learning from the performance of the child models it generates.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330144826654.png" alt="image-20240330144826654"></p>
-</li>
-<li><p><strong>Designing Recurrent and Convolutional Cells</strong>: ENAS provides a flexible framework for designing both recurrent and convolutional architectures. For recurrent cells, the controller decides on the connections and operations within a DAG, allowing for the creation of complex RNN structures. Similarly, for convolutional architectures, the controller makes decisions on connecting previous nodes and choosing computation operations, facilitating the formation of intricate CNN structures.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330144855741.png" alt="image-20240330144855741"></p>
-</li>
-<li><p><strong>Efficient Search Space Representation</strong>: The search space in ENAS is represented as a DAG, where each possible architecture is a subgraph of this larger structure. This representation allows for an exponential number of configurations, making the search space comprehensive and diverse, yet tractable due to parameter sharing.</p>
-</li>
-<li><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330144921006.png" alt="image-20240330144921006"></p>
-</li>
-<li><p><strong>Deriving Final Architectures</strong>: Once the controller is trained, ENAS derives final architectures by sampling from the policy and selecting the model with the highest expected reward for further training. This process can be repeated with different samples to explore the search space more thoroughly, although the paper demonstrates that even a single sample can yield competitive results.</p>
-</li>
-</ol>
-<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330145132477.png" alt="image-20240330145132477"></p>
-<p>The experimental results presented in the paper on Efficient Neural Architecture Search (ENAS) are both compelling and insightful, showcasing the method’s effectiveness in discovering high-performing neural network architectures while significantly reducing computational costs. Here’s a summary of the key findings:</p>
-<ol>
-<li><p><strong>Penn Treebank Dataset</strong>: ENAS was applied to design recurrent neural network (RNN) cells for language modeling on the Penn Treebank dataset. The method successfully discovered a novel architecture that achieved a test perplexity of 55.8, setting a new state-of-the-art among methods without post-training processing. This result was particularly impressive given that ENAS required only 1000x less GPU hours compared to standard NAS approaches.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330145308528.png"></p>
-</li>
-<li><p><strong>CIFAR-10 Dataset</strong>: For image classification, ENAS was utilized to find novel convolutional network architectures on the CIFAR-10 dataset. The method identified an architecture that achieved a test error of 2.89%, which is comparable to the 2.65% test error of NASNet, a highly-regarded architecture discovered through extensive computational search.</p>
-</li>
-<li><p><strong>Efficiency and Performance</strong>: A notable aspect of ENAS’s experimental results is the balance between efficiency and performance. The method demonstrated that it is possible to conduct a thorough search for neural network architectures without incurring the high computational costs associated with traditional NAS. This was evidenced by the fact that ENAS could discover competitive architectures using a single Nvidia GTX 1080Ti GPU in under 16 hours.</p>
-</li>
-<li><p><strong>Comparison with Other Methods</strong>: The paper also includes an ablation study and comparison with other approaches, such as DenseNet and NAS, to validate ENAS’s effectiveness. The results consistently show that ENAS can match or exceed the performance of other methods while using a fraction of the resources.</p>
-</li>
-<li><p><strong>Search Space Complexity</strong>: ENAS’s ability to handle complex search spaces was demonstrated by its application to both RNN cells and convolutional networks. The method’s flexibility in designing different types of neural networks highlights its potential for widespread use in various machine learning tasks.</p>
-</li>
-</ol>
-<p>In conclusion, the experiments conducted in the paper provide strong evidence of ENAS’s capabilities. They not only validate the method’s efficiency in terms of computational resource usage but also confirm its ability to discover state-of-the-art neural network architectures that are competitive with those found by more expensive search methods. These results position ENAS as a promising approach for democratizing access to advanced neural architecture search and accelerating innovation in the field of machine learning.</p>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>PaperReading</category>
-      </categories>
-      <tags>
-        <tag>NAS</tag>
       </tags>
   </entry>
   <entry>
@@ -291,6 +248,67 @@
       </tags>
   </entry>
   <entry>
+    <title>Efficient Neural Architecture Search via Parameter Sharing</title>
+    <url>/2020/01/12/Enas./</url>
+    <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/1802.03268.pdf">https://arxiv.org/pdf/1802.03268.pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Neural Architecture Search (NAS) has emerged as a revolutionary approach to automate the design of neural network architectures, offering the potential to discover high-performing models without the need for manual trial and error. However, the computational cost and time consumption associated with NAS have been prohibitive, often requiring hundreds of GPUs and days of training to find optimal architectures.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330144354863.png" alt="image-20240330144354863"></p>
+<p>The motivation behind Efficient Neural Architecture Search (ENAS) stems from the need to address these challenges and make NAS more accessible and efficient. By introducing a paradigm where a controller discovers neural network architectures within a large computational graph through parameter sharing, ENAS dramatically reduces the resources required for the search process. This innovative method not only maintains the empirical performance of traditional NAS but also achieves it with a fraction of the computational expense, using only a single GPU and a matter of hours.</p>
+<p>ENAS’s ability to share parameters among child models during the search process is a key factor in its efficiency. This design choice allows for a more stable and effective learning process for the controller, which in turn can explore a vast search space of architectures more thoroughly and rapidly than its counterparts. The result is a method that not only discovers state-of-the-art architectures for tasks like image classification and language modeling but also does so in a way that is practical and scalable.</p>
+<p>By democratizing access to advanced neural network design through ENAS, researchers and practitioners can now focus more on innovation and less on the resource-intensive process of architecture search. This shift has the potential to accelerate advancements in machine learning and artificial intelligence, unlocking new possibilities and applications that were previously out of reach due to the computational barriers of traditional NAS methods.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>Efficient Neural Architecture Search (ENAS) makes several significant contributions to the field of automated machine learning (AutoML). Firstly, it introduces a novel approach to neural architecture search by leveraging parameter sharing among a multitude of child models. This innovative strategy allows ENAS to explore a vast design space with remarkable efficiency, using a single GPU and within a few hours, which is a stark contrast to the extensive computational resources required by traditional NAS methods.</p>
+<p>Secondly, ENAS demonstrates that parameter sharing not only reduces computational costs but also leads to competitive model performance. The method achieves state-of-the-art results on established benchmarks such as the Penn Treebank dataset for language modeling and the CIFAR-10 dataset for image classification, matching or even surpassing the performance of architectures found by more expensive NAS methods.</p>
+<p>Thirdly, ENAS presents a flexible framework that can be applied to various types of neural networks, from recurrent neural networks (RNNs) for sequential data to convolutional neural networks (CNNs) for image data. This versatility is a testament to the general applicability of ENAS and its potential to impact a wide range of domains within machine learning.</p>
+<p>Lastly, ENAS’s contributions extend to the methodology of neural architecture search itself. By improving the efficiency of the search process, ENAS opens up new possibilities for research and experimentation. It enables more researchers to engage in neural architecture research, fostering innovation and potentially leading to the discovery of even more efficient and effective methods in the future. The impact of ENAS is thus both immediate, through its superior performance and efficiency, and long-term, as it paves the way for further advancements in the field of AutoML.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>In the pursuit of enhancing the efficiency of Neural Architecture Search (NAS), the paper introduces Efficient Neural Architecture Search (ENAS), a groundbreaking method that stands out for its innovative use of parameter sharing and computational graph optimization. The specific methodologies employed in ENAS can be summarized as follows:</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330144735504.png" alt="image-20240330144735504"></p>
+<ol>
+<li><p><strong>Controller and Child Models</strong>: At the heart of ENAS lies a controller, typically an LSTM RNN, which is responsible for sampling decisions to construct child models. These child models are subgraphs within a larger computational graph, and they share the same set of parameters, which drastically reduces the computational resources needed to search for and train new architectures.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330144757765.png"></p>
+</li>
+<li><p><strong>Parameter Sharing</strong>: A pivotal concept in ENAS is the sharing of parameters across all child models. This is achieved by defining the search space as a directed acyclic graph (DAG) where nodes represent local computations and edges represent the flow of information. Each node in the DAG has its own set of parameters, which are used when the node is active in a child model. By sharing parameters, ENAS minimizes redundancy and maximizes the efficiency of the search process.</p>
+</li>
+<li><p><strong>Policy Gradient for Controller Training</strong>: The controller is trained using policy gradient methods, specifically the REINFORCE algorithm. It selects subgraphs (child models) that are expected to yield high rewards on a validation set. The reward function is designed to encourage the selection of models that generalize well, steering the search towards architectures that perform well on unseen data.</p>
+</li>
+<li><p><strong>Training Procedure</strong>: ENAS employs a two-phase training process. The first phase involves training the shared parameters (ω) of the child models on the entire training dataset. The second phase focuses on training the controller’s parameters (θ) to optimize the policy that selects child models. These phases are interleaved, with the controller learning from the performance of the child models it generates.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330144826654.png" alt="image-20240330144826654"></p>
+</li>
+<li><p><strong>Designing Recurrent and Convolutional Cells</strong>: ENAS provides a flexible framework for designing both recurrent and convolutional architectures. For recurrent cells, the controller decides on the connections and operations within a DAG, allowing for the creation of complex RNN structures. Similarly, for convolutional architectures, the controller makes decisions on connecting previous nodes and choosing computation operations, facilitating the formation of intricate CNN structures.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330144855741.png" alt="image-20240330144855741"></p>
+</li>
+<li><p><strong>Efficient Search Space Representation</strong>: The search space in ENAS is represented as a DAG, where each possible architecture is a subgraph of this larger structure. This representation allows for an exponential number of configurations, making the search space comprehensive and diverse, yet tractable due to parameter sharing.</p>
+</li>
+<li><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330144921006.png" alt="image-20240330144921006"></p>
+</li>
+<li><p><strong>Deriving Final Architectures</strong>: Once the controller is trained, ENAS derives final architectures by sampling from the policy and selecting the model with the highest expected reward for further training. This process can be repeated with different samples to explore the search space more thoroughly, although the paper demonstrates that even a single sample can yield competitive results.</p>
+</li>
+</ol>
+<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330145132477.png" alt="image-20240330145132477"></p>
+<p>The experimental results presented in the paper on Efficient Neural Architecture Search (ENAS) are both compelling and insightful, showcasing the method’s effectiveness in discovering high-performing neural network architectures while significantly reducing computational costs. Here’s a summary of the key findings:</p>
+<ol>
+<li><p><strong>Penn Treebank Dataset</strong>: ENAS was applied to design recurrent neural network (RNN) cells for language modeling on the Penn Treebank dataset. The method successfully discovered a novel architecture that achieved a test perplexity of 55.8, setting a new state-of-the-art among methods without post-training processing. This result was particularly impressive given that ENAS required only 1000x less GPU hours compared to standard NAS approaches.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330145308528.png"></p>
+</li>
+<li><p><strong>CIFAR-10 Dataset</strong>: For image classification, ENAS was utilized to find novel convolutional network architectures on the CIFAR-10 dataset. The method identified an architecture that achieved a test error of 2.89%, which is comparable to the 2.65% test error of NASNet, a highly-regarded architecture discovered through extensive computational search.</p>
+</li>
+<li><p><strong>Efficiency and Performance</strong>: A notable aspect of ENAS’s experimental results is the balance between efficiency and performance. The method demonstrated that it is possible to conduct a thorough search for neural network architectures without incurring the high computational costs associated with traditional NAS. This was evidenced by the fact that ENAS could discover competitive architectures using a single Nvidia GTX 1080Ti GPU in under 16 hours.</p>
+</li>
+<li><p><strong>Comparison with Other Methods</strong>: The paper also includes an ablation study and comparison with other approaches, such as DenseNet and NAS, to validate ENAS’s effectiveness. The results consistently show that ENAS can match or exceed the performance of other methods while using a fraction of the resources.</p>
+</li>
+<li><p><strong>Search Space Complexity</strong>: ENAS’s ability to handle complex search spaces was demonstrated by its application to both RNN cells and convolutional networks. The method’s flexibility in designing different types of neural networks highlights its potential for widespread use in various machine learning tasks.</p>
+</li>
+</ol>
+<p>In conclusion, the experiments conducted in the paper provide strong evidence of ENAS’s capabilities. They not only validate the method’s efficiency in terms of computational resource usage but also confirm its ability to discover state-of-the-art neural network architectures that are competitive with those found by more expensive search methods. These results position ENAS as a promising approach for democratizing access to advanced neural architecture search and accelerating innovation in the field of machine learning.</p>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>PaperReading</category>
+      </categories>
+      <tags>
+        <tag>NAS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title> DARTS: Differentiable Architecture Search</title>
     <url>/2020/01/28/darts/</url>
     <content><![CDATA[<blockquote>
@@ -319,24 +337,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Speculative Sampling</title>
-    <url>/2023/09/28/Speculative%20Decoding/</url>
-    <content><![CDATA[<p>Remember the Hacker News thread when GPT-4 was released? It mentioned the use of speculative sampling in GPT-4 to accelerate inference. So, what exactly is speculative sampling?</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/202312070010475.png"></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="Refference"><a href="#Refference" class="headerlink" title="Refference"></a>Refference</h2><ol>
-<li><a class="link" href="https://zhuanlan.zhihu.com/p/651359908">https://zhuanlan.zhihu.com/p/651359908 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>Transformer</tag>
-        <tag>LLM</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Designing Neural Network Architectures using Reinforcement Learning</title>
     <url>/2020/01/17/metaqnn/</url>
     <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/1611.02167.pdf">https://arxiv.org/pdf/1611.02167.pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
@@ -359,6 +359,25 @@
 <p>This method represents a significant departure from traditional manual design processes, offering a data-driven approach to network architecture optimization. By automating the design process, MetaQNN has the potential to accelerate the development of CNNs and to discover novel architectures that could outperform those designed by human experts.</p>
 <h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330150952925.png" alt="image-20240330150952925"></p>
 ]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>PaperReading</category>
+      </categories>
+      <tags>
+        <tag>NAS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>paper</title>
+    <url>/2019/01/28/paper/</url>
+    <content><![CDATA[<blockquote>
+<p>#Nas</p>
+<p>#eNAs</p>
+<p>monas</p>
+<p>#darts</p>
+</blockquote>
+<p>Metaqnn</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2>]]></content>
       <categories>
         <category>Work hard</category>
         <category>PaperReading</category>
@@ -400,25 +419,6 @@
 <p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330102649905.png" alt="image-20240330102649905"></p>
 <p>But the authors weren’t content with just dishing out success in image recognition. They turned to the Penn Treebank dataset, a staple in language modeling, and whipped up a recurrent cell architecture that dethroned the reigning LSTM cell. This new cell architecture achieved a test set perplexity of 62.4, besting the previous record by a solid 3.6 perplexity points.</p>
 ]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>PaperReading</category>
-      </categories>
-      <tags>
-        <tag>NAS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>paper</title>
-    <url>/2019/01/28/paper/</url>
-    <content><![CDATA[<blockquote>
-<p>#Nas</p>
-<p>#eNAs</p>
-<p>monas</p>
-<p>#darts</p>
-</blockquote>
-<p>Metaqnn</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2>]]></content>
       <categories>
         <category>Work hard</category>
         <category>PaperReading</category>
