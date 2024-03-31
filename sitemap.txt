@@ -1,8 +1,9 @@
-https://hjchen-thu.github.io/2022/07/06/cuda_elementwise/
 https://hjchen-thu.github.io/2022/08/16/cuda_sgemv/
-https://hjchen-thu.github.io/2022/07/20/cuda_reduce/
-https://hjchen-thu.github.io/2024/02/28/CodeBear/
 https://hjchen-thu.github.io/2022/08/01/cuda_sgemm/
+https://hjchen-thu.github.io/2022/07/20/cuda_reduce/
+https://hjchen-thu.github.io/2022/07/06/cuda_elementwise/
+https://hjchen-thu.github.io/2024/02/28/CodeBear/
+https://hjchen-thu.github.io/about/index.html
 https://hjchen-thu.github.io/2023/03/28/AccLLMs/
 https://hjchen-thu.github.io/2020/01/12/Nasnet/
 https://hjchen-thu.github.io/2020/01/23/jointNasQ/
@@ -21,7 +22,6 @@ https://hjchen-thu.github.io/2020/01/12/Enas./
 https://hjchen-thu.github.io/2020/01/17/metaqnn/
 https://hjchen-thu.github.io/2020/01/02/nas/
 https://hjchen-thu.github.io/2020/01/28/darts/
-https://hjchen-thu.github.io/about/index.html
 https://hjchen-thu.github.io/2023/09/28/Speculative%20Decoding/
 https://hjchen-thu.github.io/2022/09/28/ATM_parameter/
 https://hjchen-thu.github.io/tags/index.html
@@ -29,9 +29,9 @@ https://hjchen-thu.github.io/essays/index.html
 https://hjchen-thu.github.io/categories/index.html
 https://hjchen-thu.github.io/masonry/index.html
 https://hjchen-thu.github.io/
-https://hjchen-thu.github.io/tags/Transformer/
 https://hjchen-thu.github.io/tags/AIGC/
 https://hjchen-thu.github.io/tags/LLM/
+https://hjchen-thu.github.io/tags/Transformer/
 https://hjchen-thu.github.io/tags/Quantization/
 https://hjchen-thu.github.io/tags/Attention/
 https://hjchen-thu.github.io/tags/CUDA/
@@ -39,7 +39,8 @@ https://hjchen-thu.github.io/tags/Triton/
 https://hjchen-thu.github.io/tags/NAS/
 https://hjchen-thu.github.io/tags/FL/
 https://hjchen-thu.github.io/categories/Work-hard/
-https://hjchen-thu.github.io/categories/Work-hard/Program/
-https://hjchen-thu.github.io/categories/Work-hard/Note/
 https://hjchen-thu.github.io/categories/Work-hard/PaperReading/
 https://hjchen-thu.github.io/categories/Work-hard/Research/
+https://hjchen-thu.github.io/categories/Work-hard/Note/
+https://hjchen-thu.github.io/categories/Work-hard/Coding/
+https://hjchen-thu.github.io/categories/Work-hard/Note/Coding/
