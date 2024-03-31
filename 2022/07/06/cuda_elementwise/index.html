@@ -26,7 +26,7 @@
 <meta property="og:description" content="CUDA implementation for elementi-wise operation">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-07-05T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-03-30T11:50:39.211Z">
+<meta property="article:modified_time" content="2024-03-30T16:50:46.255Z">
 <meta property="article:author" content="H.J. Chen">
 <meta property="article:tag" content="CUDA">
 <meta name="twitter:card" content="summary">
@@ -485,8 +485,8 @@ mjx-container[display="true"] + br {
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2024-03-30 19:50:39</span>
-            <span class="mobile">2024-03-30 19:50:39</span> -->
+            <!-- <span class="desktop">2024-03-31 00:50:46</span>
+            <span class="mobile">2024-03-31 00:50:46</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -550,7 +550,24 @@ mjx-container[display="true"] + br {
 
 
         <div class="article-content markdown-body">
-            <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2>
+            <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a class="link" target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html">https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link" target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ul>
+<h2 id="Basic-concepts"><a href="#Basic-concepts" class="headerlink" title="Basic concepts"></a>Basic concepts</h2><p>Element-wise operations represent the most fundamental and straightforward category of kernel functions. Their computational characteristics align seamlessly with the working style of GPUs: they perform individual arithmetic operations on each element and then output the results directly. Despite their simplicity, many operators in the field of deep learning fall into this category. Common examples include Add, Mul, Concat, various activation functions like Sigmoid and ReLU along with their variants, and normalization techniques such as BatchNorm.</p>
+<h2 id="Sum"><a href="#Sum" class="headerlink" title="Sum"></a>Sum</h2><h3 id="Naive"><a href="#Naive" class="headerlink" title="Naive"></a>Naive</h3><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">__global__ void elementwise_add(<span class="built_in">float</span>* a, <span class="built_in">float</span>* b, <span class="built_in">float</span>* c, <span class="built_in">int</span> N) {</span><br><span class="line">  <span class="built_in">int</span> idx = blockIdx.x * blockDim.x + threadIdx.x;</span><br><span class="line">  <span class="keyword">if</span> (idx &lt; N) c[idx] = a[idx] + b[idx];</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Vectorize-LD-ST"><a href="#Vectorize-LD-ST" class="headerlink" title="Vectorize LD/ST"></a>Vectorize LD/ST</h3><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">// ElementWise Add + float4</span><br><span class="line">// 不要这么写，会影响occupancy</span><br><span class="line">// elementwise_add_float4&lt;&lt;&lt;CeilDiv(N, block_size), block_size/<span class="number">4</span>&gt;&gt;&gt;(d_A, d_B, d_C, N)</span><br><span class="line">// 应该在grid的维度上除以<span class="number">4</span></span><br><span class="line">// elementwise_add_float4&lt;&lt;&lt;CeilDiv(N/<span class="number">4</span>, block_size), block_size&gt;&gt;&gt;(d_A, d_B, d_C, N)</span><br><span class="line">// a: Nx1, b: Nx1, c: Nx1, c = elementwise_add(a, b)</span><br><span class="line">//float4向量化访存只对数据规模大的时候有加速效果，数据规模小的时候没有加速效果</span><br><span class="line">//<span class="comment">#define FLOAT4(value)  *(float4*)(&amp;(value))</span></span><br><span class="line">//<span class="comment">#define FLOAT4(value) (reinterpret_cast&lt;float4*&gt;(&amp;(value))[0])</span></span><br><span class="line">__global__ void elementwise_add_float4(<span class="built_in">float</span>* a, <span class="built_in">float</span>* b, <span class="built_in">float</span> *c, <span class="built_in">int</span> N)</span><br><span class="line">{</span><br><span class="line">    <span class="built_in">int</span> idx = (blockDim.x * blockIdx.x + threadIdx.x) * <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(idx &lt; N ){</span><br><span class="line">        float4 tmp_a = FLOAT4(a[idx]);</span><br><span class="line">        float4 tmp_b = FLOAT4(b[idx]);</span><br><span class="line">        float4 tmp_c;</span><br><span class="line">        tmp_c.x = tmp_a.x + tmp_b.x;</span><br><span class="line">        tmp_c.y = tmp_a.y + tmp_b.y;</span><br><span class="line">        tmp_c.z = tmp_a.z + tmp_b.z;</span><br><span class="line">        tmp_c.w = tmp_a.w + tmp_b.w;</span><br><span class="line">        FLOAT4(c[idx]) = tmp_c;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p>Here, it’s important to note that if vectorized memory access with float4 is used, the number of threads needs to be reduced to a quarter of the original. Whether the block size or the grid size should be reduced to a quarter depends on the actual data scale and should be determined through empirical testing.</p>
+<p>Notes:</p>
+<ol>
+<li>When using cuda events to measure elapsed time, run 1000 iterations and take the average. When running with nsight compute, run it only once.</li>
+<li>If the data significantly deviates from theoretical expectations, consider whether other people/processes are also using the GPU, which could lead to inaccurate timing measurements.</li>
+<li>For all experiments below, set the block size to 128.</li>
+</ol>
+<p>For a data scale of N=32×1024×1024 <em>N</em>=32×1024×1024, the following experimental data is obtained (data may fluctuate; if the discrepancy is particularly large, rerun ncu):</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2>
         </div>
 
         
@@ -614,7 +631,7 @@ mjx-container[display="true"] + br {
     <div class="post-toc">
         <div class="toc-title">On this page</div>
         <div class="page-title">[CUDA]element-wise</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-text">Reference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Figures-Conclusion"><span class="nav-text">Figures &amp; Conclusion</span></a></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-text">Reference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Basic-concepts"><span class="nav-text">Basic concepts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sum"><span class="nav-text">Sum</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Naive"><span class="nav-text">Naive</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Vectorize-LD-ST"><span class="nav-text">Vectorize LD&#x2F;ST</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Figures-Conclusion"><span class="nav-text">Figures &amp; Conclusion</span></a></li></ol>
 
     </div>
 </div>
