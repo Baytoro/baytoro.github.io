@@ -25,11 +25,13 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="CUDA implementation for reduce operation">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240331211607423.png">
 <meta property="article:published_time" content="2022-07-19T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-03-31T04:58:31.398Z">
+<meta property="article:modified_time" content="2024-03-31T13:21:27.592Z">
 <meta property="article:author" content="H.J. Chen">
 <meta property="article:tag" content="CUDA">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240331211607423.png">
     
     
     <!--- Icon Part-->
@@ -485,8 +487,8 @@ mjx-container[display="true"] + br {
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2024-03-31 12:58:31</span>
-            <span class="mobile">2024-03-31 12:58:31</span> -->
+            <!-- <span class="desktop">2024-03-31 21:21:27</span>
+            <span class="mobile">2024-03-31 21:21:27</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -565,7 +567,22 @@ mjx-container[display="true"] + br {
 <li><a class="link" target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
 <li><a class="link" target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/426978026">https://zhuanlan.zhihu.com/p/426978026 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
 </ul>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2>
+<h2 id="Basic-Concepts"><a href="#Basic-Concepts" class="headerlink" title="Basic Concepts"></a>Basic Concepts</h2><p>Reduction problems are a common category of questions encountered in interviews. Compared to elementwise problems, where each thread independently performs tasks, reduction problems become more complex due to the involvement of synchronization and communication between threads. Additionally, these problems can leverage the previously introduced optimization techniques for vectorized memory access, which adds a layer of complexity in terms of thought process.<br>The <code>reductions.cu</code> file primarily implements the following three kernel functions for reduction summation:</p>
+<ol>
+<li>The most basic <code>atomic_reduction()</code>, which extensively utilizes the <code>atomicAdd()</code> function.</li>
+<li>The sweep style reduction sum <code>reduction_a()</code>, which calls <code>atomicAdd</code> once at the end.</li>
+<li>The warp shuffle reduction <code>reduction_ws()</code>, which also calls <code>atomicAdd</code> once at the end.</li>
+</ol>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240331211607423.png" alt="image-20240331211607423"></p>
+<p>Theory: The <code>atomic_reduction()</code> is the slowest because it heavily relies on the <code>atomicAdd()</code> function. Compared to <code>reduction_a</code>, <code>reduction_ws</code> tends to perform better due to its minimal use of shared memory.</p>
+<p>Observed Phenomena:</p>
+<ol>
+<li>As the data size increases, the performance advantage of <code>reduce_ws</code> over <code>reduction_a</code> diminishes.</li>
+<li>The use of the <code>atomicAdd</code> function affects the Memory utilization rate, and this impact does not vary with the scale of the data.</li>
+</ol>
+<p>Regarding the first point: Both <code>reduce_ws</code> and <code>reduction_a</code> require loading data within a grid-stride loop initially. As the data size grows, the time taken to load the data becomes the dominant factor in the overall time consumption. At this juncture, the specific method of performing reduction matters less, hence the time difference narrows with increasing data sizes. In theory, warp shuffle should offer better performance than the classic reduction sum, but in practice, it still depends on the specific data scale of the problem at hand and requires a detailed analysis.</p>
+<p>Regarding the second point: The impact of the <code>atomicAdd</code> function on performance is significant because it can reduce the Memory utilization rate to a very low level, and this is difficult to improve by simply changing the data scale.</p>
+
         </div>
 
         
@@ -629,7 +646,7 @@ mjx-container[display="true"] + br {
     <div class="post-toc">
         <div class="toc-title">On this page</div>
         <div class="page-title">[CUDA]reduce</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-text">Reference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Figures-Conclusion"><span class="nav-text">Figures &amp; Conclusion</span></a></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-text">Reference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Basic-Concepts"><span class="nav-text">Basic Concepts</span></a></li></ol>
 
     </div>
 </div>
