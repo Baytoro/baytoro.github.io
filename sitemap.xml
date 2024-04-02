@@ -295,13 +295,6 @@
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/tags/NAS/</loc>
-    <lastmod>2024-04-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://hjchen-thu.github.io/tags/LLM/</loc>
     <lastmod>2024-04-02</lastmod>
     <changefreq>weekly</changefreq>
@@ -310,20 +303,6 @@
   
   <url>
     <loc>https://hjchen-thu.github.io/tags/Quantization/</loc>
-    <lastmod>2024-04-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://hjchen-thu.github.io/tags/Triton/</loc>
-    <lastmod>2024-04-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://hjchen-thu.github.io/tags/FL/</loc>
     <lastmod>2024-04-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -343,6 +322,27 @@
     <priority>0.2</priority>
   </url>
   
+  <url>
+    <loc>https://hjchen-thu.github.io/tags/Triton/</loc>
+    <lastmod>2024-04-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjchen-thu.github.io/tags/NAS/</loc>
+    <lastmod>2024-04-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjchen-thu.github.io/tags/FL/</loc>
+    <lastmod>2024-04-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
 
   
   <url>
@@ -353,7 +353,7 @@
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/categories/Work-hard/PaperReading/</loc>
+    <loc>https://hjchen-thu.github.io/categories/Work-hard/Coding/</loc>
     <lastmod>2024-04-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -367,7 +367,7 @@
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/categories/Work-hard/Coding/</loc>
+    <loc>https://hjchen-thu.github.io/categories/Work-hard/PaperReading/</loc>
     <lastmod>2024-04-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
