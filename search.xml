@@ -1,121 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>CodeBear: Your Personal AI Coding Assitant</title>
-    <url>/2024/02/28/CodeBear/</url>
-    <content><![CDATA[<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/writing.html">Writing <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/server.html">Server <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/generating.html">Generating <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/one-command-deployment.html">Deployment <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>Coding</category>
-      </categories>
-      <tags>
-        <tag>AIGC</tag>
-        <tag>LLM</tag>
-        <tag>Transformer</tag>
-        <tag>Quantization</tag>
-        <tag>Triton</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ChamNet: Towards Efficient Network Design through Platform-Aware Model Adaptation</title>
-    <url>/2020/02/20/ChamNet./</url>
-    <content><![CDATA[<p><a class="link" href="https://openaccess.thecvf.com/content_CVPR_2019/papers/Dai_ChamNet_Towards_Efficient_Network_Design_Through_Platform-Aware_Model_Adaptation_CVPR_2019_paper.pdf">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>The rapid advancement of neural networks has led to breakthroughs in various domains such as computer vision, speech recognition, and natural language processing. However, the deployment of these powerful models is often hindered by the computational intensity and resource demands they impose, making them incompatible with resource-constrained platforms like mobile devices and IoT edge devices.</p>
-<p>The key challenge lies in the significant variance in hardware characteristics across different platforms, which necessitates neural network architectures that can be efficiently adapted to leverage these traits. Furthermore, real-world applications often impose diverse constraints, such as strict latency requirements for real-time processing or energy efficiency for extended battery life, further complicating the design and deployment of neural networks.</p>
-<p>To address these challenges, the paper introduces Chameleon, a novel framework for efficient neural network architecture design that prioritizes given resource constraints. Chameleon eschews the traditional approaches of developing new building blocks or employing computationally expensive reinforcement learning algorithms. Instead, it focuses on the strategic allocation of computation resources, adapting to the hardware traits of the target platform, and aligning with specific latency and energy constraints.</p>
-<p>The framework operates within an optimization framework, utilizing predictive models for accuracy, latency, and energy to expedite the search for optimal architectures. By harnessing Gaussian Process with Bayesian optimization, Chameleon significantly reduces the time required to produce state-of-the-art models that excel in various platforms and scenarios, without the need for special features or extensive computational resources. This innovative methodology promises a new era of efficient neural network design, offering improved performance while respecting the limitations of real-world deployment environments.</p>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>Firstly, it introduces a novel concept of computation distribution, demonstrating that adapting computation resources to building blocks is crucial for model performance. This insight allows the Chameleon framework to achieve substantial accuracy improvements over existing handcrafted and automatically designed architectures, without incorporating any special features.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330164901236.png" alt="image-20240330164901236"></p>
-<p>Secondly, the paper proposes an efficient algorithm for searching optimal architectures through accurate and resource predictors. This algorithm leverages Gaussian Process with Bayesian optimization to enable a more effective search, outperforming reinforcement learning-based approaches in terms of search efficiency and effectiveness.</p>
-<p>Additionally, the authors present a scalable and automated methodology for neural network architecture adaptation. The Chameleon framework, with its predictive models for accuracy, latency, and energy consumption, significantly reduces the search time and computational overhead. It achieves this by bypassing the need for extensive network training and direct performance metric measurements, which are typically required in traditional NAS and SMBO methods.</p>
-<p>Lastly, the paper showcases the adaptability and generality of the Chameleon framework through extensive experiments on various hardware platforms, including mobile CPUs, DSPs, and GPUs. The results consistently show higher accuracy and reduced runtime latency compared to state-of-the-art models, highlighting the framework’s potential for large-scale heterogeneous deployment in real-world applications.</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330164914312.png" alt="image-20240330164914312"></p>
-<p>The methodology use a comprehensive framework designed to efficiently adapt neural network architectures to specific platforms and constraints. This approach, known as Chameleon, is centered around the concept of platform-aware model adaptation, which involves several key components and steps.</p>
-<p><strong>Platform-aware Model Adaptation:</strong><br>The Chameleon framework begins by taking a default neural network architecture and a specific use scenario, which includes the target platform and resource budget. It then generates an adapted architecture that fits the scenario through an efficient evolutionary search (EES). This search is based on an adaptive genetic algorithm, where each architecture is represented by a vector of hyperparameters. The fitness of each candidate architecture is evaluated based on predictive models, and the best-performing ones are selected for the next generation through mutation and crossover operators.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165002398.png" alt="image-20240330165002398"></p>
-<p><strong>Predictive Models:</strong><br>To expedite the search process, Chameleon employs predictive models for accuracy, latency, and energy consumption. These models bypass the time-consuming training and measurement process, allowing for immediate performance metric estimation. The accuracy predictor is built on a Gaussian Process (GP) regressor with Bayesian optimization, which provides reliable predictions and uncertainty estimations, guiding the sample architecture selection for training.</p>
-<p><strong>Efficient Accuracy Predictor:</strong><br>The accuracy predictor is designed to estimate the final accuracy of a model without actual training. It uses a GP regressor, chosen for its reliability with scarce training data and its ability to produce predictions with uncertainty estimations. The sample architecture selection process is enhanced with Bayesian optimization, focusing on exploitation and exploration samples to improve convergence speed and sample efficiency.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165104157.png" alt="image-20240330165104157"></p>
-<p><strong>Latency Predictor:</strong><br>Latency is a critical performance metric, and Chameleon constructs an operator latency look-up table (LUT) for fast and accurate latency estimation. This LUT, supported by a latency database from real-device benchmarks, allows for the summation of operator-level latencies to estimate the network-level latency. This method significantly reduces the time required for latency estimation compared to direct hardware measurements.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165115265.png" alt="image-20240330165115265"></p>
-<p><strong>Energy Predictor:</strong><br>For devices with limited energy budgets, Chameleon includes an energy predictor. Similar to the accuracy predictor, it uses a GP model and Bayesian optimization but focuses solely on exploration samples to increase prediction confidence across the search space.</p>
-<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><strong>Experimental Setup:</strong> The authors employ a range of neural network architectures, including MobileNetV2 and ResNet, as the base models for adaptation. These models are chosen for their widespread use and proven performance in computer vision tasks. The experimental platforms include the Snapdragon 835 mobile CPU, Hexagon v62 DSP, Intel Xeon Broadwell CPU, and Nvidia GTX 1060 GPU. These diverse platforms allow for a comprehensive evaluation of the Chameleon framework’s ability to adapt to different hardware characteristics.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165156604.png" alt="image-20240330165156604"></p>
-<p>The framework is tested under various latency and energy constraints to mimic real-world deployment scenarios. For mobile platforms, the constraints range from 4ms to 30ms, while for server models, they vary from 50ms to 400ms. Energy constraints are also set for mobile models, ranging from 15mJ to 150mJ, to reflect the energy limitations of battery-powered devices.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165206854.png" alt="image-20240330165206854"></p>
-<p>The experiments utilize the ImageNet dataset, a standard benchmark for image classification, consisting of 1.2 million training images and 50,000 validation images. The dataset’s complexity and diversity provide a robust testbed for evaluating the adapted models’ accuracy.</p>
-<p><strong>Experimental Results:</strong> The results of the experiments demonstrate that the Chameleon framework consistently outperforms existing models in terms of accuracy under the given constraints. For mobile platforms, the adapted ChamNet-Mobile models achieve top-1 accuracy rates of 73.8% and 75.3% on the Snapdragon 835 CPU and Hexagon v62 DSP, respectively, at 20ms latency. These rates represent significant improvements over baseline models like MobileNetV2 and MnasNet.</p>
-<p>On server platforms, the ChamNet-Res models also show superior performance, with top-1 accuracy rates improving from 72.7% to 78.5% on an Intel CPU under 400ms latency constraint, and from 70.8% to 78.6% on an Nvidia GPU under 15ms latency constraint.</p>
-<p>In the energy-driven adaptation experiments, ChamNet-Mobile demonstrates a notable improvement in the accuracy-energy trade-off. For instance, the model achieves 60.0% accuracy at only 14mJ per run, a 26% reduction in energy consumption compared to the MobileNetV2 0.75x baseline.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165220972.png" alt="image-20240330165220972"></p>
-<p>The paper also compares Chameleon with alternative adaptation and compression approaches, such as MNAS, AMC, NetAdapt, and MorphNet. The comparisons show that Chameleon offers the most favorable accuracy-latency trade-offs and reduces the computational cost from O(m · n · k) to O(m + n), where m, n, and k represent the number of network models, distinct platforms, and use scenarios, respectively.</p>
-<p>In conclusion, the experimental results validate the Chameleon framework’s capability to efficiently adapt neural network architectures to meet specific performance and resource constraints. The consistent improvements in accuracy and efficiency across various platforms and scenarios highlight the practicality and potential of the Chameleon approach for real-world applications.</p>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>PaperReading</category>
-      </categories>
-      <tags>
-        <tag>NAS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Accelerating LLMs Inference</title>
-    <url>/2023/03/28/AccLLMs/</url>
-    <content><![CDATA[<p>Welcome to <a class="link" href="https://hexo.io/">Hexo <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>! This is your very first post. Check <a class="link" href="https://hexo.io/docs/">documentation <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> for more info. If you get any problems when using Hexo, you can find the answer in <a class="link" href="https://hexo.io/docs/troubleshooting.html">troubleshooting <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> or you can ask me on <a class="link" href="https://github.com/hexojs/hexo/issues">GitHub <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.   Asdf</p>
-<pre class="mermaid">  graph TD;
-          1(Distributed)===A;
-          2(Batching)===A;
-          #3(hh1)===A;
-          4(hh1)===A(Accelerating LLMs Inference);
-      A===B(High-Performance Computing);
-      A===C(Quantization);
-      A===D(Block-wise parallen decoding);
-      A===E(hh1);</pre>
-
-
-
-
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/writing.html">Writing <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/server.html">Server <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/generating.html">Generating <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" href="https://hexo.io/docs/one-command-deployment.html">Deployment <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>Research</category>
-      </categories>
-      <tags>
-        <tag>AIGC</tag>
-        <tag>LLM</tag>
-        <tag>Transformer</tag>
-        <tag>Quantization</tag>
-        <tag>Triton</tag>
-        <tag>Attention</tag>
-        <tag>CUDA</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Analyzing Transformer Models: Parameters</title>
     <url>/2022/09/28/ATM_parameter/</url>
     <content><![CDATA[<p>Recently, OpenAI’s release of ChatGPT has demonstrated outstanding performance, sparking a research frenzy in the field of Large Language Models (LLMs). The “large” in Large Language Models is reflected in two aspects: the scale of model parameters and the scale of training data. Taking GPT-3 as an example, it boasts a staggering 175 billion parameters and was trained on a colossal dataset of 570 GB. Consequently, training Large Language Models faces two primary challenges: GPU memory efficiency and computational efficiency.</p>
@@ -174,8 +59,215 @@
         <category>Note</category>
       </categories>
       <tags>
-        <tag>AIGC</tag>
         <tag>Transformer</tag>
+        <tag>AIGC</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Accelerating LLMs Inference</title>
+    <url>/2023/03/28/AccLLMs/</url>
+    <content><![CDATA[<p>Welcome to <a class="link" href="https://hexo.io/">Hexo <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>! This is your very first post. Check <a class="link" href="https://hexo.io/docs/">documentation <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> for more info. If you get any problems when using Hexo, you can find the answer in <a class="link" href="https://hexo.io/docs/troubleshooting.html">troubleshooting <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> or you can ask me on <a class="link" href="https://github.com/hexojs/hexo/issues">GitHub <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.   Asdf</p>
+<pre class="mermaid">  graph TD;
+          1(Distributed)===A;
+          2(Batching)===A;
+          #3(hh1)===A;
+          4(hh1)===A(Accelerating LLMs Inference);
+      A===B(High-Performance Computing);
+      A===C(Quantization);
+      A===D(Block-wise parallen decoding);
+      A===E(hh1);</pre>
+
+
+
+
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/writing.html">Writing <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/server.html">Server <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/generating.html">Generating <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/one-command-deployment.html">Deployment <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>Research</category>
+      </categories>
+      <tags>
+        <tag>Transformer</tag>
+        <tag>AIGC</tag>
+        <tag>LLM</tag>
+        <tag>Quantization</tag>
+        <tag>Attention</tag>
+        <tag>CUDA</tag>
+        <tag>Triton</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CodeBear: Your Personal AI Coding Assitant</title>
+    <url>/2024/02/28/CodeBear/</url>
+    <content><![CDATA[<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/writing.html">Writing <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/server.html">Server <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/generating.html">Generating <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link" href="https://hexo.io/docs/one-command-deployment.html">Deployment <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>Coding</category>
+      </categories>
+      <tags>
+        <tag>Transformer</tag>
+        <tag>AIGC</tag>
+        <tag>LLM</tag>
+        <tag>Quantization</tag>
+        <tag>Triton</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ChamNet: Towards Efficient Network Design through Platform-Aware Model Adaptation</title>
+    <url>/2020/02/20/ChamNet./</url>
+    <content><![CDATA[<p><a class="link" href="https://openaccess.thecvf.com/content_CVPR_2019/papers/Dai_ChamNet_Towards_Efficient_Network_Design_Through_Platform-Aware_Model_Adaptation_CVPR_2019_paper.pdf">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>The rapid advancement of neural networks has led to breakthroughs in various domains such as computer vision, speech recognition, and natural language processing. However, the deployment of these powerful models is often hindered by the computational intensity and resource demands they impose, making them incompatible with resource-constrained platforms like mobile devices and IoT edge devices.</p>
+<p>The key challenge lies in the significant variance in hardware characteristics across different platforms, which necessitates neural network architectures that can be efficiently adapted to leverage these traits. Furthermore, real-world applications often impose diverse constraints, such as strict latency requirements for real-time processing or energy efficiency for extended battery life, further complicating the design and deployment of neural networks.</p>
+<p>To address these challenges, the paper introduces Chameleon, a novel framework for efficient neural network architecture design that prioritizes given resource constraints. Chameleon eschews the traditional approaches of developing new building blocks or employing computationally expensive reinforcement learning algorithms. Instead, it focuses on the strategic allocation of computation resources, adapting to the hardware traits of the target platform, and aligning with specific latency and energy constraints.</p>
+<p>The framework operates within an optimization framework, utilizing predictive models for accuracy, latency, and energy to expedite the search for optimal architectures. By harnessing Gaussian Process with Bayesian optimization, Chameleon significantly reduces the time required to produce state-of-the-art models that excel in various platforms and scenarios, without the need for special features or extensive computational resources. This innovative methodology promises a new era of efficient neural network design, offering improved performance while respecting the limitations of real-world deployment environments.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>Firstly, it introduces a novel concept of computation distribution, demonstrating that adapting computation resources to building blocks is crucial for model performance. This insight allows the Chameleon framework to achieve substantial accuracy improvements over existing handcrafted and automatically designed architectures, without incorporating any special features.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330164901236.png" alt="image-20240330164901236"></p>
+<p>Secondly, the paper proposes an efficient algorithm for searching optimal architectures through accurate and resource predictors. This algorithm leverages Gaussian Process with Bayesian optimization to enable a more effective search, outperforming reinforcement learning-based approaches in terms of search efficiency and effectiveness.</p>
+<p>Additionally, the authors present a scalable and automated methodology for neural network architecture adaptation. The Chameleon framework, with its predictive models for accuracy, latency, and energy consumption, significantly reduces the search time and computational overhead. It achieves this by bypassing the need for extensive network training and direct performance metric measurements, which are typically required in traditional NAS and SMBO methods.</p>
+<p>Lastly, the paper showcases the adaptability and generality of the Chameleon framework through extensive experiments on various hardware platforms, including mobile CPUs, DSPs, and GPUs. The results consistently show higher accuracy and reduced runtime latency compared to state-of-the-art models, highlighting the framework’s potential for large-scale heterogeneous deployment in real-world applications.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330164914312.png" alt="image-20240330164914312"></p>
+<p>The methodology use a comprehensive framework designed to efficiently adapt neural network architectures to specific platforms and constraints. This approach, known as Chameleon, is centered around the concept of platform-aware model adaptation, which involves several key components and steps.</p>
+<p><strong>Platform-aware Model Adaptation:</strong><br>The Chameleon framework begins by taking a default neural network architecture and a specific use scenario, which includes the target platform and resource budget. It then generates an adapted architecture that fits the scenario through an efficient evolutionary search (EES). This search is based on an adaptive genetic algorithm, where each architecture is represented by a vector of hyperparameters. The fitness of each candidate architecture is evaluated based on predictive models, and the best-performing ones are selected for the next generation through mutation and crossover operators.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165002398.png" alt="image-20240330165002398"></p>
+<p><strong>Predictive Models:</strong><br>To expedite the search process, Chameleon employs predictive models for accuracy, latency, and energy consumption. These models bypass the time-consuming training and measurement process, allowing for immediate performance metric estimation. The accuracy predictor is built on a Gaussian Process (GP) regressor with Bayesian optimization, which provides reliable predictions and uncertainty estimations, guiding the sample architecture selection for training.</p>
+<p><strong>Efficient Accuracy Predictor:</strong><br>The accuracy predictor is designed to estimate the final accuracy of a model without actual training. It uses a GP regressor, chosen for its reliability with scarce training data and its ability to produce predictions with uncertainty estimations. The sample architecture selection process is enhanced with Bayesian optimization, focusing on exploitation and exploration samples to improve convergence speed and sample efficiency.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165104157.png" alt="image-20240330165104157"></p>
+<p><strong>Latency Predictor:</strong><br>Latency is a critical performance metric, and Chameleon constructs an operator latency look-up table (LUT) for fast and accurate latency estimation. This LUT, supported by a latency database from real-device benchmarks, allows for the summation of operator-level latencies to estimate the network-level latency. This method significantly reduces the time required for latency estimation compared to direct hardware measurements.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165115265.png" alt="image-20240330165115265"></p>
+<p><strong>Energy Predictor:</strong><br>For devices with limited energy budgets, Chameleon includes an energy predictor. Similar to the accuracy predictor, it uses a GP model and Bayesian optimization but focuses solely on exploration samples to increase prediction confidence across the search space.</p>
+<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><strong>Experimental Setup:</strong> The authors employ a range of neural network architectures, including MobileNetV2 and ResNet, as the base models for adaptation. These models are chosen for their widespread use and proven performance in computer vision tasks. The experimental platforms include the Snapdragon 835 mobile CPU, Hexagon v62 DSP, Intel Xeon Broadwell CPU, and Nvidia GTX 1060 GPU. These diverse platforms allow for a comprehensive evaluation of the Chameleon framework’s ability to adapt to different hardware characteristics.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165156604.png" alt="image-20240330165156604"></p>
+<p>The framework is tested under various latency and energy constraints to mimic real-world deployment scenarios. For mobile platforms, the constraints range from 4ms to 30ms, while for server models, they vary from 50ms to 400ms. Energy constraints are also set for mobile models, ranging from 15mJ to 150mJ, to reflect the energy limitations of battery-powered devices.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165206854.png" alt="image-20240330165206854"></p>
+<p>The experiments utilize the ImageNet dataset, a standard benchmark for image classification, consisting of 1.2 million training images and 50,000 validation images. The dataset’s complexity and diversity provide a robust testbed for evaluating the adapted models’ accuracy.</p>
+<p><strong>Experimental Results:</strong> The results of the experiments demonstrate that the Chameleon framework consistently outperforms existing models in terms of accuracy under the given constraints. For mobile platforms, the adapted ChamNet-Mobile models achieve top-1 accuracy rates of 73.8% and 75.3% on the Snapdragon 835 CPU and Hexagon v62 DSP, respectively, at 20ms latency. These rates represent significant improvements over baseline models like MobileNetV2 and MnasNet.</p>
+<p>On server platforms, the ChamNet-Res models also show superior performance, with top-1 accuracy rates improving from 72.7% to 78.5% on an Intel CPU under 400ms latency constraint, and from 70.8% to 78.6% on an Nvidia GPU under 15ms latency constraint.</p>
+<p>In the energy-driven adaptation experiments, ChamNet-Mobile demonstrates a notable improvement in the accuracy-energy trade-off. For instance, the model achieves 60.0% accuracy at only 14mJ per run, a 26% reduction in energy consumption compared to the MobileNetV2 0.75x baseline.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330165220972.png" alt="image-20240330165220972"></p>
+<p>The paper also compares Chameleon with alternative adaptation and compression approaches, such as MNAS, AMC, NetAdapt, and MorphNet. The comparisons show that Chameleon offers the most favorable accuracy-latency trade-offs and reduces the computational cost from O(m · n · k) to O(m + n), where m, n, and k represent the number of network models, distinct platforms, and use scenarios, respectively.</p>
+<p>In conclusion, the experimental results validate the Chameleon framework’s capability to efficiently adapt neural network architectures to meet specific performance and resource constraints. The consistent improvements in accuracy and efficiency across various platforms and scenarios highlight the practicality and potential of the Chameleon approach for real-world applications.</p>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>PaperReading</category>
+      </categories>
+      <tags>
+        <tag>NAS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Edd: Efficient differentiable dnn architecture and implementation co-search for embedded ai solutions</title>
+    <url>/2021/08/28/Edd/</url>
+    <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/2005.02563.pdf">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>In the rapidly evolving field of Artificial Intelligence (AI), the quest for high-quality AI solutions has led to a growing interest in the joint optimization of AI algorithms and their hardware implementations. Deep Neural Networks (DNNs), the workhorse of modern AI, have demonstrated remarkable achievements but are often limited by the efficiency of their hardware deployment. Traditional approaches to enhance algorithm quality, such as neural architecture search (NAS), have focused on developing DNNs that surpass human-designed architectures. However, these methods often overlook the simultaneous optimization of hardware implementations, which is crucial for improving performance metrics like latency, throughput, and energy efficiency.</p>
+<p>Recent advancements in hardware-aware NAS and hardware/software co-design have begun to address this gap by considering hardware features in DNN design. Yet, there remains a significant opportunity to further optimize by integrating the hardware implementation search within the NAS process. This integration can provide more accurate performance evaluations and instant guidance for hardware-aware DNN design.</p>
+<p>The motivation behind this research is to bridge this gap by proposing a novel methodology that performs a fully simultaneous and efficient co-search for DNN architecture and hardware implementation. This approach aims to maximize both algorithm accuracy and hardware implementation quality, offering a unified solution applicable to various devices and performance objectives. By fusing DNN search variables with hardware implementation variables into a single solution space and leveraging differentiable formulations, the methodology enables the use of gradient descent algorithms, significantly reducing search time and optimizing AI solutions for embedded AI applications.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181325138.png" alt="image-20240330181325138"></p>
+<p>This research introduces a groundbreaking methodology that addresses the critical need for a simultaneous and efficient approach to co-search for DNN architecture and hardware implementation. The primary contributions of the study are manifold:</p>
+<ol>
+<li><p>It pioneers a mathematical formulation that unifies the search space for DNN architecture and hardware implementation, aiming to maximize DNN accuracy and implementation performance concurrently. This formulation is differentiable, allowing for the application of gradient descent algorithms and significantly expediting the search process.</p>
+</li>
+<li><p>The proposed formulation is versatile, applicable across various hardware platforms such as GPUs, FPGAs, and dedicated accelerators. It is designed to target diverse performance objectives, including latency, throughput, and energy efficiency, while also considering resource usage and sharing constraints.</p>
+</li>
+<li><p>The methodology demonstrates its effectiveness through experiments that search for representative DNNs tailored for low-latency GPU implementation and FPGA implementations with both recursive and pipelined architectures. Each model produced achieves comparable accuracy to state-of-the-art NAS methods but with superior performance within a short search timeframe.</p>
+</li>
+<li><p>The study also presents a novel approach to differentiable quantization and performance/resource formulation, which is crucial for the co-search process. This allows for the optimization of data precision in DNNs, leading to more efficient computation and resource utilization.</p>
+</li>
+</ol>
+<p>These contributions collectively push the boundaries of AI research by providing a comprehensive framework that enhances the quality and efficiency of AI solutions, particularly for embedded systems where performance and resource constraints are paramount.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>The methodology at the core of this research is an innovative approach to the co-search problem, which integrates the search for optimal DNN architectures with the search for efficient hardware implementations. This is achieved through a differentiable framework that allows for a unified optimization process.</p>
+<p>At the outset, the research introduces a mathematical formulation that combines DNN search variables, which define the structure and parameters of the network, with hardware implementation variables, which pertain to the physical realization of the DNN on various devices. This fusion creates a unified solution space where both algorithm accuracy and hardware performance are optimized simultaneously.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181352045.png" alt="image-20240330181352045"></p>
+<p>The key innovation lies in the differentiability of the formulation. By ensuring that the objective function, which includes both accuracy loss and performance loss, is differentiable with respect to the fused variables, gradient descent algorithms can be applied. This enables efficient optimization, significantly reducing the search time compared to traditional exhaustive search methods.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181403203.png" alt="image-20240330181403203"></p>
+<p>The methodology also introduces a unique approach to differentiable quantization, a critical aspect of hardware implementation. Quantization involves reducing the precision of data to increase computational efficiency, but it must be carefully balanced with the impact on DNN accuracy. The proposed method uses a Gumbel-Softmax function to convert the discrete, non-differentiable sampling of quantization into a continuous, differentiable process. This allows for the optimization of quantization levels in tandem with the DNN architecture.</p>
+<p>Furthermore, the methodology provides a comprehensive performance and resource formulation that captures the intermediate performance and resource usage of each DNN operation and block. This includes the latency of operations under different quantization schemes and the resource requirements in terms of hardware-specific parameters, such as the number of DSPs on an FPGA.</p>
+<p>The co-search process is carried out in a bilevel fashion. In the first level, the DNN weights are optimized on the training dataset to minimize the training loss. In the second level, the DNN architecture and implementation variables are updated by minimizing the objective function on the validation set. This iterative process continues until convergence or a fixed number of epochs is reached.</p>
+<p>The research demonstrates the effectiveness of the methodology through extensive experiments on three different hardware platforms: GPUs, recursive FPGA accelerators, and pipelined FPGA accelerators. For each platform, a representative DNN model is searched and optimized, achieving competitive accuracy while significantly improving performance metrics such as latency and throughput.</p>
+<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p>The experimental setup of this research is meticulously designed to validate the effectiveness of the proposed co-search methodology. The experiments are conducted on a subset of the ImageNet dataset, which is a standard benchmark for evaluating DNN models. The models searched by the methodology are trained from scratch on the entire ImageNet dataset, which consists of 1000 classes, to ensure a comprehensive assessment of their performance.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181427801.png" alt="image-20240330181427801"></p>
+<p>Three distinct DNN models, referred to as EDD-Nets, are targeted in the experiments: EDD-Net-1 for low-latency GPU implementation, EDD-Net-2 for recursive FPGA architecture, and EDD-Net-3 for pipelined FPGA architecture. The initial DNN for the search consists of 20 MBConv blocks, with each block offering a variety of operation candidates defined by different filter sizes and channel expansion ratios. The DNN weights and activations are optimized for each hardware platform, considering the specific constraints and capabilities of GPUs and FPGAs.</p>
+<p>The experiments utilize a fixed number of epochs for the EDD search process, with the DNN weights updated through stochastic gradient descent. The architecture and implementation variables are optimized using a bilevel approach, where the DNN weights are first fixed and the objective function is minimized over the validation set. This process is repeated until the training converges or the predefined number of epochs is completed.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181441030.png" alt="image-20240330181441030"></p>
+<p>The results of the experiments demonstrate the efficacy of the co-search methodology. EDD-Net-1 achieves a top-1 test error of 25.3% and a latency of 11.17 ms on the Titan RTX GPU, outperforming existing hardware-aware NAS approaches in terms of inference speed. When re-trained and fine-tuned on an Nvidia 1080 Ti GPU, EDD-Net-1 shows a latency reduction across different data precisions, with the shortest latency of 1.74 ms achieved using 8-bit integer precision.</p>
+<p>For FPGA implementations, EDD-Net-2 and EDD-Net-3 are compared with state-of-the-art solutions. EDD-Net-2, optimized for a recursive FPGA accelerator, delivers a latency of 7.96 ms on the Xilinx ZCU102 FPGA, outperforming other models by a significant margin. EDD-Net-3, designed for a pipelined FPGA architecture, achieves a throughput of 40.2 frames per second on the ZC706 FPGA, indicating a 1.45倍 increase in performance over the previous best solution.</p>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>PaperReading</category>
+      </categories>
+      <tags>
+        <tag>NAS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Direct federated neural architecture search</title>
+    <url>/2022/01/01/DFNAs/</url>
+    <content><![CDATA[<p><a class="link" href="https://dp-ml.github.io/2021-workshop-ICLR/files/32.pdf">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Federated Learning (FL) has emerged as a leading approach for training machine learning models in a privacy-preserving manner, by allowing multiple clients to collaboratively train a shared model without directly sharing their data. However, the effectiveness of FL is often limited by the use of static, predefined neural network architectures that do not account for the diverse and heterogeneous nature of client-held data.</p>
+<p>In the realm of neural network design, Neural Architecture Search (NAS) has demonstrated significant potential in automating the discovery of high-performing architectures tailored to specific tasks and datasets. Yet, the integration of NAS with FL has been hindered by the computational demands of existing methods and their inability to adapt to the non-IID data distribution common in FL scenarios.</p>
+<p>This discrepancy between the potential benefits of NAS and the practical challenges of its application in FL environments underscores the need for a more efficient and adaptable approach. The goal is to develop an end-to-end NAS technique that can seamlessly operate within the constraints of FL, dynamically searching for and optimizing neural network architectures that not only enhance model accuracy but also minimize resource usage.</p>
+<p>Such an approach would be pivotal in unlocking the full potential of FL, enabling it to deliver more accurate and personalized models at scale, while upholding the privacy and regulatory requirements of various domains. By overcoming the computational and data distribution barriers, this research aims to propel FL towards broader adoption and more impactful applications.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>This research introduces a groundbreaking method that significantly advances the field of Federated Learning (FL) by seamlessly integrating Neural Architecture Search (NAS) into the FL framework. The primary contributions of this work are threefold:</p>
+<ol>
+<li><p>It pioneers the concept of FedNAS for both cross-silo and cross-device environments, where data is partitioned by examples, and the architecture is learned in tandem with model parameters. This innovative approach allows for the discovery of optimal neural network architectures that are tailored to the specific characteristics of each client’s data.</p>
+</li>
+<li><p>The proposed method offers an efficient, plug-and-play solution for searching and deploying neural network architectures within the federated setting. By eliminating the need for retraining the derived network on the clients, it simplifies the process and reduces the computational overhead, making it suitable for low-resource devices.</p>
+</li>
+<li><p>Through extensive experiments, the research demonstrates a substantial reduction in communication rounds and computational resources compared to existing methods. For the same number of communication rounds, the method achieves an average test accuracy improvement of up to 10% compared to predefined models with Federated Averaging (FedAvg).</p>
+</li>
+</ol>
+<p>These contributions collectively pave the way for more efficient, accurate, and resource-conscious FL systems, capable of handling the intricacies of real-world data distributions and computational constraints. The work sets a new standard for the application of NAS in FL, pushing the boundaries of what is possible in the pursuit of optimized and privacy-preserving machine learning models.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330173119893.png" alt="image-20240330173119893"></p>
+<p>The methodology presented in this research is a novel approach to addressing the challenges of applying Neural Architecture Search (NAS) within the context of Federated Learning (FL). The core of this approach is a direct federated NAS technique that is designed to identify and optimize neural network architectures in a one-stage process, specifically tailored for the heterogeneous and distributed nature of FL environments.</p>
+<p>The method begins by defining the problem within the federated learning paradigm, where multiple clients, each with their own local data, collaborate to train a shared model without exchanging data. The key innovation is the inclusion of the network architecture as a variable parameter, alongside the traditional model weights. This allows for the simultaneous optimization of both the architecture and the model parameters, aiming to maximize the predictive performance on the given task.</p>
+<p>To achieve this, the method employs a parent network, which is a directed acyclic graph (DAG) representing the search space of possible neural network architectures. Each node in the DAG corresponds to an intermediate representation of the data, and the edges represent transformations such as pooling or convolution. Multiple edges between nodes represent the different architectural choices available.</p>
+<p>The algorithm then samples a set of architecture parameters, which are used to construct a child network from the parent network. This child network is trained on the local data of each client using a standard optimization process, with gradients being backpropagated not only through the weights but also through the architecture parameters. This allows the algorithm to learn which architectural choices are most beneficial for the given data.</p>
+<p>A key aspect of this method is its hardware-agnostic nature, meaning it can be applied to any type of client hardware, from multi-GPU clusters in data centers to edge devices like smartphones. The parent network is constructed based on the hardware configuration, ensuring that the search process is tailored to the specific computational capabilities of the target devices.</p>
+<p>The federated aspect of the method is orchestrated by a central server, which selects a subset of clients to participate in each training round. The server aggregates the updates from the clients, updating the global architecture and weight parameters accordingly. This process is repeated over multiple rounds until convergence or a predetermined stopping criterion is met.</p>
+<p>The method’s one-stage nature is a significant departure from traditional two-stage NAS methods, which often require a separate retraining phase after the architecture has been discovered. By integrating the search and training processes, this approach reduces the overall computational cost and communication overhead, making it more suitable for the resource-constrained FL setting.</p>
+<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330173241086.png" alt="image-20240330173241086"></p>
+<p>The experimental framework of this research is meticulously designed to evaluate the efficacy of the proposed direct federated Neural Architecture Search (NAS) method within the context of Federated Learning (FL). The experiments are structured to assess the computational efficiency, communication rounds, and test accuracy of the method in comparison to existing approaches.</p>
+<p><strong>Experimental Setup:</strong></p>
+<p>The experiments are conducted using the FedML research library, which provides a comprehensive platform for FL experimentation. The target task for evaluation is image classification, a widely recognized benchmark for assessing machine learning models. Two primary datasets are utilized: the CIFAR-10 dataset for cross-silo settings and the CINIC-10 dataset for cross-device settings. These datasets are manipulated to create both Independent and Identically Distributed (IID) and non-IID data distributions to simulate various real-world scenarios.</p>
+<p>The search space for the parent network is constructed using shuffle blocks, with different configurations for cross-silo and cross-device experiments to accommodate the diversity of client devices. The method’s performance is compared against the Federated Averaging (FedAvg) algorithm and other federated NAS methods, such as FedNAS and MiLeNAS.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330173312878.png" alt="image-20240330173312878"></p>
+<p><strong>Experimental Results:</strong></p>
+<p>The results of the experiments demonstrate a significant improvement in computational efficiency and test accuracy. The proposed method achieves an order of magnitude reduction in resource consumption compared to prior art, with a notable reduction in communication rounds required for training. This reduction is crucial for FL, as it minimizes the data transmitted between clients and the server, thereby preserving privacy and reducing energy consumption.</p>
+<p>In terms of test accuracy, the method outperforms predefined models with FedAvg, showing an average improvement of up to 10% for the same number of communication rounds. This improvement is attributed to the method’s ability to adapt the network architecture to the specific characteristics of the non-IID data, leading to more accurate and robust models.</p>
+<p>The experiments also reveal that the method is highly scalable and robust across different client configurations. The performance of the method remains consistent even as the number of clients and the distribution of data vary, showcasing its adaptability to diverse FL environments.</p>
+<p>Furthermore, the memory consumption during the search process is significantly lower than other methods, making the approach viable for deployment on low-memory hardware such as smartphones and IoT devices. This is a critical aspect for real-world FL applications, where client devices can have significantly varying computational capabilities.</p>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>PaperReading</category>
+      </categories>
+      <tags>
+        <tag>NAS</tag>
+        <tag>FL</tag>
       </tags>
   </entry>
   <entry>
@@ -285,98 +377,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Direct federated neural architecture search</title>
-    <url>/2022/01/01/DFNAs/</url>
-    <content><![CDATA[<p><a class="link" href="https://dp-ml.github.io/2021-workshop-ICLR/files/32.pdf">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Federated Learning (FL) has emerged as a leading approach for training machine learning models in a privacy-preserving manner, by allowing multiple clients to collaboratively train a shared model without directly sharing their data. However, the effectiveness of FL is often limited by the use of static, predefined neural network architectures that do not account for the diverse and heterogeneous nature of client-held data.</p>
-<p>In the realm of neural network design, Neural Architecture Search (NAS) has demonstrated significant potential in automating the discovery of high-performing architectures tailored to specific tasks and datasets. Yet, the integration of NAS with FL has been hindered by the computational demands of existing methods and their inability to adapt to the non-IID data distribution common in FL scenarios.</p>
-<p>This discrepancy between the potential benefits of NAS and the practical challenges of its application in FL environments underscores the need for a more efficient and adaptable approach. The goal is to develop an end-to-end NAS technique that can seamlessly operate within the constraints of FL, dynamically searching for and optimizing neural network architectures that not only enhance model accuracy but also minimize resource usage.</p>
-<p>Such an approach would be pivotal in unlocking the full potential of FL, enabling it to deliver more accurate and personalized models at scale, while upholding the privacy and regulatory requirements of various domains. By overcoming the computational and data distribution barriers, this research aims to propel FL towards broader adoption and more impactful applications.</p>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>This research introduces a groundbreaking method that significantly advances the field of Federated Learning (FL) by seamlessly integrating Neural Architecture Search (NAS) into the FL framework. The primary contributions of this work are threefold:</p>
-<ol>
-<li><p>It pioneers the concept of FedNAS for both cross-silo and cross-device environments, where data is partitioned by examples, and the architecture is learned in tandem with model parameters. This innovative approach allows for the discovery of optimal neural network architectures that are tailored to the specific characteristics of each client’s data.</p>
-</li>
-<li><p>The proposed method offers an efficient, plug-and-play solution for searching and deploying neural network architectures within the federated setting. By eliminating the need for retraining the derived network on the clients, it simplifies the process and reduces the computational overhead, making it suitable for low-resource devices.</p>
-</li>
-<li><p>Through extensive experiments, the research demonstrates a substantial reduction in communication rounds and computational resources compared to existing methods. For the same number of communication rounds, the method achieves an average test accuracy improvement of up to 10% compared to predefined models with Federated Averaging (FedAvg).</p>
-</li>
-</ol>
-<p>These contributions collectively pave the way for more efficient, accurate, and resource-conscious FL systems, capable of handling the intricacies of real-world data distributions and computational constraints. The work sets a new standard for the application of NAS in FL, pushing the boundaries of what is possible in the pursuit of optimized and privacy-preserving machine learning models.</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330173119893.png" alt="image-20240330173119893"></p>
-<p>The methodology presented in this research is a novel approach to addressing the challenges of applying Neural Architecture Search (NAS) within the context of Federated Learning (FL). The core of this approach is a direct federated NAS technique that is designed to identify and optimize neural network architectures in a one-stage process, specifically tailored for the heterogeneous and distributed nature of FL environments.</p>
-<p>The method begins by defining the problem within the federated learning paradigm, where multiple clients, each with their own local data, collaborate to train a shared model without exchanging data. The key innovation is the inclusion of the network architecture as a variable parameter, alongside the traditional model weights. This allows for the simultaneous optimization of both the architecture and the model parameters, aiming to maximize the predictive performance on the given task.</p>
-<p>To achieve this, the method employs a parent network, which is a directed acyclic graph (DAG) representing the search space of possible neural network architectures. Each node in the DAG corresponds to an intermediate representation of the data, and the edges represent transformations such as pooling or convolution. Multiple edges between nodes represent the different architectural choices available.</p>
-<p>The algorithm then samples a set of architecture parameters, which are used to construct a child network from the parent network. This child network is trained on the local data of each client using a standard optimization process, with gradients being backpropagated not only through the weights but also through the architecture parameters. This allows the algorithm to learn which architectural choices are most beneficial for the given data.</p>
-<p>A key aspect of this method is its hardware-agnostic nature, meaning it can be applied to any type of client hardware, from multi-GPU clusters in data centers to edge devices like smartphones. The parent network is constructed based on the hardware configuration, ensuring that the search process is tailored to the specific computational capabilities of the target devices.</p>
-<p>The federated aspect of the method is orchestrated by a central server, which selects a subset of clients to participate in each training round. The server aggregates the updates from the clients, updating the global architecture and weight parameters accordingly. This process is repeated over multiple rounds until convergence or a predetermined stopping criterion is met.</p>
-<p>The method’s one-stage nature is a significant departure from traditional two-stage NAS methods, which often require a separate retraining phase after the architecture has been discovered. By integrating the search and training processes, this approach reduces the overall computational cost and communication overhead, making it more suitable for the resource-constrained FL setting.</p>
-<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330173241086.png" alt="image-20240330173241086"></p>
-<p>The experimental framework of this research is meticulously designed to evaluate the efficacy of the proposed direct federated Neural Architecture Search (NAS) method within the context of Federated Learning (FL). The experiments are structured to assess the computational efficiency, communication rounds, and test accuracy of the method in comparison to existing approaches.</p>
-<p><strong>Experimental Setup:</strong></p>
-<p>The experiments are conducted using the FedML research library, which provides a comprehensive platform for FL experimentation. The target task for evaluation is image classification, a widely recognized benchmark for assessing machine learning models. Two primary datasets are utilized: the CIFAR-10 dataset for cross-silo settings and the CINIC-10 dataset for cross-device settings. These datasets are manipulated to create both Independent and Identically Distributed (IID) and non-IID data distributions to simulate various real-world scenarios.</p>
-<p>The search space for the parent network is constructed using shuffle blocks, with different configurations for cross-silo and cross-device experiments to accommodate the diversity of client devices. The method’s performance is compared against the Federated Averaging (FedAvg) algorithm and other federated NAS methods, such as FedNAS and MiLeNAS.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330173312878.png" alt="image-20240330173312878"></p>
-<p><strong>Experimental Results:</strong></p>
-<p>The results of the experiments demonstrate a significant improvement in computational efficiency and test accuracy. The proposed method achieves an order of magnitude reduction in resource consumption compared to prior art, with a notable reduction in communication rounds required for training. This reduction is crucial for FL, as it minimizes the data transmitted between clients and the server, thereby preserving privacy and reducing energy consumption.</p>
-<p>In terms of test accuracy, the method outperforms predefined models with FedAvg, showing an average improvement of up to 10% for the same number of communication rounds. This improvement is attributed to the method’s ability to adapt the network architecture to the specific characteristics of the non-IID data, leading to more accurate and robust models.</p>
-<p>The experiments also reveal that the method is highly scalable and robust across different client configurations. The performance of the method remains consistent even as the number of clients and the distribution of data vary, showcasing its adaptability to diverse FL environments.</p>
-<p>Furthermore, the memory consumption during the search process is significantly lower than other methods, making the approach viable for deployment on low-memory hardware such as smartphones and IoT devices. This is a critical aspect for real-world FL applications, where client devices can have significantly varying computational capabilities.</p>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>PaperReading</category>
-      </categories>
-      <tags>
-        <tag>NAS</tag>
-        <tag>FL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Edd: Efficient differentiable dnn architecture and implementation co-search for embedded ai solutions</title>
-    <url>/2021/08/28/Edd/</url>
-    <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/2005.02563.pdf">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>In the rapidly evolving field of Artificial Intelligence (AI), the quest for high-quality AI solutions has led to a growing interest in the joint optimization of AI algorithms and their hardware implementations. Deep Neural Networks (DNNs), the workhorse of modern AI, have demonstrated remarkable achievements but are often limited by the efficiency of their hardware deployment. Traditional approaches to enhance algorithm quality, such as neural architecture search (NAS), have focused on developing DNNs that surpass human-designed architectures. However, these methods often overlook the simultaneous optimization of hardware implementations, which is crucial for improving performance metrics like latency, throughput, and energy efficiency.</p>
-<p>Recent advancements in hardware-aware NAS and hardware/software co-design have begun to address this gap by considering hardware features in DNN design. Yet, there remains a significant opportunity to further optimize by integrating the hardware implementation search within the NAS process. This integration can provide more accurate performance evaluations and instant guidance for hardware-aware DNN design.</p>
-<p>The motivation behind this research is to bridge this gap by proposing a novel methodology that performs a fully simultaneous and efficient co-search for DNN architecture and hardware implementation. This approach aims to maximize both algorithm accuracy and hardware implementation quality, offering a unified solution applicable to various devices and performance objectives. By fusing DNN search variables with hardware implementation variables into a single solution space and leveraging differentiable formulations, the methodology enables the use of gradient descent algorithms, significantly reducing search time and optimizing AI solutions for embedded AI applications.</p>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181325138.png" alt="image-20240330181325138"></p>
-<p>This research introduces a groundbreaking methodology that addresses the critical need for a simultaneous and efficient approach to co-search for DNN architecture and hardware implementation. The primary contributions of the study are manifold:</p>
-<ol>
-<li><p>It pioneers a mathematical formulation that unifies the search space for DNN architecture and hardware implementation, aiming to maximize DNN accuracy and implementation performance concurrently. This formulation is differentiable, allowing for the application of gradient descent algorithms and significantly expediting the search process.</p>
-</li>
-<li><p>The proposed formulation is versatile, applicable across various hardware platforms such as GPUs, FPGAs, and dedicated accelerators. It is designed to target diverse performance objectives, including latency, throughput, and energy efficiency, while also considering resource usage and sharing constraints.</p>
-</li>
-<li><p>The methodology demonstrates its effectiveness through experiments that search for representative DNNs tailored for low-latency GPU implementation and FPGA implementations with both recursive and pipelined architectures. Each model produced achieves comparable accuracy to state-of-the-art NAS methods but with superior performance within a short search timeframe.</p>
-</li>
-<li><p>The study also presents a novel approach to differentiable quantization and performance/resource formulation, which is crucial for the co-search process. This allows for the optimization of data precision in DNNs, leading to more efficient computation and resource utilization.</p>
-</li>
-</ol>
-<p>These contributions collectively push the boundaries of AI research by providing a comprehensive framework that enhances the quality and efficiency of AI solutions, particularly for embedded systems where performance and resource constraints are paramount.</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>The methodology at the core of this research is an innovative approach to the co-search problem, which integrates the search for optimal DNN architectures with the search for efficient hardware implementations. This is achieved through a differentiable framework that allows for a unified optimization process.</p>
-<p>At the outset, the research introduces a mathematical formulation that combines DNN search variables, which define the structure and parameters of the network, with hardware implementation variables, which pertain to the physical realization of the DNN on various devices. This fusion creates a unified solution space where both algorithm accuracy and hardware performance are optimized simultaneously.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181352045.png" alt="image-20240330181352045"></p>
-<p>The key innovation lies in the differentiability of the formulation. By ensuring that the objective function, which includes both accuracy loss and performance loss, is differentiable with respect to the fused variables, gradient descent algorithms can be applied. This enables efficient optimization, significantly reducing the search time compared to traditional exhaustive search methods.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181403203.png" alt="image-20240330181403203"></p>
-<p>The methodology also introduces a unique approach to differentiable quantization, a critical aspect of hardware implementation. Quantization involves reducing the precision of data to increase computational efficiency, but it must be carefully balanced with the impact on DNN accuracy. The proposed method uses a Gumbel-Softmax function to convert the discrete, non-differentiable sampling of quantization into a continuous, differentiable process. This allows for the optimization of quantization levels in tandem with the DNN architecture.</p>
-<p>Furthermore, the methodology provides a comprehensive performance and resource formulation that captures the intermediate performance and resource usage of each DNN operation and block. This includes the latency of operations under different quantization schemes and the resource requirements in terms of hardware-specific parameters, such as the number of DSPs on an FPGA.</p>
-<p>The co-search process is carried out in a bilevel fashion. In the first level, the DNN weights are optimized on the training dataset to minimize the training loss. In the second level, the DNN architecture and implementation variables are updated by minimizing the objective function on the validation set. This iterative process continues until convergence or a fixed number of epochs is reached.</p>
-<p>The research demonstrates the effectiveness of the methodology through extensive experiments on three different hardware platforms: GPUs, recursive FPGA accelerators, and pipelined FPGA accelerators. For each platform, a representative DNN model is searched and optimized, achieving competitive accuracy while significantly improving performance metrics such as latency and throughput.</p>
-<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p>The experimental setup of this research is meticulously designed to validate the effectiveness of the proposed co-search methodology. The experiments are conducted on a subset of the ImageNet dataset, which is a standard benchmark for evaluating DNN models. The models searched by the methodology are trained from scratch on the entire ImageNet dataset, which consists of 1000 classes, to ensure a comprehensive assessment of their performance.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181427801.png" alt="image-20240330181427801"></p>
-<p>Three distinct DNN models, referred to as EDD-Nets, are targeted in the experiments: EDD-Net-1 for low-latency GPU implementation, EDD-Net-2 for recursive FPGA architecture, and EDD-Net-3 for pipelined FPGA architecture. The initial DNN for the search consists of 20 MBConv blocks, with each block offering a variety of operation candidates defined by different filter sizes and channel expansion ratios. The DNN weights and activations are optimized for each hardware platform, considering the specific constraints and capabilities of GPUs and FPGAs.</p>
-<p>The experiments utilize a fixed number of epochs for the EDD search process, with the DNN weights updated through stochastic gradient descent. The architecture and implementation variables are optimized using a bilevel approach, where the DNN weights are first fixed and the objective function is minimized over the validation set. This process is repeated until the training converges or the predefined number of epochs is completed.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181441030.png" alt="image-20240330181441030"></p>
-<p>The results of the experiments demonstrate the efficacy of the co-search methodology. EDD-Net-1 achieves a top-1 test error of 25.3% and a latency of 11.17 ms on the Titan RTX GPU, outperforming existing hardware-aware NAS approaches in terms of inference speed. When re-trained and fine-tuned on an Nvidia 1080 Ti GPU, EDD-Net-1 shows a latency reduction across different data precisions, with the shortest latency of 1.74 ms achieved using 8-bit integer precision.</p>
-<p>For FPGA implementations, EDD-Net-2 and EDD-Net-3 are compared with state-of-the-art solutions. EDD-Net-2, optimized for a recursive FPGA accelerator, delivers a latency of 7.96 ms on the Xilinx ZCU102 FPGA, outperforming other models by a significant margin. EDD-Net-3, designed for a pipelined FPGA architecture, achieves a throughput of 40.2 frames per second on the ZC706 FPGA, indicating a 1.45倍 increase in performance over the previous best solution.</p>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>PaperReading</category>
-      </categories>
-      <tags>
-        <tag>NAS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Fedmask: Joint computation and communication-efficient personalized federated learning via heterogeneous masking</title>
     <url>/2021/09/03/FedMask/</url>
     <content><![CDATA[<p><a class="link" href="https://dl.acm.org/doi/pdf/10.1145/3485730.3485929">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
@@ -416,44 +416,6 @@
       <tags>
         <tag>NAS</tag>
         <tag>FL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Single-Path NAS: Designing Hardware-Efficient ConvNets in less than 4 Hours</title>
-    <url>/2020/02/13/SingeNas/</url>
-    <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/1904.02877.pdf">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330173945735.png" alt="image-20240330173945735"></p>
-<p>The rapid evolution of mobile technology has led to an increasing demand for sophisticated applications capable of advanced tasks such as image classification, while maintaining optimal performance and efficiency. However, the deployment of complex machine learning models like Convolutional Neural Networks (ConvNets) on mobile devices is often hindered by the limited computational resources and strict latency requirements of these platforms. This has sparked a need for hardware-efficient ConvNets that can deliver high accuracy without compromising on speed.</p>
-<p>Neural Architecture Search (NAS) has emerged as a powerful tool for automating the design of ConvNets, offering the potential to explore a vast design space to find optimal network architectures. Despite its promise, traditional NAS methods are often computationally expensive, requiring significant GPU hours to search through the multitude of possible architectures, making it impractical for widespread use.</p>
-<p>Recognizing these challenges, the research community has been driven to develop more efficient NAS methods that can significantly reduce the search time. The goal is to design ConvNets that not only meet the accuracy and latency criteria for mobile devices but also minimize the computational overhead of the search process. By doing so, researchers aim to democratize the use of NAS, enabling a broader range of applications and promoting further innovation in mobile artificial intelligence. This pursuit has led to the exploration of novel NAS techniques that leverage differentiable search methods, aiming to achieve a balance between efficiency and performance, and ultimately, to unlock the full potential of mobile AI.</p>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>This research makes several pivotal contributions to the field of efficient Neural Architecture Search (NAS) for mobile devices. Firstly, it introduces a novel single-path search space that dramatically reduces the number of trainable parameters compared to traditional multi-path NAS methods. This innovation allows for a more streamlined and efficient search process, which is crucial for deploying ConvNets on hardware with limited resources.</p>
-<p>Secondly, the method achieves state-of-the-art accuracy on the ImageNet dataset while maintaining a latency suitable for mobile devices. This accomplishment demonstrates that the proposed approach can effectively balance the trade-off between performance and efficiency, a common challenge in mobile AI applications.</p>
-<p>Thirdly, the research significantly improves the efficiency of the NAS process, reducing the search cost by up to 5,000 times compared to prior work. By completing the search in merely eight epochs, the method makes NAS more practical and accessible, potentially enabling broader adoption in the development of mobile applications.</p>
-<p>Lastly, the authors prioritize reproducibility by open-sourcing the entire codebase, which not only allows others to verify the results but also encourages further research and development in the area of hardware-aware NAS. This transparent approach fosters a collaborative environment and paves the way for future advancements in the field. Overall, these contributions represent a significant leap towards realizing the full potential of mobile AI through the efficient design of ConvNets.</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330174155827.png" alt="image-20240330174155827"></p>
-<p>The methodology introduced in this research is a novel approach to Neural Architecture Search (NAS) that focuses on designing hardware-efficient Convolutional Neural Networks (ConvNets) suitable for mobile devices. The core innovation is the Single-Path NAS, a differentiable NAS method that significantly reduces the search time while maintaining high accuracy and adherence to latency constraints.</p>
-<p>At the heart of Single-Path NAS is the concept of a single-path search space, which contrasts with previous methods that often employed multi-path supernets. Instead of exploring numerous distinct architectures, Single-Path NAS uses a single, over-parameterized ConvNet where all architectural decisions are encoded with shared convolutional kernel parameters. This paradigm shift reduces the number of trainable parameters, leading to a substantial decrease in search cost.</p>
-<p>The method operates by searching over an over-parameterized “superkernel” in each ConvNet layer. This superkernel contains the weights for all candidate convolutional operations, allowing the search to be framed as identifying the appropriate subset of kernel weights to use. By sharing the convolutional kernel weights across different architectural options, the method avoids the need to maintain separate paths for each candidate operation, which is a common practice in multi-path NAS methods.</p>
-<p>A critical component of Single-Path NAS is the use of a hardware-aware objective function that incorporates an accurate inference latency model. This model predicts the runtime of the ConvNets on the target mobile platform, allowing the search to optimize for both accuracy and efficiency. The objective function is designed to be differentiable, ensuring that gradients can be computed efficiently during the search process.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330175957878.png" alt="image-20240330175957878"></p>
-<p>The Single-Path NAS methodology leverages a one-shot NAS formulation, where the search is conducted over a single, compact neural network rather than a bi-level optimization problem. This formulation eliminates the need for separate gradient steps between the ConvNet weights and the NAS parameters, simplifying the training process and further reducing the search time.</p>
-<p>The research also introduces a reproducibility aspect by open-sourcing the entire codebase, enabling other researchers and practitioners to reproduce the results and build upon the methodology. This openness fosters collaboration and accelerates the advancement of NAS techniques for mobile devices.</p>
-<p>In summary, the Single-Path NAS method represents a significant leap forward in the field of NAS, particularly for mobile applications. By streamlining the search process and reducing the computational demands, it makes the design of hardware-efficient ConvNets more accessible and practical. The method’s focus on accuracy, efficiency, and reproducibility sets a new standard for future research in this domain.</p>
-<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330180022085.png" alt="image-20240330180022085"></p>
-<p>The experimental setup of this research is meticulously designed to evaluate the efficacy of the proposed method in the context of mobile device deployment. The primary dataset utilized is the ImageNet dataset, a large-scale collection of images widely recognized for benchmarking image classification models. The target platform for the ConvNets designed through the method is the Pixel 1 smartphone, representative of real-world mobile devices.</p>
-<p>The method’s implementation leverages TensorFlow and TPUs (Tensor Processing Units), which are specialized hardware accelerators for machine learning workloads. All models are deployed using TensorFlow TFLite, ensuring compatibility with the mobile platform. Runtime profiling is conducted using the Facebook AI Performance Evaluation Platform (FAI-PEP), which provides detailed per-layer runtime breakdowns, essential for latency-sensitive applications.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330180835451.png" alt="image-20240330180835451"></p>
-<p>The experimental results are nothing short of impressive. The proposed method achieves a top-1 accuracy of 74.96% on ImageNet, with an inference latency of just 79ms on the Pixel 1 phone. This performance is not only state-of-the-art among hardware-efficient NAS methods but also maintains a target latency of 80ms, as per the experimental constraints.</p>
-<p>In terms of search efficiency, the method requires only eight epochs to reach its peak performance, which translates to a mere 3.75 hours of wall-clock time on a TPUv2. This represents a staggering improvement over previous NAS methods, which could take weeks of computational time. Specifically, the method is up to 5,000 times faster in search cost compared to existing approaches, making it a groundbreaking advancement in the realm of NAS.</p>
-<p>The research also includes an ablation study to understand the impact of kernel-weight subsets on the accuracy and efficiency trade-off. The findings suggest that training over subsets of kernel weights can effectively capture similar accuracy-runtime trade-offs as individually trained kernels, highlighting the flexibility and adaptability of the proposed method.</p>
-<p>Furthermore, the method’s runtime model is validated for accuracy, with an average prediction error of just 1.76%, indicating its reliability in estimating the performance of the designed ConvNets.</p>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>PaperReading</category>
-      </categories>
-      <tags>
-        <tag>NAS</tag>
       </tags>
   </entry>
   <entry>
@@ -557,6 +519,62 @@
       </tags>
   </entry>
   <entry>
+    <title>Single-Path NAS: Designing Hardware-Efficient ConvNets in less than 4 Hours</title>
+    <url>/2020/02/13/SingeNas/</url>
+    <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/1904.02877.pdf">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330173945735.png" alt="image-20240330173945735"></p>
+<p>The rapid evolution of mobile technology has led to an increasing demand for sophisticated applications capable of advanced tasks such as image classification, while maintaining optimal performance and efficiency. However, the deployment of complex machine learning models like Convolutional Neural Networks (ConvNets) on mobile devices is often hindered by the limited computational resources and strict latency requirements of these platforms. This has sparked a need for hardware-efficient ConvNets that can deliver high accuracy without compromising on speed.</p>
+<p>Neural Architecture Search (NAS) has emerged as a powerful tool for automating the design of ConvNets, offering the potential to explore a vast design space to find optimal network architectures. Despite its promise, traditional NAS methods are often computationally expensive, requiring significant GPU hours to search through the multitude of possible architectures, making it impractical for widespread use.</p>
+<p>Recognizing these challenges, the research community has been driven to develop more efficient NAS methods that can significantly reduce the search time. The goal is to design ConvNets that not only meet the accuracy and latency criteria for mobile devices but also minimize the computational overhead of the search process. By doing so, researchers aim to democratize the use of NAS, enabling a broader range of applications and promoting further innovation in mobile artificial intelligence. This pursuit has led to the exploration of novel NAS techniques that leverage differentiable search methods, aiming to achieve a balance between efficiency and performance, and ultimately, to unlock the full potential of mobile AI.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>This research makes several pivotal contributions to the field of efficient Neural Architecture Search (NAS) for mobile devices. Firstly, it introduces a novel single-path search space that dramatically reduces the number of trainable parameters compared to traditional multi-path NAS methods. This innovation allows for a more streamlined and efficient search process, which is crucial for deploying ConvNets on hardware with limited resources.</p>
+<p>Secondly, the method achieves state-of-the-art accuracy on the ImageNet dataset while maintaining a latency suitable for mobile devices. This accomplishment demonstrates that the proposed approach can effectively balance the trade-off between performance and efficiency, a common challenge in mobile AI applications.</p>
+<p>Thirdly, the research significantly improves the efficiency of the NAS process, reducing the search cost by up to 5,000 times compared to prior work. By completing the search in merely eight epochs, the method makes NAS more practical and accessible, potentially enabling broader adoption in the development of mobile applications.</p>
+<p>Lastly, the authors prioritize reproducibility by open-sourcing the entire codebase, which not only allows others to verify the results but also encourages further research and development in the area of hardware-aware NAS. This transparent approach fosters a collaborative environment and paves the way for future advancements in the field. Overall, these contributions represent a significant leap towards realizing the full potential of mobile AI through the efficient design of ConvNets.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330174155827.png" alt="image-20240330174155827"></p>
+<p>The methodology introduced in this research is a novel approach to Neural Architecture Search (NAS) that focuses on designing hardware-efficient Convolutional Neural Networks (ConvNets) suitable for mobile devices. The core innovation is the Single-Path NAS, a differentiable NAS method that significantly reduces the search time while maintaining high accuracy and adherence to latency constraints.</p>
+<p>At the heart of Single-Path NAS is the concept of a single-path search space, which contrasts with previous methods that often employed multi-path supernets. Instead of exploring numerous distinct architectures, Single-Path NAS uses a single, over-parameterized ConvNet where all architectural decisions are encoded with shared convolutional kernel parameters. This paradigm shift reduces the number of trainable parameters, leading to a substantial decrease in search cost.</p>
+<p>The method operates by searching over an over-parameterized “superkernel” in each ConvNet layer. This superkernel contains the weights for all candidate convolutional operations, allowing the search to be framed as identifying the appropriate subset of kernel weights to use. By sharing the convolutional kernel weights across different architectural options, the method avoids the need to maintain separate paths for each candidate operation, which is a common practice in multi-path NAS methods.</p>
+<p>A critical component of Single-Path NAS is the use of a hardware-aware objective function that incorporates an accurate inference latency model. This model predicts the runtime of the ConvNets on the target mobile platform, allowing the search to optimize for both accuracy and efficiency. The objective function is designed to be differentiable, ensuring that gradients can be computed efficiently during the search process.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330175957878.png" alt="image-20240330175957878"></p>
+<p>The Single-Path NAS methodology leverages a one-shot NAS formulation, where the search is conducted over a single, compact neural network rather than a bi-level optimization problem. This formulation eliminates the need for separate gradient steps between the ConvNet weights and the NAS parameters, simplifying the training process and further reducing the search time.</p>
+<p>The research also introduces a reproducibility aspect by open-sourcing the entire codebase, enabling other researchers and practitioners to reproduce the results and build upon the methodology. This openness fosters collaboration and accelerates the advancement of NAS techniques for mobile devices.</p>
+<p>In summary, the Single-Path NAS method represents a significant leap forward in the field of NAS, particularly for mobile applications. By streamlining the search process and reducing the computational demands, it makes the design of hardware-efficient ConvNets more accessible and practical. The method’s focus on accuracy, efficiency, and reproducibility sets a new standard for future research in this domain.</p>
+<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330180022085.png" alt="image-20240330180022085"></p>
+<p>The experimental setup of this research is meticulously designed to evaluate the efficacy of the proposed method in the context of mobile device deployment. The primary dataset utilized is the ImageNet dataset, a large-scale collection of images widely recognized for benchmarking image classification models. The target platform for the ConvNets designed through the method is the Pixel 1 smartphone, representative of real-world mobile devices.</p>
+<p>The method’s implementation leverages TensorFlow and TPUs (Tensor Processing Units), which are specialized hardware accelerators for machine learning workloads. All models are deployed using TensorFlow TFLite, ensuring compatibility with the mobile platform. Runtime profiling is conducted using the Facebook AI Performance Evaluation Platform (FAI-PEP), which provides detailed per-layer runtime breakdowns, essential for latency-sensitive applications.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330180835451.png" alt="image-20240330180835451"></p>
+<p>The experimental results are nothing short of impressive. The proposed method achieves a top-1 accuracy of 74.96% on ImageNet, with an inference latency of just 79ms on the Pixel 1 phone. This performance is not only state-of-the-art among hardware-efficient NAS methods but also maintains a target latency of 80ms, as per the experimental constraints.</p>
+<p>In terms of search efficiency, the method requires only eight epochs to reach its peak performance, which translates to a mere 3.75 hours of wall-clock time on a TPUv2. This represents a staggering improvement over previous NAS methods, which could take weeks of computational time. Specifically, the method is up to 5,000 times faster in search cost compared to existing approaches, making it a groundbreaking advancement in the realm of NAS.</p>
+<p>The research also includes an ablation study to understand the impact of kernel-weight subsets on the accuracy and efficiency trade-off. The findings suggest that training over subsets of kernel weights can effectively capture similar accuracy-runtime trade-offs as individually trained kernels, highlighting the flexibility and adaptability of the proposed method.</p>
+<p>Furthermore, the method’s runtime model is validated for accuracy, with an average prediction error of just 1.76%, indicating its reliability in estimating the performance of the designed ConvNets.</p>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>PaperReading</category>
+      </categories>
+      <tags>
+        <tag>NAS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Speculative Sampling</title>
+    <url>/2023/09/28/Speculative%20Decoding/</url>
+    <content><![CDATA[<p>Remember the Hacker News thread when GPT-4 was released? It mentioned the use of speculative sampling in GPT-4 to accelerate inference. So, what exactly is speculative sampling?</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/202312070010475.png"></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="Refference"><a href="#Refference" class="headerlink" title="Refference"></a>Refference</h2><ol>
+<li><a class="link" href="https://zhuanlan.zhihu.com/p/651359908">https://zhuanlan.zhihu.com/p/651359908 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>Transformer</tag>
+        <tag>LLM</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>BlockQNN: Efficient Block-wise Neural Network Architecture Generation</title>
     <url>/2020/01/30/blockqnn/</url>
     <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/1808.05584.pdf">https://arxiv.org/pdf/1808.05584.pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
@@ -590,211 +608,6 @@
         <category>PaperReading</category>
       </categories>
       <tags>
-        <tag>NAS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Speculative Sampling</title>
-    <url>/2023/09/28/Speculative%20Decoding/</url>
-    <content><![CDATA[<p>Remember the Hacker News thread when GPT-4 was released? It mentioned the use of speculative sampling in GPT-4 to accelerate inference. So, what exactly is speculative sampling?</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/202312070010475.png"></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="Refference"><a href="#Refference" class="headerlink" title="Refference"></a>Refference</h2><ol>
-<li><a class="link" href="https://zhuanlan.zhihu.com/p/651359908">https://zhuanlan.zhihu.com/p/651359908 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>LLM</tag>
-        <tag>Transformer</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>[CUDA]sgemm</title>
-    <url>/2022/08/01/cuda_sgemm/</url>
-    <content><![CDATA[<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a class="link" href="https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html">https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-<li><a class="link" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-</ul>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2>]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>Note</category>
-        <category>Coding</category>
-      </categories>
-      <tags>
-        <tag>CUDA</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>[CUDA]reduce</title>
-    <url>/2022/07/20/cuda_reduce/</url>
-    <content><![CDATA[<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a class="link" href="https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html">https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-<li><a class="link" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-<li><a class="link" href="https://zhuanlan.zhihu.com/p/426978026">https://zhuanlan.zhihu.com/p/426978026 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-</ul>
-<h2 id="Basic-Concepts"><a href="#Basic-Concepts" class="headerlink" title="Basic Concepts"></a>Basic Concepts</h2><p>Reduction problems are a common category of questions encountered in interviews. Compared to elementwise problems, where each thread independently performs tasks, reduction problems become more complex due to the involvement of synchronization and communication between threads. Additionally, these problems can leverage the previously introduced optimization techniques for vectorized memory access, which adds a layer of complexity in terms of thought process.<br>The <code>reductions.cu</code> file primarily implements the following three kernel functions for reduction summation:</p>
-<ol>
-<li>The most basic <code>atomic_reduction()</code>, which extensively utilizes the <code>atomicAdd()</code> function.</li>
-<li>The sweep style reduction sum <code>reduction_a()</code>, which calls <code>atomicAdd</code> once at the end.</li>
-<li>The warp shuffle reduction <code>reduction_ws()</code>, which also calls <code>atomicAdd</code> once at the end.</li>
-</ol>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240331211607423.png" alt="image-20240331211607423"></p>
-<p>Theory: The <code>atomic_reduction()</code> is the slowest because it heavily relies on the <code>atomicAdd()</code> function. Compared to <code>reduction_a</code>, <code>reduction_ws</code> tends to perform better due to its minimal use of shared memory.</p>
-<p>Observed Phenomena:</p>
-<ol>
-<li>As the data size increases, the performance advantage of <code>reduce_ws</code> over <code>reduction_a</code> diminishes.</li>
-<li>The use of the <code>atomicAdd</code> function affects the Memory utilization rate, and this impact does not vary with the scale of the data.</li>
-</ol>
-<p>Regarding the first point: Both <code>reduce_ws</code> and <code>reduction_a</code> require loading data within a grid-stride loop initially. As the data size grows, the time taken to load the data becomes the dominant factor in the overall time consumption. At this juncture, the specific method of performing reduction matters less, hence the time difference narrows with increasing data sizes. In theory, warp shuffle should offer better performance than the classic reduction sum, but in practice, it still depends on the specific data scale of the problem at hand and requires a detailed analysis.</p>
-<p>Regarding the second point: The impact of the <code>atomicAdd</code> function on performance is significant because it can reduce the Memory utilization rate to a very low level, and this is difficult to improve by simply changing the data scale.</p>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>Note</category>
-        <category>Coding</category>
-      </categories>
-      <tags>
-        <tag>CUDA</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>[CUDA]sgemv</title>
-    <url>/2022/08/16/cuda_sgemv/</url>
-    <content><![CDATA[<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a class="link" href="https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html">https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-<li><a class="link" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-<li></li>
-</ul>
-<h2 id="Basic-concepts"><a href="#Basic-concepts" class="headerlink" title="Basic concepts"></a>Basic concepts</h2><h2 id="Naieve"><a href="#Naieve" class="headerlink" title="Naieve"></a>Naieve</h2><h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2>]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>Note</category>
-        <category>Coding</category>
-      </categories>
-      <tags>
-        <tag>CUDA</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Real-time federated evolutionary neural architecture search</title>
-    <url>/2021/10/02/fedevo/</url>
-    <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/2003.02793.pdf">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>In the realm of machine learning, preserving user privacy has become paramount, leading to the development of federated learning. This distributed approach allows multiple devices to collaboratively train a shared model while keeping data local, thus enhancing privacy. However, federated learning faces challenges, particularly the high communication costs due to the transmission of large model parameters and the substantial computational resources required for training complex models like deep neural networks. These issues are further compounded when conducting neural architecture search (NAS) within a federated environment.</p>
-<p>The traditional centralized NAS methods, which are often computationally intensive, are not ideal for federated learning due to their disregard for model size and computational efficiency. Moreover, techniques like transfer learning, which are common in NAS, may not be directly applicable to federated learning as they can lead to model divergence and increased communication overhead.</p>
-<p>To address these challenges, there is a need for a real-time, federated NAS algorithm that can efficiently optimize model performance while minimizing communication and computational costs. This involves developing strategies that allow for the sampling and training of sub-models on a subset of clients, inheriting weights from a master model to avoid reinitialization, and aggregating these sub-models into a global model. The goal is to embed the evolutionary optimization process seamlessly within the federated learning rounds, thereby reducing the need for extensive computational resources and maintaining the privacy of user data. The proposed method aims to bridge the gap between the computational demands of NAS and the constraints of federated learning, paving the way for more efficient and privacy-aware machine learning applications.</p>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>This work introduces a novel framework that addresses the critical challenges of integrating neural architecture search (NAS) with federated learning. The primary contributions are twofold:</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183119853.png" alt="image-20240330183119853"></p>
-<ol>
-<li><p>A pioneering real-time evolutionary NAS method is proposed, which not only optimizes model performance but also significantly reduces local computational burden and communication overhead. This is achieved through an innovative double-sampling technique that transmits a randomly sampled sub-model from a master model to a subset of clients for training, without the need for reinitialization. This approach ensures that each local device trains only one sub-network per generation, thereby minimizing the upload of parameters and maintaining model performance stability.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183203077.png"></p>
-</li>
-<li><p>An effective aggregation strategy is developed for updating the global model based on the sub-networks trained at each generation. This strategy leverages the inherited weights from the master model, accelerating convergence and avoiding performance deterioration due to random reinitialization. The proposed method is validated through extensive comparative studies, demonstrating its ability to produce models with competitive learning performance and computational efficiency, outperforming traditional offline evolutionary NAS methods by at least five times in terms of speed.</p>
-</li>
-</ol>
-<p>These contributions represent a significant advancement in the field of federated learning and NAS, offering a practical solution for real-time, privacy-preserving optimization of neural network architectures.</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>The methodology presented in this work is designed to tackle the intricate problem of conducting neural architecture search (NAS) within the constraints of federated learning. The approach is centered around a real-time evolutionary framework that optimizes model performance while reducing computational and communication costs. Here’s a detailed breakdown of the methodological components:</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183231177.png" alt="image-20240330183231177"></p>
-<p><strong>Double-Sampling Technique:</strong><br>The core innovation lies in the double-sampling technique, which is instrumental in minimizing the local computational payload and server-client communication. This technique involves two key steps: first, a sub-network is randomly sampled from a master model for each individual in the evolutionary population; second, a subset of clients is randomly selected for training these sub-networks. This randomization ensures that the computational load is evenly distributed and that each client trains a unique sub-network per generation, thus avoiding redundant computations.</p>
-<p><strong>Master-Slave Communication Paradigm:</strong><br>The master model serves as the baseline from which sub-networks are derived. It is初始化 at the outset and then continuously updated throughout the evolutionary process. Client devices download the sub-network corresponding to their assigned individual and train it using their local data. The updated sub-networks are then uploaded back to the server, which aggregates them to refine the master model. This iterative process of downloading, training, and uploading is repeated across generations, embedding the NAS within the federated learning rounds.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183239569.png" alt="image-20240330183239569"></p>
-<p><strong>Inheritance of Weights:</strong><br>A critical aspect of this method is the inheritance of weights from the master model to the sub-networks. This eliminates the need to reinitialize model parameters, which is both time-consuming and can lead to performance degradation. Instead, the sub-networks benefit from the knowledge accumulated in the master model, allowing them to start training from a more informed point and thus converge faster.</p>
-<p><strong>Aggregation Strategy:</strong><br>The aggregation strategy is tailored to the federated setting, where clients may sample different sub-networks for different individuals. The server must reconcile these partial updates into a coherent global model. This is achieved by selectively combining the parameters of the trained sub-networks based on their corresponding choice keys, which guide which parts of the master model are updated.</p>
-<p><strong>Objectives and Evaluation:</strong><br>The framework optimizes two main objectives: the test error of the global model, reflecting its predictive performance, and the floating-point operations per second (FLOPs), indicative of the model’s computational efficiency. A multi-objective evolutionary algorithm (MOEA), specifically NSGA-II, is employed to balance these objectives and guide the search towards a set of Pareto optimal solutions.</p>
-<p><strong>Real-Time Optimization:</strong><br>The entire process is designed to be real-time, with each generation of the evolutionary algorithm aligning with a communication round in federated learning. This synchronization ensures that the NAS is not just efficient but also seamlessly integrated into the operational workflow of the federated learning system.</p>
-<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><strong>Experimental Setup:</strong> The experiments utilize a distributed system with varying numbers of clients to simulate a federated learning scenario. The master model is a lightweight convolutional neural network (CNN) with a maximum of 26 hidden layers, ensuring that communication costs are kept to a minimum. The dataset used for training and testing is Cifar10, a standard benchmark for image recognition tasks, which consists of 50,000 training and 10,000 testing 32x32 RGB images across 10 different classes.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183257102.png" alt="image-20240330183257102"></p>
-<p>The federated learning process is configured with different client participation ratios and communication rounds, which are equivalent to the number of generations in the evolutionary algorithm. Each client’s local model parameters are updated using stochastic gradient descent (SGD), and the server aggregates these updates to form the global model. The batch normalization layers within the master model are modified to disable trainable parameters, as they can hinder convergence in federated learning settings.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183306594.png" alt="image-20240330183306594"></p>
-<p><strong>Genetic Algorithm Configuration:</strong> The multi-objective evolutionary algorithm (MOEA) used in these experiments is the elitist non-dominated sorting genetic algorithm (NSGA-II), which is known for its efficiency in handling multi-objective optimization problems. The algorithm parameters, such as population size, crossover probability, mutation probability, and bit length, are carefully chosen to balance exploration and exploitation during the search process.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183317877.png" alt="image-20240330183317877"></p>
-<p><strong>Experimental Results:</strong> The results of the experiments demonstrate the proposed methodology’s ability to identify a set of Pareto optimal solutions that trade off between model performance and computational complexity. The solutions obtained after 500 generations show that the real-time federated NAS algorithm can achieve competitive test accuracies while significantly reducing the number of floating-point operations per second (FLOPs) compared to the baseline ResNet18 model.</p>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>PaperReading</category>
-      </categories>
-      <tags>
-        <tag>NAS</tag>
-        <tag>FL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title> DARTS: Differentiable Architecture Search</title>
-    <url>/2020/01/28/darts/</url>
-    <content><![CDATA[<blockquote>
-<p>Liu H, Simonyan K, Yang Y. Darts: Differentiable architecture search[J]. arXiv preprint arXiv:1806.09055, 2018.</p>
-</blockquote>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>The quest for state-of-the-art neural network architectures has traditionally demanded substantial human expertise and computational resources. The manual process of architecture design has been a bottleneck, prompting the development of automated algorithmic solutions. While these have achieved competitive performance, existing architecture search algorithms like reinforcement learning (RL) and evolution are computationally intensive, often requiring thousands of GPU days. This has led to an inherent scalability challenge, as the search is treated as a black-box optimization problem over a discrete domain, necessitating a large number of architecture evaluations. The drive to overcome these limitations and the desire to automate the design process with increased efficiency and reduced computational costs have been the key motivators behind the development of the DARTS method.</p>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>DARTS (Differentiable ARchiTecture Search) revolutionizes the field by formulating architecture search as a differentiable problem, enabling the use of gradient descent for optimization. This novel algorithm is based on bilevel optimization and is applicable to both convolutional and recurrent architectures. DARTS stands out by matching or even surpassing the performance of state-of-the-art methods while using orders of magnitude less computation resources. It also outperforms ENAS, another efficient architecture search method, by discovering cells with comparable error rates but fewer parameters. Furthermore, DARTS demonstrates the transferability of learned architectures from CIFAR-10 and PTB to ImageNet and WikiText-2, respectively, showcasing its versatility and robustness.</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330012026177.png" alt="image-20240330012026177"></p>
-<p>DARTS represents the computation procedure of an architecture as a directed acyclic graph, with nodes as latent representations and edges as operations. By relaxing the categorical choice of operations to a softmax distribution, the architecture search is reduced to learning a set of continuous variables. DARTS employs a bilevel optimization strategy to jointly optimize the architecture and its weights, using gradient descent to minimize validation loss. An approximation technique is introduced to manage computational complexity, leading to an iterative process that converges to a final architecture.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330012054615.png" alt="image-20240330012054615"></p>
-<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330012253806.png" alt="image-20240330012253806"></p>
-<p>The paper’s experiments are conducted on four datasets: CIFAR-10, ImageNet, Penn Treebank, and WikiText-2. The goal is to discover high-performance convolutional architectures for image classification and recurrent architectures for language modeling. The experiments are divided into two main phases: architecture search and architecture evaluation.</p>
-<p>During the architecture search phase, the authors use DARTS to explore the space of possible network architectures. They define the search space based on a set of candidate operations, such as convolutions, pooling, and linear transformations, and allow the algorithm to learn the optimal combination of these operations. The search process is efficient due to the continuous relaxation of the architecture representation, which enables the use of gradient descent for optimization.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330012324666.png" alt="image-20240330012324666"></p>
-<p>In the architecture evaluation phase, the authors construct larger networks using the best cells found during the search phase. These networks are trained from scratch on the test sets to evaluate their performance. The authors report that DARTS is able to identify a convolutional cell that achieves a test error of 2.76 ± 0.09% on CIFAR-10, which is competitive with state-of-the-art results obtained using significantly more computational resources. Similarly, for language modeling, DARTS discovers a recurrent cell that achieves a test perplexity of 55.7 on Penn Treebank, outperforming both manually tuned LSTMs and other automatically discovered cells.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330012701560.png" alt="image-20240330012701560"></p>
-<p>One of the key findings is the transferability of the architectures learned by DARTS. The authors demonstrate that a convolutional cell learned on CIFAR-10 can be transferred to ImageNet with competitive performance, and a recurrent cell learned on Penn Treebank can be transferred to WikiText-2. This transferability is crucial as it shows the versatility of DARTS in discovering architectures that are not only optimal for a specific dataset but also generalizable to other tasks.</p>
-<p>The authors also compare DARTS with existing state-of-the-art methods, such as NASNet, AmoebaNet, and ENAS. The results show that DARTS can match or even outperform these methods while using orders of magnitude fewer computational resources. For instance, while NASNet required 2000 GPU days and AmoebaNet required 3150 GPU days to achieve state-of-the-art results, DARTS achieved comparable performance in just a few GPU days.</p>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>PaperReading</category>
-      </categories>
-      <tags>
-        <tag>NAS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Joint neural architecture search and quantization</title>
-    <url>/2020/01/23/jointNasQ/</url>
-    <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/1811.09426.pdf">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>In the realm of deep learning, designing efficient neural network architectures and compressing models for mobile deployment present significant challenges. Traditional approaches require extensive expertise and iterative trial-and-error, which is both time-consuming and resource-intensive. The advent of mobile devices with limited computational capabilities has further exacerbated the need for compact models that maintain high performance.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330185955896.png" alt="image-20240330185955896"></p>
-<p>To address these issues, the paper introduces a unified framework that integrates neural architecture search (NAS) with model compression strategies, aiming to automate the discovery of compact, high-performing neural networks suitable for mobile platforms. By leveraging a multi-objective evolutionary search algorithm, the framework balances model size and accuracy, leading to the development of models that outperform existing methods in terms of efficiency and effectiveness.</p>
-<p>The motivation behind this research is to alleviate the burden on human experts and to bridge the gap between cutting-edge AI research and real-world applications. By automating the process, the framework not only accelerates the development of neural networks but also paves the way for wider adoption of deep learning technologies across various mobile devices, despite their constrained resources.</p>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>This research makes several pivotal contributions to the field of neural network optimization for mobile applications. Firstly, it presents a novel method that seamlessly integrates neural architecture search (NAS) with quantization policies, enabling the co-evolution of network topology and compression strategies. This joint approach is shown to yield models that are not only compact but also maintain superior performance, surpassing the capabilities of methods that focus solely on either architecture or quantization.</p>
-<p>Secondly, the paper introduces a multi-objective evolutionary algorithm that effectively balances model size and accuracy, resulting in the discovery of high-accuracy, small-footprint models that are ideal for resource-constrained environments. The algorithm’s efficiency is demonstrated through its ability to complete the joint search within a short timeframe, using minimal computational resources.</p>
-<p>Additionally, the research provides learning-based quantization policies for existing networks, significantly improving their performance on mobile platforms. The proposed method is not only effective for new architecture design but also offers a valuable tool for enhancing the performance of pre-trained models, making it a versatile solution for mobile deep learning applications.</p>
-<p>Overall, these contributions represent a significant step forward in making deep learning more accessible and efficient for mobile devices, potentially revolutionizing the way AI models are developed and deployed in real-world scenarios.</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190012000.png" alt="image-20240330190012000" style="zoom:50%;">
-
-<img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190022869.png" alt="image-20240330190022869" style="zoom:50%;">
-
-<p>The methodology at the core of this research is an innovative integration of neural architecture search (NAS) and model quantization, designed to optimize the design of neural networks for mobile deployment. The approach is centered around a multi-objective evolutionary algorithm that aims to maximize the accuracy of neural networks while minimizing their size, thereby addressing the computational constraints of mobile devices.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190033602.png" alt="image-20240330190033602"></p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190049055.png" alt="image-20240330190049055"></p>
-<p>The framework begins by defining a search space that encompasses both architectural choices and quantization policies. The architecture search space is inspired by existing NAS methods, utilizing a cell-based approach with Inception-like modules, including both normal and reduction cells. These cells are stacked in specific patterns to form the overall network structure. The quantization policy search space, on the other hand, focuses on determining the optimal bit allocation for each cell in the network, allowing for different layers to have varying levels of quantization based on their redundancy.</p>
-<p>The evolutionary algorithm operates on a population of models, initializing them randomly and then iteratively improving them through selection, mutation, and training. During each iteration, a subset of the population is sampled, and their fitness, based on a multi-objective function, is evaluated. This function prioritizes accuracy but penalizes excessive model growth, ensuring that the search remains focused on compact models.</p>
-<p>Mutation in the algorithm involves altering the architectural combinations and quantization bits, introducing diversity into the population and facilitating exploration of the search space. The models are then trained on a dataset, quantized according to their assigned policies, and evaluated on a validation set to measure their accuracy and size. The best-performing models are carried over to the next generation, while the least fit are discarded.</p>
-<p>A key aspect of the methodology is its flexibility. It can be applied to existing networks, providing tailored quantization policies to enhance their performance on mobile devices. Furthermore, the joint search for architecture and quantization policies allows for the discovery of entirely new models, termed JASQNet and JASQNet-Small, which demonstrate competitive accuracy and significantly reduced size compared to existing methods.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190102680.png" alt="image-20240330190102680"></p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190216448.png" alt="image-20240330190216448"></p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190226229.png" alt="image-20240330190226229"></p>
-<p>The quantization process itself is meticulous, involving linear scaling of weight vectors, bucketing to manage magnitude imbalance, and rounding to the nearest quantization point. This attention to detail ensures that the compression of models does not come at the cost of significant accuracy loss.</p>
-<p>The experimental results showcase the effectiveness of the methodology. The approach is tested on CIFAR-10 and ImageNet, with the resulting JASQNet models outperforming their counterparts in terms of error rates and model size. The method also proves capable of improving the performance of pre-trained networks like ResNet and MobileNet when applied with learned quantization policies.</p>
-<p>In summary, the methodology presented in this research is a significant advancement in the field of neural network optimization. It offers a systematic and automated approach to designing and compressing neural networks for mobile applications, resulting in models that are both efficient and effective.</p>
-<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330185939879.png" alt="image-20240330185939879"></p>
-<p>The experimental setup in this research is meticulously designed to validate the effectiveness of the proposed methodology. The experiments are divided into two main phases: first, the application of the method to existing networks to provide tailored quantization policies, and second, the joint search for architecture and quantization policies to discover new models.</p>
-<p>In the initial phase, the method is applied to a variety of state-of-the-art networks, including ResNet, DenseNet, and MobileNet architectures. The goal here is to demonstrate the ability of the method to enhance the performance of pre-trained models by learning optimal quantization policies. The networks are evaluated on the ImageNet dataset, and the results are compared against their non-quantized (float) counterparts as well as other quantization strategies, such as 2-bit, 4-bit, 8-bit, and 16-bit models.</p>
-<p>The second phase involves a joint search for architecture and quantization policies on the CIFAR-10 dataset, aiming to discover new models, referred to as JASQNet and JASQNet-Small. The search space is vast, combining the architectural choices and quantization levels, and the evolutionary algorithm is run for a number of iterations to allow for thorough exploration.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190120339.png" alt="image-20240330190120339"></p>
-<p>The experimental results are highly promising. For existing networks, the method successfully improves accuracy and reduces model size. For instance, the quantized ResNet18 model achieves a higher accuracy than the float model while having significantly fewer parameters. Similarly, MobileNet-v1 and MobileNet-v2 see improvements in accuracy when applying the learned quantization policies, outperforming their 8-bit and float counterparts.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190137729.png" alt="image-20240330190137729"></p>
-<p>In the joint search experiments, the discovered JASQNet models demonstrate competitive accuracy on both CIFAR-10 and ImageNet datasets, with JASQNet-Small showing particularly impressive results in terms of model size reduction. These models achieve lower error rates with smaller footprints compared to other methods that focus solely on architecture search. The JASQNet models also maintain a better balance between accuracy and size when compared to models resulting from only quantization search.</p>
-<p>Overall, the experimental results substantiate the effectiveness of the proposed methodology in optimizing neural networks for mobile deployment. The method not only enhances existing models but also has the capability to discover new, efficient architectures that are well-suited for resource-constrained environments. These findings pave the way for more widespread adoption of deep learning on mobile platforms, potentially leading to advancements in various mobile-based applications.</p>
-]]></content>
-      <categories>
-        <category>Work hard</category>
-        <category>PaperReading</category>
-      </categories>
-      <tags>
-        <tag>Quantization</tag>
         <tag>NAS</tag>
       </tags>
   </entry>
@@ -853,36 +666,189 @@
       </tags>
   </entry>
   <entry>
-    <title>MONAS: Multi-Objective Neural Architecture Search</title>
-    <url>/2020/01/16/monasnet/</url>
-    <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/1806.10332.pdf">https://arxiv.org/pdf/1806.10332.pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Despite the advancements in NAS, most existing works focus on optimizing models for high prediction accuracy, which often results in complex architectures that may not be suitable for deployment in computing environments with limited resources, such as battery-powered mobile devices. This limitation has motivated the development of MONAS (Multi-Objective Neural Architecture Search), a novel framework that extends the capabilities of NAS by considering not only prediction accuracy but also other critical objectives like power consumption during the search for neural network architectures.</p>
-<p>The primary motivation behind MONAS is to bridge the gap between high-performance models and deployability in resource-constrained settings. By integrating multi-objective optimization, MONAS allows for the search process to be guided by various performance metrics and application-specific constraints, leading to the discovery of networks that offer a balance between accuracy and efficiency. This approach aims to democratize the development of neural network architectures by making them accessible to a wider range of platforms and applications without compromising on performance.</p>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>The paper introduces MONAS, a pioneering framework for Multi-Objective Neural Architectural Search, which stands out with its unique contributions to the field of neural network optimization. Firstly, it proposes a multi-objective approach that simultaneously considers prediction accuracy and additional critical objectives, such as energy consumption. This dual focus addresses the limitations of previous NAS methods, which often overlooked the trade-offs between performance and deployability in resource-constrained environments.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330155922697.png" alt="image-20240330155922697"></p>
-<p>Secondly, MONAS demonstrates adaptability by allowing users to incorporate customized constraints that reflect the specific requirements of different applications or platforms. This flexibility ensures that the search process is guided by a diverse set of objectives, leading to a broader spectrum of optimized architectures.</p>
-<p>Additionally, the paper presents MONAS-S, an extension of the original framework, designed to enhance scalability and speed. By adopting weight-sharing techniques, MONAS-S is capable of searching larger design spaces more efficiently, significantly reducing the time required to find optimal network architectures.</p>
-<p>The empirical results of the study show that models discovered by MONAS not only achieve comparable or better classification accuracy on computer vision tasks but also satisfy additional objectives such as peak power consumption. This evidences the effectiveness of MONAS in guiding the search process towards architectures that meet predefined constraints, outperforming state-of-the-art models in both accuracy and energy efficiency.</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160020944.png" alt="image-20240330160020944"></p>
-<p>The MONAS framework is meticulously crafted to address the multifaceted challenges of neural architecture search. At its core, MONAS employs a two-stage framework that leverages reinforcement learning to navigate the complex landscape of neural network design. The first stage involves the generation of candidate architectures through a recurrent neural network (RNN), which serves as the “robot network” in the search process. This RNN generates a sequence of hyperparameters for a CNN, which are then used to construct and train the “target network” in the second stage. The performance of the target network, in terms of both accuracy and energy consumption, is feedback to the robot network as a reward signal, guiding the search process.</p>
-<p>One of the distinguishing features of MONAS is its adaptability. It allows users to define customized constraints that can be seamlessly integrated into the search process as additional objectives. These constraints are transformed into reward functions that work in tandem with the primary objectives of accuracy and efficiency, ensuring that the search is aligned with the specific needs of various applications and platforms.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160105915.png" alt="image-20240330160105915"></p>
-<p>To enhance scalability, MONAS introduces a weight-sharing technique, which is further developed into MONAS-S. This extension pre-trains a directed acyclic graph (DAG) that encompasses all possible networks, allowing for a more efficient search process. The controller, which is the RNN in MONAS, is updated using the REINFORCE policy learning method, where the validation accuracy and other objective measures serve as the reward signal.</p>
-<p>The reward function in MONAS is carefully designed to reflect the trade-offs between different objectives. It includes a mixed reward that balances accuracy and energy consumption, as well as constraints on peak power and Multiply-ACcumulate (MAC) operations, which serve as a proxy for power usage. This nuanced approach to the reward function enables MONAS to discover architectures that not only perform well in terms of accuracy but also meet the energy efficiency requirements.</p>
-<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160154008.png" alt="image-20240330160154008"></p>
-<p>The experimental setup of the MONAS framework is designed to thoroughly evaluate its performance and efficacy in searching for neural network architectures that balance prediction accuracy with energy efficiency. The experiments are conducted using Python with the TensorFlow library, running on a system equipped with an Intel XEON E5-2620v4 processor and GeForce GTX1080Ti GPU cards. The NVIDIA profiling tool, nvprof, is utilized to measure the peak power and energy consumption of the target networks, which are crucial for updating the robot network’s weights.</p>
-<p>The CIFAR-10 dataset is chosen to validate the target networks, with 5000 randomly selected images from the training set used as the validation set. The validation accuracy is taken as an objective in the reward function. The Multiply-ACcumulate (MAC) operations of a sampled target network are calculated based on the approach described in MnasNet, providing a measure of the computational cost.</p>
-<p>The experimental results demonstrate the adaptability and efficiency of MONAS in guiding the search process. When constraints are applied to limit peak power or require a minimum accuracy, MONAS successfully directs its search to regions that satisfy these conditions. For instance, out of 600 iterations, a significant number of target networks fall within the specified power or accuracy thresholds, indicating the framework’s ability to adapt to different reward functions.</p>
-<p>The paper also explores how the Pareto Front changes under different reward functions, showing that MONAS can discover architectures with either higher accuracy or lower energy consumption depending on the weightage given to each objective. Notably, MONAS outperforms random search in finding better architectures within a limited search time, highlighting its efficiency.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160230178.png" alt="image-20240330160230178"></p>
-<p>In terms of discovering noteworthy architectures, MONAS is compared with state-of-the-art models like CondenseNet, demonstrating that it can find models with higher accuracy and lower energy consumption. The best-performing models discovered by MONAS are reported, along with their hyperparameters and energy costs per 1000 inferences, providing evidence of the framework’s capability to surpass existing solutions.</p>
-<p>The scalability of MONAS is further validated through MONAS-S, which is applied to a search space of 1.6 × 10^29 possible networks in a 12-layered architecture. Even in this vast search space, MONAS-S successfully guides the search, finding models that require fewer MAC operations while maintaining high accuracy.</p>
+    <title>[CUDA]sgemm</title>
+    <url>/2022/08/01/cuda_sgemm/</url>
+    <content><![CDATA[<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a class="link" href="https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html">https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ul>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2>]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>Note</category>
+        <category>Coding</category>
+      </categories>
+      <tags>
+        <tag>CUDA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>[CUDA]sgemv</title>
+    <url>/2022/08/16/cuda_sgemv/</url>
+    <content><![CDATA[<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a class="link" href="https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html">https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li></li>
+</ul>
+<h2 id="Basic-concepts"><a href="#Basic-concepts" class="headerlink" title="Basic concepts"></a>Basic concepts</h2><h2 id="Naieve"><a href="#Naieve" class="headerlink" title="Naieve"></a>Naieve</h2><h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2>]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>Note</category>
+        <category>Coding</category>
+      </categories>
+      <tags>
+        <tag>CUDA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>[CUDA]reduce</title>
+    <url>/2022/07/20/cuda_reduce/</url>
+    <content><![CDATA[<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a class="link" href="https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html">https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link" href="https://zhuanlan.zhihu.com/p/426978026">https://zhuanlan.zhihu.com/p/426978026 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ul>
+<h2 id="Basic-Concepts"><a href="#Basic-Concepts" class="headerlink" title="Basic Concepts"></a>Basic Concepts</h2><p>Reduction problems are a common category of questions encountered in interviews. Compared to elementwise problems, where each thread independently performs tasks, reduction problems become more complex due to the involvement of synchronization and communication between threads. Additionally, these problems can leverage the previously introduced optimization techniques for vectorized memory access, which adds a layer of complexity in terms of thought process.<br>The <code>reductions.cu</code> file primarily implements the following three kernel functions for reduction summation:</p>
+<ol>
+<li>The most basic <code>atomic_reduction()</code>, which extensively utilizes the <code>atomicAdd()</code> function.</li>
+<li>The sweep style reduction sum <code>reduction_a()</code>, which calls <code>atomicAdd</code> once at the end.</li>
+<li>The warp shuffle reduction <code>reduction_ws()</code>, which also calls <code>atomicAdd</code> once at the end.</li>
+</ol>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240331211607423.png" alt="image-20240331211607423"></p>
+<p>Theory: The <code>atomic_reduction()</code> is the slowest because it heavily relies on the <code>atomicAdd()</code> function. Compared to <code>reduction_a</code>, <code>reduction_ws</code> tends to perform better due to its minimal use of shared memory.</p>
+<p>Observed Phenomena:</p>
+<ol>
+<li>As the data size increases, the performance advantage of <code>reduce_ws</code> over <code>reduction_a</code> diminishes.</li>
+<li>The use of the <code>atomicAdd</code> function affects the Memory utilization rate, and this impact does not vary with the scale of the data.</li>
+</ol>
+<p>Regarding the first point: Both <code>reduce_ws</code> and <code>reduction_a</code> require loading data within a grid-stride loop initially. As the data size grows, the time taken to load the data becomes the dominant factor in the overall time consumption. At this juncture, the specific method of performing reduction matters less, hence the time difference narrows with increasing data sizes. In theory, warp shuffle should offer better performance than the classic reduction sum, but in practice, it still depends on the specific data scale of the problem at hand and requires a detailed analysis.</p>
+<p>Regarding the second point: The impact of the <code>atomicAdd</code> function on performance is significant because it can reduce the Memory utilization rate to a very low level, and this is difficult to improve by simply changing the data scale.</p>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>Note</category>
+        <category>Coding</category>
+      </categories>
+      <tags>
+        <tag>CUDA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title> DARTS: Differentiable Architecture Search</title>
+    <url>/2020/01/28/darts/</url>
+    <content><![CDATA[<blockquote>
+<p>Liu H, Simonyan K, Yang Y. Darts: Differentiable architecture search[J]. arXiv preprint arXiv:1806.09055, 2018.</p>
+</blockquote>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>The quest for state-of-the-art neural network architectures has traditionally demanded substantial human expertise and computational resources. The manual process of architecture design has been a bottleneck, prompting the development of automated algorithmic solutions. While these have achieved competitive performance, existing architecture search algorithms like reinforcement learning (RL) and evolution are computationally intensive, often requiring thousands of GPU days. This has led to an inherent scalability challenge, as the search is treated as a black-box optimization problem over a discrete domain, necessitating a large number of architecture evaluations. The drive to overcome these limitations and the desire to automate the design process with increased efficiency and reduced computational costs have been the key motivators behind the development of the DARTS method.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>DARTS (Differentiable ARchiTecture Search) revolutionizes the field by formulating architecture search as a differentiable problem, enabling the use of gradient descent for optimization. This novel algorithm is based on bilevel optimization and is applicable to both convolutional and recurrent architectures. DARTS stands out by matching or even surpassing the performance of state-of-the-art methods while using orders of magnitude less computation resources. It also outperforms ENAS, another efficient architecture search method, by discovering cells with comparable error rates but fewer parameters. Furthermore, DARTS demonstrates the transferability of learned architectures from CIFAR-10 and PTB to ImageNet and WikiText-2, respectively, showcasing its versatility and robustness.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330012026177.png" alt="image-20240330012026177"></p>
+<p>DARTS represents the computation procedure of an architecture as a directed acyclic graph, with nodes as latent representations and edges as operations. By relaxing the categorical choice of operations to a softmax distribution, the architecture search is reduced to learning a set of continuous variables. DARTS employs a bilevel optimization strategy to jointly optimize the architecture and its weights, using gradient descent to minimize validation loss. An approximation technique is introduced to manage computational complexity, leading to an iterative process that converges to a final architecture.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330012054615.png" alt="image-20240330012054615"></p>
+<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330012253806.png" alt="image-20240330012253806"></p>
+<p>The paper’s experiments are conducted on four datasets: CIFAR-10, ImageNet, Penn Treebank, and WikiText-2. The goal is to discover high-performance convolutional architectures for image classification and recurrent architectures for language modeling. The experiments are divided into two main phases: architecture search and architecture evaluation.</p>
+<p>During the architecture search phase, the authors use DARTS to explore the space of possible network architectures. They define the search space based on a set of candidate operations, such as convolutions, pooling, and linear transformations, and allow the algorithm to learn the optimal combination of these operations. The search process is efficient due to the continuous relaxation of the architecture representation, which enables the use of gradient descent for optimization.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330012324666.png" alt="image-20240330012324666"></p>
+<p>In the architecture evaluation phase, the authors construct larger networks using the best cells found during the search phase. These networks are trained from scratch on the test sets to evaluate their performance. The authors report that DARTS is able to identify a convolutional cell that achieves a test error of 2.76 ± 0.09% on CIFAR-10, which is competitive with state-of-the-art results obtained using significantly more computational resources. Similarly, for language modeling, DARTS discovers a recurrent cell that achieves a test perplexity of 55.7 on Penn Treebank, outperforming both manually tuned LSTMs and other automatically discovered cells.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330012701560.png" alt="image-20240330012701560"></p>
+<p>One of the key findings is the transferability of the architectures learned by DARTS. The authors demonstrate that a convolutional cell learned on CIFAR-10 can be transferred to ImageNet with competitive performance, and a recurrent cell learned on Penn Treebank can be transferred to WikiText-2. This transferability is crucial as it shows the versatility of DARTS in discovering architectures that are not only optimal for a specific dataset but also generalizable to other tasks.</p>
+<p>The authors also compare DARTS with existing state-of-the-art methods, such as NASNet, AmoebaNet, and ENAS. The results show that DARTS can match or even outperform these methods while using orders of magnitude fewer computational resources. For instance, while NASNet required 2000 GPU days and AmoebaNet required 3150 GPU days to achieve state-of-the-art results, DARTS achieved comparable performance in just a few GPU days.</p>
 ]]></content>
       <categories>
         <category>Work hard</category>
         <category>PaperReading</category>
       </categories>
       <tags>
+        <tag>NAS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Real-time federated evolutionary neural architecture search</title>
+    <url>/2021/10/02/fedevo/</url>
+    <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/2003.02793.pdf">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>In the realm of machine learning, preserving user privacy has become paramount, leading to the development of federated learning. This distributed approach allows multiple devices to collaboratively train a shared model while keeping data local, thus enhancing privacy. However, federated learning faces challenges, particularly the high communication costs due to the transmission of large model parameters and the substantial computational resources required for training complex models like deep neural networks. These issues are further compounded when conducting neural architecture search (NAS) within a federated environment.</p>
+<p>The traditional centralized NAS methods, which are often computationally intensive, are not ideal for federated learning due to their disregard for model size and computational efficiency. Moreover, techniques like transfer learning, which are common in NAS, may not be directly applicable to federated learning as they can lead to model divergence and increased communication overhead.</p>
+<p>To address these challenges, there is a need for a real-time, federated NAS algorithm that can efficiently optimize model performance while minimizing communication and computational costs. This involves developing strategies that allow for the sampling and training of sub-models on a subset of clients, inheriting weights from a master model to avoid reinitialization, and aggregating these sub-models into a global model. The goal is to embed the evolutionary optimization process seamlessly within the federated learning rounds, thereby reducing the need for extensive computational resources and maintaining the privacy of user data. The proposed method aims to bridge the gap between the computational demands of NAS and the constraints of federated learning, paving the way for more efficient and privacy-aware machine learning applications.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>This work introduces a novel framework that addresses the critical challenges of integrating neural architecture search (NAS) with federated learning. The primary contributions are twofold:</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183119853.png" alt="image-20240330183119853"></p>
+<ol>
+<li><p>A pioneering real-time evolutionary NAS method is proposed, which not only optimizes model performance but also significantly reduces local computational burden and communication overhead. This is achieved through an innovative double-sampling technique that transmits a randomly sampled sub-model from a master model to a subset of clients for training, without the need for reinitialization. This approach ensures that each local device trains only one sub-network per generation, thereby minimizing the upload of parameters and maintaining model performance stability.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183203077.png"></p>
+</li>
+<li><p>An effective aggregation strategy is developed for updating the global model based on the sub-networks trained at each generation. This strategy leverages the inherited weights from the master model, accelerating convergence and avoiding performance deterioration due to random reinitialization. The proposed method is validated through extensive comparative studies, demonstrating its ability to produce models with competitive learning performance and computational efficiency, outperforming traditional offline evolutionary NAS methods by at least five times in terms of speed.</p>
+</li>
+</ol>
+<p>These contributions represent a significant advancement in the field of federated learning and NAS, offering a practical solution for real-time, privacy-preserving optimization of neural network architectures.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>The methodology presented in this work is designed to tackle the intricate problem of conducting neural architecture search (NAS) within the constraints of federated learning. The approach is centered around a real-time evolutionary framework that optimizes model performance while reducing computational and communication costs. Here’s a detailed breakdown of the methodological components:</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183231177.png" alt="image-20240330183231177"></p>
+<p><strong>Double-Sampling Technique:</strong><br>The core innovation lies in the double-sampling technique, which is instrumental in minimizing the local computational payload and server-client communication. This technique involves two key steps: first, a sub-network is randomly sampled from a master model for each individual in the evolutionary population; second, a subset of clients is randomly selected for training these sub-networks. This randomization ensures that the computational load is evenly distributed and that each client trains a unique sub-network per generation, thus avoiding redundant computations.</p>
+<p><strong>Master-Slave Communication Paradigm:</strong><br>The master model serves as the baseline from which sub-networks are derived. It is初始化 at the outset and then continuously updated throughout the evolutionary process. Client devices download the sub-network corresponding to their assigned individual and train it using their local data. The updated sub-networks are then uploaded back to the server, which aggregates them to refine the master model. This iterative process of downloading, training, and uploading is repeated across generations, embedding the NAS within the federated learning rounds.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183239569.png" alt="image-20240330183239569"></p>
+<p><strong>Inheritance of Weights:</strong><br>A critical aspect of this method is the inheritance of weights from the master model to the sub-networks. This eliminates the need to reinitialize model parameters, which is both time-consuming and can lead to performance degradation. Instead, the sub-networks benefit from the knowledge accumulated in the master model, allowing them to start training from a more informed point and thus converge faster.</p>
+<p><strong>Aggregation Strategy:</strong><br>The aggregation strategy is tailored to the federated setting, where clients may sample different sub-networks for different individuals. The server must reconcile these partial updates into a coherent global model. This is achieved by selectively combining the parameters of the trained sub-networks based on their corresponding choice keys, which guide which parts of the master model are updated.</p>
+<p><strong>Objectives and Evaluation:</strong><br>The framework optimizes two main objectives: the test error of the global model, reflecting its predictive performance, and the floating-point operations per second (FLOPs), indicative of the model’s computational efficiency. A multi-objective evolutionary algorithm (MOEA), specifically NSGA-II, is employed to balance these objectives and guide the search towards a set of Pareto optimal solutions.</p>
+<p><strong>Real-Time Optimization:</strong><br>The entire process is designed to be real-time, with each generation of the evolutionary algorithm aligning with a communication round in federated learning. This synchronization ensures that the NAS is not just efficient but also seamlessly integrated into the operational workflow of the federated learning system.</p>
+<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><strong>Experimental Setup:</strong> The experiments utilize a distributed system with varying numbers of clients to simulate a federated learning scenario. The master model is a lightweight convolutional neural network (CNN) with a maximum of 26 hidden layers, ensuring that communication costs are kept to a minimum. The dataset used for training and testing is Cifar10, a standard benchmark for image recognition tasks, which consists of 50,000 training and 10,000 testing 32x32 RGB images across 10 different classes.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183257102.png" alt="image-20240330183257102"></p>
+<p>The federated learning process is configured with different client participation ratios and communication rounds, which are equivalent to the number of generations in the evolutionary algorithm. Each client’s local model parameters are updated using stochastic gradient descent (SGD), and the server aggregates these updates to form the global model. The batch normalization layers within the master model are modified to disable trainable parameters, as they can hinder convergence in federated learning settings.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183306594.png" alt="image-20240330183306594"></p>
+<p><strong>Genetic Algorithm Configuration:</strong> The multi-objective evolutionary algorithm (MOEA) used in these experiments is the elitist non-dominated sorting genetic algorithm (NSGA-II), which is known for its efficiency in handling multi-objective optimization problems. The algorithm parameters, such as population size, crossover probability, mutation probability, and bit length, are carefully chosen to balance exploration and exploitation during the search process.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183317877.png" alt="image-20240330183317877"></p>
+<p><strong>Experimental Results:</strong> The results of the experiments demonstrate the proposed methodology’s ability to identify a set of Pareto optimal solutions that trade off between model performance and computational complexity. The solutions obtained after 500 generations show that the real-time federated NAS algorithm can achieve competitive test accuracies while significantly reducing the number of floating-point operations per second (FLOPs) compared to the baseline ResNet18 model.</p>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>PaperReading</category>
+      </categories>
+      <tags>
+        <tag>NAS</tag>
+        <tag>FL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Joint neural architecture search and quantization</title>
+    <url>/2020/01/23/jointNasQ/</url>
+    <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/1811.09426.pdf">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>In the realm of deep learning, designing efficient neural network architectures and compressing models for mobile deployment present significant challenges. Traditional approaches require extensive expertise and iterative trial-and-error, which is both time-consuming and resource-intensive. The advent of mobile devices with limited computational capabilities has further exacerbated the need for compact models that maintain high performance.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330185955896.png" alt="image-20240330185955896"></p>
+<p>To address these issues, the paper introduces a unified framework that integrates neural architecture search (NAS) with model compression strategies, aiming to automate the discovery of compact, high-performing neural networks suitable for mobile platforms. By leveraging a multi-objective evolutionary search algorithm, the framework balances model size and accuracy, leading to the development of models that outperform existing methods in terms of efficiency and effectiveness.</p>
+<p>The motivation behind this research is to alleviate the burden on human experts and to bridge the gap between cutting-edge AI research and real-world applications. By automating the process, the framework not only accelerates the development of neural networks but also paves the way for wider adoption of deep learning technologies across various mobile devices, despite their constrained resources.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>This research makes several pivotal contributions to the field of neural network optimization for mobile applications. Firstly, it presents a novel method that seamlessly integrates neural architecture search (NAS) with quantization policies, enabling the co-evolution of network topology and compression strategies. This joint approach is shown to yield models that are not only compact but also maintain superior performance, surpassing the capabilities of methods that focus solely on either architecture or quantization.</p>
+<p>Secondly, the paper introduces a multi-objective evolutionary algorithm that effectively balances model size and accuracy, resulting in the discovery of high-accuracy, small-footprint models that are ideal for resource-constrained environments. The algorithm’s efficiency is demonstrated through its ability to complete the joint search within a short timeframe, using minimal computational resources.</p>
+<p>Additionally, the research provides learning-based quantization policies for existing networks, significantly improving their performance on mobile platforms. The proposed method is not only effective for new architecture design but also offers a valuable tool for enhancing the performance of pre-trained models, making it a versatile solution for mobile deep learning applications.</p>
+<p>Overall, these contributions represent a significant step forward in making deep learning more accessible and efficient for mobile devices, potentially revolutionizing the way AI models are developed and deployed in real-world scenarios.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190012000.png" alt="image-20240330190012000" style="zoom:50%;">
+
+<img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190022869.png" alt="image-20240330190022869" style="zoom:50%;">
+
+<p>The methodology at the core of this research is an innovative integration of neural architecture search (NAS) and model quantization, designed to optimize the design of neural networks for mobile deployment. The approach is centered around a multi-objective evolutionary algorithm that aims to maximize the accuracy of neural networks while minimizing their size, thereby addressing the computational constraints of mobile devices.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190033602.png" alt="image-20240330190033602"></p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190049055.png" alt="image-20240330190049055"></p>
+<p>The framework begins by defining a search space that encompasses both architectural choices and quantization policies. The architecture search space is inspired by existing NAS methods, utilizing a cell-based approach with Inception-like modules, including both normal and reduction cells. These cells are stacked in specific patterns to form the overall network structure. The quantization policy search space, on the other hand, focuses on determining the optimal bit allocation for each cell in the network, allowing for different layers to have varying levels of quantization based on their redundancy.</p>
+<p>The evolutionary algorithm operates on a population of models, initializing them randomly and then iteratively improving them through selection, mutation, and training. During each iteration, a subset of the population is sampled, and their fitness, based on a multi-objective function, is evaluated. This function prioritizes accuracy but penalizes excessive model growth, ensuring that the search remains focused on compact models.</p>
+<p>Mutation in the algorithm involves altering the architectural combinations and quantization bits, introducing diversity into the population and facilitating exploration of the search space. The models are then trained on a dataset, quantized according to their assigned policies, and evaluated on a validation set to measure their accuracy and size. The best-performing models are carried over to the next generation, while the least fit are discarded.</p>
+<p>A key aspect of the methodology is its flexibility. It can be applied to existing networks, providing tailored quantization policies to enhance their performance on mobile devices. Furthermore, the joint search for architecture and quantization policies allows for the discovery of entirely new models, termed JASQNet and JASQNet-Small, which demonstrate competitive accuracy and significantly reduced size compared to existing methods.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190102680.png" alt="image-20240330190102680"></p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190216448.png" alt="image-20240330190216448"></p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190226229.png" alt="image-20240330190226229"></p>
+<p>The quantization process itself is meticulous, involving linear scaling of weight vectors, bucketing to manage magnitude imbalance, and rounding to the nearest quantization point. This attention to detail ensures that the compression of models does not come at the cost of significant accuracy loss.</p>
+<p>The experimental results showcase the effectiveness of the methodology. The approach is tested on CIFAR-10 and ImageNet, with the resulting JASQNet models outperforming their counterparts in terms of error rates and model size. The method also proves capable of improving the performance of pre-trained networks like ResNet and MobileNet when applied with learned quantization policies.</p>
+<p>In summary, the methodology presented in this research is a significant advancement in the field of neural network optimization. It offers a systematic and automated approach to designing and compressing neural networks for mobile applications, resulting in models that are both efficient and effective.</p>
+<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330185939879.png" alt="image-20240330185939879"></p>
+<p>The experimental setup in this research is meticulously designed to validate the effectiveness of the proposed methodology. The experiments are divided into two main phases: first, the application of the method to existing networks to provide tailored quantization policies, and second, the joint search for architecture and quantization policies to discover new models.</p>
+<p>In the initial phase, the method is applied to a variety of state-of-the-art networks, including ResNet, DenseNet, and MobileNet architectures. The goal here is to demonstrate the ability of the method to enhance the performance of pre-trained models by learning optimal quantization policies. The networks are evaluated on the ImageNet dataset, and the results are compared against their non-quantized (float) counterparts as well as other quantization strategies, such as 2-bit, 4-bit, 8-bit, and 16-bit models.</p>
+<p>The second phase involves a joint search for architecture and quantization policies on the CIFAR-10 dataset, aiming to discover new models, referred to as JASQNet and JASQNet-Small. The search space is vast, combining the architectural choices and quantization levels, and the evolutionary algorithm is run for a number of iterations to allow for thorough exploration.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190120339.png" alt="image-20240330190120339"></p>
+<p>The experimental results are highly promising. For existing networks, the method successfully improves accuracy and reduces model size. For instance, the quantized ResNet18 model achieves a higher accuracy than the float model while having significantly fewer parameters. Similarly, MobileNet-v1 and MobileNet-v2 see improvements in accuracy when applying the learned quantization policies, outperforming their 8-bit and float counterparts.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190137729.png" alt="image-20240330190137729"></p>
+<p>In the joint search experiments, the discovered JASQNet models demonstrate competitive accuracy on both CIFAR-10 and ImageNet datasets, with JASQNet-Small showing particularly impressive results in terms of model size reduction. These models achieve lower error rates with smaller footprints compared to other methods that focus solely on architecture search. The JASQNet models also maintain a better balance between accuracy and size when compared to models resulting from only quantization search.</p>
+<p>Overall, the experimental results substantiate the effectiveness of the proposed methodology in optimizing neural networks for mobile deployment. The method not only enhances existing models but also has the capability to discover new, efficient architectures that are well-suited for resource-constrained environments. These findings pave the way for more widespread adoption of deep learning on mobile platforms, potentially leading to advancements in various mobile-based applications.</p>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>PaperReading</category>
+      </categories>
+      <tags>
+        <tag>Quantization</tag>
         <tag>NAS</tag>
       </tags>
   </entry>
@@ -915,6 +881,40 @@
 <p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330151313064.png" alt="image-20240330151313064"></p>
 <p>In terms of transfer learning, the best MetaQNN model on CIFAR-10 dataset shows good performance when trained on other datasets, indicating the versatility of the architectures discovered by the algorithm. The ensemble of top models selected by the agent also leads to a significant boost in prediction performance, further validating the effectiveness of the MetaQNN approach.</p>
 <p>Overall, the experiments in the paper provide strong evidence that reinforcement learning can be effectively applied to the automated design of neural network architectures, offering a promising direction for future research in automating the machine learning process. The success of MetaQNN in discovering high-performing and transferable CNN architectures underscores the potential of this approach to revolutionize the way we design neural networks for various tasks.</p>
+]]></content>
+      <categories>
+        <category>Work hard</category>
+        <category>PaperReading</category>
+      </categories>
+      <tags>
+        <tag>NAS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MONAS: Multi-Objective Neural Architecture Search</title>
+    <url>/2020/01/16/monasnet/</url>
+    <content><![CDATA[<p><a class="link" href="https://arxiv.org/pdf/1806.10332.pdf">https://arxiv.org/pdf/1806.10332.pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Despite the advancements in NAS, most existing works focus on optimizing models for high prediction accuracy, which often results in complex architectures that may not be suitable for deployment in computing environments with limited resources, such as battery-powered mobile devices. This limitation has motivated the development of MONAS (Multi-Objective Neural Architecture Search), a novel framework that extends the capabilities of NAS by considering not only prediction accuracy but also other critical objectives like power consumption during the search for neural network architectures.</p>
+<p>The primary motivation behind MONAS is to bridge the gap between high-performance models and deployability in resource-constrained settings. By integrating multi-objective optimization, MONAS allows for the search process to be guided by various performance metrics and application-specific constraints, leading to the discovery of networks that offer a balance between accuracy and efficiency. This approach aims to democratize the development of neural network architectures by making them accessible to a wider range of platforms and applications without compromising on performance.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>The paper introduces MONAS, a pioneering framework for Multi-Objective Neural Architectural Search, which stands out with its unique contributions to the field of neural network optimization. Firstly, it proposes a multi-objective approach that simultaneously considers prediction accuracy and additional critical objectives, such as energy consumption. This dual focus addresses the limitations of previous NAS methods, which often overlooked the trade-offs between performance and deployability in resource-constrained environments.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330155922697.png" alt="image-20240330155922697"></p>
+<p>Secondly, MONAS demonstrates adaptability by allowing users to incorporate customized constraints that reflect the specific requirements of different applications or platforms. This flexibility ensures that the search process is guided by a diverse set of objectives, leading to a broader spectrum of optimized architectures.</p>
+<p>Additionally, the paper presents MONAS-S, an extension of the original framework, designed to enhance scalability and speed. By adopting weight-sharing techniques, MONAS-S is capable of searching larger design spaces more efficiently, significantly reducing the time required to find optimal network architectures.</p>
+<p>The empirical results of the study show that models discovered by MONAS not only achieve comparable or better classification accuracy on computer vision tasks but also satisfy additional objectives such as peak power consumption. This evidences the effectiveness of MONAS in guiding the search process towards architectures that meet predefined constraints, outperforming state-of-the-art models in both accuracy and energy efficiency.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160020944.png" alt="image-20240330160020944"></p>
+<p>The MONAS framework is meticulously crafted to address the multifaceted challenges of neural architecture search. At its core, MONAS employs a two-stage framework that leverages reinforcement learning to navigate the complex landscape of neural network design. The first stage involves the generation of candidate architectures through a recurrent neural network (RNN), which serves as the “robot network” in the search process. This RNN generates a sequence of hyperparameters for a CNN, which are then used to construct and train the “target network” in the second stage. The performance of the target network, in terms of both accuracy and energy consumption, is feedback to the robot network as a reward signal, guiding the search process.</p>
+<p>One of the distinguishing features of MONAS is its adaptability. It allows users to define customized constraints that can be seamlessly integrated into the search process as additional objectives. These constraints are transformed into reward functions that work in tandem with the primary objectives of accuracy and efficiency, ensuring that the search is aligned with the specific needs of various applications and platforms.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160105915.png" alt="image-20240330160105915"></p>
+<p>To enhance scalability, MONAS introduces a weight-sharing technique, which is further developed into MONAS-S. This extension pre-trains a directed acyclic graph (DAG) that encompasses all possible networks, allowing for a more efficient search process. The controller, which is the RNN in MONAS, is updated using the REINFORCE policy learning method, where the validation accuracy and other objective measures serve as the reward signal.</p>
+<p>The reward function in MONAS is carefully designed to reflect the trade-offs between different objectives. It includes a mixed reward that balances accuracy and energy consumption, as well as constraints on peak power and Multiply-ACcumulate (MAC) operations, which serve as a proxy for power usage. This nuanced approach to the reward function enables MONAS to discover architectures that not only perform well in terms of accuracy but also meet the energy efficiency requirements.</p>
+<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160154008.png" alt="image-20240330160154008"></p>
+<p>The experimental setup of the MONAS framework is designed to thoroughly evaluate its performance and efficacy in searching for neural network architectures that balance prediction accuracy with energy efficiency. The experiments are conducted using Python with the TensorFlow library, running on a system equipped with an Intel XEON E5-2620v4 processor and GeForce GTX1080Ti GPU cards. The NVIDIA profiling tool, nvprof, is utilized to measure the peak power and energy consumption of the target networks, which are crucial for updating the robot network’s weights.</p>
+<p>The CIFAR-10 dataset is chosen to validate the target networks, with 5000 randomly selected images from the training set used as the validation set. The validation accuracy is taken as an objective in the reward function. The Multiply-ACcumulate (MAC) operations of a sampled target network are calculated based on the approach described in MnasNet, providing a measure of the computational cost.</p>
+<p>The experimental results demonstrate the adaptability and efficiency of MONAS in guiding the search process. When constraints are applied to limit peak power or require a minimum accuracy, MONAS successfully directs its search to regions that satisfy these conditions. For instance, out of 600 iterations, a significant number of target networks fall within the specified power or accuracy thresholds, indicating the framework’s ability to adapt to different reward functions.</p>
+<p>The paper also explores how the Pareto Front changes under different reward functions, showing that MONAS can discover architectures with either higher accuracy or lower energy consumption depending on the weightage given to each objective. Notably, MONAS outperforms random search in finding better architectures within a limited search time, highlighting its efficiency.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160230178.png" alt="image-20240330160230178"></p>
+<p>In terms of discovering noteworthy architectures, MONAS is compared with state-of-the-art models like CondenseNet, demonstrating that it can find models with higher accuracy and lower energy consumption. The best-performing models discovered by MONAS are reported, along with their hyperparameters and energy costs per 1000 inferences, providing evidence of the framework’s capability to surpass existing solutions.</p>
+<p>The scalability of MONAS is further validated through MONAS-S, which is applied to a search space of 1.6 × 10^29 possible networks in a 12-layered architecture. Even in this vast search space, MONAS-S successfully guides the search, finding models that require fewer MAC operations while maintaining high accuracy.</p>
 ]]></content>
       <categories>
         <category>Work hard</category>
