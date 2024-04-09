@@ -41,9 +41,9 @@ https://hjchen-thu.github.io/tags/Triton/
 https://hjchen-thu.github.io/tags/NAS/
 https://hjchen-thu.github.io/tags/FL/
 https://hjchen-thu.github.io/categories/Work-hard/
-https://hjchen-thu.github.io/categories/Work-hard/PaperReading/
-https://hjchen-thu.github.io/categories/Work-hard/Note/
 https://hjchen-thu.github.io/categories/Work-hard/Coding/
+https://hjchen-thu.github.io/categories/Work-hard/Note/
+https://hjchen-thu.github.io/categories/Work-hard/PaperReading/
 https://hjchen-thu.github.io/categories/Work-hard/Research/
 https://hjchen-thu.github.io/categories/Work-hard/Note/Coding/
 https://hjchen-thu.github.io/categories/Play-hard/
