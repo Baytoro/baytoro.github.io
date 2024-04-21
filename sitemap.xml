@@ -318,13 +318,6 @@
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/tags/Triton/</loc>
-    <lastmod>2024-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://hjchen-thu.github.io/tags/Attention/</loc>
     <lastmod>2024-04-21</lastmod>
     <changefreq>weekly</changefreq>
@@ -333,6 +326,13 @@
   
   <url>
     <loc>https://hjchen-thu.github.io/tags/CUDA/</loc>
+    <lastmod>2024-04-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjchen-thu.github.io/tags/Triton/</loc>
     <lastmod>2024-04-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -362,7 +362,7 @@
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/categories/Work-hard/PaperReading/</loc>
+    <loc>https://hjchen-thu.github.io/categories/Work-hard/Coding/</loc>
     <lastmod>2024-04-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -376,7 +376,7 @@
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/categories/Work-hard/Coding/</loc>
+    <loc>https://hjchen-thu.github.io/categories/Work-hard/PaperReading/</loc>
     <lastmod>2024-04-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
