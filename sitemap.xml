@@ -332,13 +332,6 @@
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/tags/FL/</loc>
-    <lastmod>2024-04-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://hjchen-thu.github.io/tags/Attention/</loc>
     <lastmod>2024-04-23</lastmod>
     <changefreq>weekly</changefreq>
@@ -347,6 +340,13 @@
   
   <url>
     <loc>https://hjchen-thu.github.io/tags/CUDA/</loc>
+    <lastmod>2024-04-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjchen-thu.github.io/tags/FL/</loc>
     <lastmod>2024-04-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
