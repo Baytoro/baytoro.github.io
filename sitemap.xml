@@ -304,20 +304,6 @@
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/tags/NAS/</loc>
-    <lastmod>2024-04-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://hjchen-thu.github.io/tags/FL/</loc>
-    <lastmod>2024-04-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://hjchen-thu.github.io/tags/LLM/</loc>
     <lastmod>2024-04-28</lastmod>
     <changefreq>weekly</changefreq>
@@ -339,7 +325,14 @@
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/tags/CUDA/</loc>
+    <loc>https://hjchen-thu.github.io/tags/NAS/</loc>
+    <lastmod>2024-04-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjchen-thu.github.io/tags/FL/</loc>
     <lastmod>2024-04-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -347,6 +340,13 @@
   
   <url>
     <loc>https://hjchen-thu.github.io/tags/Attention/</loc>
+    <lastmod>2024-04-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjchen-thu.github.io/tags/CUDA/</loc>
     <lastmod>2024-04-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -383,6 +383,13 @@
   </url>
   
   <url>
+    <loc>https://hjchen-thu.github.io/categories/Work-hard/Research/</loc>
+    <lastmod>2024-04-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://hjchen-thu.github.io/categories/Work-hard/Note/Coding/</loc>
     <lastmod>2024-04-28</lastmod>
     <changefreq>weekly</changefreq>
@@ -405,13 +412,6 @@
   
   <url>
     <loc>https://hjchen-thu.github.io/categories/Play-hard/Note/Coding/</loc>
-    <lastmod>2024-04-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://hjchen-thu.github.io/categories/Work-hard/Research/</loc>
     <lastmod>2024-04-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
