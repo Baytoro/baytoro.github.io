@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="H.J. Chen">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://hjchen-thu.github.io/2023/04/15/moe/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="MOE leverages a modular network of specialized experts, directed by a gating mechanism, to efficiently tackle complex AI tasks with scalability and adaptability.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mixture of Experts(MOEs): The Versatile Framework for Scalable AI Solutions">
+<meta property="og:url" content="https://hjchen-thu.github.io/2023/04/15/MOE/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="MOE leverages a modular network of specialized experts, directed by a gating mechanism, to efficiently tackle complex AI tasks with scalability and adaptability.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/202404301926150.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240430201035849.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240501110101766-20240501110457426.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240501123124961.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240501122922605.png">
+<meta property="article:published_time" content="2023-04-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-05-01T04:45:03.474Z">
+<meta property="article:author" content="H.J. Chen">
+<meta property="article:tag" content="Quantization">
+<meta property="article:tag" content="CUDA">
+<meta property="article:tag" content="MOE">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/202404301926150.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/personal/avatar.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/personal/avatar.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/personal/avatar.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Mixture of Experts(MOEs): The Versatile Framework for Scalable AI Solutions -
+        
+        H.J. Chen&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+        <link href="" rel="stylesheet">
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"hjchen-thu.github.io","root":"/","language":"en","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":false,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/picture/s1.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":true,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Welcome, traveler :)","subtitle":{"text":["May you find inspiration and joy here (scroll down ↓)"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":40,"backing_speed":10,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":"https://github.com/hjchen-thu","zhihu":"https://www.zhihu.com/people/baytoro","email":"guaguabear@hotmail.com"},"qrs":null}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"MapleStory Title","artist":"MapleStory","url":"/music/MapleStory Title.mp3","cover":"/picture/maple.jpeg"},{"name":"Above the Treetops","artist":"MapleStory","url":"/music/Above the Treetops.mp3","cover":"/picture/maple.jpeg"},{"name":"When the Morning Comes","artist":"MapleStory","url":"/music/When the Morning Comes.mp3","cover":"/picture/maple.jpeg"},{"name":"Missing You","artist":"MapleStory","url":"/music/Missing You.mp3","cover":"/picture/maple.jpeg"},{"name":"Shinin' Harbor","artist":"MapleStory","url":"/music/Shinin' Harbor.mp3","cover":"/picture/maple.jpeg"},{"name":"Snowy Village","artist":"MapleStory","url":"/music/Snowy Village.mp3","cover":"/picture/maple.jpeg"}]},"mermaid":{"enable":true,"version":"9.3.0"}},"version":"2.5.0","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"About":{"path":"/about","icon":"fa-regular fa-user"},"Archives":{"icon":"fa-regular fa-archive","submenus":{"Posts":"/archives","Categories":"/categories","Tags":"/tags"}},"GitHub":{"icon":"fa-brands fa-github","path":"https://github.com/hjchen-thu"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"info","menu_title":"Links","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":5}},"footerStart":"2020/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                H.J. Chen&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/about"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/archives">POSTS
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/categories">CATEGORIES
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/tags">TAGS
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    target="_blank" rel="noopener" href="https://github.com/hjchen-thu"  >
+                                    
+                                        
+                                            <i class="fa-brands fa-github"></i>
+                                        
+                                        GITHUB
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i></div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/about"  >
+                             
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/archives">POSTS</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/categories">CATEGORIES</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/tags">TAGS</a>
+                            </li>
+                        
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        target="_blank" rel="noopener" href="https://github.com/hjchen-thu"  >
+                             
+                                
+                                    <i class="fa-brands fa-github"></i>
+                                
+                                GITHUB
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            
+                
+                
+                <img src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240430202918946.png" alt="Mixture of Experts(MOEs): The Versatile Framework for Scalable AI Solutions" class="max-w-none"/>
+                
+                <h1 class="article-title-cover">Mixture of Experts(MOEs): The Versatile Framework for Scalable AI Solutions</h1>
+            
+            </div>
+            
+                    
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/personal/avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">H.J. Chen</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-04-15</span>
+        <span class="mobile">2023-04-15</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <!-- <span class="article-date article-meta-item"> -->
+            <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
+            <!-- <span class="desktop">2024-05-01 12:45:03</span>
+            <span class="mobile">2024-05-01 12:45:03</span> -->
+            <!-- <span class="hover-info">Updated</span> -->
+        <!-- </span> -->
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/Coding/">Coding</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Quantization/">Quantization</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/CUDA/">CUDA</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/MOE/">MOE</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body">
+            <h2 id="Update"><a href="#Update" class="headerlink" title="Update"></a>Update</h2><p>Due to the recent surge in popularity of Mixture of Experts (MOE) in LLMs, this blog  was revised  on 2024-04-24.</p>
+<p>2024-04-24: LLM relevant update</p>
+<p>2023-03-28: Summary for Internship in Tencent AI Lab </p>
+<p>TensorRT CUDA plugin source code: <a class="link" target="_blank" rel="noopener" href="https://github.com/hjchen-thu/moe_simple">https://github.com/hjchen-thu/moe_simple <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>MoE has become so prevalent that it’s now challenging to find a new, large language model (LLM) that isn’t an MoE. Models such as GPT-4, Gemini 1.5, Mixtral 8x7B, and Jamba are all examples of MoE architectures.</p>
+<p>The advent of this technology can be attributed to three main aspects:</p>
+<h3 id="Sparsity-of-Neural-Networks"><a href="#Sparsity-of-Neural-Networks" class="headerlink" title="Sparsity of Neural Networks:"></a><strong>Sparsity of Neural Networks:</strong></h3><p>In specific layers, neural networks can become extremely sparse, meaning that the activation frequency of certain neurons is significantly lower than that of others. In other words, not all neurons are utilized every time, which is analogous to the neurons in the human brain.</p>
+<p>Many are unaware that neural networks are often excessively large for the majority of the predictions they make.</p>
+<p>Take, for example, the task of summarizing an article. The model’s trained parameters not only encompass the data for this capability but also encompass knowledge in physics, mathematics, astronomy, and more. This means that for every prediction, we run the entire network, yet only a small fraction of the model is actually utilized.</p>
+<p>Take ChatGPT, for instance. Despite being compelled to run the entire vast network to predict each new word, this demands a significant computational workload. However, for the user’s current question, only a very specific part of the network is activated to assist in predicting the new word.</p>
+<p>[1] highlighted the issue of sparse activation in the Transformer model’s Feed-Forward Networks (FFNs). In other words, for a single output, only a small subset of the FFN’s neurons are activated.</p>
+<p>In the study, the authors found that after the application of activation functions like ReLU, a majority of the activation values are zero, meaning that only a minority of neurons have non-zero activations, leading to a highly sparse activation pattern in FFNs.</p>
+<p>Furthermore, the larger the model, the greater its sparsity. Large models activate a smaller proportion of neurons relative to their total number when processing inputs. For example, in large models, 80% of inputs activate less than 3% of neurons. This phenomenon mirrors the sparse activation patterns observed in the human brain.</p>
+<p>In practical use, even with large models, the parameters of their FFNs are not fully utilized, with most neurons corresponding to parameters that remain inactive in the majority of cases.</p>
+<p>To address the issue of sparse activation, the paper proposed the MoEfication method, which involves segmenting the FFNs into multiple experts and constructing expert routers to determine which experts to use for each input. This approach enhances the efficiency and performance of the model.</p>
+<h3 id="Expertise-of-Neurons"><a href="#Expertise-of-Neurons" class="headerlink" title="Expertise of Neurons:"></a><strong>Expertise of Neurons:</strong></h3><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/202404301926150.png"></p>
+<p>The brain is an exceedingly complex organ, composed of various regions, each with its specific area of expertise. Below are examples of some brain regions and the domains of knowledge they excel in:</p>
+<p><strong>Frontal Lobes</strong> - These are associated with decision-making, planning, problem-solving, personality, and social behavior. Individuals with damage to the frontal lobes may exhibit changes in personality and a decline in decision-making abilities.</p>
+<p><strong>Parietal Lobes</strong> - Primarily responsible for processing sensory information, such as touch and spatial awareness. Damage to the parietal lobes can lead to an inability to accurately perceive the position or size of objects.</p>
+<p><strong>Temporal Lobes</strong> - Involved in auditory processing, language comprehension, and memory formation. Damage to the temporal lobes may affect one’s language skills and memory.</p>
+<p>For instance, consider a single neuron among the billions in a neural network that may be activated every time an input topic involves “apples,” and yet, this same neuron might also be activated when the input topic involves “telephones.”</p>
+<p>One might wonder, what is the connection between the two?</p>
+<p>This not only makes neural networks difficult to interpret but is also far from an ideal scenario. A single neuron is expected to be an expert in a variety of topics that are almost entirely unrelated to each other. Imagine being required to be an expert in both neuroscience and geology simultaneously; it would be a daunting task.</p>
+<p>As a result, due to the vast scope of knowledge required, these neurons struggle to specialize. What’s worse, the learning curves may conflict with each other, where gaining more knowledge in one subject could impair the neuron’s ability to acquire knowledge in another.</p>
+<p>Picture being an expert in mutually exclusive theories, such as materialism and idealism. A significant amount of information from one theory would contradict the other, potentially leading to a collapse in knowledge, rendering you essentially unable to discuss one of the theories coherently.</p>
+<p>So, what if we could employ a technique to divide, eliminate, or at least reduce these two issues? This is the problem that the Mixture-of-Experts (MoE) aims to solve.</p>
+<p>The MoE approach introduces a modular architecture where a large network is composed of smaller, specialized networks, or “experts,” each responsible for a specific domain of knowledge. By routing inputs to the appropriate expert, the MoE model can focus computational resources and learning efforts on relevant areas, thereby improving interpretability and efficiency.</p>
+<h3 id="Limited-Computational-Resources"><a href="#Limited-Computational-Resources" class="headerlink" title="Limited Computational Resources:"></a><strong>Limited Computational Resources:</strong></h3><p>The scale of a model is one of the key factors in enhancing its performance. However, resources are invariably finite at any given stage. Under a constrained computational budget, training a larger model with fewer training steps often yields better results than training a smaller model with more steps.</p>
+<h2 id="Workload"><a href="#Workload" class="headerlink" title="Workload"></a>Workload</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240430201035849.png" alt="image-20240430201035849"></p>
+<p><strong>Sparse Mixture-of-Experts Layers:</strong> These layers are substitutes for the traditional Feed-Forward Networks (FFNs) found in Transformer models. An MoE layer consists of several “experts” (for example, eight experts), with each expert being an independent neural network. In practice, these experts are often FFNs, but they can also be more complex network structures or even MoE layers themselves, creating a hierarchical MoE structure.</p>
+<p><strong>Gating Networks or Routing:</strong> This component is responsible for determining which tokens are sent to which expert. For instance, in the figure below, the token “More” might be directed to the second expert, while the token “Parameters” could be sent to the first expert. Sometimes, a single token can even be routed to multiple experts. The routing of tokens is a critical aspect of MoE utilization because the router is composed of learned parameters and is pre-trained alongside the rest of the network.</p>
+<h3 id="Slow-version"><a href="#Slow-version" class="headerlink" title="Slow version"></a>Slow version</h3><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Expert</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, input_dim</span>):</span><br><span class="line">        <span class="built_in">super</span>(Expert, self).__init__()</span><br><span class="line">        self.fc = nn.Linear(input_dim, <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="keyword">return</span> self.fc(x)</span><br><span class="line">        </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MoE</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, input_dim, num_experts</span>):</span><br><span class="line">        <span class="built_in">super</span>(MoE, self).__init__()</span><br><span class="line">        self.experts = nn.ModuleList([Expert(input_dim) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num_experts)])</span><br><span class="line">        <span class="comment"># gating的组成</span></span><br><span class="line">        self.gating = nn.Sequential(</span><br><span class="line">            nn.Linear(input_dim, num_experts),</span><br><span class="line">            nn.Softmax(dim=<span class="number">1</span>)</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="comment"># 各个expert做forward前向推理</span></span><br><span class="line">        expert_outputs = [expert(x) <span class="keyword">for</span> expert <span class="keyword">in</span> self.experts]</span><br><span class="line">        expert_outputs = torch.stack(expert_outputs, dim=<span class="number">1</span>)</span><br><span class="line">        <span class="comment"># 加权组合各个expert的输出</span></span><br><span class="line">        gating_weights = self.gating(x)</span><br><span class="line">        final_output = torch.<span class="built_in">sum</span>(expert_outputs * gating_weights.unsqueeze(<span class="number">2</span>), dim=<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> final_output</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h3 id="Fast-version-Sparse-to-Compact-GEMM"><a href="#Fast-version-Sparse-to-Compact-GEMM" class="headerlink" title="Fast version: Sparse to Compact GEMM"></a>Fast version: Sparse to Compact GEMM</h3><p>By packing tokens assigned to the same expert together, the originally sparse matrix multiplications can be transformed into dense matrix multiplications. </p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MixtralBLockSparseTop2MLP</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.ffn_dim = <span class="number">256</span></span><br><span class="line">        self.hidden_dim = <span class="number">128</span></span><br><span class="line"></span><br><span class="line">        self.w1 = nn.Linear(self.hidden_dim, self.ffn_dim, bias=<span class="literal">False</span>)</span><br><span class="line">        self.w2 = nn.Linear(self.ffn_dim, self.hidden_dim, bias=<span class="literal">False</span>)</span><br><span class="line">        self.w3 = nn.Linear(self.hidden_dim, self.ffn_dim, bias=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">        self.act_fn = nn.SiLU()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, hidden_states</span>): </span><br><span class="line">        y = self.act_fn(self.w1(hidden_states)) * self.w3(hidden_states)</span><br><span class="line">        y = self.w2(y)</span><br><span class="line">        <span class="keyword">return</span> y</span><br><span class="line">    </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MixtralSparseMoeBlock</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.hidden_dim = <span class="number">128</span></span><br><span class="line">        self.ffn_dim = <span class="number">256</span></span><br><span class="line">        self.num_experts = <span class="number">8</span> </span><br><span class="line">        self.top_k = <span class="number">2</span></span><br><span class="line"></span><br><span class="line">        self.gate = nn.Linear(self.hidden_dim, self.num_experts, bias=<span class="literal">False</span>)</span><br><span class="line">        self.experts = nn.ModuleList([MixtralBLockSparseTop2MLP() \</span><br><span class="line">                                      <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(self.num_experts)])</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        bs, seql, dim = x.shape</span><br><span class="line">        x = x.view(-<span class="number">1</span>, dim)</span><br><span class="line">        </span><br><span class="line">        router_logits = self.gate(x)</span><br><span class="line">        routing_weights = F.softmax(router_logits, dim=<span class="number">1</span>, dtype=torch.<span class="built_in">float</span>)</span><br><span class="line">        routing_weights, selected_experts = torch.topk(routing_weights, self.top_k, dim=-<span class="number">1</span>)</span><br><span class="line">        routing_weights /= routing_weights.<span class="built_in">sum</span>(dim=-<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">        </span><br><span class="line">        expert_mask = F.one_hot(selected_experts, num_classes=self.num_experts).permute(<span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>)</span><br><span class="line">        </span><br><span class="line">        final_hidden_states = torch.zeros((bs * seql, dim), dtype=x.dtype, device=x.device)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> expert_idx <span class="keyword">in</span> <span class="built_in">range</span>(self.num_experts):</span><br><span class="line">            expert_layer = self.experts[expert_idx]</span><br><span class="line">            </span><br><span class="line">            idx, top_x = torch.where(expert_mask[expert_idx])</span><br><span class="line">  </span><br><span class="line">            top_x_list = top_x.tolist()</span><br><span class="line">            idx_list = idx.tolist()</span><br><span class="line"></span><br><span class="line">            current_state = x[<span class="literal">None</span>, top_x_list].reshape(-<span class="number">1</span>, dim)</span><br><span class="line"></span><br><span class="line">            current_hidden_states = expert_layer(current_state)  \</span><br><span class="line">                                    * routing_weights[top_x_list, idx_list, <span class="literal">None</span>]</span><br><span class="line"></span><br><span class="line">            final_hidden_states.index_add_(<span class="number">0</span>, top_x, current_hidden_states.to(x.dtype))</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Accelerating-Inference-A-simple-attempt"><a href="#Accelerating-Inference-A-simple-attempt" class="headerlink" title="Accelerating Inference (A simple attempt)"></a>Accelerating Inference (A simple attempt)</h2><p>This section serves as a summary of my internship at Tencent AI Lab, where my primary focus was on enhancing the inference speed of the Mixture of Experts (MoE) module within Conformer models.</p>
+<p>I develop a TensorRT plugin to accelerate Mixture of Experts (MOEs) module by leveraging mixed quantization methods. Token reordering is employed to reduce unnecessary inference in expert networks. And in scenarios with fewer tokens, multi-streaming is also applied to further improve SM occupancy. As a result, we achieve a 25% end- to-end performance improvement on a single NVIDIA T4 with a negligible 0.01% word error rate (WER) increase.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240501110101766-20240501110457426.png"></p>
+<h3 id="Main-code"><a href="#Main-code" class="headerlink" title="Main code"></a>Main code</h3><div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">ComputeFmoeExpertInt8</span><span class="params">(<span class="type">const</span> T* input, <span class="type">const</span> <span class="type">int</span>* gate_idx, <span class="type">const</span> <span class="type">int</span> input_volume, <span class="type">const</span> <span class="type">int</span> weight1_volume,</span></span></span><br><span class="line"><span class="params"><span class="function">                             <span class="type">const</span> <span class="type">int</span> weight2_volume, <span class="type">const</span> <span class="type">int</span> S, <span class="type">const</span> <span class="type">int</span> num_expert, <span class="type">const</span> <span class="type">int</span> idim,</span></span></span><br><span class="line"><span class="params"><span class="function">                             <span class="type">const</span> <span class="type">int</span> hidden_units, <span class="type">const</span> T* w1_bias_ptr,</span></span></span><br><span class="line"><span class="params"><span class="function">                             <span class="type">const</span> <span class="type">char</span>* weight1_int8, <span class="type">const</span> T* weight1_scale,</span></span></span><br><span class="line"><span class="params"><span class="function">                             <span class="type">const</span> T* w2_bias_ptr, <span class="type">const</span> <span class="type">char</span>* weight2_int8, <span class="type">const</span> T* weight2_scale,</span></span></span><br><span class="line"><span class="params"><span class="function">                             std::vector&lt;<span class="type">int</span>&gt;&amp; v_acc_his, <span class="type">void</span>* workspace, T* output, cudaStream_t stream,</span></span></span><br><span class="line"><span class="params"><span class="function">                             std::shared_ptr&lt;CudaStreamManager&gt; csm_ptr)</span> </span>{</span><br><span class="line">  <span class="keyword">auto</span> input_buffer_size = <span class="built_in">alignTo</span>&lt;<span class="type">int</span>&gt;(input_volume, kAlignment);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// caculate sizes</span></span><br><span class="line">  <span class="keyword">auto</span> mapping_size = <span class="built_in">alignTo</span>&lt;<span class="type">int</span>&gt;(S, kAlignment);</span><br><span class="line">  <span class="keyword">auto</span> inverse_mapping_size = <span class="built_in">alignTo</span>&lt;<span class="type">int</span>&gt;(S, kAlignment);</span><br><span class="line">  <span class="keyword">auto</span> his_size = <span class="built_in">alignTo</span>&lt;<span class="type">int</span>&gt;(num_expert + <span class="number">1</span>, kAlignment);</span><br><span class="line">  <span class="keyword">auto</span> Layer1_In_buffer_int8_size = <span class="built_in">alignTo</span>&lt;<span class="type">int</span>&gt;(input_volume, kAlignment);        <span class="comment">// Input reorder &amp; quantize</span></span><br><span class="line">  <span class="keyword">auto</span> Layer1_In_scale_size = <span class="built_in">alignTo</span>&lt;<span class="type">int</span>&gt;(S, kAlignment);                         <span class="comment">// Layer1 input scale</span></span><br><span class="line">  <span class="keyword">auto</span> Layer1_Out_buffer_int32_size = <span class="built_in">alignTo</span>&lt;<span class="type">int</span>&gt;(S * hidden_units, kAlignment);  <span class="comment">// MM out1</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">auto</span> Layer2_In_buffer_int8_size = <span class="built_in">alignTo</span>&lt;<span class="type">int</span>&gt;(S * hidden_units, kAlignment);  <span class="comment">// Out1 scaling and silu &amp; quantize</span></span><br><span class="line">  <span class="keyword">auto</span> Layer2_In_scale_size = <span class="built_in">alignTo</span>&lt;<span class="type">int</span>&gt;(S, kAlignment);                       <span class="comment">// Layer2 input scale</span></span><br><span class="line">  <span class="keyword">auto</span> Layer2_Out_buffer_int32_size = <span class="built_in">alignTo</span>&lt;<span class="type">int</span>&gt;(input_volume, kAlignment);    <span class="comment">// MM out2</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// caculate address</span></span><br><span class="line">  <span class="type">int</span>* mapping = <span class="built_in">static_cast</span>&lt;<span class="type">int</span>*&gt;(workspace);</span><br><span class="line">  <span class="type">int</span>* inverse_mapping = mapping + mapping_size;</span><br><span class="line">  <span class="type">int</span>* acc_histogram = inverse_mapping + inverse_mapping_size;</span><br><span class="line">  <span class="type">int</span>* Layer1_Out_buffer_int32 = acc_histogram + his_size;</span><br><span class="line">  <span class="type">int</span>* Layer2_Out_buffer_int32 = Layer1_Out_buffer_int32 + Layer1_Out_buffer_int32_size;</span><br><span class="line"></span><br><span class="line">  <span class="type">char</span>* Layer1_In_buffer_int8 = <span class="built_in">reinterpret_cast</span>&lt;<span class="type">char</span>*&gt;(Layer2_Out_buffer_int32 + Layer2_Out_buffer_int32_size);</span><br><span class="line">  <span class="type">char</span>* Layer2_In_buffer_int8 = Layer1_In_buffer_int8 + Layer1_In_buffer_int8_size;</span><br><span class="line"></span><br><span class="line">  T* Layer1_In_scale = <span class="built_in">reinterpret_cast</span>&lt;T*&gt;(Layer2_In_buffer_int8 + Layer2_In_buffer_int8_size);</span><br><span class="line">  T* Layer2_In_scale = Layer1_In_scale + Layer1_In_scale_size;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// step 1: Check all variables(for debug)</span></span><br><span class="line">  <span class="type">int</span> status = <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// step 2: Compute reeordered idex: gate_idx -&gt; mapping &amp; acc_histogram</span></span><br><span class="line">  status = <span class="built_in">ComputeScatterMapping</span>(gate_idx, num_expert, S, mapping, inverse_mapping, acc_histogram, stream);</span><br><span class="line">  <span class="keyword">if</span> (status != <span class="number">0</span>) {</span><br><span class="line">    <span class="built_in">LOG</span>(ERROR) &lt;&lt; <span class="string">"compute_scatter_mapping error!"</span> &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> status;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="comment">// step 3: mapping and quantize input</span></span><br><span class="line">  status = <span class="built_in">QuantizedScatterMappingCopy</span>(input, mapping, S, idim, Layer1_In_buffer_int8, Layer1_In_scale, stream);</span><br><span class="line">  <span class="keyword">if</span> (status != <span class="number">0</span>) {</span><br><span class="line">    <span class="built_in">LOG</span>(ERROR) &lt;&lt; <span class="string">"QuantizedScatterMappingCopy error!"</span> &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> status;</span><br><span class="line">  }</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// step 4: MOE caculation</span></span><br><span class="line">  <span class="type">int</span>* h_acc_his = v_acc_his.<span class="built_in">data</span>();</span><br><span class="line">  <span class="built_in">cudaMemcpyAsync</span>(h_acc_his, acc_histogram, <span class="built_in">sizeof</span>(<span class="type">int</span>) * (num_expert + <span class="number">1</span>), cudaMemcpyDeviceToHost, stream);</span><br><span class="line">  <span class="built_in">cudaStreamSynchronize</span>(stream);</span><br><span class="line"></span><br><span class="line">  cublasOperation_t transa = CUBLAS_OP_N;</span><br><span class="line">  cublasOperation_t transb = CUBLAS_OP_T;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; num_expert; i++) {</span><br><span class="line">    <span class="keyword">auto</span> cur_stream = csm_ptr-&gt;<span class="built_in">Stream</span>(i);</span><br><span class="line">    <span class="keyword">auto</span> handle = csm_ptr-&gt;<span class="built_in">CublasHandle</span>(i);</span><br><span class="line">    <span class="type">int</span> m = h_acc_his[i + <span class="number">1</span>] - h_acc_his[i];</span><br><span class="line">    <span class="keyword">if</span> (m == <span class="number">0</span>) <span class="keyword">continue</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// step 4.0: Prepare for workspace</span></span><br><span class="line">    <span class="keyword">auto</span> w_offset = i * idim * hidden_units;</span><br><span class="line">    <span class="keyword">auto</span> cur_weight1_int8_ptr = weight1_int8 + w_offset;</span><br><span class="line">    <span class="keyword">auto</span> cur_weight2_int8_ptr = weight2_int8 + w_offset;</span><br><span class="line">    <span class="keyword">auto</span> Layer1_In_buffer_int8_ptr = Layer1_In_buffer_int8 + h_acc_his[i] * idim;</span><br><span class="line">    <span class="keyword">auto</span> Layer1_Out_buffer_int32_ptr = Layer1_Out_buffer_int32 + h_acc_his[i] * hidden_units;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// step 4.1: compute L1 out int32</span></span><br><span class="line">    <span class="built_in">CUBLAS_CHECK</span>(<span class="built_in">cublasGemm</span>(handle, transa, transb, m, hidden_units, idim, <span class="number">1</span>, Layer1_In_buffer_int8_ptr,</span><br><span class="line">                            cur_weight1_int8_ptr, <span class="number">0</span>, Layer1_Out_buffer_int32_ptr));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// step 4.2: Dequantize + BiasSilu + Quantize</span></span><br><span class="line">    <span class="keyword">auto</span> Layer1_In_scale_ptr_expert = Layer1_In_scale + h_acc_his[i];</span><br><span class="line">    <span class="type">const</span> T* w1_weight_scale_ptr_expert = weight1_scale + i * hidden_units;</span><br><span class="line">    <span class="keyword">auto</span> w1_bias_ptr_expert = w1_bias_ptr + i * hidden_units;</span><br><span class="line">    <span class="keyword">auto</span> Layer2_In_buffer_int8_expert = Layer2_In_buffer_int8 + h_acc_his[i] * hidden_units;</span><br><span class="line">    <span class="keyword">auto</span> Layer2_In_scale_expert = Layer2_In_scale + h_acc_his[i];</span><br><span class="line"></span><br><span class="line">    status = <span class="built_in">DequantizedBiasSiluAndQuantize</span>(Layer1_Out_buffer_int32_ptr, Layer1_In_scale_ptr_expert,</span><br><span class="line">                                            w1_weight_scale_ptr_expert, w1_bias_ptr_expert, m, hidden_units,</span><br><span class="line">                                            Layer2_In_buffer_int8_expert, Layer2_In_scale_expert, cur_stream);</span><br><span class="line">    <span class="keyword">if</span> (status != <span class="number">0</span>) {</span><br><span class="line">      <span class="built_in">LOG</span>(ERROR) &lt;&lt; <span class="string">"DequantizedBiasSilu error!"</span> &lt;&lt; endl;</span><br><span class="line">      <span class="keyword">return</span> status;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">// step 4.3: compute L2 out int32</span></span><br><span class="line">    <span class="keyword">auto</span> Layer2_Out_buffer_int32_ptr = Layer2_Out_buffer_int32 + h_acc_his[i] * idim;</span><br><span class="line">    <span class="type">const</span> T* w2_weight_scale_ptr_expert = weight2_scale + i * idim;</span><br><span class="line">    <span class="keyword">auto</span> w2_bias_ptr_expert = w2_bias_ptr + i * idim;</span><br><span class="line">    <span class="built_in">CUBLAS_CHECK</span>(<span class="built_in">cublasGemm</span>(handle, transa, transb, m, idim, hidden_units, <span class="number">1</span>, Layer2_In_buffer_int8_expert,</span><br><span class="line">                            cur_weight2_int8_ptr, <span class="number">0</span>, Layer2_Out_buffer_int32_ptr));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// step 4.4: Dequantize + Bias + ReverseMapping to Output</span></span><br><span class="line">    status =</span><br><span class="line">        <span class="built_in">DequantizedBiasGatherMapping</span>(Layer2_Out_buffer_int32_ptr, Layer2_In_scale_expert, w2_weight_scale_ptr_expert,</span><br><span class="line">                                     w2_bias_ptr_expert, m, idim, h_acc_his[i], inverse_mapping, output, cur_stream);</span><br><span class="line">    <span class="keyword">if</span> (status != <span class="number">0</span>) {</span><br><span class="line">      <span class="built_in">LOG</span>(ERROR) &lt;&lt; <span class="string">"DequantizedBiasGatherMapping error!"</span> &lt;&lt; endl;</span><br><span class="line">      <span class="keyword">return</span> status;</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  csm_ptr-&gt;<span class="built_in">SyncAllStream</span>();</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Step-By-Step"><a href="#Step-By-Step" class="headerlink" title="Step By Step"></a>Step By Step</h3><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240501123124961.png" alt="image-20240501123124961"></p>
+<h4 id="1-Compute-reordered-index-gate-idx-mapping-acc-histogram"><a href="#1-Compute-reordered-index-gate-idx-mapping-acc-histogram" class="headerlink" title="1. Compute reordered index: gate_idx -> mapping & acc_histogram"></a>1. Compute reordered index: gate_idx -&gt; mapping &amp; acc_histogram</h4><div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function">__global__ <span class="type">void</span> <span class="title">ScatterMappingKernel</span><span class="params">(<span class="type">const</span> <span class="type">int</span>* gate_idx, <span class="type">const</span> <span class="type">int</span> num_expert, <span class="type">const</span> <span class="type">int</span> idx_num, <span class="type">int</span>* mapping,</span></span></span><br><span class="line"><span class="params"><span class="function">                                     <span class="type">int</span>* inverse_mapping, <span class="type">int</span>* acc_histogram)</span> </span>{</span><br><span class="line">  <span class="type">int</span> idx = threadIdx.x;</span><br><span class="line">  <span class="keyword">extern</span> __shared__ <span class="type">int</span> his[];</span><br><span class="line">  <span class="keyword">if</span> (idx &lt; num_expert + <span class="number">1</span>) his[idx] = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  __syncthreads();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> i = threadIdx.x; i &lt; idx_num; i += blockDim.x) {</span><br><span class="line">    <span class="comment">// calc his</span></span><br><span class="line">    <span class="keyword">auto</span> old = <span class="built_in">atomicAdd</span>(&amp;his[gate_idx[i] + <span class="number">1</span>], <span class="number">1</span>);</span><br><span class="line">    mapping[i] = old;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  __syncthreads();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// acc his</span></span><br><span class="line">  <span class="keyword">if</span> (threadIdx.x == <span class="number">0</span>) {</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; num_expert; i++) his[i + <span class="number">1</span>] += his[i];</span><br><span class="line">  }</span><br><span class="line">  __syncthreads();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> i = threadIdx.x; i &lt; idx_num; i += blockDim.x) {</span><br><span class="line">    <span class="comment">// calc his</span></span><br><span class="line">    mapping[i] += his[gate_idx[i]];</span><br><span class="line">    inverse_mapping[mapping[i]] = i;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (idx &lt; num_expert + <span class="number">1</span>) acc_histogram[idx] = his[idx];</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">ComputeScatterMapping</span><span class="params">(<span class="type">const</span> <span class="type">int</span>* gate_idx, <span class="type">const</span> <span class="type">int</span> num_expert, <span class="type">const</span> <span class="type">int</span> idx_num, <span class="type">int</span>* mapping,</span></span></span><br><span class="line"><span class="params"><span class="function">                          <span class="type">int</span>* inverse_mapping, <span class="type">int</span>* acc_histogram, cudaStream_t stream)</span> </span>{</span><br><span class="line">  <span class="type">int</span> block_size = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span> (idx_num &lt; <span class="number">1024</span>)</span><br><span class="line">    block_size = <span class="number">256</span>;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (idx_num &lt; <span class="number">4096</span>)</span><br><span class="line">    block_size = <span class="number">512</span>;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    block_size = <span class="number">1024</span>;</span><br><span class="line"></span><br><span class="line">  ScatterMappingKernel&lt;&lt;&lt;<span class="number">1</span>, block_size, (num_expert + <span class="number">1</span>) * <span class="built_in">sizeof</span>(<span class="type">int</span>), stream&gt;&gt;&gt;(</span><br><span class="line">      gate_idx, num_expert, idx_num, mapping, inverse_mapping, acc_histogram);</span><br><span class="line">  <span class="built_in">CUDA_CHECK</span>(<span class="built_in">cudaPeekAtLastError</span>());</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h4 id="2-Mapping-copy-and-quantize"><a href="#2-Mapping-copy-and-quantize" class="headerlink" title="2. Mapping copy and quantize"></a>2. Mapping copy and quantize</h4><div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="type">int</span> TPB&gt;</span><br><span class="line"><span class="function">__global__ <span class="type">void</span> <span class="title">Trans2CharRowScatterMapping</span><span class="params">(<span class="type">const</span> T* fp_data, <span class="type">const</span> <span class="type">int</span>* mapping, <span class="type">const</span> <span class="type">int</span> idim, <span class="type">char</span>* char_data, T* scales_data)</span> </span>{</span><br><span class="line">  <span class="type">int</span> tidx = threadIdx.x;</span><br><span class="line"></span><br><span class="line">  fp_data += blockIdx.x * idim;</span><br><span class="line">  char_data += mapping[blockIdx.x] * idim;</span><br><span class="line">  </span><br><span class="line">  T s_max = (T)<span class="number">0.0</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> i = tidx; i &lt; idim; i += TPB) {</span><br><span class="line">    T tmp_abs = <span class="built_in">fabsf</span>(fp_data[i]);</span><br><span class="line">    <span class="keyword">if</span> (s_max &lt; tmp_abs) {</span><br><span class="line">      s_max = tmp_abs;</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">using</span> BlockReduce = cub::BlockReduce&lt;T, TPB&gt;;</span><br><span class="line">  __shared__ <span class="keyword">typename</span> BlockReduce::TempStorage temp_storage;</span><br><span class="line">  T dim_max =  <span class="built_in">BlockReduce</span>(temp_storage).<span class="built_in">Reduce</span>(s_max, cub::<span class="built_in">Max</span>());</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (tidx == <span class="number">0</span>) {</span><br><span class="line">    scales_data[mapping[blockIdx.x]] = <span class="number">255.0</span> / <span class="number">2.0</span> / dim_max;</span><br><span class="line">  }</span><br><span class="line">  __syncthreads();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// quantization</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> i = tidx; i &lt; idim; i += blockDim.x) {</span><br><span class="line">    <span class="type">bool</span> positive = (fp_data[i] &gt; (T)<span class="number">0.0</span>);</span><br><span class="line">    T tmp = fp_data[i] * scales_data[mapping[blockIdx.x]];</span><br><span class="line">    <span class="keyword">if</span> (tmp &lt;= <span class="number">-128</span>)</span><br><span class="line">      char_data[i] = <span class="number">-128</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (tmp &gt;= <span class="number">127</span>)</span><br><span class="line">      char_data[i] = <span class="number">127</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      char_data[i] = (<span class="type">signed</span> <span class="type">char</span>)(tmp + (positive ? <span class="number">1</span> : <span class="number">-1</span>) * <span class="number">0.5</span>);</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">QuantizedScatterMappingCopy</span><span class="params">(<span class="type">const</span> <span class="type">float</span>* input, <span class="type">const</span> <span class="type">int</span>* mapping, <span class="type">const</span> <span class="type">int</span> S, <span class="type">const</span> <span class="type">int</span> idim,</span></span></span><br><span class="line"><span class="params"><span class="function">                                <span class="type">char</span>* input_buffer_int8, <span class="type">float</span>* scale, cudaStream_t stream)</span> </span>{</span><br><span class="line">  <span class="keyword">if</span> (input == <span class="literal">nullptr</span> || input_buffer_int8 == <span class="literal">nullptr</span> || scale == <span class="literal">nullptr</span> || mapping == <span class="literal">nullptr</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">  <span class="type">const</span> <span class="type">int</span> block_1d_size = <span class="number">256</span>;</span><br><span class="line">  <span class="type">int</span> grid_1d_size = S;</span><br><span class="line"></span><br><span class="line">  Trans2CharRowScatterMapping&lt;<span class="type">float</span>, block_1d_size&gt;&lt;&lt;&lt;grid_1d_size, block_1d_size, <span class="number">0</span>, stream&gt;&gt;&gt;(</span><br><span class="line">      input, mapping, idim, input_buffer_int8, scale);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">CUDA_CHECK</span>(<span class="built_in">cudaPeekAtLastError</span>());</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240501122922605.png" alt="image-20240501122922605"></p>
+<h5 id="3-1-First-Gemm"><a href="#3-1-First-Gemm" class="headerlink" title="3.1 First Gemm"></a>3.1 First Gemm</h5><div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CUBLAS_CHECK</span>(<span class="built_in">cublasGemm</span>(handle, transa, transb, m, hidden_units, idim, <span class="number">1</span>, Layer1_In_buffer_int8_ptr,</span><br><span class="line">                            cur_weight1_int8_ptr, <span class="number">0</span>, Layer1_Out_buffer_int32_ptr));</span><br></pre></td></tr></table></figure></div>
+
+<h5 id="3-2-Dequantize-BiasSilu-Quantize"><a href="#3-2-Dequantize-BiasSilu-Quantize" class="headerlink" title="3.2 Dequantize + BiasSilu + Quantize"></a>3.2 Dequantize + BiasSilu + Quantize</h5><div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="type">int</span> TPB&gt;</span><br><span class="line"><span class="function">__global__ <span class="type">void</span> <span class="title">DequantizedBiasSiluAndQuantizeKernel</span><span class="params">(<span class="type">const</span> <span class="type">int</span>* input_int32, <span class="type">const</span> T* input_scale,</span></span></span><br><span class="line"><span class="params"><span class="function">                                                     <span class="type">const</span> T* weight_scale, <span class="type">const</span> T* weight_bias,</span></span></span><br><span class="line"><span class="params"><span class="function">                                                     <span class="type">const</span> <span class="type">int</span> hidden_dims, <span class="type">char</span>* char_data, T* scale)</span> </span>{</span><br><span class="line">  <span class="type">int</span> tidx = threadIdx.x;</span><br><span class="line">  T temp = <span class="number">0.0</span>;</span><br><span class="line">  T dequantized = <span class="number">0.0</span>;</span><br><span class="line">  <span class="keyword">if</span> (tidx &gt;= hidden_dims) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  input_int32 += blockIdx.x * hidden_dims;</span><br><span class="line">  char_data += blockIdx.x * hidden_dims;</span><br><span class="line"></span><br><span class="line">  T s_max = (T)<span class="number">0.0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> i = tidx; i &lt; hidden_dims; i += blockDim.x) {</span><br><span class="line">    dequantized = (input_int32[i]) / input_scale[blockIdx.x] / weight_scale[i] + weight_bias[i];</span><br><span class="line">    temp = <span class="built_in">fabsf</span>(dequantized * <span class="built_in">sigmoid</span>(dequantized));</span><br><span class="line">    <span class="keyword">if</span> (s_max &lt; temp) {</span><br><span class="line">      s_max = temp;</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">using</span> BlockReduce = cub::BlockReduce&lt;T, TPB&gt;;</span><br><span class="line">  __shared__ <span class="keyword">typename</span> BlockReduce::TempStorage temp_storage;</span><br><span class="line">  T dim_max =  <span class="built_in">BlockReduce</span>(temp_storage).<span class="built_in">Reduce</span>(s_max, cub::<span class="built_in">Max</span>());</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (tidx == <span class="number">0</span>) {</span><br><span class="line">    scale[blockIdx.x] = <span class="number">255.0</span> / <span class="number">2.0</span> / dim_max;</span><br><span class="line">  }</span><br><span class="line">  __syncthreads();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// quantization</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> i = tidx; i &lt; hidden_dims; i += blockDim.x) {</span><br><span class="line">    dequantized = input_int32[i] / input_scale[blockIdx.x] / weight_scale[i] + weight_bias[i];</span><br><span class="line">    temp = dequantized * <span class="built_in">sigmoid</span>(dequantized) * scale[blockIdx.x];</span><br><span class="line">    <span class="keyword">if</span> (temp &lt;= <span class="number">-128</span>)</span><br><span class="line">      char_data[i] = <span class="number">-128</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (temp &gt;= <span class="number">127</span>)</span><br><span class="line">      char_data[i] = <span class="number">127</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      char_data[i] = (<span class="type">signed</span> <span class="type">char</span>)(temp + (temp &gt; <span class="number">0</span> ? <span class="number">1</span> : <span class="number">-1</span>) * <span class="number">0.5f</span>);</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">DequantizedBiasSiluAndQuantize</span><span class="params">(<span class="type">const</span> <span class="type">int</span>* input_int32, <span class="type">const</span> <span class="type">float</span>* input_scale, <span class="type">const</span> <span class="type">float</span>* 			 weight_scale,</span></span></span><br><span class="line"><span class="params"><span class="function">                                   <span class="type">const</span> <span class="type">float</span>* weight_bias, <span class="type">const</span> <span class="type">int</span> m, <span class="type">const</span> <span class="type">int</span> hidden_dims,</span></span></span><br><span class="line"><span class="params"><span class="function">                                   <span class="type">char</span>* Layer2_input_int8, <span class="type">float</span>* Layer2_scale, cudaStream_t stream)</span> </span>{</span><br><span class="line">  <span class="keyword">if</span> (input_int32 == <span class="literal">nullptr</span> || input_scale == <span class="literal">nullptr</span> || weight_scale == <span class="literal">nullptr</span> || weight_bias == <span class="literal">nullptr</span> ||</span><br><span class="line">      Layer2_input_int8 == <span class="literal">nullptr</span> || Layer2_scale == <span class="literal">nullptr</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">  <span class="type">const</span> <span class="type">int</span> block_1d_size = <span class="number">256</span>;</span><br><span class="line">  <span class="type">int</span> grid_1d_size = m;</span><br><span class="line"></span><br><span class="line">  DequantizedBiasSiluAndQuantizeKernel&lt;<span class="type">float</span>, block_1d_size&gt;&lt;&lt;&lt;grid_1d_size, block_1d_size, <span class="number">0</span>, stream&gt;&gt;&gt;(</span><br><span class="line">      input_int32, input_scale, weight_scale, weight_bias, hidden_dims, Layer2_input_int8, Layer2_scale);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">CUDA_CHECK</span>(<span class="built_in">cudaPeekAtLastError</span>());</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<h5 id="3-3-Second-Gemm"><a href="#3-3-Second-Gemm" class="headerlink" title="3.3 Second Gemm"></a>3.3 Second Gemm</h5><div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CUBLAS_CHECK</span>(<span class="built_in">cublasGemm</span>(handle, transa, transb, m, idim, hidden_units, <span class="number">1</span>, Layer2_In_buffer_int8_expert,</span><br><span class="line">                            cur_weight2_int8_ptr, <span class="number">0</span>, Layer2_Out_buffer_int32_ptr));</span><br></pre></td></tr></table></figure></div>
+
+<h5 id="3-4-Dequantizatize-Bias-ReverseMapping-to-Output"><a href="#3-4-Dequantizatize-Bias-ReverseMapping-to-Output" class="headerlink" title="3.4 Dequantizatize + Bias + ReverseMapping to Output"></a>3.4 Dequantizatize + Bias + ReverseMapping to Output</h5><div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function">__global__ <span class="type">void</span> <span class="title">DequantizedBiasGatherMappingKernel</span><span class="params">(<span class="type">const</span> <span class="type">int</span>* input_int32, <span class="type">const</span> T* input_scale,</span></span></span><br><span class="line"><span class="params"><span class="function">                                                   <span class="type">const</span> T* weight_scale, <span class="type">const</span> T* weight_bias,</span></span></span><br><span class="line"><span class="params"><span class="function">                                                   <span class="type">const</span> <span class="type">int</span>* inverse_mapping, <span class="type">const</span> <span class="type">int</span> idim, <span class="type">const</span> <span class="type">int</span> acc_idex,</span></span></span><br><span class="line"><span class="params"><span class="function">                                                   <span class="type">const</span> <span class="type">int</span> numel, T* output)</span> </span>{</span><br><span class="line">  <span class="type">int</span> idx = blockIdx.x * blockDim.x + threadIdx.x;</span><br><span class="line">  <span class="keyword">if</span> (idx &gt;= numel) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  <span class="type">int</span> s = idx / idim;</span><br><span class="line">  <span class="type">int</span> i = idx % idim;</span><br><span class="line"></span><br><span class="line">  <span class="type">int</span> inverse_mapping_idx = inverse_mapping[s + acc_idex];</span><br><span class="line"></span><br><span class="line">  output[inverse_mapping_idx * idim + i] =</span><br><span class="line">  (input_int32[idx] / weight_scale[i]) / input_scale[s] + weight_bias[i];  </span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">DequantizedBiasGatherMapping</span><span class="params">(<span class="type">const</span> <span class="type">int</span>* input_int32, <span class="type">const</span> <span class="type">float</span>* input_scale, <span class="type">const</span> <span class="type">float</span>* weight_scale,</span></span></span><br><span class="line"><span class="params"><span class="function">                                 <span class="type">const</span> <span class="type">float</span>* weight_bias, <span class="type">const</span> <span class="type">int</span> m, <span class="type">const</span> <span class="type">int</span> idim, <span class="type">const</span> <span class="type">int</span> acc_idex,</span></span></span><br><span class="line"><span class="params"><span class="function">                                 <span class="type">const</span> <span class="type">int</span>* inverse_mapping, <span class="type">float</span>* output, cudaStream_t stream)</span> </span>{</span><br><span class="line">  <span class="keyword">auto</span> numel = m * idim;</span><br><span class="line"></span><br><span class="line">  <span class="type">int</span> block_size = <span class="number">256</span>;</span><br><span class="line">  <span class="type">int</span> grid_size = (numel + block_size - <span class="number">1</span>) / block_size;</span><br><span class="line"></span><br><span class="line">  DequantizedBiasGatherMappingKernel&lt;&lt;&lt;grid_size, block_size, <span class="number">0</span>, stream&gt;&gt;&gt;(</span><br><span class="line">      input_int32, input_scale, weight_scale, weight_bias, inverse_mapping, idim, acc_idex, numel, output);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">CUDA_CHECK</span>(<span class="built_in">cudaPeekAtLastError</span>());</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h3><p>The limitation of the current scenario lies in the fact that it does not take into account the ultra-large-scale matrix multiplication of Large Language Models (LLMs). Therefore, the multi-stream acceleration within a single card cannot meet the acceleration requirements of LLMs. In addition, in the current top-k expert selection, k is only taken as 1. For cases where k is greater than 1, the computational scale and data transfer become more complex, necessitating a more refined consideration.</p>
+<h2 id="MOE-parallel"><a href="#MOE-parallel" class="headerlink" title="MOE parallel"></a>MOE parallel</h2><p>To do</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li><a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/2110.01786">https://arxiv.org/pdf/2110.01786 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><strong>Diverse Ensemble Evolution: Curriculum Data-Model Marriage</strong>, NeurIPS’18</li>
+<li><strong>Diversity and Depth in Per-Example Routing Models</strong>, ICLR’21</li>
+<li><strong>Adaptive mixtures of local experts, Neural Computation’1991</strong></li>
+<li><strong>Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer, ICLR’17</strong></li>
+</ol>
+
+        </div>
+
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/Quantization/">#Quantization</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/CUDA/">#CUDA</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/MOE/">#MOE</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2023/09/28/Speculative%20Decoding/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Speculative Sampling</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2023/03/28/AccLLMs/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Accelerating LLMs Inference</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Mixture of Experts(MOEs): The Versatile Framework for Scalable AI Solutions</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Update"><span class="nav-text">Update</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sparsity-of-Neural-Networks"><span class="nav-text">Sparsity of Neural Networks:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Expertise-of-Neurons"><span class="nav-text">Expertise of Neurons:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Limited-Computational-Resources"><span class="nav-text">Limited Computational Resources:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Workload"><span class="nav-text">Workload</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Slow-version"><span class="nav-text">Slow version</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fast-version-Sparse-to-Compact-GEMM"><span class="nav-text">Fast version: Sparse to Compact GEMM</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Accelerating-Inference-A-simple-attempt"><span class="nav-text">Accelerating Inference (A simple attempt)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Main-code"><span class="nav-text">Main code</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Step-By-Step"><span class="nav-text">Step By Step</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Limitations"><span class="nav-text">Limitations</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MOE-parallel"><span class="nav-text">MOE parallel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-text">Reference</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">H.J. Chen</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.0</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/libs/mermaid.min.js"></script>
+
+    
+<script src="/js/plugins/mermaid.js"></script>
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+    <div id="aplayer"></div>
+
+<script src="/js/libs/APlayer.min.js"></script>
+
+
+<script src="/js/plugins/aplayer.js"></script>
+
+
+</body>
+</html>
