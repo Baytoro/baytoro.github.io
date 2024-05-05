@@ -18,15 +18,17 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="haha">
+        <meta name="description" content="A memory efficient code completion system">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CodeBear: Your Personal AI Coding Assitant">
 <meta property="og:url" content="https://hjchen-thu.github.io/2024/02/28/CodeBear/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="haha">
+<meta property="og:description" content="A memory efficient code completion system">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240501174643087.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/request.png">
 <meta property="article:published_time" content="2024-02-27T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-03-31T04:58:16.772Z">
+<meta property="article:modified_time" content="2024-05-01T10:14:17.112Z">
 <meta property="article:author" content="H.J. Chen">
 <meta property="article:tag" content="Transformer">
 <meta property="article:tag" content="AIGC">
@@ -34,6 +36,7 @@
 <meta property="article:tag" content="Quantization">
 <meta property="article:tag" content="Triton">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240501174643087.png">
     
     
     <!--- Icon Part-->
@@ -489,8 +492,8 @@ mjx-container[display="true"] + br {
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2024-03-31 12:58:16</span>
-            <span class="mobile">2024-03-31 12:58:16</span> -->
+            <!-- <span class="desktop">2024-05-01 18:14:17</span>
+            <span class="mobile">2024-05-01 18:14:17</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -570,18 +573,84 @@ mjx-container[display="true"] + br {
 
 
         <div class="article-content markdown-body">
-            <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure></div>
+            <p>Repo: <a class="link" target="_blank" rel="noopener" href="https://github.com/hjchen-thu/codebear">https://github.com/hjchen-thu/codebear <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>Demo: <a class="link" target="_blank" rel="noopener" href="http://106.55.182.221:8080/">http://106.55.182.221:8080/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> (May be offline due to VPN issues)</p>
+<h2 id="Update"><a href="#Update" class="headerlink" title="Update"></a>Update</h2><p>2024-04-05 added normal sampling args on web-ui</p>
+<p>2024-03-29 changed to deepseek 33b &amp; 6b as base model</p>
+<p>2024-03-26 changed to new web-ui developed by gradio</p>
+<p>2024-03-10 fused mlp triton kernel</p>
+<h2 id="Acknowledgement"><a href="#Acknowledgement" class="headerlink" title="Acknowledgement"></a>Acknowledgement</h2><ul>
+<li>Special thanks to <a class="link" target="_blank" rel="noopener" href="https://huggingface.co/deepseek-ai">Deepseek <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> team for releasing DeepSeek-Coder models with outstanding performance</li>
+<li>Special thanks to <a class="link" target="_blank" rel="noopener" href="https://github.com/feifeibear">feifeibear <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> for releasing the implemention of speculative decoding with both Google’s and Deepmind’s versions(<a class="link" target="_blank" rel="noopener" href="https://github.com/feifeibear/LLMSpeculativeSampling">LLMSpeculativeSampling <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>).</li>
+<li>Special thanks to <a class="link" target="_blank" rel="noopener" href="https://github.com/AutoGPTQ/">AutoGPTQ team <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> for implementing GPTQ algorithm and open source the code.</li>
+</ul>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>This repository combines <strong>GPTQ 4-bit quantization</strong> and <strong>Speculative Decoding</strong> to accelerate Large Language Models’ (LLM) inference for code completion tasks in <strong>personal usage scenarios</strong> (where GPU resources are limited yet there’s a pursuit for better performance and faster speed with larger models).</p>
+<p><a class="link" target="_blank" rel="noopener" href="https://arxiv.org/abs/2210.17323">GPTQ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> is a one-shot weight quantization method based on approximate second-order information, that is both highly-accurate and highly efficient. And <a class="link" target="_blank" rel="noopener" href="https://arxiv.org/abs/2302.01318">Speculative Decoding <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> is a innovative sampling strategy by using a small approximation model to propose sequences of tokens that will later be checked by a larger model.</p>
+<p>By combining these two techniques, one can even deploy multiple LLMs in a single GPU with limited HBM memory usage. While benefiting from the improved performance brought by larger models, it also helps to accelerate inference speed to some extent.</p>
+<p>The flowing figures are tested in a single V100(32GB) by deploying <a class="link" target="_blank" rel="noopener" href="https://huggingface.co/deepseek-ai/deepseek-coder-33b-instruct">34B <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> and <a class="link" target="_blank" rel="noopener" href="https://huggingface.co/deepseek-ai/deepseek-coder-6.7b-instruct">7B <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> models, with triton-based QuantLinear backend.</p>
+<table>
+<thead>
+<tr>
+<th>3 prefill + 200th decoding</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Memory Usage(GB)</td>
+<td>27.7</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>3 prefill + 200th decoding</th>
+<th>7B(FP16)</th>
+<th>7B(4Bit)</th>
+<th>34B(4Bit)</th>
+<th>Speculative 7B+34B(4Bit)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Inference Speed(Tokens/sec)</td>
+<td>14.3</td>
+<td>34.1</td>
+<td>7.9</td>
+<td>9.4</td>
+</tr>
+</tbody></table>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240501174643087.png" alt="image-20240501174643087"></p>
+<h3 id="Quick-Tour"><a href="#Quick-Tour" class="headerlink" title="Quick Tour"></a>Quick Tour</h3><h4 id="Requirements"><a href="#Requirements" class="headerlink" title="Requirements"></a>Requirements</h4><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">triton==2.1.0</span><br><span class="line">auto_gptq==0.7.0</span><br><span class="line">transformers==4.37.2</span><br></pre></td></tr></table></figure></div>
+<h4 id="Step1-Quantize"><a href="#Step1-Quantize" class="headerlink" title="Step1: Quantize"></a>Step1: Quantize</h4><p>Download the float model from official(<a class="link" target="_blank" rel="noopener" href="https://huggingface.co/deepseek-ai/deepseek-coder-6.7b-instruct">7B <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>and <a class="link" target="_blank" rel="noopener" href="https://huggingface.co/deepseek-ai/deepseek-coder-33b-instruct">34B <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>, then quantize them.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#quntize the 7b model</span><br><span class="line">./make_quant.sh -f /PATH/TO/7B/FLOAT/MODEL -q /PATH/TO/7B/QUANT/MODEL</span><br><span class="line">#quntize the 34b model</span><br><span class="line">./make_quant.sh -f /PATH/TO/34B/FLOAT/MODEL -q /PATH/TO/34B/QUANT/MODEL</span><br></pre></td></tr></table></figure></div>
 
-<p>More info: <a class="link" target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure></div>
+<p>The basic config of quantization is set to bits = 4, group_num = 128 (can be changed in ./scripts/quantize.py).</p>
+<h4 id="Step2-Serving"><a href="#Step2-Serving" class="headerlink" title="Step2: Serving"></a>Step2: Serving</h4><p>Start serving</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./start_server.sh -s /PATH/TO/7B/QUANT/MODEL -l /PATH/TO/34B/QUANT/MODEL -t /PATH/TO/7B/FLOAT/MODEL</span><br></pre></td></tr></table></figure></div>
+<p>Default sampling params are set to max_tokens = 500, top_k = 10, top_p = 0.9 (can be changed in ./scripts/serving.py).</p>
+<p>Send request (<strong>the model is specially trained for code completion with python</strong>)</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST -H "Content-Type: application/json" -d '{"prompt": "def quicksort("}' http://127.0.0.1:5000/codebear</span><br></pre></td></tr></table></figure></div>
 
-<p>More info: <a class="link" target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure></div>
-
-<p>More info: <a class="link" target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/hjchen-thu/codebear/blob/main/images/request.png"><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/request.png" alt="alt text"></a></p>
+<h3 id="Future-plans"><a href="#Future-plans" class="headerlink" title="Future plans"></a>Future plans</h3><table>
+<thead>
+<tr>
+<th>Progress</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>fused_flash_attn_MHA triton implemention</td>
+<td>todo</td>
+</tr>
+<tr>
+<td>fused_flash_attn_GQA triton implemention</td>
+<td>todo</td>
+</tr>
+<tr>
+<td>INT8 KV cache</td>
+<td>todo</td>
+</tr>
+</tbody></table>
 
         </div>
 
@@ -622,10 +691,10 @@ mjx-container[display="true"] + br {
                     <div class="article-next">
                         <a class="next"
                         rel="next"
-                        href="/2023/09/28/Speculative%20Decoding/"
+                        href="/2023/04/15/MOE/"
                         >
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Speculative Sampling</span>
+                                <span class="post-nav-title-item">Mixture of Experts(MOEs): The Versatile Framework for Scalable AI Solutions</span>
                                 <span class="post-nav-item">Next posts</span>
                             </span>
                             <span class="right arrow-icon flex justify-center items-center">
@@ -647,7 +716,7 @@ mjx-container[display="true"] + br {
     <div class="post-toc">
         <div class="toc-title">On this page</div>
         <div class="page-title">CodeBear: Your Personal AI Coding Assitant</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Update"><span class="nav-text">Update</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Acknowledgement"><span class="nav-text">Acknowledgement</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Quick-Tour"><span class="nav-text">Quick Tour</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Future-plans"><span class="nav-text">Future plans</span></a></li></ol></li></ol>
 
     </div>
 </div>
