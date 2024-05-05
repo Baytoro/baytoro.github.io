@@ -281,13 +281,6 @@
 
   
   <url>
-    <loc>https://hjchen-thu.github.io/tags/NAS/</loc>
-    <lastmod>2024-05-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://hjchen-thu.github.io/tags/Transformer/</loc>
     <lastmod>2024-05-05</lastmod>
     <changefreq>weekly</changefreq>
@@ -323,6 +316,13 @@
   </url>
   
   <url>
+    <loc>https://hjchen-thu.github.io/tags/NAS/</loc>
+    <lastmod>2024-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://hjchen-thu.github.io/tags/FL/</loc>
     <lastmod>2024-05-05</lastmod>
     <changefreq>weekly</changefreq>
@@ -330,14 +330,14 @@
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/tags/MOE/</loc>
+    <loc>https://hjchen-thu.github.io/tags/CUDA/</loc>
     <lastmod>2024-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/tags/CUDA/</loc>
+    <loc>https://hjchen-thu.github.io/tags/MOE/</loc>
     <lastmod>2024-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -374,14 +374,14 @@
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/categories/Play-hard/</loc>
+    <loc>https://hjchen-thu.github.io/categories/Work-hard/Note/Coding/</loc>
     <lastmod>2024-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/categories/Work-hard/Note/Coding/</loc>
+    <loc>https://hjchen-thu.github.io/categories/Play-hard/</loc>
     <lastmod>2024-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
