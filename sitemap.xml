@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://hjchen-thu.github.io/2021/08/16/cuda_transpose/</loc>
+    <loc>https://hjchen-thu.github.io/2022/10/02/fedevo/</loc>
     
     <lastmod>2024-05-05</lastmod>
     
@@ -11,7 +11,7 @@
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/2021/07/25/cuda_sgemv/</loc>
+    <loc>https://hjchen-thu.github.io/2022/09/03/FedMask/</loc>
     
     <lastmod>2024-05-05</lastmod>
     
@@ -20,7 +20,7 @@
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/2021/08/01/cuda_sgemm/</loc>
+    <loc>https://hjchen-thu.github.io/2022/09/28/FedNas/</loc>
     
     <lastmod>2024-05-05</lastmod>
     
@@ -29,7 +29,7 @@
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/2021/07/20/cuda_reduce/</loc>
+    <loc>https://hjchen-thu.github.io/2022/08/28/Edd/</loc>
     
     <lastmod>2024-05-05</lastmod>
     
@@ -38,7 +38,43 @@
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/2021/07/06/cuda_elementwise/</loc>
+    <loc>https://hjchen-thu.github.io/2022/07/06/cuda_elementwise/</loc>
+    
+    <lastmod>2024-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjchen-thu.github.io/2022/07/20/cuda_reduce/</loc>
+    
+    <lastmod>2024-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjchen-thu.github.io/2022/08/01/cuda_sgemm/</loc>
+    
+    <lastmod>2024-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjchen-thu.github.io/2022/07/25/cuda_sgemv/</loc>
+    
+    <lastmod>2024-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjchen-thu.github.io/2022/08/16/cuda_transpose/</loc>
     
     <lastmod>2024-05-05</lastmod>
     
@@ -110,15 +146,6 @@
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/2021/10/02/fedevo/</loc>
-    
-    <lastmod>2024-03-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://hjchen-thu.github.io/2022/01/01/DFNAs/</loc>
     
     <lastmod>2024-03-30</lastmod>
@@ -128,34 +155,7 @@
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/2021/09/03/FedMask/</loc>
-    
-    <lastmod>2024-03-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://hjchen-thu.github.io/2021/08/28/Edd/</loc>
-    
-    <lastmod>2024-03-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://hjchen-thu.github.io/2020/02/13/SingeNas/</loc>
-    
-    <lastmod>2024-03-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://hjchen-thu.github.io/2021/09/28/FedNas/</loc>
     
     <lastmod>2024-03-30</lastmod>
     
@@ -281,7 +281,7 @@
 
   
   <url>
-    <loc>https://hjchen-thu.github.io/tags/NAS/</loc>
+    <loc>https://hjchen-thu.github.io/tags/Transformer/</loc>
     <lastmod>2024-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -302,13 +302,6 @@
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/tags/Transformer/</loc>
-    <lastmod>2024-05-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://hjchen-thu.github.io/tags/Quantization/</loc>
     <lastmod>2024-05-05</lastmod>
     <changefreq>weekly</changefreq>
@@ -317,6 +310,13 @@
   
   <url>
     <loc>https://hjchen-thu.github.io/tags/Triton/</loc>
+    <lastmod>2024-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjchen-thu.github.io/tags/NAS/</loc>
     <lastmod>2024-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -360,13 +360,6 @@
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/categories/Work-hard/Coding/</loc>
-    <lastmod>2024-05-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://hjchen-thu.github.io/categories/Work-hard/Note/</loc>
     <lastmod>2024-05-05</lastmod>
     <changefreq>weekly</changefreq>
@@ -374,7 +367,7 @@
   </url>
   
   <url>
-    <loc>https://hjchen-thu.github.io/categories/Play-hard/</loc>
+    <loc>https://hjchen-thu.github.io/categories/Work-hard/Coding/</loc>
     <lastmod>2024-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -382,6 +375,13 @@
   
   <url>
     <loc>https://hjchen-thu.github.io/categories/Work-hard/Note/Coding/</loc>
+    <lastmod>2024-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hjchen-thu.github.io/categories/Play-hard/</loc>
     <lastmod>2024-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

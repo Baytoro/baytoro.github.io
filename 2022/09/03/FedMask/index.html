@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="H.J. Chen">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://hjchen-thu.github.io/2022/09/03/fedmask/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="Enhancing mobile AI via efficient federated learning, reducing communication and computation costs.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fedmask: Joint computation and communication-efficient personalized federated learning via heterogeneous masking">
+<meta property="og:url" content="https://hjchen-thu.github.io/2022/09/03/FedMask/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Enhancing mobile AI via efficient federated learning, reducing communication and computation costs.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181940888.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181950985.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182001287.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182059100.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182011609.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182028594.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182036543.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182047779.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182110813.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182120111.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182131270.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182143940.png">
+<meta property="article:published_time" content="2022-09-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-05-05T14:56:41.402Z">
+<meta property="article:author" content="H.J. Chen">
+<meta property="article:tag" content="NAS">
+<meta property="article:tag" content="FL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181940888.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/personal/avatar.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/personal/avatar.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/personal/avatar.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Fedmask: Joint computation and communication-efficient personalized federated learning via heterogeneous masking -
+        
+        H.J. Chen&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+        <link href="" rel="stylesheet">
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"hjchen-thu.github.io","root":"/","language":"en","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":false,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/picture/s1.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":true,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Welcome, traveler :)","subtitle":{"text":["May you find inspiration and joy here (scroll down ↓)"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":40,"backing_speed":10,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":"https://github.com/hjchen-thu","zhihu":"https://www.zhihu.com/people/baytoro","email":"guaguabear@hotmail.com"},"qrs":null}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"MapleStory Title","artist":"MapleStory","url":"/music/MapleStory Title.mp3","cover":"/picture/maple.jpeg"},{"name":"Above the Treetops","artist":"MapleStory","url":"/music/Above the Treetops.mp3","cover":"/picture/maple.jpeg"},{"name":"When the Morning Comes","artist":"MapleStory","url":"/music/When the Morning Comes.mp3","cover":"/picture/maple.jpeg"},{"name":"Missing You","artist":"MapleStory","url":"/music/Missing You.mp3","cover":"/picture/maple.jpeg"},{"name":"Shinin' Harbor","artist":"MapleStory","url":"/music/Shinin' Harbor.mp3","cover":"/picture/maple.jpeg"},{"name":"Snowy Village","artist":"MapleStory","url":"/music/Snowy Village.mp3","cover":"/picture/maple.jpeg"}]},"mermaid":{"enable":true,"version":"9.3.0"}},"version":"2.5.0","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"About":{"path":"/about","icon":"fa-regular fa-user"},"Archives":{"icon":"fa-regular fa-archive","submenus":{"Posts":"/archives","Categories":"/categories","Tags":"/tags"}},"GitHub":{"icon":"fa-brands fa-github","path":"https://github.com/hjchen-thu"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"info","menu_title":"Links","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":5}},"footerStart":"2020/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                H.J. Chen&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/about"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/archives">POSTS
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/categories">CATEGORIES
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/tags">TAGS
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    target="_blank" rel="noopener" href="https://github.com/hjchen-thu"  >
+                                    
+                                        
+                                            <i class="fa-brands fa-github"></i>
+                                        
+                                        GITHUB
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i></div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/about"  >
+                             
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/archives">POSTS</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/categories">CATEGORIES</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/tags">TAGS</a>
+                            </li>
+                        
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        target="_blank" rel="noopener" href="https://github.com/hjchen-thu"  >
+                             
+                                
+                                    <i class="fa-brands fa-github"></i>
+                                
+                                GITHUB
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            
+                
+                
+                <img src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181705265.png" alt="Fedmask: Joint computation and communication-efficient personalized federated learning via heterogeneous masking" class="max-w-none"/>
+                
+                <h1 class="article-title-cover">Fedmask: Joint computation and communication-efficient personalized federated learning via heterogeneous masking</h1>
+            
+            </div>
+            
+                    
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/personal/avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">H.J. Chen</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2022-09-03</span>
+        <span class="mobile">2022-09-03</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <!-- <span class="article-date article-meta-item"> -->
+            <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
+            <!-- <span class="desktop">2024-05-05 22:56:41</span>
+            <span class="mobile">2024-05-05 22:56:41</span> -->
+            <!-- <span class="hover-info">Updated</span> -->
+        <!-- </span> -->
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/NAS/">NAS</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/FL/">FL</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body">
+            <p><a class="link" target="_blank" rel="noopener" href="https://dl.acm.org/doi/pdf/10.1145/3485730.3485929">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181940888.png" alt="image-20240330181940888"></p>
+<p>In the realm of mobile deep learning applications, the challenge of training sophisticated models on devices with limited data and computational resources is a significant hurdle. Traditional approaches that rely on centralizing data for model training often compromise privacy and consume substantial communication bandwidth. Federated Learning (FL) emerges as a promising solution, enabling decentralized training without sharing raw data, thus upholding privacy. However, non-IID data distribution across devices and limited communication bandwidth present major obstacles to practical FL deployment. Moreover, the computational efficiency of training and running Deep Neural Networks (DNNs) on mobile devices is critical due to their restricted resources. Addressing these challenges, this work introduces a novel framework that focuses on joint computation and communication efficiency in personalized FL. By leveraging heterogeneous binary masking, the framework allows each device to learn a tailored, sparse DNN model, enhancing inference accuracy while significantly reducing the communication and computation overheads. This innovation aims to unlock the potential of on-device deep learning applications, offering a more efficient and user-centric approach to FL.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181950985.png" alt="image-20240330181950985"></p>
+<p>This research pioneers a new federated learning paradigm that simultaneously enhances communication and computational efficiency while preserving personalization for mobile devices. The key contribution lies in the introduction of a novel framework that employs heterogeneous binary masking. This innovative approach allows for the learning of a personalized and structured sparse Deep Neural Network (DNN) on each device, which can operate efficiently despite the limited resources typically found on mobile devices.</p>
+<p>By communicating only binary masks, rather than entire model parameters, the framework drastically reduces the communication burden. The masks, once learned, are optimized through a structured sparsity regularization method, which not only maintains the personalized aspects of each device’s local data but also leads to a compact model that demands less computational power during training and inference.</p>
+<p>The framework’s ability to improve inference accuracy by a significant margin, coupled with its substantial reductions in both communication and computation costs, marks a significant advancement in the field of federated learning. It provides a unified solution that addresses the critical challenges of statistical heterogeneity, communication bandwidth limitations, and computational constraints, setting a new standard for deploying on-device deep learning applications efficiently and effectively.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182001287.png" alt="image-20240330182001287"></p>
+<p>The methodology at the core of this research revolves around a novel federated learning (FL) framework that efficiently addresses the challenges of data heterogeneity, communication bandwidth constraints, and computational limitations on mobile devices. The framework’s unique approach is to leverage heterogeneous binary masking, which allows each device to learn a personalized and structured sparse Deep Neural Network (DNN).</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182059100.png" alt="image-20240330182059100"></p>
+<p>The process begins with a one-shot pruning method that initializes a heterogeneous binary mask for each device, based on its local data. This mask determines the structure of the sparse DNN that will be learned by the device. During subsequent communication rounds, instead of transmitting the entire model update, each device only communicates the optimized binary mask to the central server. This mask is applied to a fixed set of model parameters, which remain unchanged throughout the learning process.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182011609.png" alt="image-20240330182011609"></p>
+<p>The key innovation lies in the structured sparsity regularization applied to the binary mask optimization. This regularization encourages the learning of a sparse model that is not only personalized to the local data distribution but also computationally efficient. The regularization promotes channel-wise and filter-wise sparsity in convolutional layers and row-wise or column-wise sparsity in fully connected layers, resulting in a compact model that requires less computation during both training and inference.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182028594.png" alt="image-20240330182028594"></p>
+<p>The aggregation strategy on the central server is carefully designed to preserve the personalized information embedded in the heterogeneous binary masks. The server only aggregates elements that are common across the binary masks from different devices, ensuring that the unique structures learned by each device are not lost.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182036543.png" alt="image-20240330182036543"></p>
+<p>The framework’s approach to handling different types of layers, such as convolutional and fully connected layers, within the DNN is crucial for maintaining the model’s expressiveness and performance. For instance, the framework adapts the pruning method to the specific needs of layers like Long Short-Term Memory (LSTM) networks, which have a chain-like structure, to prevent significant performance drops.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182047779.png" alt="image-20240330182047779"></p>
+<p>The experimental evaluation of the framework demonstrates its effectiveness in improving inference accuracy by up to 28.47% while reducing communication costs by up to 34.48× and computation costs by up to 2.44× compared to existing methods. Additionally, the framework achieves up to 1.56× inference speedup and reduces energy consumption by up to 1.78×, showcasing its potential for practical deployment in on-device deep learning applications.</p>
+<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182110813.png" alt="image-20240330182110813"></p>
+<p>The experimental setup of this research is meticulously designed to evaluate the efficacy of the proposed federated learning framework across a variety of mobile AI applications. The experiments are conducted using three representative applications: image classification, human activity recognition, and next-character prediction. These applications are built upon non-IID datasets, reflecting the real-world scenario where data across devices can be diverse and unbalanced.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182120111.png" alt="image-20240330182120111"></p>
+<p>The image classification application is developed using the VGG16 model on datasets such as EMNIST and CIFAR10, with devices holding a limited number of classes and samples. The human activity recognition application employs a 3-layer fully connected neural network, utilizing the HAR dataset which includes accelerometer and gyroscope data from 30 individuals. Lastly, the next-character prediction application is based on an RNN model constructed from an 8-D encoder, using dialogues from The Complete Works of William Shakespeare.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182131270.png" alt="image-20240330182131270"></p>
+<p>The central server and mobile devices used in the experiments are equipped with hardware that reflects realistic mobile AI deployment scenarios, including NVIDIA Jetson TX2, Raspberry Pi 4, and an Intel Xeon <a class="link" href="mailto:E5-2630@2.6GHz">E5-2630@2.6GHz <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> server. Power consumption is measured using the Monsoon power monitor to accurately assess energy efficiency.</p>
+<p>The experimental results are benchmarked against several state-of-the-art federated learning methods, including FedAvg, Top-k, and Per-FedAvg, among others. The proposed framework outperforms these baselines in terms of inference accuracy, communication cost, computation cost, memory footprint, inference latency, and energy consumption.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182143940.png" alt="image-20240330182143940"></p>
+<p>In terms of inference accuracy, the framework demonstrates a substantial improvement, with gains ranging from 1.09% to 28.47% across different applications. Communication cost is significantly reduced, with savings of up to 34.48×, a result of transmitting only binary masks instead of entire model parameters. Computation cost is also drastically decreased, with reductions of up to 2.44×, attributed to the structured sparsity of the learned models.</p>
+<p>The memory footprint is substantially lower in models trained by the proposed framework, saving up to 32.2% compared to baseline models. This reduction is crucial for mobile devices with limited storage capacity. Inference speed is improved, with the framework achieving up to 1.56× speedup, making it more efficient for real-time applications. Lastly, energy consumption per inference is reduced by up to 1.78×, highlighting the framework’s energy efficiency.</p>
+
+        </div>
+
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/NAS/">#NAS</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/FL/">#FL</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2022/09/28/FedNas/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Fednas: Federated deep learning via neural architecture search</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2022/08/28/Edd/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Edd: Efficient differentiable dnn architecture and implementation co-search for embedded ai solutions</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Fedmask: Joint computation and communication-efficient personalized federated learning via heterogeneous masking</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Figures-Conclusion"><span class="nav-text">Figures &amp; Conclusion</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">H.J. Chen</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.0</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/libs/mermaid.min.js"></script>
+
+    
+<script src="/js/plugins/mermaid.js"></script>
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+    <div id="aplayer"></div>
+
+<script src="/js/libs/APlayer.min.js"></script>
+
+
+<script src="/js/plugins/aplayer.js"></script>
+
+
+</body>
+</html>
