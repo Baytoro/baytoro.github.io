@@ -1,3 +1,4 @@
+https://baytoro.github.io.git/about/index.html
 https://baytoro.github.io.git/2024/02/28/CodeBear/
 https://baytoro.github.io.git/2023/03/28/MOE/
 https://baytoro.github.io.git/2022/10/02/fedevo/
@@ -10,7 +11,6 @@ https://baytoro.github.io.git/2022/08/01/cuda_sgemm/
 https://baytoro.github.io.git/2022/07/25/cuda_sgemv/
 https://baytoro.github.io.git/2022/08/16/cuda_transpose/
 https://baytoro.github.io.git/2022/09/28/ATM_parameter/
-https://baytoro.github.io.git/about/index.html
 https://baytoro.github.io.git/2020/01/12/Nasnet/
 https://baytoro.github.io.git/2020/01/23/jointNasQ/
 https://baytoro.github.io.git/2020/02/07/proxylessnas/
