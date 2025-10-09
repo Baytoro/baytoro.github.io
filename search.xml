@@ -46,8 +46,7 @@
   <entry>
     <title>CodeBear: Your Personal AI Coding Assitant</title>
     <url>/2024/02/28/CodeBear/</url>
-    <content><![CDATA[<p>Repo: <a class="link" href="https://github.com/hjchen-thu/codebear">https://github.com/hjchen-thu/codebear <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>Demo: <a class="link" href="http://106.55.182.221:8080/">http://106.55.182.221:8080/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> (May be offline due to VPN issues)</p>
+    <content><![CDATA[<p>Repo: <a class="link" href="https://github.com/Baytoro/codebear">https://github.com/Baytoro/codebear <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 <h2 id="Update"><a href="#Update" class="headerlink" title="Update"></a>Update</h2><p>2024-04-05 added normal sampling args on web-ui</p>
 <p>2024-03-29 changed to deepseek 33b &amp; 6b as base model</p>
 <p>2024-03-26 changed to new web-ui developed by gradio</p>
@@ -467,7 +466,7 @@
     <content><![CDATA[<h2 id="Update"><a href="#Update" class="headerlink" title="Update"></a>Update</h2><p>Due to the recent surge in popularity of Mixture of Experts (MOE) in LLMs, this blog  was revised  on 2024-04-24.</p>
 <p>2024-04-24: LLM relevant update</p>
 <p>2023-03-28: Summary for Internship in Tencent AI Lab </p>
-<p>TensorRT CUDA plugin source code: <a class="link" href="https://github.com/hjchen-thu/moe_simple">https://github.com/hjchen-thu/moe_simple <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>TensorRT CUDA plugin source code: <a class="link" href="https://github.com/Baytoro/moe_simple">https://github.com/Baytoro/moe_simple <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 <h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>MoE has become so prevalent that it’s now challenging to find a new, large language model (LLM) that isn’t an MoE. Models such as GPT-4, Gemini 1.5, Mixtral 8x7B, and Jamba are all examples of MoE architectures.</p>
 <p>The advent of this technology can be attributed to three main aspects:</p>
 <h3 id="Sparsity-of-Neural-Networks"><a href="#Sparsity-of-Neural-Networks" class="headerlink" title="Sparsity of Neural Networks:"></a><strong>Sparsity of Neural Networks:</strong></h3><p>In specific layers, neural networks can become extremely sparse, meaning that the activation frequency of certain neurons is significantly lower than that of others. In other words, not all neurons are utilized every time, which is analogous to the neurons in the human brain.</p>
