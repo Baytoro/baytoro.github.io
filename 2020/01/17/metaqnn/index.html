@@ -18,25 +18,27 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="Automated CNN Design via Reinforcement Learning">
+        <meta name="description" content="MetaQNN formulates CNN architecture design as a finite Q-learning problem and searches layer sequences with epsilon-greedy exploration and replay memory.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Designing Neural Network Architectures using Reinforcement Learning">
 <meta property="og:url" content="https://baytoro.github.io.git/2020/01/17/metaqnn/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Automated CNN Design via Reinforcement Learning">
+<meta property="og:description" content="MetaQNN formulates CNN architecture design as a finite Q-learning problem and searches layer sequences with epsilon-greedy exploration and replay memory.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330145949057.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330150424604.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330150453009.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330150952925.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330151218241.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330151313064.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/MetaQNN/fig1-overview.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/MetaQNN/fig2-mdp.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/MetaQNN/table1-state-space.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/MetaQNN/table2-epsilon-schedule.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/MetaQNN/fig3-q-learning-curve.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/MetaQNN/table3-standard-results.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/MetaQNN/table4-sota-results.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/MetaQNN/table5-transfer.png">
 <meta property="article:published_time" content="2020-01-16T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-01T03:16:06.237Z">
+<meta property="article:modified_time" content="2026-07-01T12:33:40.213Z">
 <meta property="article:author" content="H.J. Chen">
 <meta property="article:tag" content="NAS">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330145949057.png">
+<meta name="twitter:image" content="https://baytoro.github.io.git/_imgs/MetaQNN/fig1-overview.png">
     
     
     <!--- Icon Part-->
@@ -463,7 +465,7 @@ mjx-container[display="true"] + br {
             
                 
                 
-                <img src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330145752406.png" alt="Designing Neural Network Architectures using Reinforcement Learning" class="max-w-none"/>
+                <img src="/_imgs/MetaQNN/thumbnail.png" alt="Designing Neural Network Architectures using Reinforcement Learning" class="max-w-none"/>
                 
                 <h1 class="article-title-cover">Designing Neural Network Architectures using Reinforcement Learning</h1>
             
@@ -492,8 +494,8 @@ mjx-container[display="true"] + br {
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2026-07-01 11:16:06</span>
-            <span class="mobile">2026-07-01 11:16:06</span> -->
+            <!-- <span class="desktop">2026-07-01 20:33:40</span>
+            <span class="mobile">2026-07-01 20:33:40</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -553,32 +555,225 @@ mjx-container[display="true"] + br {
 
 
         <div class="article-content markdown-body">
-            <p><a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/1611.02167.pdf">https://arxiv.org/pdf/1611.02167.pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330145949057.png" alt="image-20240330145949057"></p>
-<p>In the realm of machine learning, the design of effective convolutional neural network (CNN) architectures has traditionally required significant human expertise and labor. The process involves a meticulous trial-and-error approach, where researchers draw upon theoretical insights and empirical observations to craft networks that perform well on specific tasks. As the complexity of CNNs has grown, so too has the design space, making manual exploration infeasible due to the combinatorial explosion of possible configurations.</p>
-<p>The paper “Designing Neural Network Architectures Using Reinforcement Learning” addresses this challenge by introducing MetaQNN, a meta-modeling algorithm that leverages reinforcement learning to automate the generation of high-performing CNN architectures. The motivation behind this approach is to reduce the manual effort involved in CNN design and to potentially discover novel architectures that humans might overlook.</p>
-<p>MetaQNN employs a Q-learning agent that learns to select CNN layers sequentially, guided by an ε-greedy exploration strategy and experience replay to navigate the large but finite space of architectural possibilities. The agent’s goal is to optimize the network’s performance on a given learning task, as measured by validation accuracy, which serves as the reward signal.</p>
-<p>This research is motivated by the desire to streamline the process of network design, enabling the development of tailored CNNs for various tasks without extensive human intervention. By automating this process, researchers can focus on higher-level tasks and insights, while the algorithm handles the intricacies of architecture optimization. The potential applications of this work are vast, as it could lead to more efficient and effective machine learning solutions across a range of domains.</p>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>The paper “Designing Neural Network Architectures Using Reinforcement Learning” makes several significant contributions to the field of automated machine learning (AutoML). Firstly, it introduces MetaQNN, a novel algorithm that applies reinforcement learning to the design of convolutional neural network (CNN) architectures. This algorithm is capable of discovering high-performing CNNs without human intervention, addressing the labor-intensive nature of manual network design.</p>
-<p>Secondly, the paper demonstrates that MetaQNN can compete with, and even outperform, state-of-the-art methods that use more complex layer types. This is achieved by exploring a large but finite space of possible architectures and iteratively improving upon the designs based on validation accuracy.</p>
-<p>Additionally, the paper shows that the networks designed by MetaQNN are not only optimized for the task they were trained on but also exhibit strong transfer learning capabilities. This indicates that the algorithm can produce versatile network architectures that are applicable to various image classification tasks.</p>
-<p>Lastly, the research provides a new perspective on neural network design, suggesting that reinforcement learning can be an effective tool for automating the process. This opens up new avenues for future research in AutoML, where the goal is to further automate and optimize the machine learning pipeline.</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330150424604.png" alt="image-20240330150424604"></p>
-<p>The primary methodological innovation of the paper “Designing Neural Network Architectures Using Reinforcement Learning” is the MetaQNN algorithm, which utilizes Q-learning to automate the process of designing convolutional neural network (CNN) architectures. The core concept is to treat the selection of CNN layers as a Markov Decision Process (MDP), where the learning agent explores the space of possible network topologies to find high-performing architectures.</p>
-<p>The MetaQNN agent is trained using Q-learning, a model-free reinforcement learning technique that focuses on learning the optimal policy through interaction with the environment. The agent operates in a state space defined by the parameters of the CNN layers and an action space that corresponds to the choices of adding a particular layer type. The agent starts with a random exploration of the architecture space, gradually transitioning to more informed decisions as it learns from experience.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330150453009.png" alt="image-20240330150453009"></p>
-<p>A key component of the method is the ε-greedy exploration strategy, which balances exploration and exploitation. The agent initially explores widely by selecting actions randomly, with a probability ε. As the agent accumulates experience, it exploits its knowledge by choosing the action with the highest estimated Q-value with probability 1-ε. The value of ε is gradually decreased over time, shifting the agent’s behavior from exploration to exploitation.</p>
-<p>To enhance learning efficiency, the MetaQNN algorithm employs experience replay, a technique where the agent’s past experiences are stored in a replay memory. The agent periodically samples from this memory to update its Q-values, allowing it to learn from its past actions more effectively.</p>
-<p>The agent’s performance is evaluated based on the validation accuracy of the CNN architectures it designs. The architectures that yield higher validation accuracy are considered more desirable, and the agent’s Q-values are updated accordingly. The process continues until the agent converges on a policy that consistently produces high-performing CNN architectures.</p>
-<p>This method represents a significant departure from traditional manual design processes, offering a data-driven approach to network architecture optimization. By automating the design process, MetaQNN has the potential to accelerate the development of CNNs and to discover novel architectures that could outperform those designed by human experts.</p>
-<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330150952925.png" alt="image-20240330150952925"></p>
-<p>The experimental setup involves training a learning agent to sequentially choose CNN layers using Q-learning, with the goal of maximizing the validation accuracy on the given datasets. The agent’s state space is defined by the parameters of different layer types, such as convolution, pooling, and fully connected layers, and the action space is determined by the possible layer selections. The agent employs an ε-greedy strategy to balance exploration and exploitation, with ε gradually reduced over time to shift from random exploration to informed exploitation.</p>
-<p>The training process for the agent involves aggressive training schemes with quick convergence, using techniques like dropout and learning rate adjustments to prevent overfitting and to ensure efficient learning. The agent’s performance is evaluated based on the validation accuracy of the CNN architectures it designs, which serves as the reward signal for the Q-learning updates.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330151218241.png" alt="image-20240330151218241"></p>
-<p>The experimental results are highly promising. The networks designed by the MetaQNN agent outperform existing networks that use the same layer types, demonstrating the agent’s ability to make informed architectural decisions. Moreover, these networks are competitive with state-of-the-art methods that incorporate more complex layer types and training procedures, showcasing the potential of the MetaQNN approach to match or even surpass human-designed architectures.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330151313064.png" alt="image-20240330151313064"></p>
-<p>In terms of transfer learning, the best MetaQNN model on CIFAR-10 dataset shows good performance when trained on other datasets, indicating the versatility of the architectures discovered by the algorithm. The ensemble of top models selected by the agent also leads to a significant boost in prediction performance, further validating the effectiveness of the MetaQNN approach.</p>
-<p>Overall, the experiments in the paper provide strong evidence that reinforcement learning can be effectively applied to the automated design of neural network architectures, offering a promising direction for future research in automating the machine learning process. The success of MetaQNN in discovering high-performing and transferable CNN architectures underscores the potential of this approach to revolutionize the way we design neural networks for various tasks.</p>
+            <p><a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/1611.02167.pdf">Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> / <a class="link" target="_blank" rel="noopener" href="https://bowenbaker.github.io/metaqnn/">Project <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> / <a class="link" target="_blank" rel="noopener" href="https://github.com/bowenbaker/metaqnn">Code <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>MetaQNN is one of the early reinforcement-learning based NAS papers. It is worth reading together with Zoph &amp; Le’s controller-RNN NAS paper, because the search strategy is different: instead of training an RNN controller to emit architecture strings, MetaQNN uses tabular Q-learning over a hand-designed state-action graph.</p>
+<p>The paper is not trying to discover arbitrary neural computation. The search space is deliberately limited to standard CNN components: convolution, pooling, fully connected layers, global average pooling, and softmax. That constraint is important. The interesting part of the paper is how the authors turn “choose a CNN architecture” into a finite-horizon Markov Decision Process that can be explored with a practical amount of computation.</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>CNN design contains many coupled choices: layer type, ordering, filter size, number of channels, stride, pooling position, and termination point. Exhaustively enumerating this space is impossible even when every option is discretized.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/MetaQNN/fig1-overview.png"></p>
+<p>Figure 1 summarizes the whole loop: sample a topology, train it, store its validation accuracy, and update the Q-values from replay memory.</p>
+<p>The paper’s framing is direct:</p>
+<ol>
+<li>Let an agent build a CNN one layer at a time.</li>
+<li>Train the sampled CNN on the target dataset.</li>
+<li>Use validation accuracy as the reward.</li>
+<li>Update the agent so that future sampled architectures become better.</li>
+</ol>
+<p>This is a clean formulation, but it only works if the architecture space is constrained enough. MetaQNN therefore spends a lot of effort on the state definition and action restrictions, not only on the reinforcement learning update.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>The useful contributions are:</p>
+<ol>
+<li>Formulate CNN architecture generation as a finite MDP, where a trajectory is a full network topology.</li>
+<li>Define a discrete state space for common CNN layers and use action constraints to avoid invalid or obviously degenerate networks.</li>
+<li>Use Q-learning with epsilon-greedy exploration and experience replay to search the architecture graph.</li>
+<li>Show that the discovered CNNs can outperform earlier networks that use only standard convolution, pooling, and fully connected layers.</li>
+<li>Release model definitions and code, although the original implementation is tied to an old Caffe/Python 2 stack.</li>
+</ol>
+<p>The last point matters historically. MetaQNN is not only a conceptual NAS paper; it includes trained topologies, Caffe prototxt files, and a server-client training setup.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="State-and-Action-Space"><a href="#State-and-Action-Space" class="headerlink" title="State and Action Space"></a>State and Action Space</h3><p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/MetaQNN/fig2-mdp.png"></p>
+<p>The MDP view is the core modeling choice. A path through this graph corresponds to one CNN, and the green path in the figure is one sampled architecture.</p>
+<p>Each state represents the current layer choice plus enough metadata to decide what layer can come next. The notation used in the paper is:</p>
+<ul>
+<li><code>C(d, f, l)</code>: convolution with <code>d</code> filters, receptive field size <code>f</code>, and stride <code>l</code>.</li>
+<li><code>P(f, l)</code>: pooling with receptive field size <code>f</code> and stride <code>l</code>.</li>
+<li><code>FC(d)</code>: fully connected layer with <code>d</code> neurons.</li>
+<li><code>GAP</code> / <code>SM</code>: global average pooling or softmax termination.</li>
+</ul>
+<p>The experimental search space is small enough for tabular Q-learning but still large enough to contain useful CNNs:</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/MetaQNN/table1-state-space.png"></p>
+<table>
+<thead>
+<tr>
+<th>Layer type</th>
+<th>Main choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Convolution</td>
+<td>layer depth <code>&lt; 12</code>, filter size <code>{1, 3, 5}</code>, stride <code>1</code>, channels <code>{64, 128, 256, 512}</code></td>
+</tr>
+<tr>
+<td>Pooling</td>
+<td>layer depth <code>&lt; 12</code>, <code>(filter, stride)</code> in <code>{(5, 3), (3, 2), (2, 2)}</code></td>
+</tr>
+<tr>
+<td>Fully connected</td>
+<td>layer depth <code>&lt; 12</code>, at most two consecutive FC layers, neurons <code>{512, 256, 128}</code></td>
+</tr>
+<tr>
+<td>Termination</td>
+<td>global average pooling or softmax</td>
+</tr>
+</tbody></table>
+<p>The state also includes a binned representation size. This prevents the agent from repeatedly shrinking a feature map until later convolutions or pooling operations no longer make sense. For example, too many stride-2 pooling layers can reduce a <code>32 x 32</code> image to <code>1 x 1</code>, so the action graph disallows transitions that would create invalid feature maps.</p>
+<p>This is one of the most practical pieces of the paper: NAS needs a search space, but it also needs guardrails. Without them, much of the budget would be wasted on architectures that are legal as strings but useless as CNNs.</p>
+<h3 id="Q-learning-Loop"><a href="#Q-learning-Loop" class="headerlink" title="Q-learning Loop"></a>Q-learning Loop</h3><p>MetaQNN uses the standard Q-learning update:</p>
+<p><mjx-container class="MathJax" jax="SVG" display="true"><svg style="vertical-align: -2.148ex;" xmlns="http://www.w3.org/2000/svg" width="51.271ex" height="5.428ex" role="img" focusable="false" viewBox="0 -1449.5 22661.6 2399"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D444" d="M399 -80Q399 -47 400 -30T402 -11V-7L387 -11Q341 -22 303 -22Q208 -22 138 35T51 201Q50 209 50 244Q50 346 98 438T227 601Q351 704 476 704Q514 704 524 703Q621 689 680 617T740 435Q740 255 592 107Q529 47 461 16L444 8V3Q444 2 449 -24T470 -66T516 -82Q551 -82 583 -60T625 -3Q631 11 638 11Q647 11 649 2Q649 -6 639 -34T611 -100T557 -165T481 -194Q399 -194 399 -87V-80ZM636 468Q636 523 621 564T580 625T530 655T477 665Q429 665 379 640Q277 591 215 464T153 216Q153 110 207 59Q231 38 236 38V46Q236 86 269 120T347 155Q372 155 390 144T417 114T429 82T435 55L448 64Q512 108 557 185T619 334T636 468ZM314 18Q362 18 404 39L403 49Q399 104 366 115Q354 117 347 117Q344 117 341 117T337 118Q317 118 296 98T274 52Q274 18 314 18Z"></path></g><g data-mml-node="mo" transform="translate(791,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="msub" transform="translate(1180,0)"><g data-mml-node="mi"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g><g data-mml-node="mi" transform="translate(502,-150) scale(0.707)"><path data-c="1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path></g></g><g data-mml-node="mo" transform="translate(1976,0)"><path data-c="2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path></g><g data-mml-node="mi" transform="translate(2420.6,0)"><path data-c="1D462" d="M21 287Q21 295 30 318T55 370T99 420T158 442Q204 442 227 417T250 358Q250 340 216 246T182 105Q182 62 196 45T238 27T291 44T328 78L339 95Q341 99 377 247Q407 367 413 387T427 416Q444 431 463 431Q480 431 488 421T496 402L420 84Q419 79 419 68Q419 43 426 35T447 26Q469 29 482 57T512 145Q514 153 532 153Q551 153 551 144Q550 139 549 130T540 98T523 55T498 17T462 -8Q454 -10 438 -10Q372 -10 347 46Q345 45 336 36T318 21T296 6T267 -6T233 -11Q189 -11 155 7Q103 38 103 113Q103 170 138 262T173 379Q173 380 173 381Q173 390 173 393T169 400T158 404H154Q131 404 112 385T82 344T65 302T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(2992.6,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="mo" transform="translate(3659.4,0)"><path data-c="2190" d="M944 261T944 250T929 230H165Q167 228 182 216T211 189T244 152T277 96T303 25Q308 7 308 0Q308 -11 288 -11Q281 -11 278 -11T272 -7T267 2T263 21Q245 94 195 151T73 236Q58 242 55 247Q55 254 59 257T73 264Q121 283 158 314T215 375T247 434T264 480L267 497Q269 503 270 505T275 509T288 511Q308 511 308 500Q308 493 303 475Q293 438 278 406T246 352T215 315T185 287T165 270H929Q944 261 944 250Z"></path></g><g data-mml-node="mo" transform="translate(4937.2,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mn" transform="translate(5326.2,0)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g><g data-mml-node="mo" transform="translate(6048.4,0)"><path data-c="2212" d="M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z"></path></g><g data-mml-node="mi" transform="translate(7048.6,0)"><path data-c="1D6FC" d="M34 156Q34 270 120 356T309 442Q379 442 421 402T478 304Q484 275 485 237V208Q534 282 560 374Q564 388 566 390T582 393Q603 393 603 385Q603 376 594 346T558 261T497 161L486 147L487 123Q489 67 495 47T514 26Q528 28 540 37T557 60Q559 67 562 68T577 70Q597 70 597 62Q597 56 591 43Q579 19 556 5T512 -10H505Q438 -10 414 62L411 69L400 61Q390 53 370 41T325 18T267 -2T203 -11Q124 -11 79 39T34 156ZM208 26Q257 26 306 47T379 90L403 112Q401 255 396 290Q382 405 304 405Q235 405 183 332Q156 292 139 224T121 120Q121 71 146 49T208 26Z"></path></g><g data-mml-node="mo" transform="translate(7688.6,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="mi" transform="translate(8077.6,0)"><path data-c="1D444" d="M399 -80Q399 -47 400 -30T402 -11V-7L387 -11Q341 -22 303 -22Q208 -22 138 35T51 201Q50 209 50 244Q50 346 98 438T227 601Q351 704 476 704Q514 704 524 703Q621 689 680 617T740 435Q740 255 592 107Q529 47 461 16L444 8V3Q444 2 449 -24T470 -66T516 -82Q551 -82 583 -60T625 -3Q631 11 638 11Q647 11 649 2Q649 -6 639 -34T611 -100T557 -165T481 -194Q399 -194 399 -87V-80ZM636 468Q636 523 621 564T580 625T530 655T477 665Q429 665 379 640Q277 591 215 464T153 216Q153 110 207 59Q231 38 236 38V46Q236 86 269 120T347 155Q372 155 390 144T417 114T429 82T435 55L448 64Q512 108 557 185T619 334T636 468ZM314 18Q362 18 404 39L403 49Q399 104 366 115Q354 117 347 117Q344 117 341 117T337 118Q317 118 296 98T274 52Q274 18 314 18Z"></path></g><g data-mml-node="mo" transform="translate(8868.6,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="msub" transform="translate(9257.6,0)"><g data-mml-node="mi"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g><g data-mml-node="mi" transform="translate(502,-150) scale(0.707)"><path data-c="1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path></g></g><g data-mml-node="mo" transform="translate(10053.6,0)"><path data-c="2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path></g><g data-mml-node="mi" transform="translate(10498.2,0)"><path data-c="1D462" d="M21 287Q21 295 30 318T55 370T99 420T158 442Q204 442 227 417T250 358Q250 340 216 246T182 105Q182 62 196 45T238 27T291 44T328 78L339 95Q341 99 377 247Q407 367 413 387T427 416Q444 431 463 431Q480 431 488 421T496 402L420 84Q419 79 419 68Q419 43 426 35T447 26Q469 29 482 57T512 145Q514 153 532 153Q551 153 551 144Q550 139 549 130T540 98T523 55T498 17T462 -8Q454 -10 438 -10Q372 -10 347 46Q345 45 336 36T318 21T296 6T267 -6T233 -11Q189 -11 155 7Q103 38 103 113Q103 170 138 262T173 379Q173 380 173 381Q173 390 173 393T169 400T158 404H154Q131 404 112 385T82 344T65 302T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(11070.2,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="mo" transform="translate(11681.5,0)"><path data-c="2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path></g><g data-mml-node="mi" transform="translate(12681.7,0)"><path data-c="1D6FC" d="M34 156Q34 270 120 356T309 442Q379 442 421 402T478 304Q484 275 485 237V208Q534 282 560 374Q564 388 566 390T582 393Q603 393 603 385Q603 376 594 346T558 261T497 161L486 147L487 123Q489 67 495 47T514 26Q528 28 540 37T557 60Q559 67 562 68T577 70Q597 70 597 62Q597 56 591 43Q579 19 556 5T512 -10H505Q438 -10 414 62L411 69L400 61Q390 53 370 41T325 18T267 -2T203 -11Q124 -11 79 39T34 156ZM208 26Q257 26 306 47T379 90L403 112Q401 255 396 290Q382 405 304 405Q235 405 183 332Q156 292 139 224T121 120Q121 71 146 49T208 26Z"></path></g><g data-mml-node="mrow" transform="translate(13488.3,0)"><g data-mml-node="mo" transform="translate(0 -0.5)"><path data-c="5B" d="M247 -949V1450H516V1388H309V-887H516V-949H247Z"></path></g><g data-mml-node="mi" transform="translate(528,0)"><path data-c="1D45F" d="M21 287Q22 290 23 295T28 317T38 348T53 381T73 411T99 433T132 442Q161 442 183 430T214 408T225 388Q227 382 228 382T236 389Q284 441 347 441H350Q398 441 422 400Q430 381 430 363Q430 333 417 315T391 292T366 288Q346 288 334 299T322 328Q322 376 378 392Q356 405 342 405Q286 405 239 331Q229 315 224 298T190 165Q156 25 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 114 189T154 366Q154 405 128 405Q107 405 92 377T68 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(1201.2,0)"><path data-c="2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path></g><g data-mml-node="mi" transform="translate(2201.4,0)"><path data-c="1D6FE" d="M31 249Q11 249 11 258Q11 275 26 304T66 365T129 418T206 441Q233 441 239 440Q287 429 318 386T371 255Q385 195 385 170Q385 166 386 166L398 193Q418 244 443 300T486 391T508 430Q510 431 524 431H537Q543 425 543 422Q543 418 522 378T463 251T391 71Q385 55 378 6T357 -100Q341 -165 330 -190T303 -216Q286 -216 286 -188Q286 -138 340 32L346 51L347 69Q348 79 348 100Q348 257 291 317Q251 355 196 355Q148 355 108 329T51 260Q49 251 47 251Q45 249 31 249Z"></path></g><g data-mml-node="munder" transform="translate(2911.1,0)"><g data-mml-node="mo"><path data-c="6D" d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q351 442 364 440T387 434T406 426T421 417T432 406T441 395T448 384T452 374T455 366L457 361L460 365Q463 369 466 373T475 384T488 397T503 410T523 422T546 432T572 439T603 442Q729 442 740 329Q741 322 741 190V104Q741 66 743 59T754 49Q775 46 803 46H819V0H811L788 1Q764 2 737 2T699 3Q596 3 587 0H579V46H595Q656 46 656 62Q657 64 657 200Q656 335 655 343Q649 371 635 385T611 402T585 404Q540 404 506 370Q479 343 472 315T464 232V168V108Q464 78 465 68T468 55T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z"></path><path data-c="61" d="M137 305T115 305T78 320T63 359Q63 394 97 421T218 448Q291 448 336 416T396 340Q401 326 401 309T402 194V124Q402 76 407 58T428 40Q443 40 448 56T453 109V145H493V106Q492 66 490 59Q481 29 455 12T400 -6T353 12T329 54V58L327 55Q325 52 322 49T314 40T302 29T287 17T269 6T247 -2T221 -8T190 -11Q130 -11 82 20T34 107Q34 128 41 147T68 188T116 225T194 253T304 268H318V290Q318 324 312 340Q290 411 215 411Q197 411 181 410T156 406T148 403Q170 388 170 359Q170 334 154 320ZM126 106Q126 75 150 51T209 26Q247 26 276 49T315 109Q317 116 318 175Q318 233 317 233Q309 233 296 232T251 223T193 203T147 166T126 106Z" transform="translate(833,0)"></path><path data-c="78" d="M201 0Q189 3 102 3Q26 3 17 0H11V46H25Q48 47 67 52T96 61T121 78T139 96T160 122T180 150L226 210L168 288Q159 301 149 315T133 336T122 351T113 363T107 370T100 376T94 379T88 381T80 383Q74 383 44 385H16V431H23Q59 429 126 429Q219 429 229 431H237V385Q201 381 201 369Q201 367 211 353T239 315T268 274L272 270L297 304Q329 345 329 358Q329 364 327 369T322 376T317 380T310 384L307 385H302V431H309Q324 428 408 428Q487 428 493 431H499V385H492Q443 385 411 368Q394 360 377 341T312 257L296 236L358 151Q424 61 429 57T446 50Q464 46 499 46H516V0H510H502Q494 1 482 1T457 2T432 2T414 3Q403 3 377 3T327 1L304 0H295V46H298Q309 46 320 51T331 63Q331 65 291 120L250 175Q249 174 219 133T185 88Q181 83 181 74Q181 63 188 55T206 46Q208 46 208 23V0H201Z" transform="translate(1333,0)"></path></g><g data-mml-node="TeXAtom" transform="translate(630.2,-662.4) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="msup"><g data-mml-node="mi"><path data-c="1D462" d="M21 287Q21 295 30 318T55 370T99 420T158 442Q204 442 227 417T250 358Q250 340 216 246T182 105Q182 62 196 45T238 27T291 44T328 78L339 95Q341 99 377 247Q407 367 413 387T427 416Q444 431 463 431Q480 431 488 421T496 402L420 84Q419 79 419 68Q419 43 426 35T447 26Q469 29 482 57T512 145Q514 153 532 153Q551 153 551 144Q550 139 549 130T540 98T523 55T498 17T462 -8Q454 -10 438 -10Q372 -10 347 46Q345 45 336 36T318 21T296 6T267 -6T233 -11Q189 -11 155 7Q103 38 103 113Q103 170 138 262T173 379Q173 380 173 381Q173 390 173 393T169 400T158 404H154Q131 404 112 385T82 344T65 302T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(605,289) scale(0.707)"><path data-c="2032" d="M79 43Q73 43 52 49T30 61Q30 68 85 293T146 528Q161 560 198 560Q218 560 240 545T262 501Q262 496 260 486Q259 479 173 263T84 45T79 43Z"></path></g></g></g></g><g data-mml-node="mi" transform="translate(4938.8,0)"><path data-c="1D444" d="M399 -80Q399 -47 400 -30T402 -11V-7L387 -11Q341 -22 303 -22Q208 -22 138 35T51 201Q50 209 50 244Q50 346 98 438T227 601Q351 704 476 704Q514 704 524 703Q621 689 680 617T740 435Q740 255 592 107Q529 47 461 16L444 8V3Q444 2 449 -24T470 -66T516 -82Q551 -82 583 -60T625 -3Q631 11 638 11Q647 11 649 2Q649 -6 639 -34T611 -100T557 -165T481 -194Q399 -194 399 -87V-80ZM636 468Q636 523 621 564T580 625T530 655T477 665Q429 665 379 640Q277 591 215 464T153 216Q153 110 207 59Q231 38 236 38V46Q236 86 269 120T347 155Q372 155 390 144T417 114T429 82T435 55L448 64Q512 108 557 185T619 334T636 468ZM314 18Q362 18 404 39L403 49Q399 104 366 115Q354 117 347 117Q344 117 341 117T337 118Q317 118 296 98T274 52Q274 18 314 18Z"></path></g><g data-mml-node="mo" transform="translate(5729.8,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="msub" transform="translate(6118.8,0)"><g data-mml-node="mi"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g><g data-mml-node="mi" transform="translate(502,-150) scale(0.707)"><path data-c="1D457" d="M297 596Q297 627 318 644T361 661Q378 661 389 651T403 623Q403 595 384 576T340 557Q322 557 310 567T297 596ZM288 376Q288 405 262 405Q240 405 220 393T185 362T161 325T144 293L137 279Q135 278 121 278H107Q101 284 101 286T105 299Q126 348 164 391T252 441Q253 441 260 441T272 442Q296 441 316 432Q341 418 354 401T367 348V332L318 133Q267 -67 264 -75Q246 -125 194 -164T75 -204Q25 -204 7 -183T-12 -137Q-12 -110 7 -91T53 -71Q70 -71 82 -81T95 -112Q95 -148 63 -167Q69 -168 77 -168Q111 -168 139 -140T182 -74L193 -32Q204 11 219 72T251 197T278 308T289 365Q289 372 288 376Z"></path></g></g><g data-mml-node="mo" transform="translate(6962.1,0)"><path data-c="2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path></g><g data-mml-node="msup" transform="translate(7406.8,0)"><g data-mml-node="mi"><path data-c="1D462" d="M21 287Q21 295 30 318T55 370T99 420T158 442Q204 442 227 417T250 358Q250 340 216 246T182 105Q182 62 196 45T238 27T291 44T328 78L339 95Q341 99 377 247Q407 367 413 387T427 416Q444 431 463 431Q480 431 488 421T496 402L420 84Q419 79 419 68Q419 43 426 35T447 26Q469 29 482 57T512 145Q514 153 532 153Q551 153 551 144Q550 139 549 130T540 98T523 55T498 17T462 -8Q454 -10 438 -10Q372 -10 347 46Q345 45 336 36T318 21T296 6T267 -6T233 -11Q189 -11 155 7Q103 38 103 113Q103 170 138 262T173 379Q173 380 173 381Q173 390 173 393T169 400T158 404H154Q131 404 112 385T82 344T65 302T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(605,413) scale(0.707)"><path data-c="2032" d="M79 43Q73 43 52 49T30 61Q30 68 85 293T146 528Q161 560 198 560Q218 560 240 545T262 501Q262 496 260 486Q259 479 173 263T84 45T79 43Z"></path></g></g><g data-mml-node="mo" transform="translate(8256.2,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="mo" transform="translate(8645.2,0) translate(0 -0.5)"><path data-c="5D" d="M11 1388V1450H280V-949H11V-887H218V1388H11Z"></path></g></g></g></g></svg></mjx-container></p>
+<p>where <code>s_i</code> is the current state, <code>u</code> is the action, <code>s_j</code> is the next state, and the reward <code>r</code> is the validation accuracy of the completed CNN. The paper sets:</p>
+<ul>
+<li><code>alpha = 0.01</code></li>
+<li><code>gamma = 1</code></li>
+<li>initial Q-values to <code>0.5</code></li>
+<li>final policy to <code>epsilon = 0.1</code>, not <code>0</code>, so the final sampler can still generate several high-quality variants for ensembling</li>
+</ul>
+<p>The search loop is:</p>
+<ol>
+<li>Sample a CNN topology by walking through the state-action graph with epsilon-greedy exploration.</li>
+<li>Train the sampled topology with a short, aggressive schedule.</li>
+<li>Store the topology and validation accuracy in replay memory.</li>
+<li>Sample 100 previous models from memory and update Q-values backward along their trajectories.</li>
+<li>Anneal <code>epsilon</code> and repeat.</li>
+</ol>
+<p>The epsilon schedule is deliberately exploration-heavy at the beginning:</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/MetaQNN/table2-epsilon-schedule.png"></p>
+<table>
+<thead>
+<tr>
+<th>Epsilon</th>
+<th align="right">1.0</th>
+<th align="right">0.9</th>
+<th align="right">0.8</th>
+<th align="right">0.7</th>
+<th align="right">0.6</th>
+<th align="right">0.5</th>
+<th align="right">0.4</th>
+<th align="right">0.3</th>
+<th align="right">0.2</th>
+<th align="right">0.1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Unique models trained</td>
+<td align="right">1500</td>
+<td align="right">100</td>
+<td align="right">100</td>
+<td align="right">100</td>
+<td align="right">150</td>
+<td align="right">150</td>
+<td align="right">150</td>
+<td align="right">150</td>
+<td align="right">150</td>
+<td align="right">150</td>
+</tr>
+</tbody></table>
+<p>So one full search run trains about 2700 unique models before the final fine-tuning stage. During exploration, each model is trained for only 20 epochs with Adam, batch size 128, initial learning rate <code>0.001</code>, and dropout inserted after every two layers. The reported search cost is 8-10 days per dataset on 10 NVIDIA GPUs.</p>
+<h3 id="Why-Replay-Memory-Helps-Here"><a href="#Why-Replay-Memory-Helps-Here" class="headerlink" title="Why Replay Memory Helps Here"></a>Why Replay Memory Helps Here</h3><p>In a normal supervised training loop, one minibatch update is cheap. In NAS, one “environment step” can mean training a CNN. MetaQNN therefore cannot afford to learn only from the most recent sampled architecture.</p>
+<p>The replay dictionary gives each trained architecture multiple chances to update the Q-table. If the same topology is sampled again, the paper does not retrain it; it reuses the stored validation accuracy. This is a simple engineering choice, but it matters because the expensive part is CNN training, not the Q-value update.</p>
+<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><h3 id="Search-Behavior"><a href="#Search-Behavior" class="headerlink" title="Search Behavior"></a>Search Behavior</h3><p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/MetaQNN/fig3-q-learning-curve.png"></p>
+<p>The Q-learning curves are the first sanity check. As <code>epsilon</code> decreases, the sampled models should become better on average. The paper reports that, for SVHN, mean model accuracy increases from <code>52.25%</code> at <code>epsilon = 1.0</code> to <code>88.02%</code> at <code>epsilon = 0.1</code>.</p>
+<p>This does not prove that the agent found a globally optimal architecture. It does show that the Q-table learned useful preferences inside the constrained search graph.</p>
+<p>The learned preferences are also interpretable. In the appendix, the authors analyze Q-values by layer depth: convolution and pooling have higher Q-values early in the network, while fully connected and termination states become more likely deeper in the network. That matches the rough shape of hand-designed CNNs.</p>
+<h3 id="Benchmark-Numbers"><a href="#Benchmark-Numbers" class="headerlink" title="Benchmark Numbers"></a>Benchmark Numbers</h3><p>MetaQNN is strongest when compared with networks using similar layer types. The top CIFAR-10 model reaches <code>6.92%</code> test error, better than the standard-layer baselines listed in the paper.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/MetaQNN/table3-standard-results.png"></p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="right">CIFAR-10</th>
+<th align="right">SVHN</th>
+<th align="right">MNIST</th>
+<th align="right">CIFAR-100</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>All-CNN</td>
+<td align="right">7.25</td>
+<td align="right">-</td>
+<td align="right">-</td>
+<td align="right">33.71</td>
+</tr>
+<tr>
+<td>MetaQNN ensemble</td>
+<td align="right">7.32</td>
+<td align="right">2.06</td>
+<td align="right">0.32</td>
+<td align="right">-</td>
+</tr>
+<tr>
+<td>MetaQNN top model</td>
+<td align="right">6.92</td>
+<td align="right">2.28</td>
+<td align="right">0.44</td>
+<td align="right">27.14</td>
+</tr>
+<tr>
+<td>ResNet-110</td>
+<td align="right">6.61</td>
+<td align="right">-</td>
+<td align="right">-</td>
+<td align="right">-</td>
+</tr>
+<tr>
+<td>ELU network</td>
+<td align="right">6.55</td>
+<td align="right">-</td>
+<td align="right">-</td>
+<td align="right">24.28</td>
+</tr>
+<tr>
+<td>Tree+Max-Avg pooling</td>
+<td align="right">6.05</td>
+<td align="right">1.69</td>
+<td align="right">0.31</td>
+<td align="right">32.37</td>
+</tr>
+</tbody></table>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/MetaQNN/table4-sota-results.png"></p>
+<p>All numbers are test error percentages. The comparison against ResNet and more complex pooling methods is less flattering, but also less direct: those models use architectural ideas outside the MetaQNN search space. The more honest reading is that MetaQNN does well within a plain CNN search space, but the search space itself limits the ceiling.</p>
+<h3 id="Discovered-Architectures"><a href="#Discovered-Architectures" class="headerlink" title="Discovered Architectures"></a>Discovered Architectures</h3><p>The top CIFAR-10 architecture reported in the appendix is:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C(512,5,1) - C(256,3,1) - C(256,5,1) - C(256,3,1) -</span><br><span class="line">P(5,3) - C(512,3,1) - C(512,5,1) - P(2,2) - SM(10)</span><br></pre></td></tr></table></figure></div>
+
+<p>It reaches <code>6.92%</code> test error with <code>11.18M</code> parameters. The top five CIFAR-10 models range from <code>11.18M</code> down to <code>1.10M</code> parameters, but the error varies from <code>6.92%</code> to <code>11.63%</code>. That spread is a useful reminder: validation-guided architecture search can find good candidates, but the top architectures are not all equally strong.</p>
+<p>One design motif mentioned in the paper is the frequent use of <code>1 x 1</code> convolution near the input. The authors interpret it as a learned linear transformation of RGB channels, similar in spirit to preprocessing into another color space. I would treat that as an observation rather than a general rule, but it is a nice example of Q-value analysis producing inspectable architecture hints.</p>
+<h3 id="Transfer"><a href="#Transfer" class="headerlink" title="Transfer"></a>Transfer</h3><p>The authors also test whether the best CIFAR-10 architecture transfers to other datasets. <code>SOTA</code> means the reference state-of-the-art number listed in the paper.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/MetaQNN/table5-transfer.png"></p>
+<table>
+<thead>
+<tr>
+<th>Target</th>
+<th align="right">Scratch</th>
+<th align="right">Fine-tune</th>
+<th align="right">SOTA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CIFAR-100</td>
+<td align="right">27.14</td>
+<td align="right">34.93</td>
+<td align="right">24.28</td>
+</tr>
+<tr>
+<td>SVHN</td>
+<td align="right">2.48</td>
+<td align="right">4.00</td>
+<td align="right">1.69</td>
+</tr>
+<tr>
+<td>MNIST</td>
+<td align="right">0.80</td>
+<td align="right">0.81</td>
+<td align="right">0.31</td>
+</tr>
+</tbody></table>
+<p>The architecture transfers better than the weights. Fine-tuning from CIFAR-10 weights is worse than training from scratch in all three reported cases. That is not too surprising: the searched architecture can be reusable, but the learned filters from CIFAR-10 are not necessarily a good initialization for digit datasets or CIFAR-100.</p>
+<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>MetaQNN is a good example of early NAS engineering. The paper’s main lesson is not that Q-learning is the final answer for architecture search. Later work moved toward controller RNNs, cell-based search, weight sharing, differentiable NAS, and hardware-aware search because training thousands of child models is too expensive.</p>
+<p>The lasting idea is the decomposition:</p>
+<ul>
+<li>Define a searchable but valid architecture graph.</li>
+<li>Use a cheap policy representation over that graph.</li>
+<li>Evaluate sampled architectures with a consistent reward.</li>
+<li>Reuse expensive evaluations through replay or other performance-estimation tricks.</li>
+</ul>
+<p>The limitation is equally clear. The method inherits the bias of its search space: only standard CNN layers, coarse discrete hyperparameters, and fixed training recipes. It can discover strong combinations inside that box, but it cannot invent residual blocks, depthwise separable convolutions, attention, or hardware-aware operators unless those choices are explicitly added to the state-action graph.</p>
+<p>For me, MetaQNN is most useful as a baseline mental model for NAS: before thinking about supernets or differentiable relaxations, first ask what the states are, which actions are legal, how much one reward costs, and whether the search space itself is the real bottleneck.</p>
 
         </div>
 
@@ -602,13 +797,13 @@ mjx-container[display="true"] + br {
                     <div class="article-prev">
                         <a class="prev"
                         rel="prev"
-                        href="/2020/01/23/jointNasQ/"
+                        href="/2020/01/18/largeScaleEvolution/"
                         >
                             <span class="left arrow-icon flex justify-center items-center">
                                 <i class="fa-solid fa-chevron-left"></i>
                             </span>
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Joint neural architecture search and quantization</span>
+                                <span class="post-nav-title-item">Large-Scale Evolution of Image Classifiers</span>
                                 <span class="post-nav-item">Prev posts</span>
                             </span>
                         </a>
@@ -643,7 +838,7 @@ mjx-container[display="true"] + br {
     <div class="post-toc">
         <div class="toc-title">On this page</div>
         <div class="page-title">Designing Neural Network Architectures using Reinforcement Learning</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Figures-Conclusion"><span class="nav-text">Figures &amp; Conclusion</span></a></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#State-and-Action-Space"><span class="nav-text">State and Action Space</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q-learning-Loop"><span class="nav-text">Q-learning Loop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Why-Replay-Memory-Helps-Here"><span class="nav-text">Why Replay Memory Helps Here</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Results"><span class="nav-text">Results</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Search-Behavior"><span class="nav-text">Search Behavior</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Benchmark-Numbers"><span class="nav-text">Benchmark Numbers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Discovered-Architectures"><span class="nav-text">Discovered Architectures</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Transfer"><span class="nav-text">Transfer</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
 
     </div>
 </div>

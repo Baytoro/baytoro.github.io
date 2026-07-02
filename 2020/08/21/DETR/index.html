@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="H.J. Chen">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://baytoro.github.io.git/2020/08/21/detr/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="DETR recasts object detection as direct set prediction with object queries, bipartite matching, and a Transformer encoder-decoder.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="End-to-End Object Detection with Transformers">
+<meta property="og:url" content="https://baytoro.github.io.git/2020/08/21/DETR/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="DETR recasts object detection as direct set prediction with object queries, bipartite matching, and a Transformer encoder-decoder.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/DETR/fig1-detr-architecture.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/DETR/fig2-detailed-architecture.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/DETR/table1-coco-detection-results.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/DETR/table2-encoder-size-ablation.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/DETR/fig4-attention-visualization.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/DETR/fig8-panoptic-architecture.png">
+<meta property="article:published_time" content="2020-08-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-02T08:46:13.365Z">
+<meta property="article:author" content="H.J. Chen">
+<meta property="article:tag" content="AIGC">
+<meta property="article:tag" content="Transformer">
+<meta property="article:tag" content="Vision">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://baytoro.github.io.git/_imgs/DETR/fig1-detr-architecture.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/personal/avatar.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/personal/avatar.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/personal/avatar.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            End-to-End Object Detection with Transformers -
+        
+        Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+        <link href="" rel="stylesheet">
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"baytoro.github.io.git","root":"/","language":"en","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":false,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/picture/s1.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":true,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Welcome, traveler :)","subtitle":{"text":["May you find inspiration and joy here (scroll down ↓)"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":40,"backing_speed":10,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":"https://github.com/Baytoro","zhihu":"https://www.zhihu.com/people/baytoro","email":"guaguabear@hotmail.com"},"qrs":null}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"MapleStory Title","artist":"MapleStory","url":"/music/MapleStory Title.mp3","cover":"/picture/maple.jpeg"},{"name":"Above the Treetops","artist":"MapleStory","url":"/music/Above the Treetops.mp3","cover":"/picture/maple.jpeg"},{"name":"When the Morning Comes","artist":"MapleStory","url":"/music/When the Morning Comes.mp3","cover":"/picture/maple.jpeg"},{"name":"Missing You","artist":"MapleStory","url":"/music/Missing You.mp3","cover":"/picture/maple.jpeg"},{"name":"Shinin' Harbor","artist":"MapleStory","url":"/music/Shinin' Harbor.mp3","cover":"/picture/maple.jpeg"},{"name":"Snowy Village","artist":"MapleStory","url":"/music/Snowy Village.mp3","cover":"/picture/maple.jpeg"}]},"mermaid":{"enable":true,"version":"9.3.0"}},"version":"2.5.0","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"About":{"path":"/about","icon":"fa-regular fa-user"},"Archives":{"icon":"fa-regular fa-archive","submenus":{"Posts":"/archives","Categories":"/categories","Tags":"/tags"}},"GitHub":{"icon":"fa-brands fa-github","path":"https://github.com/Baytoro"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":false,"position":"left","first_item":"info","menu_title":"Links","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":5}},"footerStart":"2020/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/about"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/archives">POSTS
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/categories">CATEGORIES
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/tags">TAGS
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    target="_blank" rel="noopener" href="https://github.com/Baytoro"  >
+                                    
+                                        
+                                            <i class="fa-brands fa-github"></i>
+                                        
+                                        GITHUB
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i></div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/about"  >
+                             
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/archives">POSTS</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/categories">CATEGORIES</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/tags">TAGS</a>
+                            </li>
+                        
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        target="_blank" rel="noopener" href="https://github.com/Baytoro"  >
+                             
+                                
+                                    <i class="fa-brands fa-github"></i>
+                                
+                                GITHUB
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            
+                
+                
+                <img src="/_imgs/DETR/thumbnail.png" alt="End-to-End Object Detection with Transformers" class="max-w-none"/>
+                
+                <h1 class="article-title-cover">End-to-End Object Detection with Transformers</h1>
+            
+            </div>
+            
+                    
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/personal/avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">H.J. Chen</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2020-08-21</span>
+        <span class="mobile">2020-08-21</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <!-- <span class="article-date article-meta-item"> -->
+            <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
+            <!-- <span class="desktop">2026-07-02 16:46:13</span>
+            <span class="mobile">2026-07-02 16:46:13</span> -->
+            <!-- <span class="hover-info">Updated</span> -->
+        <!-- </span> -->
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/AIGC/">AIGC</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Transformer/">Transformer</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Vision/">Vision</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body">
+            <blockquote>
+<p>Carion et al. End-to-End Object Detection with Transformers. ECCV 2020.</p>
+</blockquote>
+<p><a class="link"   target="_blank" rel="noopener" href="https://arxiv.org/pdf/2005.12872.pdf" >Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>DETR is worth reading because it changes the shape of the detection problem. Instead of predicting dense anchors, ranking proposals, and cleaning duplicates with NMS, it predicts a fixed-size set of objects and trains the model with a one-to-one matching loss.</p>
+<p>That sounds simple only after the paper exists. The key engineering move is to make “object slots” explicit through learned decoder queries, then force those slots to compete for ground-truth boxes through Hungarian matching.</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/DETR/fig1-detr-architecture.png"
+                     
+                ></p>
+<p>The first figure is the whole paper in one diagram. A CNN extracts image features, a Transformer reasons over them, and a fixed number of predictions is matched against the ground-truth set. A query that does not match any object is trained as the no-object class.</p>
+<p>The important contrast with Faster R-CNN style detectors is not just the use of attention. DETR removes several hand-designed detection components:</p>
+<ul>
+<li>no anchor boxes;</li>
+<li>no region proposal network;</li>
+<li>no NMS;</li>
+<li>no class-specific duplicate suppression heuristic.</li>
+</ul>
+<p>The model can do that because the loss itself enforces one prediction per object.</p>
+<h2 id="Architecture"><a href="#Architecture" class="headerlink" title="Architecture"></a>Architecture</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/DETR/fig2-detailed-architecture.png"
+                     
+                ></p>
+<p>The architecture has four parts:</p>
+<ol>
+<li>A CNN backbone maps the image to a lower-resolution feature map.</li>
+<li>A linear projection converts the CNN channels into the Transformer hidden dimension.</li>
+<li>A Transformer encoder adds global context over the flattened feature map, with positional encodings injected because attention is otherwise permutation-invariant.</li>
+<li>A Transformer decoder consumes learned object queries and outputs one embedding per query. Each embedding goes through small FFNs for class prediction and normalized box coordinates.</li>
+</ol>
+<p>I read the object queries as learned detection slots. They are not proposals with coordinates. They are trainable vectors that ask the decoder to retrieve an object from the encoded image. Since the number of queries is larger than the expected number of objects, unused slots are trained to predict <code>no object</code>.</p>
+<p>This design is clean, but it also explains why optimization is harder than in anchor-based detectors. Early in training, a query has no obvious spatial prior. The model must learn both where to attend and how to allocate queries to instances.</p>
+<h2 id="Set-Prediction-Loss"><a href="#Set-Prediction-Loss" class="headerlink" title="Set Prediction Loss"></a>Set Prediction Loss</h2><p>DETR trains on unordered sets. If the ground truth has <code>M</code> objects and the model emits <code>N</code> predictions with <code>N &gt;= M</code>, the target set is padded with no-object entries. The matching step searches for the best permutation:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">best permutation = argmin over permutations</span><br><span class="line">                   sum_i L_match(target_i, prediction_sigma(i))</span><br></pre></td></tr></table></figure></div>
+
+<p>After this assignment, the Hungarian loss combines classification and box regression:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Hungarian loss = classification loss</span><br><span class="line">                 + box loss for matched non-empty objects</span><br></pre></td></tr></table></figure></div>
+
+<p>The box part uses both L1 distance and generalized IoU:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">box loss = lambda_iou * GIoU + lambda_L1 * L1 distance</span><br></pre></td></tr></table></figure></div>
+
+<p>The one-to-one matching is the reason DETR does not need NMS. Two queries can still predict similar boxes, but only one of them receives the object match; the other is pushed toward no-object.</p>
+<h2 id="COCO-Results"><a href="#COCO-Results" class="headerlink" title="COCO Results"></a>COCO Results</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/DETR/table1-coco-detection-results.png"
+                     
+                ></p>
+<p>The main COCO table is more nuanced than “Transformer beats detector.” With ResNet-50, DETR reaches the same AP as Faster R-CNN-FPN+:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="right">AP</th>
+<th align="right">AP50</th>
+<th align="right">AP75</th>
+<th align="right">APS</th>
+<th align="right">APM</th>
+<th align="right">APL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Faster R-CNN-FPN+</td>
+<td align="right">42.0</td>
+<td align="right">62.1</td>
+<td align="right">45.5</td>
+<td align="right">26.6</td>
+<td align="right">45.4</td>
+<td align="right">53.4</td>
+</tr>
+<tr>
+<td>DETR</td>
+<td align="right">42.0</td>
+<td align="right">62.4</td>
+<td align="right">44.2</td>
+<td align="right">20.5</td>
+<td align="right">45.8</td>
+<td align="right">61.1</td>
+</tr>
+<tr>
+<td>Faster R-CNN-R101-FPN+</td>
+<td align="right">44.0</td>
+<td align="right">63.9</td>
+<td align="right">47.8</td>
+<td align="right">27.2</td>
+<td align="right">48.1</td>
+<td align="right">56.0</td>
+</tr>
+<tr>
+<td>DETR-DC5-R101</td>
+<td align="right">44.9</td>
+<td align="right">64.7</td>
+<td align="right">47.7</td>
+<td align="right">23.7</td>
+<td align="right">49.5</td>
+<td align="right">62.3</td>
+</tr>
+</tbody></table>
+<p>The pattern is clear: DETR is strong on large objects and weak on small objects. That matches the architecture. The model reasons globally, but the original feature resolution and attention pattern are not ideal for dense small-instance localization.</p>
+<h2 id="Encoder-Ablation"><a href="#Encoder-Ablation" class="headerlink" title="Encoder Ablation"></a>Encoder Ablation</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/DETR/table2-encoder-size-ablation.png"
+                     
+                ></p>
+<p>The encoder ablation makes the global reasoning argument more concrete. Removing the encoder gives 36.7 AP. Six encoder layers give 40.6 AP, and twelve layers give 41.6 AP. The gain is especially visible on large objects:</p>
+<table>
+<thead>
+<tr>
+<th align="right">Encoder layers</th>
+<th align="right">AP</th>
+<th align="right">APS</th>
+<th align="right">APM</th>
+<th align="right">APL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">0</td>
+<td align="right">36.7</td>
+<td align="right">16.8</td>
+<td align="right">39.6</td>
+<td align="right">54.2</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td align="right">40.1</td>
+<td align="right">18.5</td>
+<td align="right">43.8</td>
+<td align="right">58.6</td>
+</tr>
+<tr>
+<td align="right">6</td>
+<td align="right">40.6</td>
+<td align="right">19.9</td>
+<td align="right">44.3</td>
+<td align="right">60.2</td>
+</tr>
+<tr>
+<td align="right">12</td>
+<td align="right">41.6</td>
+<td align="right">19.8</td>
+<td align="right">44.9</td>
+<td align="right">61.9</td>
+</tr>
+</tbody></table>
+<p>This is one of the more useful figures for implementation intuition. The encoder is not a cosmetic Transformer block placed after a CNN. It materially improves scene-level reasoning and query assignment.</p>
+<h2 id="Attention-And-Segmentation"><a href="#Attention-And-Segmentation" class="headerlink" title="Attention And Segmentation"></a>Attention And Segmentation</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/DETR/fig4-attention-visualization.png"
+                     
+                ></p>
+<p>The attention visualization is a good sanity check. Encoder attention follows object boundaries instead of only local texture. That does not prove the model “understands” the scene, but it explains why a global self-attention layer can help with object separation and large-object detection.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/DETR/fig8-panoptic-architecture.png"
+                     
+                ></p>
+<p>The panoptic extension is also important. DETR’s box queries can be reused as instance-level handles: attach mask heads to the decoder outputs, combine them with per-pixel features, and predict segmentation masks. The paper reports competitive panoptic results without changing the core set-prediction idea.</p>
+<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>DETR’s contribution is the combination, not any single component:</p>
+<ul>
+<li>object detection as set prediction;</li>
+<li>learned object queries as fixed prediction slots;</li>
+<li>Hungarian matching as the training mechanism that removes duplicate predictions;</li>
+<li>Transformer encoder-decoder for global assignment and scene reasoning.</li>
+</ul>
+<p>The original version also has visible costs. It converges slowly, needs long training schedules, and underperforms on small objects. Later work such as Deformable DETR attacks exactly these points with sparse multi-scale attention and faster convergence. Still, DETR is the clean baseline to understand first because it makes the detector pipeline much less hand-engineered.</p>
+
+        </div>
+
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/AIGC/">#AIGC</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Transformer/">#Transformer</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Vision/">#Vision</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2020/08/28/Snas/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">SNAS: Stochastic Neural Architecture Search</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2020/07/30/IntegerOnlyQuant/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Integer-Arithmetic-Only INT8 Inference</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">End-to-End Object Detection with Transformers</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Architecture"><span class="nav-text">Architecture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-Prediction-Loss"><span class="nav-text">Set Prediction Loss</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#COCO-Results"><span class="nav-text">COCO Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Encoder-Ablation"><span class="nav-text">Encoder Ablation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Attention-And-Segmentation"><span class="nav-text">Attention And Segmentation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">H.J. Chen</a>
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.0</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/libs/mermaid.min.js"></script>
+
+    
+<script src="/js/plugins/mermaid.js"></script>
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+    <div id="aplayer"></div>
+
+<script src="/js/libs/APlayer.min.js"></script>
+
+
+<script src="/js/plugins/aplayer.js"></script>
+
+
+</body>
+</html>

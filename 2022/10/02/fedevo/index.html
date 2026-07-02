@@ -18,27 +18,28 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="Real-time Federated NAS optimizes model performance and reduces payload for privacy-preserving machine learning.">
+        <meta name="description" content="FedEvo embeds NSGA-II architecture search into federated learning rounds with double sampling and sub-model aggregation.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Real-time federated evolutionary neural architecture search">
+<meta property="og:title" content="Real-time Federated Evolutionary Neural Architecture Search">
 <meta property="og:url" content="https://baytoro.github.io.git/2022/10/02/fedevo/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Real-time Federated NAS optimizes model performance and reduces payload for privacy-preserving machine learning.">
+<meta property="og:description" content="FedEvo embeds NSGA-II architecture search into federated learning rounds with double sampling and sub-model aggregation.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183119853.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183203077.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183231177.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183239569.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183257102.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183306594.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183317877.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FedEvo/fig7-overall-framework.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FedEvo/fig3-master-model.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FedEvo/fig4-candidate-blocks.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FedEvo/fig6-aggregation.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FedEvo/fig8-pareto-fronts.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FedEvo/table4-resnet-vs-evolved.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FedEvo/fig9-realtime-curves.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FedEvo/fig10-offline-pareto.png">
 <meta property="article:published_time" content="2022-10-01T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-01T03:16:06.237Z">
+<meta property="article:modified_time" content="2026-07-01T12:33:40.213Z">
 <meta property="article:author" content="H.J. Chen">
 <meta property="article:tag" content="NAS">
 <meta property="article:tag" content="FL">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183119853.png">
+<meta name="twitter:image" content="https://baytoro.github.io.git/_imgs/FedEvo/fig7-overall-framework.png">
     
     
     <!--- Icon Part-->
@@ -50,7 +51,7 @@
     
     <title>
         
-            Real-time federated evolutionary neural architecture search -
+            Real-time Federated Evolutionary Neural Architecture Search -
         
         Blog
     </title>
@@ -465,9 +466,9 @@ mjx-container[display="true"] + br {
             
                 
                 
-                <img src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182458015.png" alt="Real-time federated evolutionary neural architecture search" class="max-w-none"/>
+                <img src="/_imgs/FedEvo/thumbnail.png" alt="Real-time Federated Evolutionary Neural Architecture Search" class="max-w-none"/>
                 
-                <h1 class="article-title-cover">Real-time federated evolutionary neural architecture search</h1>
+                <h1 class="article-title-cover">Real-time Federated Evolutionary Neural Architecture Search</h1>
             
             </div>
             
@@ -494,8 +495,8 @@ mjx-container[display="true"] + br {
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2026-07-01 11:16:06</span>
-            <span class="mobile">2026-07-01 11:16:06</span> -->
+            <!-- <span class="desktop">2026-07-01 20:33:40</span>
+            <span class="mobile">2026-07-01 20:33:40</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -559,36 +560,211 @@ mjx-container[display="true"] + br {
 
 
         <div class="article-content markdown-body">
-            <p><a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/2003.02793.pdf">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>In the realm of machine learning, preserving user privacy has become paramount, leading to the development of federated learning. This distributed approach allows multiple devices to collaboratively train a shared model while keeping data local, thus enhancing privacy. However, federated learning faces challenges, particularly the high communication costs due to the transmission of large model parameters and the substantial computational resources required for training complex models like deep neural networks. These issues are further compounded when conducting neural architecture search (NAS) within a federated environment.</p>
-<p>The traditional centralized NAS methods, which are often computationally intensive, are not ideal for federated learning due to their disregard for model size and computational efficiency. Moreover, techniques like transfer learning, which are common in NAS, may not be directly applicable to federated learning as they can lead to model divergence and increased communication overhead.</p>
-<p>To address these challenges, there is a need for a real-time, federated NAS algorithm that can efficiently optimize model performance while minimizing communication and computational costs. This involves developing strategies that allow for the sampling and training of sub-models on a subset of clients, inheriting weights from a master model to avoid reinitialization, and aggregating these sub-models into a global model. The goal is to embed the evolutionary optimization process seamlessly within the federated learning rounds, thereby reducing the need for extensive computational resources and maintaining the privacy of user data. The proposed method aims to bridge the gap between the computational demands of NAS and the constraints of federated learning, paving the way for more efficient and privacy-aware machine learning applications.</p>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>This work introduces a novel framework that addresses the critical challenges of integrating neural architecture search (NAS) with federated learning. The primary contributions are twofold:</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183119853.png" alt="image-20240330183119853"></p>
+            <p><a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/2003.02793.pdf">Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>: <strong>Real-time Federated Evolutionary Neural Architecture Search</strong>.</p>
+<p>I will call the method <strong>FedEvo</strong> below. The interesting part of this paper is not that it uses evolutionary NAS again, but that it tries to make NAS happen inside the normal communication loop of federated learning. A conventional evolutionary NAS setup evaluates many candidate networks after training them, while federated learning already pays a high price for every communication round. If we naively combine the two, each client would have to download, train, and upload too many models.</p>
+<p>The paper’s answer is simple: keep one shared master model, sample sub-models from it, train those sub-models on sampled clients, and use NSGA-II to select architectures under both accuracy and FLOPs constraints.</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Federated learning has two constraints that make centralized NAS awkward.</p>
+<p>First, clients are usually small devices. Training a whole population of candidate networks on every client is unrealistic. Second, communication is the bottleneck. Sending a full model population, or retraining every offspring from scratch, quickly dominates the cost.</p>
+<p>The paper also points out a less obvious issue: many NAS methods rely on transfer, proxy tasks, or centralized validation. In FL, data is distributed and often non-IID, so the architecture that looks good on one data split or one client group may not be stable globally.</p>
+<p>So the target problem is:</p>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Why it matters in FL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Search during training</td>
+<td>Avoid an expensive offline NAS stage.</td>
+</tr>
+<tr>
+<td>Train only small sampled models</td>
+<td>Reduce local compute and upload size.</td>
+</tr>
+<tr>
+<td>Reuse model weights</td>
+<td>Avoid reinitializing every offspring.</td>
+</tr>
+<tr>
+<td>Optimize model size too</td>
+<td>Edge clients care about FLOPs, not only accuracy.</td>
+</tr>
+</tbody></table>
+<h2 id="Contributions"><a href="#Contributions" class="headerlink" title="Contributions"></a>Contributions</h2><p>The paper has three concrete contributions.</p>
 <ol>
-<li><p>A pioneering real-time evolutionary NAS method is proposed, which not only optimizes model performance but also significantly reduces local computational burden and communication overhead. This is achieved through an innovative double-sampling technique that transmits a randomly sampled sub-model from a master model to a subset of clients for training, without the need for reinitialization. This approach ensures that each local device trains only one sub-network per generation, thereby minimizing the upload of parameters and maintaining model performance stability.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183203077.png"></p>
-</li>
-<li><p>An effective aggregation strategy is developed for updating the global model based on the sub-networks trained at each generation. This strategy leverages the inherited weights from the master model, accelerating convergence and avoiding performance deterioration due to random reinitialization. The proposed method is validated through extensive comparative studies, demonstrating its ability to produce models with competitive learning performance and computational efficiency, outperforming traditional offline evolutionary NAS methods by at least five times in terms of speed.</p>
-</li>
+<li><strong>Double sampling.</strong> For every evolutionary generation, the server samples both architectures and participating clients. A client trains only one sub-model in that generation instead of a full population.</li>
+<li><strong>Sub-model aggregation.</strong> Uploaded sub-models are reconstructed back into the master-model parameter space. Trained branches use client updates; missing branches are filled from the previous master model before aggregation.</li>
+<li><strong>Online multi-objective search.</strong> One generation of NSGA-II is aligned with one communication round. The objectives are test error and FLOPs (the paper reports FLOPs as MACs).</li>
 </ol>
-<p>These contributions represent a significant advancement in the field of federated learning and NAS, offering a practical solution for real-time, privacy-preserving optimization of neural network architectures.</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>The methodology presented in this work is designed to tackle the intricate problem of conducting neural architecture search (NAS) within the constraints of federated learning. The approach is centered around a real-time evolutionary framework that optimizes model performance while reducing computational and communication costs. Here’s a detailed breakdown of the methodological components:</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183231177.png" alt="image-20240330183231177"></p>
-<p><strong>Double-Sampling Technique:</strong><br>The core innovation lies in the double-sampling technique, which is instrumental in minimizing the local computational payload and server-client communication. This technique involves two key steps: first, a sub-network is randomly sampled from a master model for each individual in the evolutionary population; second, a subset of clients is randomly selected for training these sub-networks. This randomization ensures that the computational load is evenly distributed and that each client trains a unique sub-network per generation, thus avoiding redundant computations.</p>
-<p><strong>Master-Slave Communication Paradigm:</strong><br>The master model serves as the baseline from which sub-networks are derived. It is初始化 at the outset and then continuously updated throughout the evolutionary process. Client devices download the sub-network corresponding to their assigned individual and train it using their local data. The updated sub-networks are then uploaded back to the server, which aggregates them to refine the master model. This iterative process of downloading, training, and uploading is repeated across generations, embedding the NAS within the federated learning rounds.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183239569.png" alt="image-20240330183239569"></p>
-<p><strong>Inheritance of Weights:</strong><br>A critical aspect of this method is the inheritance of weights from the master model to the sub-networks. This eliminates the need to reinitialize model parameters, which is both time-consuming and can lead to performance degradation. Instead, the sub-networks benefit from the knowledge accumulated in the master model, allowing them to start training from a more informed point and thus converge faster.</p>
-<p><strong>Aggregation Strategy:</strong><br>The aggregation strategy is tailored to the federated setting, where clients may sample different sub-networks for different individuals. The server must reconcile these partial updates into a coherent global model. This is achieved by selectively combining the parameters of the trained sub-networks based on their corresponding choice keys, which guide which parts of the master model are updated.</p>
-<p><strong>Objectives and Evaluation:</strong><br>The framework optimizes two main objectives: the test error of the global model, reflecting its predictive performance, and the floating-point operations per second (FLOPs), indicative of the model’s computational efficiency. A multi-objective evolutionary algorithm (MOEA), specifically NSGA-II, is employed to balance these objectives and guide the search towards a set of Pareto optimal solutions.</p>
-<p><strong>Real-Time Optimization:</strong><br>The entire process is designed to be real-time, with each generation of the evolutionary algorithm aligning with a communication round in federated learning. This synchronization ensures that the NAS is not just efficient but also seamlessly integrated into the operational workflow of the federated learning system.</p>
-<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><strong>Experimental Setup:</strong> The experiments utilize a distributed system with varying numbers of clients to simulate a federated learning scenario. The master model is a lightweight convolutional neural network (CNN) with a maximum of 26 hidden layers, ensuring that communication costs are kept to a minimum. The dataset used for training and testing is Cifar10, a standard benchmark for image recognition tasks, which consists of 50,000 training and 10,000 testing 32x32 RGB images across 10 different classes.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183257102.png" alt="image-20240330183257102"></p>
-<p>The federated learning process is configured with different client participation ratios and communication rounds, which are equivalent to the number of generations in the evolutionary algorithm. Each client’s local model parameters are updated using stochastic gradient descent (SGD), and the server aggregates these updates to form the global model. The batch normalization layers within the master model are modified to disable trainable parameters, as they can hinder convergence in federated learning settings.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183306594.png" alt="image-20240330183306594"></p>
-<p><strong>Genetic Algorithm Configuration:</strong> The multi-objective evolutionary algorithm (MOEA) used in these experiments is the elitist non-dominated sorting genetic algorithm (NSGA-II), which is known for its efficiency in handling multi-objective optimization problems. The algorithm parameters, such as population size, crossover probability, mutation probability, and bit length, are carefully chosen to balance exploration and exploitation during the search process.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330183317877.png" alt="image-20240330183317877"></p>
-<p><strong>Experimental Results:</strong> The results of the experiments demonstrate the proposed methodology’s ability to identify a set of Pareto optimal solutions that trade off between model performance and computational complexity. The solutions obtained after 500 generations show that the real-time federated NAS algorithm can achieve competitive test accuracies while significantly reducing the number of floating-point operations per second (FLOPs) compared to the baseline ResNet18 model.</p>
+<p>The high-level loop looks like this:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">for each communication round / generation:</span><br><span class="line">    sample parent choice keys from the population</span><br><span class="line">    generate offspring choice keys with crossover and mutation</span><br><span class="line">    sample clients and assign one sub-model to each client group</span><br><span class="line">    train sampled sub-models locally</span><br><span class="line">    aggregate uploaded branches into the master model</span><br><span class="line">    evaluate error and FLOPs for parent + offspring sub-models</span><br><span class="line">    run NSGA-II selection for the next generation</span><br></pre></td></tr></table></figure></div>
+
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FedEvo/fig7-overall-framework.png" alt="Overall framework of online evolutionary federated NAS."></p>
+<p>The key detail is that NAS is not a separate pre-processing step. In this design, architecture search and federated training share the same rounds.</p>
+<h2 id="Search-Space"><a href="#Search-Space" class="headerlink" title="Search Space"></a>Search Space</h2><p>The master network is a small CNN for CIFAR-10. It starts with a convolution block, then uses 12 choice blocks grouped by channel width: 64, 128, 256, and 512. Each choice block has four candidate branches.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FedEvo/fig3-master-model.png" alt="Master model and one choice block."></p>
+<p>Each choice block chooses one of four candidates:</p>
+<ul>
+<li>identity block</li>
+<li>residual block</li>
+<li>inverted residual block</li>
+<li>depthwise separable block</li>
+</ul>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FedEvo/fig4-candidate-blocks.png" alt="Candidate blocks used by the paper."></p>
+<p>Because each choice block has four options, it can be encoded with 2 bits. With 12 choice blocks, an architecture choice key has 24 bits. This is a small search space by modern NAS standards, but it is enough for the paper’s point: reduce federated compute and communication while still searching over meaningful CNN blocks.</p>
+<h2 id="Double-Sampling"><a href="#Double-Sampling" class="headerlink" title="Double Sampling"></a>Double Sampling</h2><p>The double-sampling step has two levels.</p>
+<p>First, the server samples one sub-model from the master model according to a choice key. Instead of sending the whole supernet, the client receives a concrete path through the choice blocks.</p>
+<p>Second, the server samples clients. If there are <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.011ex" height="1.545ex" role="img" focusable="false" viewBox="0 -683 889 683"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D43E" d="M285 628Q285 635 228 637Q205 637 198 638T191 647Q191 649 193 661Q199 681 203 682Q205 683 214 683H219Q260 681 355 681Q389 681 418 681T463 682T483 682Q500 682 500 674Q500 669 497 660Q496 658 496 654T495 648T493 644T490 641T486 639T479 638T470 637T456 637Q416 636 405 634T387 623L306 305Q307 305 490 449T678 597Q692 611 692 620Q692 635 667 637Q651 637 651 648Q651 650 654 662T659 677Q662 682 676 682Q680 682 711 681T791 680Q814 680 839 681T869 682Q889 682 889 672Q889 650 881 642Q878 637 862 637Q787 632 726 586Q710 576 656 534T556 455L509 418L518 396Q527 374 546 329T581 244Q656 67 661 61Q663 59 666 57Q680 47 717 46H738Q744 38 744 37T741 19Q737 6 731 0H720Q680 3 625 3Q503 3 488 0H478Q472 6 472 9T474 27Q478 40 480 43T491 46H494Q544 46 544 71Q544 75 517 141T485 216L427 354L359 301L291 248L268 155Q245 63 245 58Q245 51 253 49T303 46H334Q340 37 340 35Q340 19 333 5Q328 0 317 0Q314 0 280 1T180 2Q118 2 85 2T49 1Q31 1 31 11Q31 13 34 25Q38 41 42 43T65 46Q92 46 125 49Q139 52 144 61Q147 65 216 339T285 628Z"></path></g></g></g></svg></mjx-container> total clients and the client participation ratio is <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="1.719ex" height="1.645ex" role="img" focusable="false" viewBox="0 -705 760 727"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D436" d="M50 252Q50 367 117 473T286 641T490 704Q580 704 633 653Q642 643 648 636T656 626L657 623Q660 623 684 649Q691 655 699 663T715 679T725 690L740 705H746Q760 705 760 698Q760 694 728 561Q692 422 692 421Q690 416 687 415T669 413H653Q647 419 647 422Q647 423 648 429T650 449T651 481Q651 552 619 605T510 659Q484 659 454 652T382 628T299 572T226 479Q194 422 175 346T156 222Q156 108 232 58Q280 24 350 24Q441 24 512 92T606 240Q610 253 612 255T628 257Q648 257 648 248Q648 243 647 239Q618 132 523 55T319 -22Q206 -22 128 53T50 252Z"></path></g></g></g></svg></mjx-container>, then the round samples <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.186ex;" xmlns="http://www.w3.org/2000/svg" width="8.734ex" height="1.781ex" role="img" focusable="false" viewBox="0 -705 3860.6 787"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D45A" d="M21 287Q22 293 24 303T36 341T56 388T88 425T132 442T175 435T205 417T221 395T229 376L231 369Q231 367 232 367L243 378Q303 442 384 442Q401 442 415 440T441 433T460 423T475 411T485 398T493 385T497 373T500 364T502 357L510 367Q573 442 659 442Q713 442 746 415T780 336Q780 285 742 178T704 50Q705 36 709 31T724 26Q752 26 776 56T815 138Q818 149 821 151T837 153Q857 153 857 145Q857 144 853 130Q845 101 831 73T785 17T716 -10Q669 -10 648 17T627 73Q627 92 663 193T700 345Q700 404 656 404H651Q565 404 506 303L499 291L466 157Q433 26 428 16Q415 -11 385 -11Q372 -11 364 -4T353 8T350 18Q350 29 384 161L420 307Q423 322 423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 181Q151 335 151 342Q154 357 154 369Q154 405 129 405Q107 405 92 377T69 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(1155.8,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="mi" transform="translate(2211.6,0)"><path data-c="1D436" d="M50 252Q50 367 117 473T286 641T490 704Q580 704 633 653Q642 643 648 636T656 626L657 623Q660 623 684 649Q691 655 699 663T715 679T725 690L740 705H746Q760 705 760 698Q760 694 728 561Q692 422 692 421Q690 416 687 415T669 413H653Q647 419 647 422Q647 423 648 429T650 449T651 481Q651 552 619 605T510 659Q484 659 454 652T382 628T299 572T226 479Q194 422 175 346T156 222Q156 108 232 58Q280 24 350 24Q441 24 512 92T606 240Q610 253 612 255T628 257Q648 257 648 248Q648 243 647 239Q618 132 523 55T319 -22Q206 -22 128 53T50 252Z"></path></g><g data-mml-node="mi" transform="translate(2971.6,0)"><path data-c="1D43E" d="M285 628Q285 635 228 637Q205 637 198 638T191 647Q191 649 193 661Q199 681 203 682Q205 683 214 683H219Q260 681 355 681Q389 681 418 681T463 682T483 682Q500 682 500 674Q500 669 497 660Q496 658 496 654T495 648T493 644T490 641T486 639T479 638T470 637T456 637Q416 636 405 634T387 623L306 305Q307 305 490 449T678 597Q692 611 692 620Q692 635 667 637Q651 637 651 648Q651 650 654 662T659 677Q662 682 676 682Q680 682 711 681T791 680Q814 680 839 681T869 682Q889 682 889 672Q889 650 881 642Q878 637 862 637Q787 632 726 586Q710 576 656 534T556 455L509 418L518 396Q527 374 546 329T581 244Q656 67 661 61Q663 59 666 57Q680 47 717 46H738Q744 38 744 37T741 19Q737 6 731 0H720Q680 3 625 3Q503 3 488 0H478Q472 6 472 9T474 27Q478 40 480 43T491 46H494Q544 46 544 71Q544 75 517 141T485 216L427 354L359 301L291 248L268 155Q245 63 245 58Q245 51 253 49T303 46H334Q340 37 340 35Q340 19 333 5Q328 0 317 0Q314 0 280 1T180 2Q118 2 85 2T49 1Q31 1 31 11Q31 13 34 25Q38 41 42 43T65 46Q92 46 125 49Q139 52 144 61Q147 65 216 339T285 628Z"></path></g></g></g></svg></mjx-container> clients. These clients are split over the evolutionary population of size <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.009ex" height="1.545ex" role="img" focusable="false" viewBox="0 -683 888 683"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D441" d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z"></path></g></g></g></svg></mjx-container>, so one candidate is trained by roughly <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="11.694ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 5168.6 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D43F" d="M228 637Q194 637 192 641Q191 643 191 649Q191 673 202 682Q204 683 217 683Q271 680 344 680Q485 680 506 683H518Q524 677 524 674T522 656Q517 641 513 637H475Q406 636 394 628Q387 624 380 600T313 336Q297 271 279 198T252 88L243 52Q243 48 252 48T311 46H328Q360 46 379 47T428 54T478 72T522 106T564 161Q580 191 594 228T611 270Q616 273 628 273H641Q647 264 647 262T627 203T583 83T557 9Q555 4 553 3T537 0T494 -1Q483 -1 418 -1T294 0H116Q32 0 32 10Q32 17 34 24Q39 43 44 45Q48 46 59 46H65Q92 46 125 49Q139 52 144 61Q147 65 216 339T285 628Q285 635 228 637Z"></path></g><g data-mml-node="mo" transform="translate(958.8,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="mo" transform="translate(2014.6,0)"><path data-c="230A" d="M174 734Q174 735 175 737T177 740T180 744T184 747T189 749T196 750Q206 748 214 735V-210H310H373Q401 -210 411 -213T422 -230T411 -247T369 -251Q362 -251 338 -251T298 -250H190Q178 -246 174 -234V734Z"></path></g><g data-mml-node="mi" transform="translate(2458.6,0)"><path data-c="1D45A" d="M21 287Q22 293 24 303T36 341T56 388T88 425T132 442T175 435T205 417T221 395T229 376L231 369Q231 367 232 367L243 378Q303 442 384 442Q401 442 415 440T441 433T460 423T475 411T485 398T493 385T497 373T500 364T502 357L510 367Q573 442 659 442Q713 442 746 415T780 336Q780 285 742 178T704 50Q705 36 709 31T724 26Q752 26 776 56T815 138Q818 149 821 151T837 153Q857 153 857 145Q857 144 853 130Q845 101 831 73T785 17T716 -10Q669 -10 648 17T627 73Q627 92 663 193T700 345Q700 404 656 404H651Q565 404 506 303L499 291L466 157Q433 26 428 16Q415 -11 385 -11Q372 -11 364 -4T353 8T350 18Q350 29 384 161L420 307Q423 322 423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 181Q151 335 151 342Q154 357 154 369Q154 405 129 405Q107 405 92 377T69 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(3336.6,0)"><g data-mml-node="mo"><path data-c="2F" d="M423 750Q432 750 438 744T444 730Q444 725 271 248T92 -240Q85 -250 75 -250Q68 -250 62 -245T56 -231Q56 -221 230 257T407 740Q411 750 423 750Z"></path></g></g><g data-mml-node="mi" transform="translate(3836.6,0)"><path data-c="1D441" d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z"></path></g><g data-mml-node="mo" transform="translate(4724.6,0)"><path data-c="230B" d="M229 734Q229 735 230 737T232 740T235 744T239 747T244 749T251 750Q262 748 269 735V-235Q266 -240 256 -249L147 -250H77Q43 -250 32 -247T21 -230T32 -213T72 -209Q79 -209 99 -209T133 -210H229V734Z"></path></g></g></g></svg></mjx-container> clients.</p>
+<p>This matters because each client sees only one sub-model per generation. The local workload becomes bounded by a single sampled network, not by the population size.</p>
+<h2 id="Aggregation"><a href="#Aggregation" class="headerlink" title="Aggregation"></a>Aggregation</h2><p>Aggregation is the part I found most useful in this paper. A client only trains the branches that exist in its sampled sub-model, but the server still needs to update one master model.</p>
+<p>The paper handles this by reconstructing a full master-shaped model for each upload:</p>
+<ul>
+<li>branches selected by the client use the trained client weights;</li>
+<li>branches not selected by that client are copied from the previous master model;</li>
+<li>reconstructed models are averaged, weighted by client data size.</li>
+</ul>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FedEvo/fig6-aggregation.png" alt="Example of model aggregation from two sampled clients."></p>
+<p>This is basically weight sharing plus federated averaging, but applied at the branch level. It avoids random reinitialization of offspring models, which is one reason the real-time version is more stable than the offline evolutionary baseline in the paper.</p>
+<h2 id="NSGA-II-Objective"><a href="#NSGA-II-Objective" class="headerlink" title="NSGA-II Objective"></a>NSGA-II Objective</h2><p>FedEvo uses NSGA-II to keep a Pareto set instead of choosing one scalar reward. The two objectives are:</p>
+<table>
+<thead>
+<tr>
+<th>Objective</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Test error</td>
+<td>Lower is better. Used as the accuracy-side fitness.</td>
+</tr>
+<tr>
+<td>FLOPs (MAC)</td>
+<td>Lower is better. Used as the efficiency-side fitness.</td>
+</tr>
+</tbody></table>
+<p>The paper then marks two representative solutions on the Pareto front:</p>
+<ul>
+<li><strong>High</strong>: the solution with the highest accuracy;</li>
+<li><strong>Knee</strong>: the solution near the knee point, usually a better accuracy/FLOPs tradeoff.</li>
+</ul>
+<p>One small caveat: the paper writes “test error” as the fitness. In a production FL setup, I would expect this to be a validation metric or a server-side held-out evaluation, otherwise the test set becomes part of model selection.</p>
+<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><p>The experiments are on CIFAR-10 with 50,000 training images and 10,000 test images. The paper simulates 10, 20, and 50 clients under both IID and non-IID splits. For non-IID, each client has images from 5 classes.</p>
+<p>Important settings:</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Dataset</td>
+<td>CIFAR-10</td>
+</tr>
+<tr>
+<td>Clients</td>
+<td>10, 20, 50</td>
+</tr>
+<tr>
+<td>Local epoch</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Train batch size</td>
+<td>50</td>
+</tr>
+<tr>
+<td>NSGA-II population</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Generations / rounds</td>
+<td>500</td>
+</tr>
+<tr>
+<td>Baseline</td>
+<td>ResNet18 for CIFAR-10</td>
+</tr>
+<tr>
+<td>Baseline FLOPs</td>
+<td>0.5587G MAC</td>
+</tr>
+</tbody></table>
+<p>The Pareto fronts after 500 rounds are shown below. Lower-left is better: lower test error and lower FLOPs.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FedEvo/fig8-pareto-fronts.png" alt="Pareto fronts for IID and non-IID settings."></p>
+<p>The table in the paper is worth reading directly because it shows the tradeoff clearly.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FedEvo/table4-resnet-vs-evolved.png" alt="Comparison between ResNet18 and selected NSGA-II evolved solutions."></p>
+<p>A few rows are enough to see the pattern:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th align="right">ResNet18</th>
+<th align="right">High solution</th>
+<th align="right">Knee solution</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10 clients, IID</td>
+<td align="right">81.14%, 0.5587G</td>
+<td align="right">86.68%, 0.2796G</td>
+<td align="right">83.36%, 0.031G</td>
+</tr>
+<tr>
+<td>10 clients, non-IID</td>
+<td align="right">80.29%, 0.5587G</td>
+<td align="right">81.27%, 0.2272G</td>
+<td align="right">78.94%, 0.0302G</td>
+</tr>
+<tr>
+<td>20 clients, IID</td>
+<td align="right">82.50%, 0.5587G</td>
+<td align="right">85.16%, 0.2012G</td>
+<td align="right">83.65%, 0.0398G</td>
+</tr>
+<tr>
+<td>20 clients, non-IID</td>
+<td align="right">79.91%, 0.5587G</td>
+<td align="right">83.01%, 0.3936G</td>
+<td align="right">81.58%, 0.1098G</td>
+</tr>
+<tr>
+<td>50 clients, IID</td>
+<td align="right">80.78%, 0.5587G</td>
+<td align="right">77.10%, 0.3360G</td>
+<td align="right">71.46%, 0.0547G</td>
+</tr>
+<tr>
+<td>50 clients, non-IID</td>
+<td align="right">77.63%, 0.5587G</td>
+<td align="right">75.10%, 0.1719G</td>
+<td align="right">69.22%, 0.0635G</td>
+</tr>
+</tbody></table>
+<p>For 10 and 20 clients, the best evolved model usually beats ResNet18 while using fewer FLOPs. The knee solution is more aggressive: it gives up some accuracy but cuts computation heavily. The 50-client case is weaker. The paper explains this as a data-per-client issue: when total data is fixed, more clients means less local data per client, so it becomes harder to find a stable global model.</p>
+<h2 id="Real-time-Behavior"><a href="#Real-time-Behavior" class="headerlink" title="Real-time Behavior"></a>Real-time Behavior</h2><p>The real-time curves for 20 clients are the most convincing part of the experiments.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FedEvo/fig9-realtime-curves.png" alt="Real-time accuracy and FLOPs curves for 20 clients."></p>
+<p>At the beginning, ResNet18 is better. That is expected: the searched models are still being optimized while the master model is changing. After about 200 communication rounds, the selected high-accuracy and knee solutions catch up and pass ResNet18 in the reported 20-client settings.</p>
+<p>The FLOPs curves also show the point of multi-objective search. The knee solution stays far below ResNet18 in compute, while the high-accuracy solution fluctuates more because it is chasing accuracy during the search.</p>
+<p>The paper also compares against an offline evolutionary federated NAS baseline. In that baseline, the selected model is trained from scratch for 500 communication rounds. The reported runtime is about 16.1 hours/GPU for real-time NAS over 500 generations, versus about 6.55 hours/GPU for only 50 offline generations before retraining cost. The paper summarizes this as roughly a 5x speedup per search round for the real-time method.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FedEvo/fig10-offline-pareto.png" alt="Offline evolutionary NAS Pareto result for 20 clients."></p>
+<h2 id="Takeaways"><a href="#Takeaways" class="headerlink" title="Takeaways"></a>Takeaways</h2><p>I like this paper because it treats communication rounds as the unit of NAS cost. Many NAS papers hide the search cost behind a centralized proxy task; here, the search loop is forced to live inside FL.</p>
+<p>What I would keep from this paper:</p>
+<ul>
+<li>Represent architectures with compact choice keys.</li>
+<li>Do not ask each client to train a population.</li>
+<li>Aggregate partial sub-model updates back into a shared master model.</li>
+<li>Optimize compute explicitly, not as an afterthought.</li>
+</ul>
+<p>What feels limited:</p>
+<ul>
+<li>The search space is small and CNN-specific.</li>
+<li>The experiments are only on CIFAR-10.</li>
+<li>The 50-client results show that the method is sensitive to data fragmentation.</li>
+<li>Using “test error” as the search fitness is not ideal if interpreted literally.</li>
+</ul>
+<p>Overall, FedEvo is a useful early design for federated NAS: it is not the most powerful NAS method, but it gives a concrete recipe for making evolutionary search compatible with FL communication constraints.</p>
 
         </div>
 
@@ -616,13 +792,13 @@ mjx-container[display="true"] + br {
                     <div class="article-prev">
                         <a class="prev"
                         rel="prev"
-                        href="/2023/03/28/MOE/"
+                        href="/2022/10/28/Primer/"
                         >
                             <span class="left arrow-icon flex justify-center items-center">
                                 <i class="fa-solid fa-chevron-left"></i>
                             </span>
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Mixture of Experts(MOEs): The Versatile Framework for Scalable AI Solutions</span>
+                                <span class="post-nav-title-item">Primer: Searching for Efficient Transformers for Language Modeling</span>
                                 <span class="post-nav-item">Prev posts</span>
                             </span>
                         </a>
@@ -632,10 +808,10 @@ mjx-container[display="true"] + br {
                     <div class="article-next">
                         <a class="next"
                         rel="next"
-                        href="/2022/09/28/ATM_parameter/"
+                        href="/2022/09/29/Longformer/"
                         >
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Analyzing Transformer Models: Parameters and Memory usage</span>
+                                <span class="post-nav-title-item">Longformer: The Long-Document Transformer</span>
                                 <span class="post-nav-item">Next posts</span>
                             </span>
                             <span class="right arrow-icon flex justify-center items-center">
@@ -656,8 +832,8 @@ mjx-container[display="true"] + br {
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">Real-time federated evolutionary neural architecture search</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Figures-Conclusion"><span class="nav-text">Figures &amp; Conclusion</span></a></li></ol>
+        <div class="page-title">Real-time Federated Evolutionary Neural Architecture Search</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contributions"><span class="nav-text">Contributions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Space"><span class="nav-text">Search Space</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Double-Sampling"><span class="nav-text">Double Sampling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Aggregation"><span class="nav-text">Aggregation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NSGA-II-Objective"><span class="nav-text">NSGA-II Objective</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiments"><span class="nav-text">Experiments</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Real-time-Behavior"><span class="nav-text">Real-time Behavior</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaways"><span class="nav-text">Takeaways</span></a></li></ol>
 
     </div>
 </div>

@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="H.J. Chen">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://baytoro.github.io.git/2021/10/10/brecq/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="BRECQ uses block-wise reconstruction, Fisher-weighted calibration, and mixed precision to push CNN post-training quantization into 2-bit and 4-bit regimes.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BRECQ: Pushing the Limit of PTQ by Block Reconstruction">
+<meta property="og:url" content="https://baytoro.github.io.git/2021/10/10/BRECQ/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="BRECQ uses block-wise reconstruction, Fisher-weighted calibration, and mixed precision to push CNN post-training quantization into 2-bit and 4-bit regimes.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/BRECQ/fig1-reconstruction-granularity.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/BRECQ/alg1-brecq-optimization.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/BRECQ/table1-granularity-ablation.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/BRECQ/table2-weight-only-results.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/BRECQ/table3-full-quant-results.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/BRECQ/table4-qat-comparison.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/BRECQ/fig2-mixed-precision-results.png">
+<meta property="article:published_time" content="2021-10-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-02T04:27:46.762Z">
+<meta property="article:author" content="H.J. Chen">
+<meta property="article:tag" content="Quantization">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://baytoro.github.io.git/_imgs/BRECQ/fig1-reconstruction-granularity.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/personal/avatar.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/personal/avatar.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/personal/avatar.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            BRECQ: Pushing the Limit of PTQ by Block Reconstruction -
+        
+        Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+        <link href="" rel="stylesheet">
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"baytoro.github.io.git","root":"/","language":"en","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":false,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/picture/s1.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":true,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Welcome, traveler :)","subtitle":{"text":["May you find inspiration and joy here (scroll down ↓)"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":40,"backing_speed":10,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":"https://github.com/Baytoro","zhihu":"https://www.zhihu.com/people/baytoro","email":"guaguabear@hotmail.com"},"qrs":null}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"MapleStory Title","artist":"MapleStory","url":"/music/MapleStory Title.mp3","cover":"/picture/maple.jpeg"},{"name":"Above the Treetops","artist":"MapleStory","url":"/music/Above the Treetops.mp3","cover":"/picture/maple.jpeg"},{"name":"When the Morning Comes","artist":"MapleStory","url":"/music/When the Morning Comes.mp3","cover":"/picture/maple.jpeg"},{"name":"Missing You","artist":"MapleStory","url":"/music/Missing You.mp3","cover":"/picture/maple.jpeg"},{"name":"Shinin' Harbor","artist":"MapleStory","url":"/music/Shinin' Harbor.mp3","cover":"/picture/maple.jpeg"},{"name":"Snowy Village","artist":"MapleStory","url":"/music/Snowy Village.mp3","cover":"/picture/maple.jpeg"}]},"mermaid":{"enable":true,"version":"9.3.0"}},"version":"2.5.0","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"About":{"path":"/about","icon":"fa-regular fa-user"},"Archives":{"icon":"fa-regular fa-archive","submenus":{"Posts":"/archives","Categories":"/categories","Tags":"/tags"}},"GitHub":{"icon":"fa-brands fa-github","path":"https://github.com/Baytoro"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":false,"position":"left","first_item":"info","menu_title":"Links","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":5}},"footerStart":"2020/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/about"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/archives">POSTS
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/categories">CATEGORIES
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/tags">TAGS
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    target="_blank" rel="noopener" href="https://github.com/Baytoro"  >
+                                    
+                                        
+                                            <i class="fa-brands fa-github"></i>
+                                        
+                                        GITHUB
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i></div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/about"  >
+                             
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/archives">POSTS</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/categories">CATEGORIES</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/tags">TAGS</a>
+                            </li>
+                        
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        target="_blank" rel="noopener" href="https://github.com/Baytoro"  >
+                             
+                                
+                                    <i class="fa-brands fa-github"></i>
+                                
+                                GITHUB
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            
+                
+                
+                <img src="/_imgs/BRECQ/thumbnail.png" alt="BRECQ: Pushing the Limit of PTQ by Block Reconstruction" class="max-w-none"/>
+                
+                <h1 class="article-title-cover">BRECQ: Pushing the Limit of PTQ by Block Reconstruction</h1>
+            
+            </div>
+            
+                    
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/personal/avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">H.J. Chen</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2021-10-10</span>
+        <span class="mobile">2021-10-10</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <!-- <span class="article-date article-meta-item"> -->
+            <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
+            <!-- <span class="desktop">2026-07-02 12:27:46</span>
+            <span class="mobile">2026-07-02 12:27:46</span> -->
+            <!-- <span class="hover-info">Updated</span> -->
+        <!-- </span> -->
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Quantization/">Quantization</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body">
+            <p><a class="link"   target="_blank" rel="noopener" href="https://arxiv.org/pdf/2102.05426.pdf" >Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> &#x2F; <a class="link"   target="_blank" rel="noopener" href="https://github.com/yhhhli/BRECQ" >Code <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>BRECQ is a useful CNN PTQ paper to read before looking at later LLM quantization work. The paper is not only about collecting activation ranges. It frames PTQ as a local reconstruction problem: given a small calibration set, optimize the quantized model so its internal computation stays close to the full-precision model.</p>
+<p>The key design choice is the reconstruction unit. Layer-wise reconstruction is too local for modern residual networks. Whole-network reconstruction is too large and easy to overfit when only a small calibration set is available. BRECQ argues that a block is the practical middle point.</p>
+<h2 id="Reconstruction-Granularity"><a href="#Reconstruction-Granularity" class="headerlink" title="Reconstruction Granularity"></a>Reconstruction Granularity</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/BRECQ/fig1-reconstruction-granularity.png"
+                     
+                ></p>
+<p><em>Figure cropped from the paper PDF: network, stage, block, and layer granularities, together with the corresponding Hessian&#x2F;Fisher block structure.</em></p>
+<p>The figure explains why the paper prefers block reconstruction. In a residual CNN, a layer does not act alone. Convolutions, nonlinearities, batch norm, and skip connections form a functional block. If PTQ optimizes one layer at a time, it ignores error compensation inside the block.</p>
+<p>BRECQ compares four granularities:</p>
+<table>
+<thead>
+<tr>
+<th>Granularity</th>
+<th>What it optimizes</th>
+<th>Practical issue</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Layer-wise</td>
+<td>one layer output at a time</td>
+<td>misses cross-layer dependency</td>
+</tr>
+<tr>
+<td>Block-wise</td>
+<td>one residual&#x2F;building block</td>
+<td>balances dependency and overfitting</td>
+</tr>
+<tr>
+<td>Stage-wise</td>
+<td>a group of blocks at the same resolution</td>
+<td>larger search space and harder calibration</td>
+</tr>
+<tr>
+<td>Net-wise</td>
+<td>final network output</td>
+<td>overfits easily with limited calibration</td>
+</tr>
+</tbody></table>
+<p>The Hessian diagram is the paper’s intuition: layer-wise PTQ keeps only the layer-diagonal part, while full-network reconstruction tries to use the full matrix. Block reconstruction keeps the stronger intra-block interactions and drops weaker inter-block terms.</p>
+<h2 id="Optimization-Loop"><a href="#Optimization-Loop" class="headerlink" title="Optimization Loop"></a>Optimization Loop</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/BRECQ/alg1-brecq-optimization.png"
+                     
+                ></p>
+<p><em>BRECQ optimizes block by block, using calibration inputs, full-precision block outputs, gradients, and optional activation step-size updates.</em></p>
+<p>The procedure is still post-training quantization. Labels are not required, and the model is not trained end to end. For each block, BRECQ records calibration input, the full-precision output, and gradient information. It then optimizes the quantized block output to match the full-precision block output.</p>
+<p>At a high level, the objective is:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">make quantized_block(x_calib) close to fp_block(x_calib),</span><br><span class="line">weighted by second-order/Fisher sensitivity,</span><br><span class="line">while optimizing weight rounding and activation step size.</span><br></pre></td></tr></table></figure></div>
+
+<p>This is the same practical spirit as AdaRound, but the reconstruction target is a block rather than a single layer. The block gives internal layers room to absorb each other’s quantization errors.</p>
+<h2 id="Why-Block-Not-Layer"><a href="#Why-Block-Not-Layer" class="headerlink" title="Why Block, Not Layer"></a>Why Block, Not Layer</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/BRECQ/table1-granularity-ablation.png"
+                     
+                ></p>
+<p><em>The block granularity is the best point in this ablation, especially for MobileNetV2.</em></p>
+<p>The ablation is small but important. With 2-bit weight quantization, block reconstruction beats layer, stage, and net reconstruction on both ResNet-18 and MobileNetV2. The MobileNetV2 gap is especially clear: block reconstruction reaches 59.67, while layer-wise reconstruction reaches 52.13 and net-wise reconstruction collapses to 40.76.</p>
+<p>This also explains why “larger reconstruction unit” is not automatically better. Network-wise optimization has the most dependency information, but with only a small calibration set it can fit the calibration examples instead of improving generalization.</p>
+<h2 id="Low-bit-Results"><a href="#Low-bit-Results" class="headerlink" title="Low-bit Results"></a>Low-bit Results</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/BRECQ/table2-weight-only-results.png"
+                     
+                ></p>
+<p><em>Weight-only ImageNet results. BRECQ remains usable even at 2-bit weights with 32-bit activations.</em></p>
+<p>For weight-only quantization, BRECQ is much stronger than range-only or layer-only PTQ baselines. On ResNet-18, the 2&#x2F;32 result is 66.30 compared with 71.08 full precision. On MobileNetV2, 2&#x2F;32 reaches 59.67 compared with 72.49 full precision, which is a meaningful result for such an aggressive setting.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/BRECQ/table3-full-quant-results.png"
+                     
+                ></p>
+<p><em>Fully quantized ImageNet results. Activations are quantized too, which makes the setting much harder.</em></p>
+<p>The fully quantized table is the more deployment-relevant one. At 4&#x2F;4, BRECQ gives strong results across ResNet, MobileNetV2, RegNet, and MNasNet-style models. At 2&#x2F;4, most previous PTQ methods fail badly, while BRECQ still produces usable accuracy.</p>
+<p>Two details are worth keeping in mind when reading the table:</p>
+<ul>
+<li>The first and last layers are usually treated more conservatively in low-bit CNN PTQ.</li>
+<li>The method uses calibration data, but not the full training process required by QAT.</li>
+</ul>
+<h2 id="QAT-Comparison"><a href="#QAT-Comparison" class="headerlink" title="QAT Comparison"></a>QAT Comparison</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/BRECQ/table4-qat-comparison.png"
+                     
+                ></p>
+<p><em>BRECQ is a PTQ method, but the paper compares it with QAT-style methods to show the cost&#x2F;accuracy tradeoff.</em></p>
+<p>The QAT comparison is the deployment argument. For ResNet-18 at 4&#x2F;4, BRECQ reports 69.60 top-1 with 1024 calibration images and 0.4 GPU hours. QAT baselines use about 1.2M training images and roughly 100 GPU hours in this table.</p>
+<p>For MobileNetV2, BRECQ reports 66.57 at 4&#x2F;4 and 70.74 with mixed precision&#x2F;8-bit activations. HAQ is still slightly higher in the mixed setting, but at a much higher training&#x2F;search cost.</p>
+<h2 id="Mixed-Precision"><a href="#Mixed-Precision" class="headerlink" title="Mixed Precision"></a>Mixed Precision</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/BRECQ/fig2-mixed-precision-results.png"
+                     
+                ></p>
+<p><em>Mixed precision uses per-layer sensitivity to spend more bits where they matter most.</em></p>
+<p>BRECQ also computes layer sensitivity and uses it for mixed precision. The curve is the useful part: under the same model-size or latency budget, mixed precision sits above uniform precision. That means the method is not only choosing better rounding; it is also learning where low-bit quantization hurts most.</p>
+<p>This is the same lesson that later becomes common in deployment work: a single bit-width is easy to implement, but it is rarely the best accuracy-cost point.</p>
+<h2 id="Reading-Notes"><a href="#Reading-Notes" class="headerlink" title="Reading Notes"></a>Reading Notes</h2><p>BRECQ’s main idea is modest but durable: choose the reconstruction unit that matches the model’s functional structure. For residual CNNs, that unit is usually a block.</p>
+<p>The paper also separates two PTQ questions that are often mixed together:</p>
+<ul>
+<li>How do we choose quantization parameters for a fixed bit-width?</li>
+<li>How do we allocate bit-widths under a size or latency budget?</li>
+</ul>
+<p>For LLM quantization, BRECQ is not a direct recipe, but it is useful background. GPTQ-style methods target different modules and use different solvers, yet they share the same philosophy: use calibration activations and sensitivity-aware reconstruction instead of minimizing a naive tensor error.</p>
+
+        </div>
+
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/Quantization/">#Quantization</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2021/10/15/BigNas/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">BigNAS: Scaling Up Neural Architecture Search with Big Single-Stage Models</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2021/09/17/BERT/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">BRECQ: Pushing the Limit of PTQ by Block Reconstruction</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconstruction-Granularity"><span class="nav-text">Reconstruction Granularity</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Optimization-Loop"><span class="nav-text">Optimization Loop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-Block-Not-Layer"><span class="nav-text">Why Block, Not Layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Low-bit-Results"><span class="nav-text">Low-bit Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#QAT-Comparison"><span class="nav-text">QAT Comparison</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mixed-Precision"><span class="nav-text">Mixed Precision</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reading-Notes"><span class="nav-text">Reading Notes</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">H.J. Chen</a>
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.0</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/libs/mermaid.min.js"></script>
+
+    
+<script src="/js/plugins/mermaid.js"></script>
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+    <div id="aplayer"></div>
+
+<script src="/js/libs/APlayer.min.js"></script>
+
+
+<script src="/js/plugins/aplayer.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="H.J. Chen">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://baytoro.github.io.git/2021/06/08/bananas/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="BANANAS studies how path encoding, neural predictors, uncertainty estimates, acquisition functions, and mutation-based candidate generation affect predictor-based NAS.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BANANAS: Bayesian Optimization with Neural Architectures for NAS">
+<meta property="og:url" content="https://baytoro.github.io.git/2021/06/08/Bananas/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="BANANAS studies how path encoding, neural predictors, uncertainty estimates, acquisition functions, and mutation-based candidate generation affect predictor-based NAS.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/Bananas/fig5-1-path-encoding.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/Bananas/fig5-2-predictor-comparison.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/Bananas/fig5-3-bananas-predictor.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/Bananas/alg1-bananas.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/Bananas/fig6-1-nasbench-results.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/Bananas/table1-darts-results.png">
+<meta property="article:published_time" content="2021-06-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-02T03:01:40.515Z">
+<meta property="article:author" content="H.J. Chen">
+<meta property="article:tag" content="NAS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://baytoro.github.io.git/_imgs/Bananas/fig5-1-path-encoding.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/personal/avatar.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/personal/avatar.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/personal/avatar.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            BANANAS: Bayesian Optimization with Neural Architectures for NAS -
+        
+        Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+        <link href="" rel="stylesheet">
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"baytoro.github.io.git","root":"/","language":"en","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":false,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/picture/s1.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":true,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Welcome, traveler :)","subtitle":{"text":["May you find inspiration and joy here (scroll down ↓)"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":40,"backing_speed":10,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":"https://github.com/Baytoro","zhihu":"https://www.zhihu.com/people/baytoro","email":"guaguabear@hotmail.com"},"qrs":null}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"MapleStory Title","artist":"MapleStory","url":"/music/MapleStory Title.mp3","cover":"/picture/maple.jpeg"},{"name":"Above the Treetops","artist":"MapleStory","url":"/music/Above the Treetops.mp3","cover":"/picture/maple.jpeg"},{"name":"When the Morning Comes","artist":"MapleStory","url":"/music/When the Morning Comes.mp3","cover":"/picture/maple.jpeg"},{"name":"Missing You","artist":"MapleStory","url":"/music/Missing You.mp3","cover":"/picture/maple.jpeg"},{"name":"Shinin' Harbor","artist":"MapleStory","url":"/music/Shinin' Harbor.mp3","cover":"/picture/maple.jpeg"},{"name":"Snowy Village","artist":"MapleStory","url":"/music/Snowy Village.mp3","cover":"/picture/maple.jpeg"}]},"mermaid":{"enable":true,"version":"9.3.0"}},"version":"2.5.0","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"About":{"path":"/about","icon":"fa-regular fa-user"},"Archives":{"icon":"fa-regular fa-archive","submenus":{"Posts":"/archives","Categories":"/categories","Tags":"/tags"}},"GitHub":{"icon":"fa-brands fa-github","path":"https://github.com/Baytoro"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":false,"position":"left","first_item":"info","menu_title":"Links","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":5}},"footerStart":"2020/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/about"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/archives">POSTS
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/categories">CATEGORIES
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/tags">TAGS
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    target="_blank" rel="noopener" href="https://github.com/Baytoro"  >
+                                    
+                                        
+                                            <i class="fa-brands fa-github"></i>
+                                        
+                                        GITHUB
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i></div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/about"  >
+                             
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/archives">POSTS</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/categories">CATEGORIES</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/tags">TAGS</a>
+                            </li>
+                        
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        target="_blank" rel="noopener" href="https://github.com/Baytoro"  >
+                             
+                                
+                                    <i class="fa-brands fa-github"></i>
+                                
+                                GITHUB
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            
+                
+                
+                <img src="/_imgs/Bananas/thumbnail.png" alt="BANANAS: Bayesian Optimization with Neural Architectures for NAS" class="max-w-none"/>
+                
+                <h1 class="article-title-cover">BANANAS: Bayesian Optimization with Neural Architectures for NAS</h1>
+            
+            </div>
+            
+                    
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/personal/avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">H.J. Chen</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2021-06-08</span>
+        <span class="mobile">2021-06-08</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <!-- <span class="article-date article-meta-item"> -->
+            <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
+            <!-- <span class="desktop">2026-07-02 11:01:40</span>
+            <span class="mobile">2026-07-02 11:01:40</span> -->
+            <!-- <span class="hover-info">Updated</span> -->
+        <!-- </span> -->
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/NAS/">NAS</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body">
+            <blockquote>
+<p>White C, Neiswanger W, Savani Y. BANANAS: Bayesian Optimization with Neural Architectures for Neural Architecture Search. AAAI 2021.</p>
+</blockquote>
+<p><a class="link"   target="_blank" rel="noopener" href="https://arxiv.org/pdf/1910.11858.pdf" >Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> &#x2F; <a class="link"   target="_blank" rel="noopener" href="https://github.com/naszilla/naszilla" >Code <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>BANANAS is a predictor-based NAS method. It does not build a differentiable supernet like DARTS, and it does not train a controller like early RL-based NAS. The loop is closer to black-box Bayesian optimization: evaluate a small set of architectures, train a predictor from those observations, use an acquisition function to choose the next candidates, and repeat.</p>
+<p>The useful part of this paper is that it does not treat “neural predictor for NAS” as one vague block. It studies five design choices separately:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>BANANAS choice</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Architecture encoding</td>
+<td>path encoding</td>
+</tr>
+<tr>
+<td>Predictor</td>
+<td>feedforward neural network ensemble</td>
+</tr>
+<tr>
+<td>Uncertainty</td>
+<td>ensemble variance</td>
+</tr>
+<tr>
+<td>Acquisition</td>
+<td>independent Thompson sampling</td>
+</tr>
+<tr>
+<td>Acquisition optimization</td>
+<td>mutation around strong evaluated architectures</td>
+</tr>
+</tbody></table>
+<p>The paper is therefore more valuable as an analysis of the BO + neural predictor framework than as a single named algorithm.</p>
+<h2 id="BO-Neural-Predictor-Setup"><a href="#BO-Neural-Predictor-Setup" class="headerlink" title="BO + Neural Predictor Setup"></a>BO + Neural Predictor Setup</h2><p>The search space is a set of architectures. Training an architecture gives its validation error, but this evaluation is expensive. BO tries to spend evaluations where they are likely to improve the best architecture found so far.</p>
+<p>The practical loop is:</p>
+<ol>
+<li>randomly sample and evaluate several initial architectures;</li>
+<li>encode all evaluated architectures;</li>
+<li>train an ensemble of neural predictors on architecture&#x2F;error observations;</li>
+<li>generate candidate architectures;</li>
+<li>score candidates with an acquisition function;</li>
+<li>evaluate the best candidates and update the dataset.</li>
+</ol>
+<p>This is attractive because the expensive operation is still actual architecture training, while the predictor is cheap. But the predictor is only useful if the encoding makes architecture similarity visible. That is where path encoding becomes the main idea.</p>
+<h2 id="Path-Encoding"><a href="#Path-Encoding" class="headerlink" title="Path Encoding"></a>Path Encoding</h2><p>Most NAS predictors before this paper used an adjacency matrix plus operation labels. That representation is faithful, but it gives the predictor an awkward feature space: node indices are arbitrary, edges are highly dependent, and an edge can be meaningless if it does not belong to an input-output path.</p>
+<p>BANANAS instead encodes paths. Each binary feature means that a specific input-to-output operation path exists in the cell.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/Bananas/fig5-1-path-encoding.png"
+                      alt="Path encoding represents input-output operation paths, and the paper shows that truncating rare paths can keep BANANAS performance stable."
+                ></p>
+<p>The left side of the figure is the key intuition. Instead of asking the predictor to infer useful computation from raw adjacency entries, path encoding directly records possible data-flow routes such as:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">input -&gt; conv 1x1 -&gt; pool 3x3 -&gt; output</span><br><span class="line">input -&gt; conv 3x3 -&gt; conv 3x3 -&gt; output</span><br></pre></td></tr></table></figure></div>
+
+<p>The full path encoding can be long. On NASBench-101, the paper gives the full length as:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sum_&#123;i=0&#125;^&#123;5&#125; 3^i = 364 bits</span><br></pre></td></tr></table></figure></div>
+
+<p>But the right side of the figure is important: truncating the encoding can work well. For NASBench-101, the paper reports that the path encoding can be reduced to about 20 bits without hurting the 150-evaluation BANANAS result. Their explanation is practical: many long or rare paths almost never appear under the random graph sampling procedure, so including them can make the predictor overfit noise.</p>
+<p>This is the reusable idea from the paper. The representation is not only smaller than it first looks; it also matches the structure that determines architecture behavior.</p>
+<h2 id="Predictor-And-Uncertainty"><a href="#Predictor-And-Uncertainty" class="headerlink" title="Predictor And Uncertainty"></a>Predictor And Uncertainty</h2><p>BANANAS compares several predictor families on NASBench-101: feedforward networks with adjacency encoding, feedforward networks with path encoding, truncated path encoding, Bayesian neural networks, GCNs, and VAEs.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/Bananas/fig5-2-predictor-comparison.png"
+                      alt="Predictor comparison on NASBench-101: prediction MAE, uncertainty calibration, and BO performance when the predictor is used inside the full search loop."
+                ></p>
+<p>There are three different measurements in this figure:</p>
+<table>
+<thead>
+<tr>
+<th>Plot</th>
+<th>What it checks</th>
+<th>What I read from it</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>left</td>
+<td>predictor MAE on held-out architectures</td>
+<td>path encoding and GCN are the strongest predictors</td>
+</tr>
+<tr>
+<td>middle</td>
+<td>RMSCE calibration error</td>
+<td>ensembles give better uncertainty estimates than the BNN setup used here</td>
+</tr>
+<tr>
+<td>right</td>
+<td>full BO performance</td>
+<td>predictor quality must still translate into better search</td>
+</tr>
+</tbody></table>
+<p>The right plot matters most. A predictor can have low average error but still rank the best candidates poorly. NAS cares about the top of the ranking, not only global regression quality. In the paper’s full BO setting, the path-encoding feedforward ensemble slightly edges the GCN ensemble, while being simpler and less sensitive to GCN hyperparameters.</p>
+<p>The uncertainty story is also pragmatic. The authors use an ensemble of predictors, not because it is theoretically perfect, but because it gives a simple mean and standard deviation for each candidate architecture. That is enough to drive acquisition functions such as expected improvement, UCB, Thompson sampling, and independent Thompson sampling.</p>
+<h2 id="BANANAS-Pipeline"><a href="#BANANAS-Pipeline" class="headerlink" title="BANANAS Pipeline"></a>BANANAS Pipeline</h2><p>The final predictor is simple: encode architectures with paths, feed the vectors into an ensemble of feedforward networks, then use the ensemble outputs as performance estimates and uncertainty estimates.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/Bananas/fig5-3-bananas-predictor.png"
+                      alt="BANANAS neural predictor: architectures are converted to path encodings, passed through a feedforward ensemble, and converted into predictions with uncertainty estimates."
+                ></p>
+<p>The actual search algorithm adds one more strong engineering choice: do not optimize the acquisition function by sampling candidates uniformly from the whole search space. Generate candidates by mutating architectures that already look good.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/Bananas/alg1-bananas.png"
+                      alt="BANANAS algorithm: evaluate initial architectures, train a path-encoding predictor ensemble, mutate strong architectures into candidates, score candidates with an acquisition function, and evaluate the best one."
+                ></p>
+<p>The mutation step is doing a lot of work. A neural predictor trained on limited observations is usually more reliable near architectures related to what it has already seen. Mutating good architectures keeps the candidate set in that local neighborhood. This also makes the acquisition function easier to optimize than searching the entire discrete architecture space.</p>
+<p>The final BANANAS recipe in the paper is:</p>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Choice</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>predictor input</td>
+<td>path encoding</td>
+</tr>
+<tr>
+<td>predictor model</td>
+<td>feedforward neural network ensemble</td>
+</tr>
+<tr>
+<td>predictor loss</td>
+<td>MAPE-style loss that emphasizes low validation error</td>
+</tr>
+<tr>
+<td>acquisition</td>
+<td>independent Thompson sampling</td>
+</tr>
+<tr>
+<td>candidate generation</td>
+<td>mutation from the best evaluated architectures</td>
+</tr>
+</tbody></table>
+<p>The name sounds broad, but the algorithm is a specific combination of these components.</p>
+<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><p>The main experimental result is on NASBench-101, where the paper can run many controlled trials because architecture accuracies are precomputed. The setup uses about 150 architecture evaluations, reported as 47 TPU hours in the NASBench-101 accounting.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/Bananas/fig6-1-nasbench-results.png"
+                      alt="BANANAS component and baseline results on NASBench-101: acquisition function comparison, acquisition optimization comparison, and comparison with other NAS algorithms."
+                ></p>
+<p>The three panels give useful ablations:</p>
+<ol>
+<li>acquisition functions are close, but independent Thompson sampling is a strong default;</li>
+<li>mutation beats random, local search, and evolution as the candidate-generation strategy in this setting;</li>
+<li>the final BANANAS curve is among the strongest baselines under the same evaluation budget.</li>
+</ol>
+<p>The paper also evaluates the DARTS search space. This is less clean than NASBench-101 because it is not a precomputed tabular benchmark, but the comparison is still useful because it checks whether the method can leave a small tabular cell benchmark.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/Bananas/table1-darts-results.png"
+                      alt="DARTS search-space comparison from the BANANAS paper. BANANAS reports 2.64 average test error with 11.8 V100 GPU-days in this setup."
+                ></p>
+<p>The reported DARTS-space result is:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="right">Avg. test error</th>
+<th align="right">Runtime</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DARTS, paper</td>
+<td align="right">2.76</td>
+<td align="right">5 GPU-days</td>
+<td>gradient-based</td>
+</tr>
+<tr>
+<td>DARTS, authors’ rerun</td>
+<td align="right">2.68</td>
+<td align="right">5 GPU-days</td>
+<td>same evaluation pipeline</td>
+</tr>
+<tr>
+<td>BANANAS</td>
+<td align="right">2.64</td>
+<td align="right">11.8 GPU-days</td>
+<td>BO + neural predictor</td>
+</tr>
+</tbody></table>
+<p>I would not overread the small difference between 2.68 and 2.64. The more important point is that predictor-based BO remains competitive outside the exact NASBench-101 table, at a cost that is still far below early full-training NAS methods.</p>
+<h2 id="Reading-Notes"><a href="#Reading-Notes" class="headerlink" title="Reading Notes"></a>Reading Notes</h2><p>What I would keep from BANANAS:</p>
+<ul>
+<li>Architecture representation is not a detail. Path encoding changes the predictor’s job from graph interpretation to data-flow feature learning.</li>
+<li>Predictor accuracy and uncertainty calibration should be checked together. A calibrated but inaccurate predictor is not useful for NAS.</li>
+<li>Candidate generation matters as much as acquisition scoring. The mutation strategy makes BO practical in a huge discrete search space.</li>
+<li>Truncating path encodings is not just a memory trick. It can remove rare-path noise and improve predictor behavior.</li>
+<li>NASBench-style experiments are good for controlled optimizer comparisons, but DARTS-space or real training checks are still needed before treating a method as generally strong.</li>
+</ul>
+<p>My main caveat is that BANANAS still relies on a search-space-specific encoding and mutation operator. That is fine for cell-based NAS, but it means the method is not plug-and-play for every architecture family. For a new space, I would first ask: what is the equivalent of an input-output path, and can mutation stay near architectures where the predictor has support?</p>
+<p>Overall, BANANAS is a clean paper because it separates the NAS problem into pieces that can be tested: encoding, predictor, uncertainty, acquisition, and candidate generation. The final algorithm works because all five choices are aligned, not because Bayesian optimization alone solves NAS.</p>
+
+        </div>
+
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/NAS/">#NAS</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2021/07/19/AdaBert/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">AdaBERT: Task-Adaptive BERT Compression with Differentiable NAS</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2021/04/27/Gdas/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">GDAS: Graph Differentiable Architecture Search</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">BANANAS: Bayesian Optimization with Neural Architectures for NAS</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#BO-Neural-Predictor-Setup"><span class="nav-text">BO + Neural Predictor Setup</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Path-Encoding"><span class="nav-text">Path Encoding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Predictor-And-Uncertainty"><span class="nav-text">Predictor And Uncertainty</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BANANAS-Pipeline"><span class="nav-text">BANANAS Pipeline</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Results"><span class="nav-text">Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reading-Notes"><span class="nav-text">Reading Notes</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">H.J. Chen</a>
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.0</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/libs/mermaid.min.js"></script>
+
+    
+<script src="/js/plugins/mermaid.js"></script>
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+    <div id="aplayer"></div>
+
+<script src="/js/libs/APlayer.min.js"></script>
+
+
+<script src="/js/plugins/aplayer.js"></script>
+
+
+</body>
+</html>

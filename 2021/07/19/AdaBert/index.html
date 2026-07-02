@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="H.J. Chen">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://baytoro.github.io.git/2021/07/19/adabert/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="AdaBERT searches task-specific CNN-style student models for BERT compression with distillation and efficiency-aware differentiable NAS.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AdaBERT: Task-Adaptive BERT Compression with Differentiable NAS">
+<meta property="og:url" content="https://baytoro.github.io.git/2021/07/19/AdaBert/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="AdaBERT searches task-specific CNN-style student models for BERT compression with distillation and efficiency-aware differentiable NAS.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/AdaBert/fig1-overview.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/AdaBert/fig2-search-space.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/AdaBert/table1-compression-results.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/AdaBert/table2-searched-structures.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/AdaBert/table3-cross-task-transfer.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/AdaBert/fig3-searched-cells.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/AdaBert/table4-knowledge-loss.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/AdaBert/table5-efficiency-loss.png">
+<meta property="article:published_time" content="2021-07-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-01T15:43:48.354Z">
+<meta property="article:author" content="H.J. Chen">
+<meta property="article:tag" content="NAS">
+<meta property="article:tag" content="BERT">
+<meta property="article:tag" content="Compression">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://baytoro.github.io.git/_imgs/AdaBert/fig1-overview.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/personal/avatar.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/personal/avatar.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/personal/avatar.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            AdaBERT: Task-Adaptive BERT Compression with Differentiable NAS -
+        
+        Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+        <link href="" rel="stylesheet">
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"baytoro.github.io.git","root":"/","language":"en","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":false,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/picture/s1.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":true,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Welcome, traveler :)","subtitle":{"text":["May you find inspiration and joy here (scroll down ↓)"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":40,"backing_speed":10,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":"https://github.com/Baytoro","zhihu":"https://www.zhihu.com/people/baytoro","email":"guaguabear@hotmail.com"},"qrs":null}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"MapleStory Title","artist":"MapleStory","url":"/music/MapleStory Title.mp3","cover":"/picture/maple.jpeg"},{"name":"Above the Treetops","artist":"MapleStory","url":"/music/Above the Treetops.mp3","cover":"/picture/maple.jpeg"},{"name":"When the Morning Comes","artist":"MapleStory","url":"/music/When the Morning Comes.mp3","cover":"/picture/maple.jpeg"},{"name":"Missing You","artist":"MapleStory","url":"/music/Missing You.mp3","cover":"/picture/maple.jpeg"},{"name":"Shinin' Harbor","artist":"MapleStory","url":"/music/Shinin' Harbor.mp3","cover":"/picture/maple.jpeg"},{"name":"Snowy Village","artist":"MapleStory","url":"/music/Snowy Village.mp3","cover":"/picture/maple.jpeg"}]},"mermaid":{"enable":true,"version":"9.3.0"}},"version":"2.5.0","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"About":{"path":"/about","icon":"fa-regular fa-user"},"Archives":{"icon":"fa-regular fa-archive","submenus":{"Posts":"/archives","Categories":"/categories","Tags":"/tags"}},"GitHub":{"icon":"fa-brands fa-github","path":"https://github.com/Baytoro"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":false,"position":"left","first_item":"info","menu_title":"Links","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":5}},"footerStart":"2020/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/about"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/archives">POSTS
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/categories">CATEGORIES
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/tags">TAGS
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    target="_blank" rel="noopener" href="https://github.com/Baytoro"  >
+                                    
+                                        
+                                            <i class="fa-brands fa-github"></i>
+                                        
+                                        GITHUB
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i></div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/about"  >
+                             
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/archives">POSTS</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/categories">CATEGORIES</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/tags">TAGS</a>
+                            </li>
+                        
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        target="_blank" rel="noopener" href="https://github.com/Baytoro"  >
+                             
+                                
+                                    <i class="fa-brands fa-github"></i>
+                                
+                                GITHUB
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            
+                
+                
+                <img src="/_imgs/AdaBert/thumbnail.png" alt="AdaBERT: Task-Adaptive BERT Compression with Differentiable NAS" class="max-w-none"/>
+                
+                <h1 class="article-title-cover">AdaBERT: Task-Adaptive BERT Compression with Differentiable NAS</h1>
+            
+            </div>
+            
+                    
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/personal/avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">H.J. Chen</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2021-07-19</span>
+        <span class="mobile">2021-07-19</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <!-- <span class="article-date article-meta-item"> -->
+            <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
+            <!-- <span class="desktop">2026-07-01 23:43:48</span>
+            <span class="mobile">2026-07-01 23:43:48</span> -->
+            <!-- <span class="hover-info">Updated</span> -->
+        <!-- </span> -->
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/NAS/">NAS</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/BERT/">BERT</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Compression/">Compression</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body">
+            <p><a class="link"   target="_blank" rel="noopener" href="https://arxiv.org/pdf/2001.04246.pdf" >Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>: <strong>AdaBERT: Task-Adaptive BERT Compression with Differentiable Neural Architecture Search</strong>.</p>
+<p>AdaBERT is an early attempt to connect two lines of work: BERT compression and differentiable NAS. The paper’s core claim is not simply “make BERT smaller”. It argues that a single compressed architecture is wasteful because downstream tasks use BERT differently. Sentiment classification, sentence-pair equivalence, and entailment recognition should not necessarily share the same student network.</p>
+<p>The method searches a small task-specific architecture under three signals:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">L = (1 - gamma) * L_CE + gamma * L_KD + beta * L_E</span><br></pre></td></tr></table></figure></div>
+
+<p>Here, <code>L_CE</code> is the supervised task loss, <code>L_KD</code> distills task-oriented knowledge from a fine-tuned BERT teacher, and <code>L_E</code> penalizes inefficient structures. In the experiments, the searched students are about 6.4M to 9.5M parameters, compared with 109M parameters for BERT-base.</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Most classical BERT compression methods pick one student shape and reuse it across tasks. That is convenient, but it hides an assumption: the best compressed architecture for SST-2 should also be good for MRPC, QQP, MNLI, QNLI, and RTE.</p>
+<p>AdaBERT challenges this assumption. Prior probing work had already shown that different BERT layers and attention heads carry different linguistic signals. If each downstream task only needs part of that information, then compression can be task-adaptive: keep the behavior useful for the target task and remove structure that is redundant for that task.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/AdaBert/fig1-overview.png"
+                      alt="Overview of AdaBERT: task supervision, task-useful distillation, and efficiency are optimized together during differentiable search."
+                ></p>
+<p>The framework is easy to read from the figure. A fine-tuned BERT teacher gives task-oriented signals, the labeled target dataset gives supervised loss, and the efficiency term pushes the search toward smaller models. The output is not a pruned BERT block. It is a searched small model.</p>
+<h2 id="Search-Space"><a href="#Search-Space" class="headerlink" title="Search Space"></a>Search Space</h2><p>The searched student is CNN-style rather than a shallow Transformer. This choice is important. AdaBERT is not trying to preserve the original Transformer computation graph; it treats the teacher as a source of task behavior and searches a cheaper network that can mimic that behavior.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/AdaBert/fig2-search-space.png"
+                      alt="Macro search over the number of stacked cells and micro search over operations inside a cell."
+                ></p>
+<p>The architecture has two levels:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>What is searched</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Stacked layers</td>
+<td><code>K in [1, K_max]</code></td>
+<td>Controls depth, capacity, and latency.</td>
+</tr>
+<tr>
+<td>Cell structure</td>
+<td>Operations on directed edges</td>
+<td>Controls how local&#x2F;contextual features are encoded.</td>
+</tr>
+</tbody></table>
+<p>The cell is a directed acyclic graph. Candidate operations include:</p>
+<ul>
+<li>standard 1D convolution with kernel sizes 3, 5, and 7;</li>
+<li>dilated 1D convolution with kernel sizes 3, 5, and 7;</li>
+<li>average pooling and max pooling with kernel size 3;</li>
+<li>skip connection;</li>
+<li>zero operation.</li>
+</ul>
+<p>For single-sentence tasks, the two input nodes can receive the same input sequence. For sentence-pair tasks, the two input nodes correspond to the two texts. This gives the search space a way to express either self-interaction or pairwise interaction.</p>
+<p>The paper sets <code>K_max = 8</code>, the number of inner nodes <code>N = 3</code>, <code>gamma = 0.8</code>, <code>beta = 4</code>, and searches the architecture distribution for 80 epochs.</p>
+<h2 id="Distillation-As-A-Search-Signal"><a href="#Distillation-As-A-Search-Signal" class="headerlink" title="Distillation As A Search Signal"></a>Distillation As A Search Signal</h2><p>The distillation design is more specific than ordinary logit matching. AdaBERT freezes a fine-tuned BERT teacher and trains probe classifiers on the hidden layers. These probes turn intermediate teacher states into task-related logits. The student then learns from a hierarchy of teacher signals, not only the final output.</p>
+<p>This matters because NAS needs a useful search signal early. If the student only sees labels, small GLUE datasets such as MRPC and RTE may not provide enough information to distinguish candidate architectures. The paper’s task-oriented distillation gives the search process a smoother target:</p>
+<ul>
+<li>final task labels keep the student grounded;</li>
+<li>probe-based intermediate logits expose which teacher layers are useful for the task;</li>
+<li>data augmentation enriches the distillation set;</li>
+<li>attentive weighting emphasizes teacher probes that predict the sample better.</li>
+</ul>
+<p>The differentiable part uses Gumbel-Softmax relaxation for both layer count and operation choices. During forward computation the method uses one-hot sampled choices; during backward propagation it uses continuous relaxed variables through a straight-through estimator. After search, taking <code>argmax</code> over the learned architecture distribution gives the final child model.</p>
+<h2 id="Efficiency-Aware-Loss"><a href="#Efficiency-Aware-Loss" class="headerlink" title="Efficiency-Aware Loss"></a>Efficiency-Aware Loss</h2><p>AdaBERT adds an explicit architecture cost:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">L_E = (K / K_max) * sum_&#123;o in alpha_c&#125;(SIZE(o) + FLOPs(o))</span><br></pre></td></tr></table></figure></div>
+
+<p>The exact form in the paper normalizes operation size and FLOPs, then uses FLOPs as a proxy for inference time. This is a simple cost model, but it forces NAS to care about deployment. Without this term, the search can choose larger structures that look slightly better in accuracy but lose the point of compression.</p>
+<h2 id="Compression-Results"><a href="#Compression-Results" class="headerlink" title="Compression Results"></a>Compression Results</h2><p>The main result is that AdaBERT trades a small accuracy drop for much smaller and faster models.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/AdaBert/table1-compression-results.png"
+                      alt="GLUE compression results comparing AdaBERT with BERT, BERT-PKD, DistilBERT, TinyBERT, and BiLSTM baselines."
+                ></p>
+<p>The headline numbers:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th align="right">Params</th>
+<th align="right">Inference speedup</th>
+<th align="right">Average score</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BERT-base teacher implementation</td>
+<td align="right">109M</td>
+<td align="right">1x</td>
+<td align="right">82.4</td>
+</tr>
+<tr>
+<td>TinyBERT4</td>
+<td align="right">14.5M</td>
+<td align="right">9.4x</td>
+<td align="right">80.6</td>
+</tr>
+<tr>
+<td>AdaBERT</td>
+<td align="right">6.4M-9.5M</td>
+<td align="right">12.7x-29.3x</td>
+<td align="right">80.1</td>
+</tr>
+</tbody></table>
+<p>AdaBERT is not the most accurate row in the table. TinyBERT4 and BERT6-PKD have slightly better average scores. The point is the speed&#x2F;size tradeoff: AdaBERT is much smaller and faster, while keeping the average GLUE score close enough to make the compression credible.</p>
+<p>The per-task architecture sizes are also useful.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/AdaBert/table2-searched-structures.png"
+                      alt="Searched depth, parameter count, and inference speedup for each task."
+                ></p>
+<p>SST-2 gets the smallest model: 3 layers, 6.4M parameters, and 29.3x speedup. MNLI gets the largest searched model: 7 layers, 9.5M parameters, and 12.7x speedup. This matches intuition. Binary sentiment classification is easier than entailment over diverse premise-hypothesis pairs.</p>
+<h2 id="Task-Adaptiveness"><a href="#Task-Adaptiveness" class="headerlink" title="Task Adaptiveness"></a>Task Adaptiveness</h2><p>The strongest evidence for task-adaptiveness is Table 3. The authors take the structure searched for one task, reinitialize it, train it on another task, and compare performance. If one architecture were universally good, cross-task transfer would work well. It does not.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/AdaBert/table3-cross-task-transfer.png"
+                      alt="Cross-task validation of searched structures. The diagonal entries are best for their target tasks."
+                ></p>
+<p>The diagonal entries are the best in every column. That means the SST-2-searched structure works best on SST-2, the MRPC-searched structure works best on MRPC, and so on. Transfer within related sentence-pair tasks is less harmful than transfer across task types, but the overall pattern supports the paper’s claim: the searched structures are task-specific.</p>
+<p>The visualized cells make the same point from another angle.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/AdaBert/fig3-searched-cells.png"
+                      alt="Searched cells for SST-2, MRPC, and QNLI."
+                ></p>
+<p>SST-2 uses more aggregation-style operations such as max pooling and smaller convolution filters. MRPC, a sentence-pair equivalence task, has more direct interactions between the two input nodes. QNLI uses a more diverse mix, including skip connections and average pooling, which fits the paper’s explanation that entailment needs more complex interactions.</p>
+<p>This is the part I find most convincing. The paper is not only reporting a better average number; it shows that the architecture shape changes in a way that roughly matches task structure.</p>
+<h2 id="Ablation"><a href="#Ablation" class="headerlink" title="Ablation"></a>Ablation</h2><p>The knowledge-loss ablation explains why AdaBERT is more than a plain DARTS-style search over small CNNs.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/AdaBert/table4-knowledge-loss.png"
+                      alt="Ablation of knowledge loss terms: base KD, probe-based hierarchical knowledge, data augmentation, and supervised task loss."
+                ></p>
+<p>Adding probe models improves every task over base KD. Adding data augmentation improves again, especially on smaller datasets such as MRPC and RTE. Adding the supervised cross-entropy term gives the best row. The lesson is that task-oriented compression needs both teacher behavior and target labels.</p>
+<p>The efficiency-loss ablation is also clean.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/AdaBert/table5-efficiency-loss.png"
+                      alt="Ablation of the efficiency loss coefficient beta."
+                ></p>
+<p>With <code>beta = 0</code>, the model becomes larger. With <code>beta = 8</code>, the model becomes smaller but accuracy drops because the search overuses cheap operations such as skip and zero. The middle setting, <code>beta = 4</code>, is the best tradeoff in this experiment.</p>
+<h2 id="Reading-Notes"><a href="#Reading-Notes" class="headerlink" title="Reading Notes"></a>Reading Notes</h2><p>I would read AdaBERT as a compression framework, not as a pure NAS benchmark. Its interesting idea is that the <strong>teacher defines task relevance</strong>, while NAS decides how much student structure is needed to reproduce that relevance.</p>
+<p>What I would keep from this paper:</p>
+<ul>
+<li>do not assume one compressed BERT architecture fits every task;</li>
+<li>include an explicit efficiency term in the search objective;</li>
+<li>use intermediate teacher signals when labels are too weak for architecture search;</li>
+<li>evaluate whether searched structures transfer across tasks, not only final accuracy.</li>
+</ul>
+<p>There are also limitations.</p>
+<ul>
+<li>The student search space is CNN-based. This gives speed, but it means the student is no longer a Transformer-like model.</li>
+<li>The method needs a fine-tuned BERT teacher and a search run per task.</li>
+<li>The experiments are on six GLUE tasks and BERT-base; the conclusions do not automatically transfer to modern LLM compression.</li>
+<li>FLOPs and batch-size inference speed are useful proxies, but real deployment still depends on kernels, sequence length, hardware, and batching.</li>
+</ul>
+<p>Overall, AdaBERT is useful because it makes task-specific compression concrete. The paper’s numbers are not the final word on BERT compression, but the design principle still holds: if different tasks use different parts of a teacher, the compressed student should be allowed to have different architecture too.</p>
+
+        </div>
+
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/NAS/">#NAS</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/BERT/">#BERT</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Compression/">#Compression</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2021/07/20/GPT2/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Language Models are Unsupervised Multitask Learners</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2021/06/08/Bananas/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">BANANAS: Bayesian Optimization with Neural Architectures for NAS</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">AdaBERT: Task-Adaptive BERT Compression with Differentiable NAS</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Space"><span class="nav-text">Search Space</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Distillation-As-A-Search-Signal"><span class="nav-text">Distillation As A Search Signal</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Efficiency-Aware-Loss"><span class="nav-text">Efficiency-Aware Loss</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Compression-Results"><span class="nav-text">Compression Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Task-Adaptiveness"><span class="nav-text">Task Adaptiveness</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ablation"><span class="nav-text">Ablation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reading-Notes"><span class="nav-text">Reading Notes</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">H.J. Chen</a>
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.0</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/libs/mermaid.min.js"></script>
+
+    
+<script src="/js/plugins/mermaid.js"></script>
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+    <div id="aplayer"></div>
+
+<script src="/js/libs/APlayer.min.js"></script>
+
+
+<script src="/js/plugins/aplayer.js"></script>
+
+
+</body>
+</html>

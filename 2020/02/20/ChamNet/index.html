@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="H.J. Chen">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://baytoro.github.io.git/2020/02/20/chamnet/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="ChamNet adapts MobileNetV2 and ResNet-style networks to device-specific latency and energy budgets using predictors and efficient evolutionary search.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ChamNet: Platform-Aware Model Adaptation">
+<meta property="og:url" content="https://baytoro.github.io.git/2020/02/20/ChamNet/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="ChamNet adapts MobileNetV2 and ResNet-style networks to device-specific latency and energy budgets using predictors and efficient evolutionary search.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/ChamNet/fig1-chameleon-framework.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/ChamNet/fig2-accuracy-predictor.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/ChamNet/fig3-sample-selection.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/ChamNet/fig4-latency-surface.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/ChamNet/fig7-mobile-cpu-tradeoff.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/ChamNet/fig8-mobile-dsp-tradeoff.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/ChamNet/fig9-server-cpu-tradeoff.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/ChamNet/fig10-server-gpu-tradeoff.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/ChamNet/fig11-energy-tradeoff.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/ChamNet/table3-method-comparison.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/ChamNet/fig12-flops-distribution.png">
+<meta property="article:published_time" content="2020-02-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-02T04:29:38.559Z">
+<meta property="article:author" content="H.J. Chen">
+<meta property="article:tag" content="NAS">
+<meta property="article:tag" content="Mobile">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://baytoro.github.io.git/_imgs/ChamNet/fig1-chameleon-framework.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/personal/avatar.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/personal/avatar.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/personal/avatar.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            ChamNet: Platform-Aware Model Adaptation -
+        
+        Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+        <link href="" rel="stylesheet">
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"baytoro.github.io.git","root":"/","language":"en","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":false,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/picture/s1.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":true,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Welcome, traveler :)","subtitle":{"text":["May you find inspiration and joy here (scroll down ↓)"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":40,"backing_speed":10,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":"https://github.com/Baytoro","zhihu":"https://www.zhihu.com/people/baytoro","email":"guaguabear@hotmail.com"},"qrs":null}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"MapleStory Title","artist":"MapleStory","url":"/music/MapleStory Title.mp3","cover":"/picture/maple.jpeg"},{"name":"Above the Treetops","artist":"MapleStory","url":"/music/Above the Treetops.mp3","cover":"/picture/maple.jpeg"},{"name":"When the Morning Comes","artist":"MapleStory","url":"/music/When the Morning Comes.mp3","cover":"/picture/maple.jpeg"},{"name":"Missing You","artist":"MapleStory","url":"/music/Missing You.mp3","cover":"/picture/maple.jpeg"},{"name":"Shinin' Harbor","artist":"MapleStory","url":"/music/Shinin' Harbor.mp3","cover":"/picture/maple.jpeg"},{"name":"Snowy Village","artist":"MapleStory","url":"/music/Snowy Village.mp3","cover":"/picture/maple.jpeg"}]},"mermaid":{"enable":true,"version":"9.3.0"}},"version":"2.5.0","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"About":{"path":"/about","icon":"fa-regular fa-user"},"Archives":{"icon":"fa-regular fa-archive","submenus":{"Posts":"/archives","Categories":"/categories","Tags":"/tags"}},"GitHub":{"icon":"fa-brands fa-github","path":"https://github.com/Baytoro"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":false,"position":"left","first_item":"info","menu_title":"Links","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":5}},"footerStart":"2020/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/about"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/archives">POSTS
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/categories">CATEGORIES
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/tags">TAGS
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    target="_blank" rel="noopener" href="https://github.com/Baytoro"  >
+                                    
+                                        
+                                            <i class="fa-brands fa-github"></i>
+                                        
+                                        GITHUB
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i></div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/about"  >
+                             
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/archives">POSTS</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/categories">CATEGORIES</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/tags">TAGS</a>
+                            </li>
+                        
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        target="_blank" rel="noopener" href="https://github.com/Baytoro"  >
+                             
+                                
+                                    <i class="fa-brands fa-github"></i>
+                                
+                                GITHUB
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            
+                
+                
+                <img src="/_imgs/ChamNet/thumbnail.png" alt="ChamNet: Platform-Aware Model Adaptation" class="max-w-none"/>
+                
+                <h1 class="article-title-cover">ChamNet: Platform-Aware Model Adaptation</h1>
+            
+            </div>
+            
+                    
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/personal/avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">H.J. Chen</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2020-02-20</span>
+        <span class="mobile">2020-02-20</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <!-- <span class="article-date article-meta-item"> -->
+            <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
+            <!-- <span class="desktop">2026-07-02 12:29:38</span>
+            <span class="mobile">2026-07-02 12:29:38</span> -->
+            <!-- <span class="hover-info">Updated</span> -->
+        <!-- </span> -->
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/NAS/">NAS</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Mobile/">Mobile</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body">
+            <p><a class="link"   target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content_CVPR_2019/papers/Dai_ChamNet_Towards_Efficient_Network_Design_Through_Platform-Aware_Model_Adaptation_CVPR_2019_paper.pdf" >Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> &#x2F; <a class="link"   target="_blank" rel="noopener" href="https://github.com/facebookresearch/mobile-vision" >Code <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>ChamNet is a platform-aware model adaptation paper. It is not mainly about inventing a new operator or cell. It starts from practical building blocks, then reallocates channels, depths, expansion ratios, and input resolution so the resulting model matches a concrete deployment target.</p>
+<p>That makes it different from reading a pure NAS paper. The core claim is deployment-oriented: FLOPs are not enough. A model that is good on a mobile CPU may not be good on a DSP, GPU, or server CPU, because each backend has different kernel behavior and memory bottlenecks.</p>
+<h2 id="Chameleon-Framework"><a href="#Chameleon-Framework" class="headerlink" title="Chameleon Framework"></a>Chameleon Framework</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/ChamNet/fig1-chameleon-framework.png"
+                     
+                ></p>
+<p><em>Chameleon separates the main search loop from one-time predictive models for accuracy, latency, and energy.</em></p>
+<p>The framework has two parts:</p>
+<ul>
+<li>A main search loop using efficient evolutionary search (EES).</li>
+<li>Predictive models that estimate accuracy, latency, and energy without repeatedly training and measuring every candidate.</li>
+</ul>
+<p>The optimization target is straightforward:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">maximize predicted_accuracy(architecture)</span><br><span class="line">subject to predicted_resource(architecture, platform) &lt;= budget</span><br></pre></td></tr></table></figure></div>
+
+<p>ChamNet folds the resource constraint into a fitness score. Candidates that violate the latency or energy budget get penalized, while candidates inside the budget are ranked mostly by predicted accuracy.</p>
+<p>This predictor-first design is the paper’s scalability argument. If the accuracy predictor and platform resource predictors are already built, searching for a new use scenario becomes much cheaper than running RL or full hardware-in-the-loop search from scratch.</p>
+<h2 id="Accuracy-Predictor"><a href="#Accuracy-Predictor" class="headerlink" title="Accuracy Predictor"></a>Accuracy Predictor</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/ChamNet/fig2-accuracy-predictor.png"
+                     
+                ></p>
+<p><em>The paper compares several accuracy predictors and reports the best leave-one-out MSE from the Gaussian Process regressor.</em></p>
+<p>Only a small number of sampled architectures are fully trained, so the accuracy predictor must work in a low-data regime. ChamNet uses a Gaussian Process regressor because it gives both a prediction and an uncertainty estimate.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/ChamNet/fig3-sample-selection.png"
+                     
+                ></p>
+<p><em>The selected samples concentrate near the useful accuracy&#x2F;FLOPs frontier, while still keeping exploration points.</em></p>
+<p>The sampling rule mixes exploitation and exploration:</p>
+<ul>
+<li>Exploitation: sample models that look accurate relative to FLOPs.</li>
+<li>Exploration: sample models where the predictor is uncertain.</li>
+</ul>
+<p>This is a practical detail worth remembering. If the predictor only exploits its current belief, it can overfit early mistakes. If it only samples uncertain regions, it wastes training budget. ChamNet deliberately does both.</p>
+<h2 id="Platform-Metrics"><a href="#Platform-Metrics" class="headerlink" title="Platform Metrics"></a>Platform Metrics</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/ChamNet/fig4-latency-surface.png"
+                     
+                ></p>
+<p><em>A 1x1 convolution can have very different latency surfaces on different platforms, even when FLOPs look similar.</em></p>
+<p>ChamNet builds an operator latency lookup table from real device measurements. The paper’s latency surface figure is the reason: channel counts create visible discontinuities, and CPU&#x2F;DSP behavior differs. This is the kind of effect that a FLOPs-only objective misses.</p>
+<p>Energy is handled with a predictor too, but it is measured directly from device runs. This makes the framework more expensive to set up than a purely analytical model, but much more relevant for deployment decisions.</p>
+<h2 id="Mobile-Results"><a href="#Mobile-Results" class="headerlink" title="Mobile Results"></a>Mobile Results</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/ChamNet/fig7-mobile-cpu-tradeoff.png"
+                     
+                ></p>
+<p><em>ChamNet-Mobile on Snapdragon 835 CPU.</em></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/ChamNet/fig8-mobile-dsp-tradeoff.png"
+                     
+                ></p>
+<p><em>ChamNet-Mobile on Hexagon v62 DSP.</em></p>
+<p>The mobile experiments adapt MobileNetV2-style inverted residual blocks. The search space includes input resolution, channel count, expansion factor, number of repeated blocks, and stride.</p>
+<p>The headline points are:</p>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th align="right">Constraint</th>
+<th align="right">ChamNet top-1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Snapdragon 835 CPU</td>
+<td align="right">20 ms</td>
+<td align="right">73.8</td>
+</tr>
+<tr>
+<td>Hexagon v62 DSP</td>
+<td align="right">20 ms</td>
+<td align="right">75.3</td>
+</tr>
+<tr>
+<td>Snapdragon 835 CPU</td>
+<td align="right">4 ms</td>
+<td align="right">64.2</td>
+</tr>
+<tr>
+<td>Hexagon v62 DSP</td>
+<td align="right">4 ms</td>
+<td align="right">63.6</td>
+</tr>
+</tbody></table>
+<p>The tight-latency points are important. At 4 ms, the method still finds a useful architecture instead of only working at comfortable budgets.</p>
+<h2 id="Server-Results"><a href="#Server-Results" class="headerlink" title="Server Results"></a>Server Results</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/ChamNet/fig9-server-cpu-tradeoff.png"
+                     
+                ></p>
+<p><em>ChamNet-Res on Intel CPU.</em></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/ChamNet/fig10-server-gpu-tradeoff.png"
+                     
+                ></p>
+<p><em>ChamNet-Res on Nvidia GPU.</em></p>
+<p>For server settings, ChamNet adapts ResNet-style building blocks. The paper evaluates Intel Xeon Broadwell CPU and Nvidia GTX 1060 GPU. The curves differ across CPU and GPU, which reinforces the same point as the mobile results: the best architecture family member depends on the platform, not only on the target FLOPs.</p>
+<p>Representative reported points:</p>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th align="right">Constraint</th>
+<th align="right">ChamNet-Res top-1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Intel CPU</td>
+<td align="right">400 ms</td>
+<td align="right">78.5</td>
+</tr>
+<tr>
+<td>Intel CPU</td>
+<td align="right">200 ms</td>
+<td align="right">77.2</td>
+</tr>
+<tr>
+<td>Nvidia GPU</td>
+<td align="right">15 ms</td>
+<td align="right">78.6</td>
+</tr>
+<tr>
+<td>Nvidia GPU</td>
+<td align="right">10 ms</td>
+<td align="right">77.7</td>
+</tr>
+</tbody></table>
+<h2 id="Energy-Results"><a href="#Energy-Results" class="headerlink" title="Energy Results"></a>Energy Results</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/ChamNet/fig11-energy-tradeoff.png"
+                     
+                ></p>
+<p><em>Energy-constrained ChamNet-Mobile on Snapdragon 835 CPU.</em></p>
+<p>The energy experiment is a good reminder that latency and energy are related but not identical. The paper reports that MobileNetV2 0.75x at 96x96 gets 58.8 top-1 at 19 mJ per run, while an adapted ChamNet model gets 60.0 top-1 at 14 mJ per run. That is a 26% energy reduction while gaining 1.2 percentage points of accuracy.</p>
+<h2 id="Comparison-And-Search-Cost"><a href="#Comparison-And-Search-Cost" class="headerlink" title="Comparison And Search Cost"></a>Comparison And Search Cost</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/ChamNet/table3-method-comparison.png"
+                     
+                ></p>
+<p><em>Comparison with manual scaling, RL-based NAS, pruning, and related platform-aware methods.</em></p>
+<p>The table is useful because it mixes accuracy with scaling complexity. RL-based methods such as MnasNet are listed as <code>O(m * n * k)</code>, where the factors correspond to models, platforms, and use scenarios. ChamNet separates model accuracy predictors from platform resource predictors and reports <code>O(m + n)</code>.</p>
+<p>That does not mean ChamNet is free. It still needs a one-time cost for trained architecture samples and platform measurements. The point is that after paying this cost, many platform&#x2F;budget searches become cheap.</p>
+<h2 id="Computation-Redistribution"><a href="#Computation-Redistribution" class="headerlink" title="Computation Redistribution"></a>Computation Redistribution</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/ChamNet/fig12-flops-distribution.png"
+                     
+                ></p>
+<p><em>ChamNet shifts compute across stages instead of using a uniform width multiplier.</em></p>
+<p>This is the most concrete design lesson in the paper. The adapted model is not just MobileNetV2 with one global width multiplier. ChamNet moves FLOPs away from some early high-resolution stages and spends more computation later, where it improves the accuracy-latency tradeoff.</p>
+<p>The paper reports 71.6 top-1 at 15.0 ms for ChamNet-C, compared with 69.8 top-1 at 16.6 ms for MobileNetV2 0.75x. The method is doing stage-wise allocation, not only shrinking the network.</p>
+<h2 id="Reading-Notes"><a href="#Reading-Notes" class="headerlink" title="Reading Notes"></a>Reading Notes</h2><p>ChamNet is strongest as a deployment workflow:</p>
+<ul>
+<li>Keep proven efficient blocks.</li>
+<li>Measure the real target platform.</li>
+<li>Build reusable predictors.</li>
+<li>Search for stage-wise allocation under the actual budget.</li>
+</ul>
+<p>The limitation is also clear. ChamNet depends on the base architecture family and predictor quality. It will not discover a fundamentally new operator class, and it still needs training and profiling samples. But for organizations deploying variants across many devices and budgets, this is a sensible tradeoff: pay the setup cost once, then adapt quickly.</p>
+
+        </div>
+
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/NAS/">#NAS</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Mobile/">#Mobile</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2020/02/29/AttentionIsAllYouNeed/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Attention Is All You Need</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2020/02/13/SingeNas/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Single-Path NAS: Designing Hardware-Efficient ConvNets in Less Than 4 Hours</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">ChamNet: Platform-Aware Model Adaptation</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Chameleon-Framework"><span class="nav-text">Chameleon Framework</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Accuracy-Predictor"><span class="nav-text">Accuracy Predictor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Platform-Metrics"><span class="nav-text">Platform Metrics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mobile-Results"><span class="nav-text">Mobile Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Server-Results"><span class="nav-text">Server Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Energy-Results"><span class="nav-text">Energy Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Comparison-And-Search-Cost"><span class="nav-text">Comparison And Search Cost</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Computation-Redistribution"><span class="nav-text">Computation Redistribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reading-Notes"><span class="nav-text">Reading Notes</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">H.J. Chen</a>
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.0</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/libs/mermaid.min.js"></script>
+
+    
+<script src="/js/plugins/mermaid.js"></script>
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+    <div id="aplayer"></div>
+
+<script src="/js/libs/APlayer.min.js"></script>
+
+
+<script src="/js/plugins/aplayer.js"></script>
+
+
+</body>
+</html>

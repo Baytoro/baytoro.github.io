@@ -18,27 +18,23 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="Achieving scalable image recognition through transferable neural network architectures optimized via NASNet search space and regularization techniques.">
+        <meta name="description" content="NASNet makes NAS transferable by searching for normal&#x2F;reduction cells on CIFAR-10 and stacking them for ImageNet.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Learning Transferable Architectures forScalable Image Recognition">
+<meta property="og:title" content="Learning Transferable Architectures for Scalable Image Recognition">
 <meta property="og:url" content="https://baytoro.github.io.git/2020/01/12/Nasnet/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Achieving scalable image recognition through transferable neural network architectures optimized via NASNet search space and regularization techniques.">
+<meta property="og:description" content="NASNet makes NAS transferable by searching for normal&#x2F;reduction cells on CIFAR-10 and stacking them for ImageNet.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190801124.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190822005.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190839919.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190829414.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190851048.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190917473.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190934116.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190942986.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/NasNet/fig1_cell_stacking.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/NasNet/fig2_controller_block.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/NasNet/fig3_nasnet_a_cells.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/NasNet/fig4_imagenet_tradeoff.png">
 <meta property="article:published_time" content="2020-01-11T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-01T03:16:06.237Z">
+<meta property="article:modified_time" content="2026-07-01T12:33:40.224Z">
 <meta property="article:author" content="H.J. Chen">
 <meta property="article:tag" content="NAS">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190801124.png">
+<meta name="twitter:image" content="https://baytoro.github.io.git/_imgs/NasNet/fig1_cell_stacking.png">
     
     
     <!--- Icon Part-->
@@ -50,7 +46,7 @@
     
     <title>
         
-            Learning Transferable Architectures forScalable Image Recognition -
+            Learning Transferable Architectures for Scalable Image Recognition -
         
         Blog
     </title>
@@ -465,9 +461,9 @@ mjx-container[display="true"] + br {
             
                 
                 
-                <img src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190558615.png" alt="Learning Transferable Architectures forScalable Image Recognition" class="max-w-none"/>
+                <img src="/_imgs/NasNet/thumbnail.png" alt="Learning Transferable Architectures for Scalable Image Recognition" class="max-w-none"/>
                 
-                <h1 class="article-title-cover">Learning Transferable Architectures forScalable Image Recognition</h1>
+                <h1 class="article-title-cover">Learning Transferable Architectures for Scalable Image Recognition</h1>
             
             </div>
             
@@ -494,8 +490,8 @@ mjx-container[display="true"] + br {
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2026-07-01 11:16:06</span>
-            <span class="mobile">2026-07-01 11:16:06</span> -->
+            <!-- <span class="desktop">2026-07-01 20:33:40</span>
+            <span class="mobile">2026-07-01 20:33:40</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -555,36 +551,171 @@ mjx-container[display="true"] + br {
 
 
         <div class="article-content markdown-body">
-            <p><a class="link" target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content_cvpr_2018/papers/Zoph_Learning_Transferable_Architectures_CVPR_2018_paper.pdf">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>In the realm of deep learning, designing efficient and effective neural network architectures for image classification has been a challenging task that often requires extensive manual tuning and expertise. Traditional approaches to architecture engineering are not only time-consuming but also limited by human creativity and intuition. With the increasing size and complexity of datasets like ImageNet, the need for automated architecture design becomes more pressing to harness the full potential of available data.</p>
-<p>The motivation behind this research is to address the computational constraints and manual effort involved in architecture engineering by introducing an automated approach to learning transferable neural network architectures. The goal is to develop a method that can discover efficient convolutional building blocks from a smaller dataset and transfer them to larger datasets, such as ImageNet, with minimal modifications. This transferability is crucial as it allows the learned architectures to adapt and perform well across various image recognition tasks without extensive retraining or redesign.</p>
-<p>The research leverages the concept of Neural Architecture Search (NAS) to explore a vast space of possible architectures and identify those that generalize well beyond the dataset they were discovered on. By focusing on the design of a novel search space and a new regularization technique, the study aims to achieve state-of-the-art accuracy while reducing computational demands, thus making neural networks more accessible and efficient for a broader range of applications. The ultimate aim is to push the boundaries of what is possible in image classification by automating the process of architecture design and demonstrating the potential for significant performance improvements over human-engineered models.</p>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190801124.png" alt="image-20240330190801124"></p>
-<p>This research makes several significant contributions to the field of neural network architecture design. Firstly, it introduces a novel search space, known as the “NASNet search space,” which is specifically designed to enable transferability of learned architectures across different datasets and computational scales. This space is crafted to ensure that the complexity of the architecture is independent of the network’s depth and input image size, allowing for scalability and adaptability.</p>
-<p>Secondly, the paper presents a method for learning convolutional cells, or “building blocks,” on a small dataset and transferring them to larger datasets, such as ImageNet. This approach significantly accelerates the search process and demonstrates that architectures discovered on smaller datasets can achieve state-of-the-art accuracy when transferred to larger ones, without extensive re-engineering.</p>
-<p>Additionally, the research introduces a new regularization technique, “ScheduledDropPath,” which improves the generalization capabilities of the models. This technique involves dropping out paths in the network with a probability that increases linearly over the training period, leading to better performance and regularization compared to existing methods.</p>
-<p>Finally, the study shows that the learned features from the image classification models are generically useful and can be transferred to other computer vision tasks, such as object detection. By combining the learned features with existing frameworks like Faster-RCNN, the research achieves state-of-the-art results in object detection tasks, further highlighting the versatility and utility of the proposed methods. Overall, these contributions pave the way for more efficient and effective neural network design, with potential applications across various domains of artificial intelligence.</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>The methodology at the core of this research revolves around the concept of Neural Architecture Search (NAS), which is used to automate the process of discovering efficient and effective convolutional neural network (CNN) architectures. The process is divided into several key steps that culminate in the development of a transferable and scalable CNN architecture.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190822005.png" alt="image-20240330190822005"></p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190839919.png" alt="image-20240330190839919"></p>
-<p><strong>1. Designing the NASNet Search Space:</strong><br>The initial step involves the creation of a novel search space, termed the NASNet search space. This space is designed to be flexible and scalable, allowing the complexity of the architecture to be decoupled from the network’s depth and the size of the input images. The search space is composed of convolutional layers, referred to as “cells,” which have identical structures but different weights. The goal is to find the optimal cell structure that can be stacked together to form a complete network, with each cell having its own set of parameters.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190829414.png" alt="image-20240330190829414"></p>
-<p><strong>2. Searching for Optimal Cells on a Small Dataset:</strong><br>The next phase is the search for the best convolutional cell on a smaller dataset, such as CIFAR-10. This is done using a controller recurrent neural network (RNN) that samples child networks with different architectures. These child networks are trained to convergence on the validation set, and their accuracies are used to update the controller. The controller RNN is optimized using policy gradient methods, which adjust the probabilities of sampling certain architectures over time to favor those that perform well.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190851048.png" alt="image-20240330190851048"></p>
-<p><strong>3. Transferring the Learned Architecture to Larger Datasets:</strong><br>Once the best cell is identified on the small dataset, it is transferred to a larger dataset like ImageNet. This transfer is made possible by the design of the NASNet search space, which ensures that the complexity of the architecture is independent of the input image size. The best cell is simply stacked multiple times, with each copy having its own parameters, to create a deep convolutional architecture suitable for ImageNet.</p>
-<p><strong>4. Introduction of ScheduledDropPath Regularization:</strong><br>To improve the generalization of the models, the paper introduces ScheduledDropPath, a regularization technique that involves stochastically dropping out paths within the cells during training. Unlike traditional dropout methods, ScheduledDropPath increases the probability of dropping out a path linearly over the course of training. This dynamic scheduling helps the model to learn more robust features that are less likely to overfit to the training data.</p>
-<p><strong>5. Training and Evaluation:</strong><br>The final step involves training the complete architecture on the target dataset using standard practices such as data augmentation, cosine learning rate scheduling, and optimization techniques like SGD with momentum. The model is evaluated on the validation set to determine its accuracy and compared to existing state-of-the-art models.</p>
-<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p>The experimental setup in this research is meticulously designed to validate the effectiveness of the proposed method and to benchmark its performance against existing state-of-the-art models. The experiments are conducted in a structured manner, ensuring a comprehensive evaluation of the newly introduced NASNet architecture.</p>
-<p><strong>Experimental Setup:</strong> The initial phase of the experiments involves searching for the optimal convolutional cell on the CIFAR-10 dataset, a smaller yet challenging image classification dataset. This search is performed using a controller RNN with a one-layer LSTM configuration, which is responsible for sampling child networks with varying architectures. The child networks are trained using standard training procedures, and their performance on a validation set is utilized to update the controller RNN. The search process is optimized using Proximal Policy Optimization (PPO), a reinforcement learning algorithm that encourages exploration and expedites convergence.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190917473.png" alt="image-20240330190917473"></p>
-<p>To ensure the robustness of the discovered architectures, the experiments incorporate ScheduledDropPath, a novel regularization technique. This method stochastically drops out paths in the convolutional cells during training, with the dropout probability increasing linearly over time. The overall architecture is then evaluated on the CIFAR-10 test set to identify the top-performing cells.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190934116.png" alt="image-20240330190934116"></p>
-<p><strong>Transfer to Larger Datasets:</strong> Once the best convolutional cell is identified on CIFAR-10, the researchers transfer this architecture to the larger ImageNet dataset. This transfer is facilitated by the scalable nature of the NASNet search space, which allows the convolutional cell to be stacked multiple times to form a deep network suitable for ImageNet. The transferred architecture is trained from scratch on ImageNet using similar procedures as before, with the addition of data augmentation techniques to further enhance generalization.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330190942986.png" alt="image-20240330190942986"></p>
-<p><strong>Experimental Results:</strong> The experimental results are highly promising and demonstrate the effectiveness of the proposed method. On the CIFAR-10 dataset, the NASNet architecture achieves a state-of-the-art error rate of 2.4%, showcasing its ability to generalize from a smaller dataset to a more complex one.</p>
-<p>The results on ImageNet are equally impressive. Despite not being searched directly on ImageNet, the NASNet architecture, when transferred, achieves a top-1 accuracy of 82.7% and a top-5 accuracy of 96.2%, outperforming human-engineered architectures. This performance is achieved while using 9 billion fewer FLOPS, representing a 28% reduction in computational demand compared to the previous state-of-the-art model.</p>
-<p>Furthermore, the NASNet architecture exhibits excellent scalability. By varying the number of convolutional cells and filters, the researchers create a family of NASNet models that outperform equivalent human-designed models at various computational budgets. Even a smaller version of NASNet achieves a top-1 accuracy of 74% on ImageNet, which is 3.1% better than similarly-sized state-of-the-art models.</p>
-<p>In addition to image classification, the learned features from NASNet are shown to be generically useful and transferable to other computer vision tasks. When combined with the Faster-RCNN framework for object detection, NASNet surpasses state-of-the-art results by a significant 4.0%, achieving a mean Average Precision (mAP) of 43.1% on the COCO dataset.</p>
+            <p><a class="link" target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content_cvpr_2018/papers/Zoph_Learning_Transferable_Architectures_CVPR_2018_paper.pdf">Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>NASNet is the paper that turns the expensive NAS-RL idea into a more transferable design pattern. Instead of searching a whole ImageNet-scale network directly, it searches for small convolutional cells on CIFAR-10, then stacks those cells to build larger ImageNet models.</p>
+<p>The important contribution is the search space. Once the cell is found, the number of cell repeats and filter counts can be scaled without changing the cell topology.</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>The original NAS-RL paper could discover good architectures, but searching directly over a large full network is expensive. NASNet asks a more reusable question:</p>
+<blockquote>
+<p>Can we search for a small building block on CIFAR-10 and transfer that block to ImageNet?</p>
+</blockquote>
+<p>The answer depends on constraining the search space. If the controller searches arbitrary whole networks, transfer is fragile. If it searches repeated motifs, the learned component can be reused at different depths, resolutions, and compute budgets.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>The paper contributes:</p>
+<ol>
+<li>The NASNet search space: architectures are built from repeated Normal Cells and Reduction Cells.</li>
+<li>A transfer recipe: search the cell on CIFAR-10, then stack it for ImageNet.</li>
+<li>ScheduledDropPath, where the probability of dropping a path increases during training.</li>
+<li>Strong results on CIFAR-10, ImageNet classification, and COCO detection with NASNet features.</li>
+</ol>
+<p>The headline numbers:</p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th align="right">Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CIFAR-10</td>
+<td align="right">2.40% error</td>
+</tr>
+<tr>
+<td>ImageNet</td>
+<td align="right">82.7% top-1 / 96.2% top-5</td>
+</tr>
+<tr>
+<td>ImageNet mobile-scale setting</td>
+<td align="right">74.0% top-1</td>
+</tr>
+<tr>
+<td>COCO detection</td>
+<td align="right">43.1% mAP test-dev</td>
+</tr>
+</tbody></table>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="Normal-and-reduction-cells"><a href="#Normal-and-reduction-cells" class="headerlink" title="Normal and reduction cells"></a>Normal and reduction cells</h3><p>NASNet fixes the macro layout and searches the repeated cell structure. There are two cell types:</p>
+<ul>
+<li>Normal Cell: keeps the feature map resolution.</li>
+<li>Reduction Cell: reduces spatial resolution by using stride-2 operations.</li>
+</ul>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasNet/fig1_cell_stacking.png"></p>
+<p>For CIFAR-10, cells are stacked between a few reduction points. For ImageNet, the image is larger, so the network uses more reduction stages. The topology of each cell is learned; the number of repeats <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="2.009ex" height="1.545ex" role="img" focusable="false" viewBox="0 -683 888 683"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D441" d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z"></path></g></g></g></svg></mjx-container> and initial filters are scaling knobs.</p>
+<h3 id="Controller-block"><a href="#Controller-block" class="headerlink" title="Controller block"></a>Controller block</h3><p>Each cell is built from <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="1.717ex" height="1.545ex" role="img" focusable="false" viewBox="0 -683 759 683"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D435" d="M231 637Q204 637 199 638T194 649Q194 676 205 682Q206 683 335 683Q594 683 608 681Q671 671 713 636T756 544Q756 480 698 429T565 360L555 357Q619 348 660 311T702 219Q702 146 630 78T453 1Q446 0 242 0Q42 0 39 2Q35 5 35 10Q35 17 37 24Q42 43 47 45Q51 46 62 46H68Q95 46 128 49Q142 52 147 61Q150 65 219 339T288 628Q288 635 231 637ZM649 544Q649 574 634 600T585 634Q578 636 493 637Q473 637 451 637T416 636H403Q388 635 384 626Q382 622 352 506Q352 503 351 500L320 374H401Q482 374 494 376Q554 386 601 434T649 544ZM595 229Q595 273 572 302T512 336Q506 337 429 337Q311 337 310 336Q310 334 293 263T258 122L240 52Q240 48 252 48T333 46Q422 46 429 47Q491 54 543 105T595 229Z"></path></g></g></g></svg></mjx-container> blocks. In the paper’s main NASNet-A search, <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.186ex;" xmlns="http://www.w3.org/2000/svg" width="5.866ex" height="1.731ex" role="img" focusable="false" viewBox="0 -683 2592.6 765"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D435" d="M231 637Q204 637 199 638T194 649Q194 676 205 682Q206 683 335 683Q594 683 608 681Q671 671 713 636T756 544Q756 480 698 429T565 360L555 357Q619 348 660 311T702 219Q702 146 630 78T453 1Q446 0 242 0Q42 0 39 2Q35 5 35 10Q35 17 37 24Q42 43 47 45Q51 46 62 46H68Q95 46 128 49Q142 52 147 61Q150 65 219 339T288 628Q288 635 231 637ZM649 544Q649 574 634 600T585 634Q578 636 493 637Q473 637 451 637T416 636H403Q388 635 384 626Q382 622 352 506Q352 503 351 500L320 374H401Q482 374 494 376Q554 386 601 434T649 544ZM595 229Q595 273 572 302T512 336Q506 337 429 337Q311 337 310 336Q310 334 293 263T258 122L240 52Q240 48 252 48T333 46Q422 46 429 47Q491 54 543 105T595 229Z"></path></g><g data-mml-node="mo" transform="translate(1036.8,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="mn" transform="translate(2092.6,0)"><path data-c="35" d="M164 157Q164 133 148 117T109 101H102Q148 22 224 22Q294 22 326 82Q345 115 345 210Q345 313 318 349Q292 382 260 382H254Q176 382 136 314Q132 307 129 306T114 304Q97 304 95 310Q93 314 93 485V614Q93 664 98 664Q100 666 102 666Q103 666 123 658T178 642T253 634Q324 634 389 662Q397 666 402 666Q410 666 410 648V635Q328 538 205 538Q174 538 149 544L139 546V374Q158 388 169 396T205 412T256 420Q337 420 393 355T449 201Q449 109 385 44T229 -22Q148 -22 99 32T50 154Q50 178 61 192T84 210T107 214Q132 214 148 197T164 157Z"></path></g></g></g></svg></mjx-container>. For each block, the controller predicts five decisions:</p>
+<ol>
+<li>Select the first hidden state.</li>
+<li>Select the second hidden state.</li>
+<li>Select an operation for the first hidden state.</li>
+<li>Select an operation for the second hidden state.</li>
+<li>Select how to combine the two outputs.</li>
+</ol>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasNet/fig2_controller_block.png"></p>
+<p>The operation set includes identity, pooling, standard convolution, factorized convolution, dilated convolution, and depthwise-separable convolution. At the end of the cell, unused hidden states are concatenated to form the output.</p>
+<h3 id="NASNet-A-cell"><a href="#NASNet-A-cell" class="headerlink" title="NASNet-A cell"></a>NASNet-A cell</h3><p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasNet/fig3_nasnet_a_cells.png"></p>
+<p>The found NASNet-A cells contain many separable convolutions and learned skip-style connections. There are no manually inserted residual links between cells; the searched cell already learns its own internal connectivity.</p>
+<h3 id="ScheduledDropPath"><a href="#ScheduledDropPath" class="headerlink" title="ScheduledDropPath"></a>ScheduledDropPath</h3><p>The authors found ordinary DropPath was not enough. ScheduledDropPath drops paths in a cell with a probability that increases linearly over training. This is a small but practical detail: without strong regularization, these searched cells can overfit.</p>
+<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><h3 id="CIFAR-10"><a href="#CIFAR-10" class="headerlink" title="CIFAR-10"></a>CIFAR-10</h3><table>
+<thead>
+<tr>
+<th>Model</th>
+<th align="right">Params</th>
+<th align="right">Error</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NAS v3 + more filters</td>
+<td align="right">37.4M</td>
+<td align="right">3.65%</td>
+</tr>
+<tr>
+<td>NASNet-A (6 @ 768)</td>
+<td align="right">3.3M</td>
+<td align="right">3.41%</td>
+</tr>
+<tr>
+<td>NASNet-A (6 @ 768) + cutout</td>
+<td align="right">3.3M</td>
+<td align="right">2.65%</td>
+</tr>
+<tr>
+<td>NASNet-A (7 @ 2304) + cutout</td>
+<td align="right">27.6M</td>
+<td align="right">2.40%</td>
+</tr>
+<tr>
+<td>NASNet-C (4 @ 640)</td>
+<td align="right">3.1M</td>
+<td align="right">3.59%</td>
+</tr>
+</tbody></table>
+<p>The large NASNet-A with cutout reaches 2.40% error averaged across 5 runs, and the best single run reported in the paper is 2.19%.</p>
+<h3 id="ImageNet-transfer"><a href="#ImageNet-transfer" class="headerlink" title="ImageNet transfer"></a>ImageNet transfer</h3><p>The key claim is transfer: the cells are searched on CIFAR-10, then all ImageNet models are trained from scratch with those cells.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasNet/fig4_imagenet_tradeoff.png"></p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th align="right">Params</th>
+<th align="right">Mult-Adds</th>
+<th align="right">Top-1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Inception ResNet V2</td>
+<td align="right">55.8M</td>
+<td align="right">13.2B</td>
+<td align="right">80.1</td>
+</tr>
+<tr>
+<td>NASNet-A (7 @ 1920)</td>
+<td align="right">22.6M</td>
+<td align="right">4.93B</td>
+<td align="right">80.8</td>
+</tr>
+<tr>
+<td>SENet</td>
+<td align="right">145.8M</td>
+<td align="right">42.3B</td>
+<td align="right">82.7</td>
+</tr>
+<tr>
+<td>NASNet-A (6 @ 4032)</td>
+<td align="right">88.9M</td>
+<td align="right">23.8B</td>
+<td align="right">82.7</td>
+</tr>
+</tbody></table>
+<p>NASNet-A reaches 82.7% top-1 and 96.2% top-5 on ImageNet with fewer mult-adds than SENet in the comparison table.</p>
+<h3 id="Smaller-compute-setting"><a href="#Smaller-compute-setting" class="headerlink" title="Smaller compute setting"></a>Smaller compute setting</h3><p>For the &lt;1.5B mult-add regime, the paper reports:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th align="right">Params</th>
+<th align="right">Mult-Adds</th>
+<th align="right">Top-1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MobileNet-224</td>
+<td align="right">4.2M</td>
+<td align="right">569M</td>
+<td align="right">70.6</td>
+</tr>
+<tr>
+<td>ShuffleNet (2x)</td>
+<td align="right">~5M</td>
+<td align="right">524M</td>
+<td align="right">70.9</td>
+</tr>
+<tr>
+<td>NASNet-A (4 @ 1056)</td>
+<td align="right">5.3M</td>
+<td align="right">564M</td>
+<td align="right">74.0</td>
+</tr>
+</tbody></table>
+<p>This is one reason NASNet mattered: the same cell family could scale down and still beat mobile-oriented baselines from that period.</p>
+<h3 id="Detection-transfer"><a href="#Detection-transfer" class="headerlink" title="Detection transfer"></a>Detection transfer</h3><p>The paper also plugs NASNet-A ImageNet features into Faster R-CNN on COCO. The best reported test-dev mAP is 43.1%, which supports the claim that the learned features transfer beyond classification.</p>
+<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>NASNet’s main lesson is that the search space can matter more than the controller. By forcing architectures to be made of reusable cells, the paper makes search results transferable across scale.</p>
+<p>There are still limitations. The search is expensive, and the method assumes a hand-designed macro skeleton with normal/reduction cell placement. But the cell-based formulation became the template for many later NAS papers because it turns an architecture into something you can scale, compare, and reuse.</p>
 
         </div>
 
@@ -608,7 +739,7 @@ mjx-container[display="true"] + br {
                     <div class="article-prev">
                         <a class="prev"
                         rel="prev"
-                        href="/2020/01/12/Enas./"
+                        href="/2020/01/12/Enas/"
                         >
                             <span class="left arrow-icon flex justify-center items-center">
                                 <i class="fa-solid fa-chevron-left"></i>
@@ -648,8 +779,8 @@ mjx-container[display="true"] + br {
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">Learning Transferable Architectures forScalable Image Recognition</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Figures-Conclusion"><span class="nav-text">Figures &amp; Conclusion</span></a></li></ol>
+        <div class="page-title">Learning Transferable Architectures for Scalable Image Recognition</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Normal-and-reduction-cells"><span class="nav-text">Normal and reduction cells</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Controller-block"><span class="nav-text">Controller block</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NASNet-A-cell"><span class="nav-text">NASNet-A cell</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ScheduledDropPath"><span class="nav-text">ScheduledDropPath</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Results"><span class="nav-text">Results</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CIFAR-10"><span class="nav-text">CIFAR-10</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ImageNet-transfer"><span class="nav-text">ImageNet transfer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Smaller-compute-setting"><span class="nav-text">Smaller compute setting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Detection-transfer"><span class="nav-text">Detection transfer</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
 
     </div>
 </div>

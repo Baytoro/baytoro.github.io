@@ -18,29 +18,27 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="Efficient ConvNet Design via Hardware-Aware Differentiable NAS for Mobile Devices">
+        <meta name="description" content="FBNet searches MobileNet-style operator choices with a stochastic supernet, Gumbel Softmax, and target-device latency lookup tables.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="FBNet: Hardware-Aware Efficient ConvNet Design via Differentiable Neural Architecture Search">
 <meta property="og:url" content="https://baytoro.github.io.git/2020/02/03/Fbnet/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Efficient ConvNet Design via Hardware-Aware Differentiable NAS for Mobile Devices">
+<meta property="og:description" content="FBNet searches MobileNet-style operator choices with a stochastic supernet, Gumbel Softmax, and target-device latency lookup tables.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330161109207.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330162531306.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330162617949.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330162627505.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330162658077.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330162745106.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330162755782.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330162806615.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330163209255.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330163309240.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FBNet/fig1-dnas-overview.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FBNet/table1-2-search-space.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FBNet/fig3-block-structure.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FBNet/table3-imagenet-results.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FBNet/fig4-architecture-visualization.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FBNet/table4-5-scaling-device.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FBNet/fig5-device-runtime.png">
 <meta property="article:published_time" content="2020-02-02T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-01T03:16:06.237Z">
+<meta property="article:modified_time" content="2026-07-02T08:30:02.075Z">
 <meta property="article:author" content="H.J. Chen">
 <meta property="article:tag" content="NAS">
+<meta property="article:tag" content="Mobile">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330161109207.png">
+<meta name="twitter:image" content="https://baytoro.github.io.git/_imgs/FBNet/fig1-dnas-overview.png">
     
     
     <!--- Icon Part-->
@@ -467,7 +465,7 @@ mjx-container[display="true"] + br {
             
                 
                 
-                <img src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330160748784.png" alt="FBNet: Hardware-Aware Efficient ConvNet Design via Differentiable Neural Architecture Search" class="max-w-none"/>
+                <img src="/_imgs/FBNet/thumbnail.png" alt="FBNet: Hardware-Aware Efficient ConvNet Design via Differentiable Neural Architecture Search" class="max-w-none"/>
                 
                 <h1 class="article-title-cover">FBNet: Hardware-Aware Efficient ConvNet Design via Differentiable Neural Architecture Search</h1>
             
@@ -496,8 +494,8 @@ mjx-container[display="true"] + br {
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2026-07-01 11:16:06</span>
-            <span class="mobile">2026-07-01 11:16:06</span> -->
+            <!-- <span class="desktop">2026-07-02 16:30:02</span>
+            <span class="mobile">2026-07-02 16:30:02</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -538,6 +536,10 @@ mjx-container[display="true"] + br {
                         <a href="/tags/NAS/">NAS</a>&nbsp;
                     </li>
                 
+                    <li>
+                        | <a href="/tags/Mobile/">Mobile</a>&nbsp;
+                    </li>
+                
             </ul>
         </span>
     
@@ -557,39 +559,286 @@ mjx-container[display="true"] + br {
 
 
         <div class="article-content markdown-body">
-            <p><a class="link" target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content_CVPR_2019/papers/Wu_FBNet_Hardware-Aware_Efficient_ConvNet_Design_via_Differentiable_Neural_Architecture_Search_CVPR_2019_paper.pdf">paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>The rapid advancement of mobile devices has led to an increasing demand for efficient and accurate neural networks that can operate on limited computational resources. Convolutional Neural Networks (ConvNets) are the backbone of many computer vision applications, but their deployment on mobile devices is often hindered by their computational complexity and latency. Traditional neural architecture search (NAS) methods are computationally expensive and do not always translate to practical efficiency gains on actual hardware.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330161109207.png" alt="image-20240330161109207"></p>
-<p>FBNet addresses this challenge by introducing a novel differentiable neural architecture search (DNAS) framework, which is hardware-aware and focuses on optimizing ConvNets for mobile devices. The key motivation behind this research is to bridge the gap between the theoretical efficiency of NAS methods and their practical application on real-world devices. By considering the hardware-specific characteristics, such as input resolution and processing power, FBNet aims to discover efficient ConvNet architectures that not only reduce the number of floating-point operations (FLOPs) but also improve latency, which is critical for mobile applications.</p>
-<p>The paper proposes a layer-wise search space, where each layer of the network can choose from a set of predefined blocks, allowing for a more tailored architecture that adapts to the target device’s capabilities. The use of gradient-based optimization and the Gumbel Softmax technique enables the efficient exploration of this vast search space, leading to the discovery of FBNets that outperform existing state-of-the-art models in terms of accuracy and efficiency. This research represents a significant step forward in the design of mobile-friendly ConvNets and has important implications for the future of on-device machine learning applications.</p>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>The paper presents several groundbreaking contributions to the field of mobile neural network design. Firstly, it introduces FBNet, a family of efficient ConvNets that are meticulously optimized for mobile devices using a hardware-aware approach. Through the Differentiable Neural Architecture Search (DNAS) framework, the authors are able to sidestep the computationally intensive nature of traditional NAS methods, significantly reducing the search cost while achieving superior performance.</p>
-<p>A key contribution is the layer-wise search space that allows for individual optimization of each network layer, leading to architectures that are not only computationally efficient but also tailored to the specific constraints of mobile hardware. The use of the Gumbel Softmax technique enables gradient-based optimization of the architecture distribution, making the search process for optimal network configurations extremely fast and scalable.</p>
-<p>Moreover, the paper proposes a latency-aware loss function that directly incorporates the actual latency on target devices into the training objective. This novel approach ensures that the discovered architectures are not only accurate but also operate with minimal delay, which is crucial for real-time mobile applications.</p>
-<p>Lastly, the authors demonstrate the versatility of their approach by searching for and optimizing FBNets across different input resolutions and channel sizes, as well as different target devices, showcasing the adaptability and robustness of their method. The open-sourcing of FBNet models further enhances the paper’s contribution, making these state-of-the-art, efficient ConvNets accessible to the broader research community and promoting further advancements in mobile deep learning.</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>The methodology at the core of the FBNet paper revolves around the Differentiable Neural Architecture Search (DNAS) framework, which is designed to efficiently discover hardware-aware ConvNet architectures for mobile devices. The key innovation lies in the layer-wise search space and the use of gradient-based optimization techniques, which allow for a much faster and more targeted search process compared to traditional reinforcement learning-based NAS methods.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330162531306.png" alt="image-20240330162531306"></p>
-<p><strong>Layer-Wise Search Space:</strong> The authors propose a search space where each layer of the ConvNet can independently select a different building block or operator. This approach is in contrast to prior works that often reuse the same cell structure across all layers. The layer-wise search space is defined by a macro-architecture that specifies the number of layers and their input/output dimensions, while the type of block for each layer is determined through the search process. This flexibility enables the discovery of architectures that can adapt to the varying computational demands at different stages of the network.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330162617949.png" alt="image-20240330162617949"></p>
-<p><strong>Block Structures and Operators:</strong> The building blocks within the search space are inspired by successful architectures like MobileNetV2 and ShiftNet. They consist of a series of point-wise (1x1) convolutions, depthwise (KxK) convolutions with varying kernel sizes (K), and expansion ratios (e), which control the growth of the network’s channel dimensions. The blocks also incorporate group convolutions and channel shuffle operations to further enhance efficiency. A unique “skip” block is included, which allows the network to skip computation-heavy layers and effectively control depth.</p>
-<img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330162627505.png" alt="image-20240330162627505" style="zoom:50%;">
-
-<img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330162658077.png" alt="image-20240330162658077" style="zoom:50%;">
-
-<p><strong>Latency-Aware Loss Function:</strong> A critical component of the methodology is the loss function used during the search and training process. The authors define a loss function that includes both cross-entropy loss for accuracy and a latency loss term that penalizes architectures based on their runtime on the target device. This latency is measured in microseconds and incorporated into the loss through a lookup table model, which estimates the overall latency by summing the latencies of individual operators. This model ensures that the latency term is differentiable, allowing for gradient-based optimizations.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330162745106.png" alt="image-20240330162745106"></p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330162755782.png" alt="image-20240330162755782"></p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330162806615.png" alt="image-20240330162806615"></p>
-<p><strong>Gumbel Softmax and Gradient-Based Optimization:</strong> To efficiently explore the vast search space, the authors utilize the Gumbel Softmax distribution to relax the discrete sampling of architectures into a continuous relaxation. This technique enables the use of stochastic gradient descent (SGD) to optimize the architecture distribution parameters, turning the search for optimal architectures into a training problem. The Gumbel Softmax function, controlled by a temperature parameter, allows for the gradients to flow through the sampling process, effectively training the network to preferentially sample architectures that balance accuracy and latency.</p>
-<p><strong>Efficient Super Net Training:</strong> The DNAS framework represents the search space as a “super net” with multiple parallel blocks at each layer. During training, the super net is optimized by updating the weights of each operator and the sampling probabilities for each block. The latter is achieved by updating the parameters of the Gumbel Softmax distribution. Once the training is complete, the optimal architectures are sampled from the learned distribution.</p>
-<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330163209255.png" alt="image-20240330163209255"></p>
-<p><strong>Experimental Setup:</strong> The authors conduct a series of experiments using the ImageNet 2012 classification dataset, a standard benchmark for evaluating the performance of ConvNets. The search process begins with the construction of a latency lookup table for the target device, a Samsung Galaxy S8 with a Qualcomm Snapdragon 835 platform. This table is crucial for the latency-aware loss function, providing accurate measurements of operator runtimes.</p>
-<p>The search space is defined by a macro-architecture with 22 layers, where each layer can choose from 9 candidate blocks, resulting in approximately 10^21 possible architectures. The DNAS framework is then used to train a stochastic super net, which contains parallel instances of these blocks at each layer. The training process involves optimizing the weights of each operator and the architecture distribution parameters using stochastic gradient descent (SGD) and the Adam optimizer.</p>
-<p>To reduce training time and computational cost, the authors randomly select 100 classes from the 1000-class dataset and train the super net for 90 epochs. The input resolution is set to 224x224, and the training is performed with Caffe2’s int8 inference engine, which is optimized for mobile devices.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330163309240.png" alt="image-20240330163309240"></p>
-<p><strong>Experimental Results:</strong> The results of the experiments are highly promising. FBNet-B, one of the models discovered by DNAS, achieves a top-1 accuracy of 74.1% on ImageNet with 295M FLOPs and a latency of 23.1 ms on a Samsung S8 phone. This represents a significant improvement over MobileNetV2-1.3, which has similar accuracy but requires 2.4x more FLOPs and 1.5x more latency. Furthermore, FBNet-B’s search cost is estimated to be 420x smaller than that of MnasNet, a state-of-the-art model designed using a different NAS approach.</p>
-<p>The paper also presents results for different input resolutions and channel scalings, showing that FBNets can achieve 1.5% to 6.4% higher accuracy than MobileNetV2 under these conditions. The smallest FBNet model, optimized for a Samsung S8, achieves 50.2% accuracy with a latency of just 2.9 ms (345 frames per second), demonstrating the potential for real-time applications.</p>
-<p>In addition, the authors perform searches targeting two different mobile devices, the Samsung Galaxy S8 and the iPhone X, and compare the performance of the resulting models. The results highlight the importance of device-specific optimizations, as the FBNet model optimized for the iPhone X shows a 1.4x speedup on that device compared to the Samsung-optimized model.</p>
-<p>Overall, the experimental results validate the effectiveness of the DNAS framework in discovering efficient and accurate ConvNets for mobile devices. The significant improvements in both accuracy and latency, along with the low search costs, make FBNets a compelling choice for deploying computer vision models on mobile platforms. The paper’s findings pave the way for future research in efficient neural network design and its practical application in resource-constrained environments.</p>
+            <blockquote>
+<p>Wu B, Dai X, Zhang P, et al. FBNet: Hardware-Aware Efficient ConvNet Design via Differentiable Neural Architecture Search. CVPR 2019.</p>
+</blockquote>
+<p><a class="link" target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content_CVPR_2019/papers/Wu_FBNet_Hardware-Aware_Efficient_ConvNet_Design_via_Differentiable_Neural_Architecture_Search_CVPR_2019_paper.pdf">Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> / <a class="link" target="_blank" rel="noopener" href="https://github.com/facebookresearch/mobile-vision">Code <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>FBNet is a practical hardware-aware NAS paper. It does not search arbitrary cell graphs. It searches a constrained MobileNet-style layer space, measures operator latency on the target phone, and makes that latency part of a differentiable search objective.</p>
+<p>The engineering lesson is simple: if the final user cares about phone latency, the search loop should see phone latency. FLOPs are useful for sanity checks, but they are not the deployment objective.</p>
+<p>All figures and tables below are cropped from the original CVPR PDF.</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>FBNet is motivated by three deployment problems.</p>
+<ol>
+<li>Efficient ConvNet design has a large combinatorial space.</li>
+<li>The best architecture depends on input resolution, width, runtime, and target device.</li>
+<li>FLOPs are a weak proxy for measured latency.</li>
+</ol>
+<p>The third point is the important one. Two operators can have similar FLOPs but very different runtime because of memory access, kernel implementation, vectorization, cache behavior, and backend support. This is why hardware-aware NAS papers such as MnasNet, ProxylessNAS, and FBNet measure latency directly instead of only reporting multiply-adds.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FBNet/fig1-dnas-overview.png"></p>
+<p>Figure 1 summarizes the FBNet loop:</p>
+<ol>
+<li>Define a layer-wise search space.</li>
+<li>Benchmark candidate operators on the target device.</li>
+<li>Train a stochastic supernet.</li>
+<li>Sample compact architectures from the learned distribution.</li>
+<li>Train selected architectures from scratch.</li>
+</ol>
+<p>FBNet calls the final models Facebook-Berkeley-Nets. The headline result is FBNet-B: 74.1% ImageNet top-1, 295M FLOPs, and 23.1 ms latency on a Samsung S8 under the reported Caffe2 int8 setup. The paper estimates 216 GPU-hours for search, much smaller than the RL search cost it attributes to MnasNet.</p>
+<h2 id="Search-Space"><a href="#Search-Space" class="headerlink" title="Search Space"></a>Search Space</h2><p>FBNet keeps the macro skeleton fixed and searches operator choices inside 22 searchable layers. The first stem and the last projection/classifier layers are fixed.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FBNet/table1-2-search-space.png"></p>
+<p>Each searchable layer chooses from 9 candidates:</p>
+<table>
+<thead>
+<tr>
+<th>Candidate</th>
+<th align="right">Kernel</th>
+<th align="right">Expansion</th>
+<th align="right">Group</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>k3_e1</code></td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td><code>k3_e1_g2</code></td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td><code>k3_e3</code></td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td><code>k3_e6</code></td>
+<td align="right">3</td>
+<td align="right">6</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td><code>k5_e1</code></td>
+<td align="right">5</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td><code>k5_e1_g2</code></td>
+<td align="right">5</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td><code>k5_e3</code></td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td><code>k5_e6</code></td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td><code>skip</code></td>
+<td align="right">-</td>
+<td align="right">-</td>
+<td align="right">-</td>
+</tr>
+</tbody></table>
+<p>So the rough search space size is <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="2.919ex" height="1.937ex" role="img" focusable="false" viewBox="0 -833.9 1290.1 855.9"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mn"><path data-c="39" d="M352 287Q304 211 232 211Q154 211 104 270T44 396Q42 412 42 436V444Q42 537 111 606Q171 666 243 666Q245 666 249 666T257 665H261Q273 665 286 663T323 651T370 619T413 560Q456 472 456 334Q456 194 396 97Q361 41 312 10T208 -22Q147 -22 108 7T68 93T121 149Q143 149 158 135T173 96Q173 78 164 65T148 49T135 44L131 43Q131 41 138 37T164 27T206 22H212Q272 22 313 86Q352 142 352 280V287ZM244 248Q292 248 321 297T351 430Q351 508 343 542Q341 552 337 562T323 588T293 615T246 625Q208 625 181 598Q160 576 154 546T147 441Q147 358 152 329T172 282Q197 248 244 248Z"></path></g><g data-mml-node="TeXAtom" transform="translate(533,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z" transform="translate(500,0)"></path></g></g></g></g></g></svg></mjx-container>, around <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="4.05ex" height="2.005ex" role="img" focusable="false" viewBox="0 -864 1790.1 886"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mn"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path><path data-c="30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z" transform="translate(500,0)"></path></g><g data-mml-node="TeXAtom" transform="translate(1033,393.1) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z" transform="translate(500,0)"></path></g></g></g></g></g></svg></mjx-container> architectures. That is large enough to require an efficient search method, but still structured enough that an additive latency lookup table is plausible.</p>
+<p>The candidate block is an inverted-bottleneck style block.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FBNet/fig3-block-structure.png"></p>
+<p>The block has:</p>
+<ul>
+<li>a first <code>1x1</code> pointwise convolution, optionally grouped;</li>
+<li>a <code>3x3</code> or <code>5x5</code> depthwise convolution;</li>
+<li>a final <code>1x1</code> pointwise convolution;</li>
+<li>a residual connection when shape and stride permit it.</li>
+</ul>
+<p>This search space is conservative by modern NAS standards, but that is also why the deployment story is credible. FBNet is not searching exotic operators that may be unsupported by mobile runtimes.</p>
+<h2 id="Differentiable-Search"><a href="#Differentiable-Search" class="headerlink" title="Differentiable Search"></a>Differentiable Search</h2><p>FBNet uses a stochastic supernet. At each searchable layer, the architecture parameter vector controls a probability distribution over candidate blocks. During search, the layer output is a weighted or sampled mixture of candidates. Gumbel Softmax makes the sampling path differentiable enough for gradient-based optimization.</p>
+<p>The useful mental model:</p>
+<ul>
+<li>weights decide how well candidate operators perform;</li>
+<li>architecture parameters decide which operator each layer prefers;</li>
+<li>Gumbel temperature controls how close the relaxed choice is to a one-hot discrete choice;</li>
+<li>after search, FBNet samples/selects a discrete architecture and trains it from scratch.</li>
+</ul>
+<p>This is still a supernet proxy. The searched architecture is not deployed directly from the supernet weights. The paper uses the supernet to learn a distribution over good architectures, then does final training separately.</p>
+<h2 id="Latency-Aware-Objective"><a href="#Latency-Aware-Objective" class="headerlink" title="Latency-Aware Objective"></a>Latency-Aware Objective</h2><p>FBNet adds target-device latency to the training objective. Measuring every full architecture would be too expensive, so the paper benchmarks every candidate operator in context and stores the results in a lookup table.</p>
+<p>The architecture latency is estimated additively:</p>
+<p><code>Latency(architecture) = sum of selected block latencies</code>.</p>
+<p>In the stochastic supernet, the expected latency is the probability-weighted sum over candidate block latencies. Since each lookup-table entry is a constant, this latency estimate is differentiable with respect to the architecture probabilities.</p>
+<p>That is the paper’s main trick. FBNet makes measured hardware latency usable inside gradient-based NAS.</p>
+<p>There are two assumptions to remember:</p>
+<ul>
+<li>Operator latency is approximately additive across the network.</li>
+<li>The measured latency table matches the final runtime, device, input shape, and quantization/backend setup.</li>
+</ul>
+<p>Those assumptions are reasonable for the paper’s mobile CPU/Caffe2 int8 target, but they are not universal.</p>
+<h2 id="Search-Protocol"><a href="#Search-Protocol" class="headerlink" title="Search Protocol"></a>Search Protocol</h2><p>For the main ImageNet experiment, FBNet targets Samsung Galaxy S8 with Qualcomm Snapdragon 835 and Caffe2 int8 inference. The protocol is:</p>
+<ol>
+<li>Measure candidate operator latency on the target phone.</li>
+<li>Train a stochastic supernet for 90 epochs.</li>
+<li>Use 100 randomly selected ImageNet classes during search.</li>
+<li>Train operator weights on 80% of the selected training data with SGD.</li>
+<li>Train architecture parameters on the remaining 20% with Adam.</li>
+<li>Sample architectures from the learned distribution.</li>
+<li>Train final models from scratch on ImageNet.</li>
+</ol>
+<p>This is a pragmatic compromise. Searching on all ImageNet classes would be more direct, but using 100 classes makes the search cost manageable.</p>
+<h2 id="ImageNet-Results"><a href="#ImageNet-Results" class="headerlink" title="ImageNet Results"></a>ImageNet Results</h2><p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FBNet/table3-imagenet-results.png"></p>
+<p>Representative rows from Table 3:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Search</th>
+<th align="right">Search cost</th>
+<th align="right">FLOPs</th>
+<th align="right">S8 latency</th>
+<th align="right">Top-1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.0-MobileNetV2</td>
+<td>manual</td>
+<td align="right">-</td>
+<td align="right">300M</td>
+<td align="right">21.7 ms</td>
+<td align="right">72.0</td>
+</tr>
+<tr>
+<td>MnasNet</td>
+<td>RL</td>
+<td align="right">91K GPUh estimated</td>
+<td align="right">317M</td>
+<td align="right">23.7 ms</td>
+<td align="right">74.0</td>
+</tr>
+<tr>
+<td>1.3-MobileNetV2</td>
+<td>manual</td>
+<td align="right">-</td>
+<td align="right">509M</td>
+<td align="right">33.8 ms</td>
+<td align="right">74.4</td>
+</tr>
+<tr>
+<td>FBNet-A</td>
+<td>gradient</td>
+<td align="right">216 GPUh</td>
+<td align="right">249M</td>
+<td align="right">19.8 ms</td>
+<td align="right">73.0</td>
+</tr>
+<tr>
+<td>FBNet-B</td>
+<td>gradient</td>
+<td align="right">216 GPUh</td>
+<td align="right">295M</td>
+<td align="right">23.1 ms</td>
+<td align="right">74.1</td>
+</tr>
+<tr>
+<td>FBNet-C</td>
+<td>gradient</td>
+<td align="right">216 GPUh</td>
+<td align="right">375M</td>
+<td align="right">28.1 ms</td>
+<td align="right">74.9</td>
+</tr>
+</tbody></table>
+<p>FBNet-B is the central comparison. It is close to MnasNet latency but slightly better in the reported accuracy/latency point, and the paper estimates a much lower search cost. Compared with 1.3-MobileNetV2, FBNet-B has similar accuracy with far fewer FLOPs and lower latency.</p>
+<p>I would read the search-cost comparison carefully. The <code>91K GPUh</code> MnasNet number is an estimate by the FBNet authors, not a perfectly controlled benchmark under identical infrastructure. The more robust takeaway is still strong: differentiable NAS made the search cheap enough that device-specific redesign became plausible.</p>
+<h2 id="Architecture-Patterns"><a href="#Architecture-Patterns" class="headerlink" title="Architecture Patterns"></a>Architecture Patterns</h2><p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FBNet/fig4-architecture-visualization.png"></p>
+<p>The architecture visualization is useful because FBNet is not just selecting one repeated block. Different layers choose different kernel sizes, expansion ratios, grouping, and skip behavior.</p>
+<p>Two patterns stand out:</p>
+<ul>
+<li>Larger models use more high-expansion <code>k5</code> blocks in later stages.</li>
+<li>Tiny low-resolution variants skip more layers, which matches the lower need for depth and receptive-field growth.</li>
+</ul>
+<p>This is also where FBNet differs from a simple width multiplier. A width multiplier uniformly scales a hand-designed backbone. FBNet changes operator choices layer by layer.</p>
+<h2 id="Scaling-And-Devices"><a href="#Scaling-And-Devices" class="headerlink" title="Scaling And Devices"></a>Scaling And Devices</h2><p>FBNet searches again for different input resolutions and channel scaling factors instead of only scaling one discovered model.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FBNet/table4-5-scaling-device.png"></p>
+<p>Examples from Table 4:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>MobileNetV2 baseline</th>
+<th>FBNet result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>224, 0.35</td>
+<td>60.3%, 9.3 ms</td>
+<td>65.3%, 10.7 ms</td>
+</tr>
+<tr>
+<td>192, 0.50</td>
+<td>63.9%, 8.4 ms</td>
+<td>65.9%, 9.9 ms</td>
+</tr>
+<tr>
+<td>128, 0.50</td>
+<td>57.7%, 4.8 ms</td>
+<td>60.0%, 5.1 ms</td>
+</tr>
+<tr>
+<td>96, 0.35</td>
+<td>45.5%, 3.8 ms</td>
+<td>50.2%, 2.9 ms</td>
+</tr>
+</tbody></table>
+<p>The <code>96, 0.35</code> setting is the cleanest example: FBNet is both more accurate and faster than the scaled MobileNetV2 baseline.</p>
+<p>The paper also searches separate models for iPhone X and Samsung S8:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th align="right">iPhone X latency</th>
+<th align="right">Samsung S8 latency</th>
+<th align="right">Top-1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FBNet-iPhoneX</td>
+<td align="right">19.84 ms target</td>
+<td align="right">23.33 ms</td>
+<td align="right">73.20</td>
+</tr>
+<tr>
+<td>FBNet-S8</td>
+<td align="right">27.53 ms</td>
+<td align="right">22.12 ms target</td>
+<td align="right">73.27</td>
+</tr>
+</tbody></table>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FBNet/fig5-device-runtime.png"></p>
+<p>The operator runtime plot explains the non-transferability. Some operator types are faster on iPhone X; others are faster on Samsung S8. A single FLOP count cannot see this difference.</p>
+<h2 id="Reproduction-Notes"><a href="#Reproduction-Notes" class="headerlink" title="Reproduction Notes"></a>Reproduction Notes</h2><p>If I were reproducing FBNet, I would check five things before trusting the result.</p>
+<p>First, benchmark latency with the final runtime. A lookup table measured under a different backend, thread count, quantization mode, or batch size can mislead the search.</p>
+<p>Second, validate the additive latency model. It is usually good enough for a constrained mobile network, but residual adds, memory layout changes, and cache behavior can introduce non-additive effects.</p>
+<p>Third, separate supernet ranking from final training. The final architecture must be trained from scratch; otherwise the result measures supernet weight sharing more than the architecture.</p>
+<p>Fourth, record the search split. FBNet trains operator weights and architecture parameters on different slices of the 100-class ImageNet subset. Changing this split changes the proxy.</p>
+<p>Fifth, report device and runtime details next to accuracy. “23 ms mobile latency” is not meaningful without the phone, backend, quantization type, and measurement protocol.</p>
+<h2 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h2><p>FBNet is deployment-oriented, but its scope is still limited.</p>
+<ul>
+<li>The search space is manually shaped around MobileNet/ShiftNet-like blocks.</li>
+<li>The latency model assumes block latencies add cleanly.</li>
+<li>Search uses a 100-class ImageNet proxy, then final models are trained separately.</li>
+<li>The reported latency is tied to Caffe2 int8 inference on 2018-era devices.</li>
+<li>The method optimizes one target runtime at a time; a different device may need a different search.</li>
+</ul>
+<p>These are not flaws in the paper so much as the engineering contract. FBNet is useful because it defines that contract clearly.</p>
+<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>FBNet is a clean example of hardware-aware differentiable NAS. The core idea is to benchmark candidate blocks on the real target device, put those latency values into a differentiable objective, and let the supernet learn layer-wise operator preferences.</p>
+<p>I read FBNet less as a general architecture discovery paper and more as a deployment recipe: constrain the search space to runnable operators, measure the metric the user feels, and make search cheap enough that target-specific redesign is possible.</p>
 
         </div>
 
@@ -600,6 +849,10 @@ mjx-container[display="true"] + br {
                 
                     <li class="tag-item">
                         <a href="/tags/NAS/">#NAS</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Mobile/">#Mobile</a>&nbsp;
                     </li>
                 
             </ul>
@@ -619,7 +872,7 @@ mjx-container[display="true"] + br {
                                 <i class="fa-solid fa-chevron-left"></i>
                             </span>
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Proxylessnas: Direct neural architecture search on target task and hardware</span>
+                                <span class="post-nav-title-item">ProxylessNAS: Direct Neural Architecture Search on Target Task and Hardware</span>
                                 <span class="post-nav-item">Prev posts</span>
                             </span>
                         </a>
@@ -654,7 +907,7 @@ mjx-container[display="true"] + br {
     <div class="post-toc">
         <div class="toc-title">On this page</div>
         <div class="page-title">FBNet: Hardware-Aware Efficient ConvNet Design via Differentiable Neural Architecture Search</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Figures-Conclusion"><span class="nav-text">Figures &amp; Conclusion</span></a></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Space"><span class="nav-text">Search Space</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Differentiable-Search"><span class="nav-text">Differentiable Search</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Latency-Aware-Objective"><span class="nav-text">Latency-Aware Objective</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Protocol"><span class="nav-text">Search Protocol</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ImageNet-Results"><span class="nav-text">ImageNet Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Architecture-Patterns"><span class="nav-text">Architecture Patterns</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Scaling-And-Devices"><span class="nav-text">Scaling And Devices</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reproduction-Notes"><span class="nav-text">Reproduction Notes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Limitations"><span class="nav-text">Limitations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
 
     </div>
 </div>

@@ -18,32 +18,30 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="Enhancing mobile AI via efficient federated learning, reducing communication and computation costs.">
+        <meta name="description" content="FedMask learns personalized sparse binary masks for each client while keeping model weights fixed.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Fedmask: Joint computation and communication-efficient personalized federated learning via heterogeneous masking">
+<meta property="og:title" content="FedMask: Joint Computation and Communication-Efficient Personalized Federated Learning">
 <meta property="og:url" content="https://baytoro.github.io.git/2022/09/03/FedMask/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Enhancing mobile AI via efficient federated learning, reducing communication and computation costs.">
+<meta property="og:description" content="FedMask learns personalized sparse binary masks for each client while keeping model weights fixed.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181940888.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181950985.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182001287.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182059100.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182011609.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182028594.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182036543.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182047779.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182110813.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182120111.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182131270.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182143940.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FedMask/fig1-motivation.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FedMask/fig5-structured-sparsity.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FedMask/fig3-workflow.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FedMask/fig7-layer-masks.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FedMask/fig8-results-summary.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FedMask/fig4-mask-learning.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FedMask/fig9-evaluation-setup.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FedMask/fig10-accuracy-communication.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FedMask/fig11-computation-cost.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/FedMask/fig12-latency-energy.png">
 <meta property="article:published_time" content="2022-09-02T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-01T03:16:06.237Z">
+<meta property="article:modified_time" content="2026-07-01T12:33:40.224Z">
 <meta property="article:author" content="H.J. Chen">
-<meta property="article:tag" content="NAS">
 <meta property="article:tag" content="FL">
+<meta property="article:tag" content="Pruning">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181940888.png">
+<meta name="twitter:image" content="https://baytoro.github.io.git/_imgs/FedMask/fig1-motivation.png">
     
     
     <!--- Icon Part-->
@@ -55,7 +53,7 @@
     
     <title>
         
-            Fedmask: Joint computation and communication-efficient personalized federated learning via heterogeneous masking -
+            FedMask: Joint Computation and Communication-Efficient Personalized Federated Learning -
         
         Blog
     </title>
@@ -470,9 +468,9 @@ mjx-container[display="true"] + br {
             
                 
                 
-                <img src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181705265.png" alt="Fedmask: Joint computation and communication-efficient personalized federated learning via heterogeneous masking" class="max-w-none"/>
+                <img src="/_imgs/FedMask/thumbnail.png" alt="FedMask: Joint Computation and Communication-Efficient Personalized Federated Learning" class="max-w-none"/>
                 
-                <h1 class="article-title-cover">Fedmask: Joint computation and communication-efficient personalized federated learning via heterogeneous masking</h1>
+                <h1 class="article-title-cover">FedMask: Joint Computation and Communication-Efficient Personalized Federated Learning</h1>
             
             </div>
             
@@ -499,8 +497,8 @@ mjx-container[display="true"] + br {
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2026-07-01 11:16:06</span>
-            <span class="mobile">2026-07-01 11:16:06</span> -->
+            <!-- <span class="desktop">2026-07-01 20:33:40</span>
+            <span class="mobile">2026-07-01 20:33:40</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -538,11 +536,11 @@ mjx-container[display="true"] + br {
             <ul>
                 
                     <li>
-                        <a href="/tags/NAS/">NAS</a>&nbsp;
+                        <a href="/tags/FL/">FL</a>&nbsp;
                     </li>
                 
                     <li>
-                        | <a href="/tags/FL/">FL</a>&nbsp;
+                        | <a href="/tags/Pruning/">Pruning</a>&nbsp;
                     </li>
                 
             </ul>
@@ -564,35 +562,162 @@ mjx-container[display="true"] + br {
 
 
         <div class="article-content markdown-body">
-            <p><a class="link" target="_blank" rel="noopener" href="https://dl.acm.org/doi/pdf/10.1145/3485730.3485929">pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181940888.png" alt="image-20240330181940888"></p>
-<p>In the realm of mobile deep learning applications, the challenge of training sophisticated models on devices with limited data and computational resources is a significant hurdle. Traditional approaches that rely on centralizing data for model training often compromise privacy and consume substantial communication bandwidth. Federated Learning (FL) emerges as a promising solution, enabling decentralized training without sharing raw data, thus upholding privacy. However, non-IID data distribution across devices and limited communication bandwidth present major obstacles to practical FL deployment. Moreover, the computational efficiency of training and running Deep Neural Networks (DNNs) on mobile devices is critical due to their restricted resources. Addressing these challenges, this work introduces a novel framework that focuses on joint computation and communication efficiency in personalized FL. By leveraging heterogeneous binary masking, the framework allows each device to learn a tailored, sparse DNN model, enhancing inference accuracy while significantly reducing the communication and computation overheads. This innovation aims to unlock the potential of on-device deep learning applications, offering a more efficient and user-centric approach to FL.</p>
-<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330181950985.png" alt="image-20240330181950985"></p>
-<p>This research pioneers a new federated learning paradigm that simultaneously enhances communication and computational efficiency while preserving personalization for mobile devices. The key contribution lies in the introduction of a novel framework that employs heterogeneous binary masking. This innovative approach allows for the learning of a personalized and structured sparse Deep Neural Network (DNN) on each device, which can operate efficiently despite the limited resources typically found on mobile devices.</p>
-<p>By communicating only binary masks, rather than entire model parameters, the framework drastically reduces the communication burden. The masks, once learned, are optimized through a structured sparsity regularization method, which not only maintains the personalized aspects of each device’s local data but also leads to a compact model that demands less computational power during training and inference.</p>
-<p>The framework’s ability to improve inference accuracy by a significant margin, coupled with its substantial reductions in both communication and computation costs, marks a significant advancement in the field of federated learning. It provides a unified solution that addresses the critical challenges of statistical heterogeneity, communication bandwidth limitations, and computational constraints, setting a new standard for deploying on-device deep learning applications efficiently and effectively.</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182001287.png" alt="image-20240330182001287"></p>
-<p>The methodology at the core of this research revolves around a novel federated learning (FL) framework that efficiently addresses the challenges of data heterogeneity, communication bandwidth constraints, and computational limitations on mobile devices. The framework’s unique approach is to leverage heterogeneous binary masking, which allows each device to learn a personalized and structured sparse Deep Neural Network (DNN).</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182059100.png" alt="image-20240330182059100"></p>
-<p>The process begins with a one-shot pruning method that initializes a heterogeneous binary mask for each device, based on its local data. This mask determines the structure of the sparse DNN that will be learned by the device. During subsequent communication rounds, instead of transmitting the entire model update, each device only communicates the optimized binary mask to the central server. This mask is applied to a fixed set of model parameters, which remain unchanged throughout the learning process.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182011609.png" alt="image-20240330182011609"></p>
-<p>The key innovation lies in the structured sparsity regularization applied to the binary mask optimization. This regularization encourages the learning of a sparse model that is not only personalized to the local data distribution but also computationally efficient. The regularization promotes channel-wise and filter-wise sparsity in convolutional layers and row-wise or column-wise sparsity in fully connected layers, resulting in a compact model that requires less computation during both training and inference.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182028594.png" alt="image-20240330182028594"></p>
-<p>The aggregation strategy on the central server is carefully designed to preserve the personalized information embedded in the heterogeneous binary masks. The server only aggregates elements that are common across the binary masks from different devices, ensuring that the unique structures learned by each device are not lost.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182036543.png" alt="image-20240330182036543"></p>
-<p>The framework’s approach to handling different types of layers, such as convolutional and fully connected layers, within the DNN is crucial for maintaining the model’s expressiveness and performance. For instance, the framework adapts the pruning method to the specific needs of layers like Long Short-Term Memory (LSTM) networks, which have a chain-like structure, to prevent significant performance drops.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182047779.png" alt="image-20240330182047779"></p>
-<p>The experimental evaluation of the framework demonstrates its effectiveness in improving inference accuracy by up to 28.47% while reducing communication costs by up to 34.48× and computation costs by up to 2.44× compared to existing methods. Additionally, the framework achieves up to 1.56× inference speedup and reduces energy consumption by up to 1.78×, showcasing its potential for practical deployment in on-device deep learning applications.</p>
-<h2 id="Figures-Conclusion"><a href="#Figures-Conclusion" class="headerlink" title="Figures & Conclusion"></a>Figures &amp; Conclusion</h2><p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182110813.png" alt="image-20240330182110813"></p>
-<p>The experimental setup of this research is meticulously designed to evaluate the efficacy of the proposed federated learning framework across a variety of mobile AI applications. The experiments are conducted using three representative applications: image classification, human activity recognition, and next-character prediction. These applications are built upon non-IID datasets, reflecting the real-world scenario where data across devices can be diverse and unbalanced.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182120111.png" alt="image-20240330182120111"></p>
-<p>The image classification application is developed using the VGG16 model on datasets such as EMNIST and CIFAR10, with devices holding a limited number of classes and samples. The human activity recognition application employs a 3-layer fully connected neural network, utilizing the HAR dataset which includes accelerometer and gyroscope data from 30 individuals. Lastly, the next-character prediction application is based on an RNN model constructed from an 8-D encoder, using dialogues from The Complete Works of William Shakespeare.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182131270.png" alt="image-20240330182131270"></p>
-<p>The central server and mobile devices used in the experiments are equipped with hardware that reflects realistic mobile AI deployment scenarios, including NVIDIA Jetson TX2, Raspberry Pi 4, and an Intel Xeon <a class="link" href="mailto:E5-2630@2.6GHz">E5-2630@2.6GHz <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> server. Power consumption is measured using the Monsoon power monitor to accurately assess energy efficiency.</p>
-<p>The experimental results are benchmarked against several state-of-the-art federated learning methods, including FedAvg, Top-k, and Per-FedAvg, among others. The proposed framework outperforms these baselines in terms of inference accuracy, communication cost, computation cost, memory footprint, inference latency, and energy consumption.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="https://cdn.jsdelivr.net/gh/hjchen-thu/picb/img_blog/image-20240330182143940.png" alt="image-20240330182143940"></p>
-<p>In terms of inference accuracy, the framework demonstrates a substantial improvement, with gains ranging from 1.09% to 28.47% across different applications. Communication cost is significantly reduced, with savings of up to 34.48×, a result of transmitting only binary masks instead of entire model parameters. Computation cost is also drastically decreased, with reductions of up to 2.44×, attributed to the structured sparsity of the learned models.</p>
-<p>The memory footprint is substantially lower in models trained by the proposed framework, saving up to 32.2% compared to baseline models. This reduction is crucial for mobile devices with limited storage capacity. Inference speed is improved, with the framework achieving up to 1.56× speedup, making it more efficient for real-time applications. Lastly, energy consumption per inference is reduced by up to 1.78×, highlighting the framework’s energy efficiency.</p>
+            <blockquote>
+<p>Li A, Sun J, Zeng X, Zhang M, Li H, Chen Y. FedMask: Joint Computation and Communication-Efficient Personalized Federated Learning via Heterogeneous Masking. SenSys 2021.</p>
+</blockquote>
+<p><a class="link" target="_blank" rel="noopener" href="https://doi.org/10.1145/3485730.3485929">Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>FedMask is a personalized FL paper that targets three problems at once: non-IID data, communication cost, and on-device computation. The core idea is not to communicate full model weights. Each device keeps a fixed model weight tensor and learns a personalized binary mask over those weights. During federation, the clients exchange masks instead of dense parameters.</p>
+<p>This makes FedMask different from ordinary model compression after FL. The sparse model is not a post-training artifact; the mask is the object being optimized and communicated.</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Classic FedAvg assumes clients collaborate on one shared global model. That becomes awkward on mobile devices:</p>
+<ul>
+<li>Data is non-IID, so one global model may not fit each client.</li>
+<li>Uploading dense model updates is expensive.</li>
+<li>Large DNNs are hard to train and run on device.</li>
+</ul>
+<p>The paper positions FedMask against several FL baselines:</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FedMask/fig1-motivation.png"></p>
+<p>The table is a good summary of the target. FedAvg gives neither personalization nor communication/computation saving. Top-k compression reduces communication but does not solve personalization. Per-FedAvg personalizes, but it still pays dense training and communication costs. FedMask tries to keep all three columns checked.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>The paper’s contributions are:</p>
+<ol>
+<li>It formulates personalized FL as heterogeneous binary mask learning over fixed model weights.</li>
+<li>It communicates only binary masks, so each parameter is represented by one bit instead of a full floating-point update.</li>
+<li>It adds structured sparsity through mask learning, reducing runtime computation instead of only communication.</li>
+<li>It proposes a personalization-preserving mask aggregation rule on the server.</li>
+<li>It evaluates the method on image classification, human activity recognition, and next-character prediction.</li>
+</ol>
+<p>The headline numbers reported in the paper:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th align="right">Reported improvement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Inference accuracy</td>
+<td align="right">up to 28.47% higher</td>
+</tr>
+<tr>
+<td>Communication cost</td>
+<td align="right">up to 34.48x lower</td>
+</tr>
+<tr>
+<td>Computation cost</td>
+<td align="right">up to 2.44x lower</td>
+</tr>
+<tr>
+<td>Inference speed</td>
+<td align="right">up to 1.56x faster</td>
+</tr>
+<tr>
+<td>Energy per inference</td>
+<td align="right">up to 1.78x lower</td>
+</tr>
+</tbody></table>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="Masked-local-model"><a href="#Masked-local-model" class="headerlink" title="Masked local model"></a>Masked local model</h3><p>FedMask keeps the real-valued model parameters <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="2.371ex" height="1.595ex" role="img" focusable="false" viewBox="0 -683 1048 705"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D44A" d="M436 683Q450 683 486 682T553 680Q604 680 638 681T677 682Q695 682 695 674Q695 670 692 659Q687 641 683 639T661 637Q636 636 621 632T600 624T597 615Q597 603 613 377T629 138L631 141Q633 144 637 151T649 170T666 200T690 241T720 295T759 362Q863 546 877 572T892 604Q892 619 873 628T831 637Q817 637 817 647Q817 650 819 660Q823 676 825 679T839 682Q842 682 856 682T895 682T949 681Q1015 681 1034 683Q1048 683 1048 672Q1048 666 1045 655T1038 640T1028 637Q1006 637 988 631T958 617T939 600T927 584L923 578L754 282Q586 -14 585 -15Q579 -22 561 -22Q546 -22 542 -17Q539 -14 523 229T506 480L494 462Q472 425 366 239Q222 -13 220 -15T215 -19Q210 -22 197 -22Q178 -22 176 -15Q176 -12 154 304T131 622Q129 631 121 633T82 637H58Q51 644 51 648Q52 671 64 683H76Q118 680 176 680Q301 680 313 683H323Q329 677 329 674T327 656Q322 641 318 637H297Q236 634 232 620Q262 160 266 136L501 550L499 587Q496 629 489 632Q483 636 447 637Q428 637 422 639T416 648Q416 650 418 660Q419 664 420 669T421 676T424 680T428 682T436 683Z"></path></g></g></g></svg></mjx-container> fixed and learns a binary mask <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.986ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 878 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D45A" d="M21 287Q22 293 24 303T36 341T56 388T88 425T132 442T175 435T205 417T221 395T229 376L231 369Q231 367 232 367L243 378Q303 442 384 442Q401 442 415 440T441 433T460 423T475 411T485 398T493 385T497 373T500 364T502 357L510 367Q573 442 659 442Q713 442 746 415T780 336Q780 285 742 178T704 50Q705 36 709 31T724 26Q752 26 776 56T815 138Q818 149 821 151T837 153Q857 153 857 145Q857 144 853 130Q845 101 831 73T785 17T716 -10Q669 -10 648 17T627 73Q627 92 663 193T700 345Q700 404 656 404H651Q565 404 506 303L499 291L466 157Q433 26 428 16Q415 -11 385 -11Q372 -11 364 -4T353 8T350 18Q350 29 384 161L420 307Q423 322 423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 181Q151 335 151 342Q154 357 154 369Q154 405 129 405Q107 405 92 377T69 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g></g></g></svg></mjx-container>. The model used for inference is:</p>
+<p><mjx-container class="MathJax" jax="SVG" display="true"><svg style="vertical-align: -0.188ex;" xmlns="http://www.w3.org/2000/svg" width="7.123ex" height="1.733ex" role="img" focusable="false" viewBox="0 -683 3148.4 766"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D44A" d="M436 683Q450 683 486 682T553 680Q604 680 638 681T677 682Q695 682 695 674Q695 670 692 659Q687 641 683 639T661 637Q636 636 621 632T600 624T597 615Q597 603 613 377T629 138L631 141Q633 144 637 151T649 170T666 200T690 241T720 295T759 362Q863 546 877 572T892 604Q892 619 873 628T831 637Q817 637 817 647Q817 650 819 660Q823 676 825 679T839 682Q842 682 856 682T895 682T949 681Q1015 681 1034 683Q1048 683 1048 672Q1048 666 1045 655T1038 640T1028 637Q1006 637 988 631T958 617T939 600T927 584L923 578L754 282Q586 -14 585 -15Q579 -22 561 -22Q546 -22 542 -17Q539 -14 523 229T506 480L494 462Q472 425 366 239Q222 -13 220 -15T215 -19Q210 -22 197 -22Q178 -22 176 -15Q176 -12 154 304T131 622Q129 631 121 633T82 637H58Q51 644 51 648Q52 671 64 683H76Q118 680 176 680Q301 680 313 683H323Q329 677 329 674T327 656Q322 641 318 637H297Q236 634 232 620Q262 160 266 136L501 550L499 587Q496 629 489 632Q483 636 447 637Q428 637 422 639T416 648Q416 650 418 660Q419 664 420 669T421 676T424 680T428 682T436 683Z"></path></g><g data-mml-node="mo" transform="translate(1270.2,0)"><path data-c="2299" d="M56 250Q56 394 156 488T384 583Q530 583 626 485T722 250Q722 110 625 14T390 -83Q249 -83 153 14T56 250ZM682 250Q682 322 649 387T546 497T381 542Q272 542 184 459T95 250Q95 132 178 45T389 -42Q515 -42 598 45T682 250ZM311 250Q311 285 332 304T375 328Q376 328 382 328T392 329Q424 326 445 305T466 250Q466 217 445 195T389 172Q354 172 333 195T311 250Z"></path></g><g data-mml-node="mi" transform="translate(2270.4,0)"><path data-c="1D45A" d="M21 287Q22 293 24 303T36 341T56 388T88 425T132 442T175 435T205 417T221 395T229 376L231 369Q231 367 232 367L243 378Q303 442 384 442Q401 442 415 440T441 433T460 423T475 411T485 398T493 385T497 373T500 364T502 357L510 367Q573 442 659 442Q713 442 746 415T780 336Q780 285 742 178T704 50Q705 36 709 31T724 26Q752 26 776 56T815 138Q818 149 821 151T837 153Q857 153 857 145Q857 144 853 130Q845 101 831 73T785 17T716 -10Q669 -10 648 17T627 73Q627 92 663 193T700 345Q700 404 656 404H651Q565 404 506 303L499 291L466 157Q433 26 428 16Q415 -11 385 -11Q372 -11 364 -4T353 8T350 18Q350 29 384 161L420 307Q423 322 423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 181Q151 335 151 342Q154 357 154 369Q154 405 129 405Q107 405 92 377T69 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g></g></g></svg></mjx-container></p>
+<p>Each mask entry is binary. A mask value of 0 prunes the corresponding parameter or structured unit; a value of 1 keeps it active.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FedMask/fig5-structured-sparsity.png"></p>
+<p>This is why communication becomes cheap. Instead of sending full gradients or weights, a client sends a binary mask. The server and clients already share the fixed parameter tensor, so the mask is enough to reconstruct the local sparse model.</p>
+<h3 id="Three-stage-workflow"><a href="#Three-stage-workflow" class="headerlink" title="Three-stage workflow"></a>Three-stage workflow</h3><p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FedMask/fig3-workflow.png"></p>
+<p>FedMask has three main stages.</p>
+<p>First, each client performs one-shot pruning. This initializes a local binary mask from its own data. The goal is to avoid starting every device from the same dense structure.</p>
+<p>Second, each selected client optimizes its local mask. The mask is trained through a real-valued proxy and then binarized. The model weights stay frozen, so local training is mask optimization rather than ordinary weight training.</p>
+<p>Third, the server aggregates masks. This is not a simple dense weight average. Since different clients may keep different channels or parameters, the aggregation has to preserve heterogeneity instead of forcing every client into the same subnet.</p>
+<h3 id="Personalization-preserving-aggregation"><a href="#Personalization-preserving-aggregation" class="headerlink" title="Personalization-preserving aggregation"></a>Personalization-preserving aggregation</h3><p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FedMask/fig7-layer-masks.png"></p>
+<p>The aggregation rule updates shared mask units when they are comparable across clients, while allowing client-specific mask structures to remain different. The paper also illustrates this by transforming channel masks into mask representations before server-side aggregation:</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FedMask/fig8-results-summary.png"></p>
+<p>The important point is that the server is not trying to produce one universal sparse architecture. It is coordinating the masks so clients can still benefit from federation without losing local personalization.</p>
+<h3 id="Algorithm-shape"><a href="#Algorithm-shape" class="headerlink" title="Algorithm shape"></a>Algorithm shape</h3><p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FedMask/fig4-mask-learning.png"></p>
+<p>The pseudocode is useful for seeing what is frozen and what moves:</p>
+<ul>
+<li>The server initializes model weights <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="2.371ex" height="1.595ex" role="img" focusable="false" viewBox="0 -683 1048 705"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D44A" d="M436 683Q450 683 486 682T553 680Q604 680 638 681T677 682Q695 682 695 674Q695 670 692 659Q687 641 683 639T661 637Q636 636 621 632T600 624T597 615Q597 603 613 377T629 138L631 141Q633 144 637 151T649 170T666 200T690 241T720 295T759 362Q863 546 877 572T892 604Q892 619 873 628T831 637Q817 637 817 647Q817 650 819 660Q823 676 825 679T839 682Q842 682 856 682T895 682T949 681Q1015 681 1034 683Q1048 683 1048 672Q1048 666 1045 655T1038 640T1028 637Q1006 637 988 631T958 617T939 600T927 584L923 578L754 282Q586 -14 585 -15Q579 -22 561 -22Q546 -22 542 -17Q539 -14 523 229T506 480L494 462Q472 425 366 239Q222 -13 220 -15T215 -19Q210 -22 197 -22Q178 -22 176 -15Q176 -12 154 304T131 622Q129 631 121 633T82 637H58Q51 644 51 648Q52 671 64 683H76Q118 680 176 680Q301 680 313 683H323Q329 677 329 674T327 656Q322 641 318 637H297Q236 634 232 620Q262 160 266 136L501 550L499 587Q496 629 489 632Q483 636 447 637Q428 637 422 639T416 648Q416 650 418 660Q419 664 420 669T421 676T424 680T428 682T436 683Z"></path></g></g></g></svg></mjx-container> and a global mask.</li>
+<li>Clients download <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="2.371ex" height="1.595ex" role="img" focusable="false" viewBox="0 -683 1048 705"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D44A" d="M436 683Q450 683 486 682T553 680Q604 680 638 681T677 682Q695 682 695 674Q695 670 692 659Q687 641 683 639T661 637Q636 636 621 632T600 624T597 615Q597 603 613 377T629 138L631 141Q633 144 637 151T649 170T666 200T690 241T720 295T759 362Q863 546 877 572T892 604Q892 619 873 628T831 637Q817 637 817 647Q817 650 819 660Q823 676 825 679T839 682Q842 682 856 682T895 682T949 681Q1015 681 1034 683Q1048 683 1048 672Q1048 666 1045 655T1038 640T1028 637Q1006 637 988 631T958 617T939 600T927 584L923 578L754 282Q586 -14 585 -15Q579 -22 561 -22Q546 -22 542 -17Q539 -14 523 229T506 480L494 462Q472 425 366 239Q222 -13 220 -15T215 -19Q210 -22 197 -22Q178 -22 176 -15Q176 -12 154 304T131 622Q129 631 121 633T82 637H58Q51 644 51 648Q52 671 64 683H76Q118 680 176 680Q301 680 313 683H323Q329 677 329 674T327 656Q322 641 318 637H297Q236 634 232 620Q262 160 266 136L501 550L499 587Q496 629 489 632Q483 636 447 637Q428 637 422 639T416 648Q416 650 418 660Q419 664 420 669T421 676T424 680T428 682T436 683Z"></path></g></g></g></svg></mjx-container>, prune once, and keep a local mask.</li>
+<li>In each round, selected clients update masks on local data.</li>
+<li>Clients return masks, not dense model weights.</li>
+<li>The server aggregates masks and broadcasts the result for the next round.</li>
+</ul>
+<p>This is a very different communication object from FedAvg. The learned mask is both the compression mechanism and the personalization mechanism.</p>
+<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><h3 id="Setup"><a href="#Setup" class="headerlink" title="Setup"></a>Setup</h3><p>The paper evaluates four tasks:</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FedMask/fig9-evaluation-setup.png"></p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Dataset</th>
+<th align="right">Devices / classes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Image classification</td>
+<td>EMNIST</td>
+<td align="right">2414 / 64</td>
+</tr>
+<tr>
+<td>Image classification</td>
+<td>CIFAR-10</td>
+<td align="right">400 / 10</td>
+</tr>
+<tr>
+<td>Human activity recognition</td>
+<td>HAR</td>
+<td align="right">30 / 6</td>
+</tr>
+<tr>
+<td>Next-character prediction</td>
+<td>Shakespeare</td>
+<td align="right">1129 / 80</td>
+</tr>
+</tbody></table>
+<p>The baselines include FedAvg, Top-k, Per-FedAvg, LG-FedAvg, BNN-FedAvg, and standalone local training. This is a useful comparison set because each baseline stresses a different axis: communication compression, personalization, binary networks, or no federation.</p>
+<h3 id="Accuracy-versus-communication"><a href="#Accuracy-versus-communication" class="headerlink" title="Accuracy versus communication"></a>Accuracy versus communication</h3><p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FedMask/fig10-accuracy-communication.png"></p>
+<p>The red star is FedMask. Across IC-CIFAR10, IC-EMNIST, HAR, and NCP, it sits near the low-communication and high-accuracy corner. This is the core empirical claim: mask communication can be cheap without collapsing accuracy.</p>
+<p>BNN-FedAvg also communicates cheaply, but the accuracy is much worse in the plots. Standalone local training has no communication, but it usually gives up too much accuracy because each device trains alone.</p>
+<h3 id="Computation-cost"><a href="#Computation-cost" class="headerlink" title="Computation cost"></a>Computation cost</h3><p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FedMask/fig11-computation-cost.png"></p>
+<p>The computation-cost plot shows why structured masks matter. If pruning were only unstructured, communication would shrink but inference/training kernels may not become much faster. FedMask tries to learn masks that remove structured units, so the active computation graph is smaller.</p>
+<p>The figure reports reductions across all four tasks. The gains are largest for HAR in this plot and smaller for NCP, which is a reminder that the benefit depends on the model and layer structure.</p>
+<h3 id="Memory-and-inference-latency"><a href="#Memory-and-inference-latency" class="headerlink" title="Memory and inference latency"></a>Memory and inference latency</h3><p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/FedMask/fig12-latency-energy.png"></p>
+<p>FedMask also reduces model footprint relative to dense baselines:</p>
+<table>
+<thead>
+<tr>
+<th>Application</th>
+<th align="right">FedMask</th>
+<th align="right">Baseline</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IC-CIFAR10</td>
+<td align="right">365.30 MB</td>
+<td align="right">537.21 MB</td>
+</tr>
+<tr>
+<td>IC-EMNIST</td>
+<td align="right">364.72 MB</td>
+<td align="right">538.09 MB</td>
+</tr>
+<tr>
+<td>HAR</td>
+<td align="right">2.69 MB</td>
+<td align="right">4.41 MB</td>
+</tr>
+<tr>
+<td>NCP</td>
+<td align="right">0.92 MB</td>
+<td align="right">1.53 MB</td>
+</tr>
+</tbody></table>
+<p>BNN-FedAvg is much smaller than FedMask, but that is not a free win: the earlier accuracy-communication plot shows BNN-FedAvg loses a lot of accuracy. FedMask is a middle point: not as tiny as a fully binarized model, but substantially more accurate.</p>
+<p>The inference-time bars report speedups around 1.38x to 1.56x over dense baselines across the tested applications.</p>
+<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>The useful idea in FedMask is that the mask is not just a compression artifact. It is the personalized model.</p>
+<p>My notes:</p>
+<ul>
+<li>Fixing <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="2.371ex" height="1.595ex" role="img" focusable="false" viewBox="0 -683 1048 705"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D44A" d="M436 683Q450 683 486 682T553 680Q604 680 638 681T677 682Q695 682 695 674Q695 670 692 659Q687 641 683 639T661 637Q636 636 621 632T600 624T597 615Q597 603 613 377T629 138L631 141Q633 144 637 151T649 170T666 200T690 241T720 295T759 362Q863 546 877 572T892 604Q892 619 873 628T831 637Q817 637 817 647Q817 650 819 660Q823 676 825 679T839 682Q842 682 856 682T895 682T949 681Q1015 681 1034 683Q1048 683 1048 672Q1048 666 1045 655T1038 640T1028 637Q1006 637 988 631T958 617T939 600T927 584L923 578L754 282Q586 -14 585 -15Q579 -22 561 -22Q546 -22 542 -17Q539 -14 523 229T506 480L494 462Q472 425 366 239Q222 -13 220 -15T215 -19Q210 -22 197 -22Q178 -22 176 -15Q176 -12 154 304T131 622Q129 631 121 633T82 637H58Q51 644 51 648Q52 671 64 683H76Q118 680 176 680Q301 680 313 683H323Q329 677 329 674T327 656Q322 641 318 637H297Q236 634 232 620Q262 160 266 136L501 550L499 587Q496 629 489 632Q483 636 447 637Q428 637 422 639T416 648Q416 650 418 660Q419 664 420 669T421 676T424 680T428 682T436 683Z"></path></g></g></g></svg></mjx-container> and learning <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.986ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 878 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D45A" d="M21 287Q22 293 24 303T36 341T56 388T88 425T132 442T175 435T205 417T221 395T229 376L231 369Q231 367 232 367L243 378Q303 442 384 442Q401 442 415 440T441 433T460 423T475 411T485 398T493 385T497 373T500 364T502 357L510 367Q573 442 659 442Q713 442 746 415T780 336Q780 285 742 178T704 50Q705 36 709 31T724 26Q752 26 776 56T815 138Q818 149 821 151T837 153Q857 153 857 145Q857 144 853 130Q845 101 831 73T785 17T716 -10Q669 -10 648 17T627 73Q627 92 663 193T700 345Q700 404 656 404H651Q565 404 506 303L499 291L466 157Q433 26 428 16Q415 -11 385 -11Q372 -11 364 -4T353 8T350 18Q350 29 384 161L420 307Q423 322 423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 181Q151 335 151 342Q154 357 154 369Q154 405 129 405Q107 405 92 377T69 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g></g></g></svg></mjx-container> turns FL communication from dense parameter exchange into binary structure exchange.</li>
+<li>Heterogeneous masks are a natural fit for non-IID clients because each client can keep a different sparse subnet.</li>
+<li>Structured sparsity is important; otherwise lower communication would not necessarily reduce device computation.</li>
+<li>The tradeoff is that the method depends on a good fixed weight initialization and a mask aggregation rule that does not erase personalization.</li>
+</ul>
+<p>I would read FedMask as an early systems-oriented PFL paper: it is less about finding the best global optimizer and more about choosing the right object to federate. For mobile AI, federating masks can be a better systems interface than federating full models.</p>
 
         </div>
 
@@ -602,11 +727,11 @@ mjx-container[display="true"] + br {
             <ul class="post-tags-box">
                 
                     <li class="tag-item">
-                        <a href="/tags/NAS/">#NAS</a>&nbsp;
+                        <a href="/tags/FL/">#FL</a>&nbsp;
                     </li>
                 
                     <li class="tag-item">
-                        <a href="/tags/FL/">#FL</a>&nbsp;
+                        <a href="/tags/Pruning/">#Pruning</a>&nbsp;
                     </li>
                 
             </ul>
@@ -620,13 +745,13 @@ mjx-container[display="true"] + br {
                     <div class="article-prev">
                         <a class="prev"
                         rel="prev"
-                        href="/2022/09/28/FedNas/"
+                        href="/2022/09/17/HAQ/"
                         >
                             <span class="left arrow-icon flex justify-center items-center">
                                 <i class="fa-solid fa-chevron-left"></i>
                             </span>
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Fednas: Federated deep learning via neural architecture search</span>
+                                <span class="post-nav-title-item">HAQ: Hardware-Aware Mixed Precision</span>
                                 <span class="post-nav-item">Prev posts</span>
                             </span>
                         </a>
@@ -639,7 +764,7 @@ mjx-container[display="true"] + br {
                         href="/2022/08/28/Edd/"
                         >
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Edd: Efficient differentiable dnn architecture and implementation co-search for embedded ai solutions</span>
+                                <span class="post-nav-title-item">EDD: Efficient Differentiable DNN Architecture and Implementation Co-search</span>
                                 <span class="post-nav-item">Next posts</span>
                             </span>
                             <span class="right arrow-icon flex justify-center items-center">
@@ -660,8 +785,8 @@ mjx-container[display="true"] + br {
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">Fedmask: Joint computation and communication-efficient personalized federated learning via heterogeneous masking</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Figures-Conclusion"><span class="nav-text">Figures &amp; Conclusion</span></a></li></ol>
+        <div class="page-title">FedMask: Joint Computation and Communication-Efficient Personalized Federated Learning</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Masked-local-model"><span class="nav-text">Masked local model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Three-stage-workflow"><span class="nav-text">Three-stage workflow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Personalization-preserving-aggregation"><span class="nav-text">Personalization-preserving aggregation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Algorithm-shape"><span class="nav-text">Algorithm shape</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiments"><span class="nav-text">Experiments</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Setup"><span class="nav-text">Setup</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Accuracy-versus-communication"><span class="nav-text">Accuracy versus communication</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Computation-cost"><span class="nav-text">Computation cost</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Memory-and-inference-latency"><span class="nav-text">Memory and inference latency</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
 
     </div>
 </div>

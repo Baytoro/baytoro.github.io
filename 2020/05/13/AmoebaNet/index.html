@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="H.J. Chen">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://baytoro.github.io.git/2020/05/13/amoebanet/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="AmoebaNet shows that aging evolution can outperform RL and random search under a controlled NASNet-style search space.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Regularized Evolution for Image Classifier Architecture Search">
+<meta property="og:url" content="https://baytoro.github.io.git/2020/05/13/AmoebaNet/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="AmoebaNet shows that aging evolution can outperform RL and random search under a controlled NASNet-style search space.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/AmoebaNet/fig1-search-space.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/AmoebaNet/alg1-aging-evolution.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/AmoebaNet/fig2-mutations.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/AmoebaNet/fig3-search-progress.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/AmoebaNet/fig4-cost-accuracy.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/AmoebaNet/fig5-amoebanet-a.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/AmoebaNet/table1-cifar-results.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/AmoebaNet/table2-imagenet-results.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/AmoebaNet/fig7-aging-vs-nonaging.png">
+<meta property="article:published_time" content="2020-05-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-01T15:49:07.952Z">
+<meta property="article:author" content="H.J. Chen">
+<meta property="article:tag" content="NAS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://baytoro.github.io.git/_imgs/AmoebaNet/fig1-search-space.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/personal/avatar.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/personal/avatar.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/personal/avatar.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Regularized Evolution for Image Classifier Architecture Search -
+        
+        Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+        <link href="" rel="stylesheet">
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"baytoro.github.io.git","root":"/","language":"en","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":false,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/picture/s1.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":true,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Welcome, traveler :)","subtitle":{"text":["May you find inspiration and joy here (scroll down ↓)"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":40,"backing_speed":10,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":"https://github.com/Baytoro","zhihu":"https://www.zhihu.com/people/baytoro","email":"guaguabear@hotmail.com"},"qrs":null}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"MapleStory Title","artist":"MapleStory","url":"/music/MapleStory Title.mp3","cover":"/picture/maple.jpeg"},{"name":"Above the Treetops","artist":"MapleStory","url":"/music/Above the Treetops.mp3","cover":"/picture/maple.jpeg"},{"name":"When the Morning Comes","artist":"MapleStory","url":"/music/When the Morning Comes.mp3","cover":"/picture/maple.jpeg"},{"name":"Missing You","artist":"MapleStory","url":"/music/Missing You.mp3","cover":"/picture/maple.jpeg"},{"name":"Shinin' Harbor","artist":"MapleStory","url":"/music/Shinin' Harbor.mp3","cover":"/picture/maple.jpeg"},{"name":"Snowy Village","artist":"MapleStory","url":"/music/Snowy Village.mp3","cover":"/picture/maple.jpeg"}]},"mermaid":{"enable":true,"version":"9.3.0"}},"version":"2.5.0","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"About":{"path":"/about","icon":"fa-regular fa-user"},"Archives":{"icon":"fa-regular fa-archive","submenus":{"Posts":"/archives","Categories":"/categories","Tags":"/tags"}},"GitHub":{"icon":"fa-brands fa-github","path":"https://github.com/Baytoro"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":false,"position":"left","first_item":"info","menu_title":"Links","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":5}},"footerStart":"2020/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/about"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/archives">POSTS
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/categories">CATEGORIES
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/tags">TAGS
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    target="_blank" rel="noopener" href="https://github.com/Baytoro"  >
+                                    
+                                        
+                                            <i class="fa-brands fa-github"></i>
+                                        
+                                        GITHUB
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i></div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/about"  >
+                             
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/archives">POSTS</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/categories">CATEGORIES</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/tags">TAGS</a>
+                            </li>
+                        
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        target="_blank" rel="noopener" href="https://github.com/Baytoro"  >
+                             
+                                
+                                    <i class="fa-brands fa-github"></i>
+                                
+                                GITHUB
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            
+                
+                
+                <img src="/_imgs/AmoebaNet/thumbnail.png" alt="Regularized Evolution for Image Classifier Architecture Search" class="max-w-none"/>
+                
+                <h1 class="article-title-cover">Regularized Evolution for Image Classifier Architecture Search</h1>
+            
+            </div>
+            
+                    
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/personal/avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">H.J. Chen</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2020-05-13</span>
+        <span class="mobile">2020-05-13</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <!-- <span class="article-date article-meta-item"> -->
+            <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
+            <!-- <span class="desktop">2026-07-01 23:49:07</span>
+            <span class="mobile">2026-07-01 23:49:07</span> -->
+            <!-- <span class="hover-info">Updated</span> -->
+        <!-- </span> -->
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/NAS/">NAS</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body">
+            <blockquote>
+<p>Real E, Aggarwal A, Huang Y, Le Q V. Regularized Evolution for Image Classifier Architecture Search. AAAI 2019.</p>
+</blockquote>
+<p><a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/1802.01548.pdf">Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> / <a class="link" target="_blank" rel="noopener" href="https://colab.research.google.com/github/google-research/google-research/blob/master/evolution/regularized_evolution_algorithm/regularized_evolution.ipynb">Colab <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>AmoebaNet is a useful paper because it separates two things that were often mixed together in early NAS papers:</p>
+<ol>
+<li>the search space, which was already made strong by NASNet;</li>
+<li>the search algorithm, where the paper compares evolution, RL, and random search under similar conditions.</li>
+</ol>
+<p>The key algorithmic change is <strong>aging evolution</strong>. Tournament selection still chooses a good parent from a sampled subset of the population, but the algorithm removes the oldest individual instead of removing the worst one. That sounds like a small queue-management rule, but it changes the failure mode: a model that got lucky early cannot sit in the population forever.</p>
+<p>The result is AmoebaNet-A, an evolved NASNet-style cell architecture. The paper reports that evolution reaches good candidates faster than the reproduced RL baseline in the early part of the search, and the final AmoebaNet-A transfer result is competitive on ImageNet.</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Before this paper, the strongest automated image classifiers were mostly RL-based NAS results, especially NASNet. That makes the comparison tricky: if an RL controller finds a good model, is the controller the important part, or did the NASNet cell search space already do most of the work?</p>
+<p>AmoebaNet keeps the NASNet-style search space and changes the optimizer. This is the clean part of the paper. It is not trying to invent a new convolution operator or a new macro skeleton. It asks whether a simpler evolutionary process can compete with an RL controller when both search over the same kind of cells.</p>
+<p>The historical point also matters. Evolution had been used for neural topology search for a long time, but earlier evolved image classifiers did not clearly beat hand-designed networks. This paper argues that, with a modern cell space and enough compute, evolution is not just a toy baseline.</p>
+<h2 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h2><p>The main contributions are:</p>
+<ol>
+<li>It proposes aging evolution, also called regularized evolution, for NAS.</li>
+<li>It compares evolution, RL, and random search in the same NASNet-style search space.</li>
+<li>It gives a concrete mutation-only implementation: mutate hidden-state inputs or operation labels inside cells.</li>
+<li>It discovers AmoebaNet-A and reports competitive CIFAR-10 and ImageNet results.</li>
+<li>It studies aging versus non-aging tournament selection and argues that aging helps under noisy architecture evaluation.</li>
+</ol>
+<p>The contribution is not “evolution always beats RL.” The stronger reading is narrower: in this controlled setup, regularized evolution is a very strong and simple NAS baseline.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="NASNet-search-space"><a href="#NASNet-search-space" class="headerlink" title="NASNet search space"></a>NASNet search space</h3><p>All main experiments use the NASNet search space. A model is a stack of two searched cell types:</p>
+<ul>
+<li><strong>normal cell</strong>: preserves feature-map resolution;</li>
+<li><strong>reduction cell</strong>: reduces spatial resolution, usually by stride-2 operations.</li>
+</ul>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/AmoebaNet/fig1-search-space.png"></p>
+<p>The outer skeleton is fixed. The search only decides the internal wiring and operations of the normal and reduction cells. After the cell topology is selected, two manual scale knobs still exist:</p>
+<ul>
+<li>(N): number of normal cells per stack;</li>
+<li>(F): number of output filters for convolution operations.</li>
+</ul>
+<p>Each cell is built from five pairwise combinations. A pairwise combination selects two earlier hidden states, applies two operations, and adds their outputs to create a new hidden state. Unused hidden states are concatenated at the end of the cell.</p>
+<p>The operation set includes identity, separable convolutions with several kernel sizes, average pooling, max pooling, dilated separable convolution, and a <code>1x7</code> then <code>7x1</code> convolution. This is a rich enough space for interesting cell topologies, but it is still strongly hand-shaped.</p>
+<h3 id="Aging-evolution"><a href="#Aging-evolution" class="headerlink" title="Aging evolution"></a>Aging evolution</h3><p>The search maintains a population of already-trained candidate architectures. In the main setup, the paper uses population size (P=100) and tournament sample size (S=25).</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/AmoebaNet/alg1-aging-evolution.png"></p>
+<p>The loop is:</p>
+<ol>
+<li>Initialize a population with random architectures.</li>
+<li>Randomly sample (S) candidates from the current population.</li>
+<li>Choose the highest-validation-accuracy candidate in that sample as the parent.</li>
+<li>Mutate the parent architecture to produce a child.</li>
+<li>Train and evaluate the child.</li>
+<li>Push the child into the population.</li>
+<li>Remove the oldest individual from the population.</li>
+</ol>
+<p>The last line is the whole regularization mechanism. Standard tournament selection often removes the worst individual. Aging evolution removes by age, so survival requires repeatedly producing descendants that train well. A model that only looked good once because of training noise eventually leaves the queue.</p>
+<p>This distinction matters because NAS candidate evaluation is noisy. The paper’s interpretation is that non-aging evolution can overfit to lucky trained models, while aging evolution pays more attention to architectures that can reproduce good performance across generations.</p>
+<h3 id="Mutations"><a href="#Mutations" class="headerlink" title="Mutations"></a>Mutations</h3><p>A child is produced by applying a random mutation to the parent’s architecture. The paper mainly uses two mutation types:</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/AmoebaNet/fig2-mutations.png"></p>
+<ul>
+<li><strong>hidden-state mutation</strong>: choose one pairwise combination and replace one of its input hidden states with another valid previous state.</li>
+<li><strong>operation mutation</strong>: choose one pairwise combination and replace one operation label.</li>
+</ul>
+<p>There is also an identity mutation with small probability. That is useful in a noisy evaluation setup because sometimes the same architecture deserves another training/evaluation sample.</p>
+<h3 id="Search-and-augmentation"><a href="#Search-and-augmentation" class="headerlink" title="Search and augmentation"></a>Search and augmentation</h3><p>The search itself is done on relatively small CIFAR-10 models. The paper withholds 5k CIFAR-10 examples for validation, trains each candidate for 25 epochs during search, and stops after evaluating 20k models. The reported large-scale experiment uses 450 K40 GPUs for about 7 days.</p>
+<p>After search, the best architectures are augmented by increasing (N) and (F), then trained longer for CIFAR-10 or ImageNet. This is the same basic recipe as NASNet: search a cell cheaply, then scale the discovered cell for the final model.</p>
+<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><h3 id="Search-dynamics"><a href="#Search-dynamics" class="headerlink" title="Search dynamics"></a>Search dynamics</h3><p>The first result is the side-by-side search comparison. The paper runs five repeats for evolution, RL, and random search.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/AmoebaNet/fig3-search-progress.png"></p>
+<p>Evolution reaches high pre-augmentation CIFAR-10 accuracy earlier than RL in these runs, while both are clearly above random search. This is the part of the result I find most useful: if the search has to stop early because compute is limited, the trajectory matters more than only the final point.</p>
+<p>There is one caveat. Figure 3 plots accuracy over wall-clock search time, not the compute cost of each discovered model. The paper handles that in the next comparison.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/AmoebaNet/fig4-cost-accuracy.png"></p>
+<p>After augmentation, evolved models have better accuracy than random search at similar cost, and lower FLOPs than RL at similar accuracy. Within this case study, evolution lands in the better corner of the accuracy-cost plot.</p>
+<h3 id="AmoebaNet-A-on-CIFAR-10"><a href="#AmoebaNet-A-on-CIFAR-10" class="headerlink" title="AmoebaNet-A on CIFAR-10"></a>AmoebaNet-A on CIFAR-10</h3><p>The best evolved architecture is named AmoebaNet-A.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/AmoebaNet/fig5-amoebanet-a.png"></p>
+<p>The architecture is still recognizably NASNet-style: a repeated normal cell and reduction cell, not a fully free-form model. The found cells use separable convolutions, pooling, identity/none choices, and several skip-like edges.</p>
+<p>On CIFAR-10, AmoebaNet-A is compared against the published NASNet-A baseline:</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/AmoebaNet/table1-cifar-results.png"></p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th align="right">Params</th>
+<th align="right">Test error</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NASNet-A baseline</td>
+<td align="right">3.3M</td>
+<td align="right">3.41</td>
+</tr>
+<tr>
+<td>AmoebaNet-A, (N=6,F=32)</td>
+<td align="right">2.6M</td>
+<td align="right">3.40 +/- 0.08</td>
+</tr>
+<tr>
+<td>AmoebaNet-A, (N=6,F=36)</td>
+<td align="right">3.2M</td>
+<td align="right">3.34 +/- 0.06</td>
+</tr>
+</tbody></table>
+<p>This table should be read carefully. The paper notes that the NASNet-A comparison is not perfectly controlled because the exact final training code and number of experiments may differ. The cleaner comparison is still the evolution/RL/random-search study above.</p>
+<h3 id="ImageNet-transfer"><a href="#ImageNet-transfer" class="headerlink" title="ImageNet transfer"></a>ImageNet transfer</h3><p>The ImageNet result is where AmoebaNet-A became visible as more than an algorithm toy.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/AmoebaNet/table2-imagenet-results.png"></p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th align="right">Params</th>
+<th align="right">Multiply-adds</th>
+<th align="right">Top-1 / Top-5</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NASNet-A</td>
+<td align="right">88.9M</td>
+<td align="right">23.8B</td>
+<td align="right">82.7 / 96.2</td>
+</tr>
+<tr>
+<td>PNASNet-5</td>
+<td align="right">86.1M</td>
+<td align="right">25.0B</td>
+<td align="right">82.9 / 96.2</td>
+</tr>
+<tr>
+<td>AmoebaNet-A, (N=6,F=190)</td>
+<td align="right">86.7M</td>
+<td align="right">23.1B</td>
+<td align="right">82.8 / 96.1</td>
+</tr>
+<tr>
+<td>AmoebaNet-A, (N=6,F=448)</td>
+<td align="right">469M</td>
+<td align="right">104B</td>
+<td align="right">83.9 / 96.6</td>
+</tr>
+</tbody></table>
+<p>At comparable size, AmoebaNet-A is around the same level as NASNet-A and PNASNet-5. At the very large setting, it reports 83.9% top-1 / 96.6% top-5, but that model is huge: 469M parameters and 104B multiply-adds. This is an accuracy result, not an efficient-deployment result.</p>
+<h3 id="Aging-versus-non-aging"><a href="#Aging-versus-non-aging" class="headerlink" title="Aging versus non-aging"></a>Aging versus non-aging</h3><p>The most interesting ablation is aging evolution versus non-aging tournament selection.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/AmoebaNet/fig7-aging-vs-nonaging.png"></p>
+<p>Most points are above the (y=x) line, which means aging evolution beats the non-aging variant in these small-compute experiments. The proposed explanation is practical:</p>
+<ul>
+<li>non-aging evolution can keep a lucky model alive for a long time;</li>
+<li>aging evolution removes old models, so useful architectures must keep reappearing through descendants;</li>
+<li>this acts like regularization against noisy architecture evaluation.</li>
+</ul>
+<p>This is why the paper’s title says regularized evolution. The regularization is not a loss term. It is an algorithmic constraint on population lifetime.</p>
+<h2 id="Reproduction-Notes"><a href="#Reproduction-Notes" class="headerlink" title="Reproduction Notes"></a>Reproduction Notes</h2><p>A faithful reproduction should separate three stages:</p>
+<ol>
+<li><strong>Search phase</strong>: small CIFAR-10 models, 25 epochs per candidate, validation on a 5k holdout split, fixed (P) and (S).</li>
+<li><strong>Selection phase</strong>: choose the best architecture from search history, not just the current population.</li>
+<li><strong>Augmentation phase</strong>: scale (N) and (F), then train the final model from scratch with the full recipe.</li>
+</ol>
+<p>I would report at least four things:</p>
+<ul>
+<li>validation accuracy during search;</li>
+<li>final CIFAR/ImageNet accuracy after augmentation;</li>
+<li>final model cost in FLOPs or multiply-adds;</li>
+<li>number of evaluated models and actual hardware time.</li>
+</ul>
+<p>The hardware number matters here. The search still trains child models independently. This is not an efficient-NAS method in the ENAS/DARTS sense. It is a strong full-training search baseline.</p>
+<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>AmoebaNet’s lesson is that evolutionary NAS should not be dismissed as an older alternative to RL. In the NASNet cell space, a simple tournament-selection loop with age-based removal is enough to compete with a more complex controller.</p>
+<p>The limitation is also clear. AmoebaNet spends a lot of compute, searches for accuracy rather than latency, and relies on a manually designed cell-based macro skeleton. Later work such as ENAS, DARTS, MnasNet, FBNet, and ProxylessNAS attacks different parts of that cost/deployment problem.</p>
+<p>I read this paper as a baseline-setting result: if a new NAS method claims better search intelligence, it should beat regularized evolution under a fair search space, budget, and final training recipe.</p>
+
+        </div>
+
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/NAS/">#NAS</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2020/06/24/Mnasnet/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">MnasNet: Platform-Aware Neural Architecture Search for Mobile</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2020/04/19/pnas/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Progressive Neural Architecture Search</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Regularized Evolution for Image Classifier Architecture Search</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution"><span class="nav-text">Contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NASNet-search-space"><span class="nav-text">NASNet search space</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Aging-evolution"><span class="nav-text">Aging evolution</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mutations"><span class="nav-text">Mutations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Search-and-augmentation"><span class="nav-text">Search and augmentation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Results"><span class="nav-text">Results</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Search-dynamics"><span class="nav-text">Search dynamics</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AmoebaNet-A-on-CIFAR-10"><span class="nav-text">AmoebaNet-A on CIFAR-10</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ImageNet-transfer"><span class="nav-text">ImageNet transfer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Aging-versus-non-aging"><span class="nav-text">Aging versus non-aging</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reproduction-Notes"><span class="nav-text">Reproduction Notes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">H.J. Chen</a>
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.0</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/libs/mermaid.min.js"></script>
+
+    
+<script src="/js/plugins/mermaid.js"></script>
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+    <div id="aplayer"></div>
+
+<script src="/js/libs/APlayer.min.js"></script>
+
+
+<script src="/js/plugins/aplayer.js"></script>
+
+
+</body>
+</html>

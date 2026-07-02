@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="H.J. Chen">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://baytoro.github.io.git/2021/12/22/drnas/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="DrNAS replaces deterministic architecture weights with a Dirichlet distribution to stabilize differentiable NAS.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DrNAS: Dirichlet Neural Architecture Search">
+<meta property="og:url" content="https://baytoro.github.io.git/2021/12/22/DrNas/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="DrNAS replaces deterministic architecture weights with a Dirichlet distribution to stabilize differentiable NAS.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/DrNas/fig1-overview.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/DrNas/fig2-3-discovered-cells.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/DrNas/table2-cifar10-results.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/DrNas/table3-imagenet-results.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/DrNas/table4-nasbench-results.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/DrNas/table5-anchor-regularizer.png">
+<meta property="article:published_time" content="2021-12-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-02T08:47:49.344Z">
+<meta property="article:author" content="H.J. Chen">
+<meta property="article:tag" content="NAS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://baytoro.github.io.git/_imgs/DrNas/fig1-overview.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/personal/avatar.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/personal/avatar.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/personal/avatar.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            DrNAS: Dirichlet Neural Architecture Search -
+        
+        Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+        <link href="" rel="stylesheet">
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"baytoro.github.io.git","root":"/","language":"en","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":false,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/picture/s1.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":true,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Welcome, traveler :)","subtitle":{"text":["May you find inspiration and joy here (scroll down ↓)"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":40,"backing_speed":10,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":"https://github.com/Baytoro","zhihu":"https://www.zhihu.com/people/baytoro","email":"guaguabear@hotmail.com"},"qrs":null}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"MapleStory Title","artist":"MapleStory","url":"/music/MapleStory Title.mp3","cover":"/picture/maple.jpeg"},{"name":"Above the Treetops","artist":"MapleStory","url":"/music/Above the Treetops.mp3","cover":"/picture/maple.jpeg"},{"name":"When the Morning Comes","artist":"MapleStory","url":"/music/When the Morning Comes.mp3","cover":"/picture/maple.jpeg"},{"name":"Missing You","artist":"MapleStory","url":"/music/Missing You.mp3","cover":"/picture/maple.jpeg"},{"name":"Shinin' Harbor","artist":"MapleStory","url":"/music/Shinin' Harbor.mp3","cover":"/picture/maple.jpeg"},{"name":"Snowy Village","artist":"MapleStory","url":"/music/Snowy Village.mp3","cover":"/picture/maple.jpeg"}]},"mermaid":{"enable":true,"version":"9.3.0"}},"version":"2.5.0","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"About":{"path":"/about","icon":"fa-regular fa-user"},"Archives":{"icon":"fa-regular fa-archive","submenus":{"Posts":"/archives","Categories":"/categories","Tags":"/tags"}},"GitHub":{"icon":"fa-brands fa-github","path":"https://github.com/Baytoro"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":false,"position":"left","first_item":"info","menu_title":"Links","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":5}},"footerStart":"2020/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/about"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/archives">POSTS
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/categories">CATEGORIES
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/tags">TAGS
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    target="_blank" rel="noopener" href="https://github.com/Baytoro"  >
+                                    
+                                        
+                                            <i class="fa-brands fa-github"></i>
+                                        
+                                        GITHUB
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i></div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/about"  >
+                             
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/archives">POSTS</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/categories">CATEGORIES</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/tags">TAGS</a>
+                            </li>
+                        
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        target="_blank" rel="noopener" href="https://github.com/Baytoro"  >
+                             
+                                
+                                    <i class="fa-brands fa-github"></i>
+                                
+                                GITHUB
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            
+                
+                
+                <img src="/_imgs/DrNas/thumbnail.png" alt="DrNAS: Dirichlet Neural Architecture Search" class="max-w-none"/>
+                
+                <h1 class="article-title-cover">DrNAS: Dirichlet Neural Architecture Search</h1>
+            
+            </div>
+            
+                    
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/personal/avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">H.J. Chen</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2021-12-22</span>
+        <span class="mobile">2021-12-22</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <!-- <span class="article-date article-meta-item"> -->
+            <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
+            <!-- <span class="desktop">2026-07-02 16:47:49</span>
+            <span class="mobile">2026-07-02 16:47:49</span> -->
+            <!-- <span class="hover-info">Updated</span> -->
+        <!-- </span> -->
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/NAS/">NAS</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body">
+            <blockquote>
+<p>Chen, Wang, Cheng, Tang, and Hsieh. DrNAS: Dirichlet Neural Architecture Search. ICLR 2021.</p>
+</blockquote>
+<p><a class="link"   target="_blank" rel="noopener" href="https://arxiv.org/pdf/2006.10355.pdf" >Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>DrNAS targets the failure mode that makes DARTS-style NAS hard to trust: the search can collapse early into shallow or skip-heavy architectures, and the final cell can be very sensitive to seed, search space, and training length.</p>
+<p>The paper’s idea is to treat architecture mixing weights as random variables on the probability simplex. Instead of learning one deterministic softmax vector, DrNAS samples operation weights from a Dirichlet distribution and regularizes that distribution around a stable anchor.</p>
+<h2 id="From-Softmax-Weights-To-Dirichlet-Samples"><a href="#From-Softmax-Weights-To-Dirichlet-Samples" class="headerlink" title="From Softmax Weights To Dirichlet Samples"></a>From Softmax Weights To Dirichlet Samples</h2><p>DARTS relaxes a discrete edge choice into a deterministic mixture:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mixed_op(x) = sum over candidate ops of theta_op * op(x)</span><br></pre></td></tr></table></figure></div>
+
+<p>DrNAS keeps the mixture view but makes the mixing vector stochastic:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">theta ~ Dirichlet(beta)</span><br></pre></td></tr></table></figure></div>
+
+<p>The concentration parameter <code>beta</code> controls how samples behave. A broad distribution keeps exploration alive; a concentrated distribution moves toward confident operation selection. The final discrete architecture is derived from the Dirichlet mean.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/DrNas/fig1-overview.png"
+                     
+                ></p>
+<p>Figure 1 shows the range of accuracies from sampled architectures on NAS-Bench-201. The solid line is the architecture selected by the Dirichlet mean. This is a useful diagnostic: the method is not only trying to find one good point, but to keep the architecture distribution well behaved during search.</p>
+<h2 id="Anchor-Regularization"><a href="#Anchor-Regularization" class="headerlink" title="Anchor Regularization"></a>Anchor Regularization</h2><p>A raw Dirichlet search can still become unstable because the variance of the distribution is hard to control. DrNAS adds an anchor regularizer that keeps the learned concentration parameter near a symmetric Dirichlet anchor:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">architecture loss = validation loss(w, beta)</span><br><span class="line">                    + lambda * distance(beta, beta_anchor)</span><br></pre></td></tr></table></figure></div>
+
+<p>The paper also connects this regularization to the Hessian of the validation loss with respect to the architecture parameters. The practical reading is simple: DrNAS tries to avoid the sharp, unstable search trajectory that often appears in DARTS.</p>
+<p>The gradients still need to pass through samples from a Dirichlet distribution. Since the ordinary reparameterization trick does not directly apply, the paper uses pathwise derivative estimators for Dirichlet samples.</p>
+<h2 id="Progressive-Learning"><a href="#Progressive-Learning" class="headerlink" title="Progressive Learning"></a>Progressive Learning</h2><p>DrNAS also introduces a progressive architecture learning scheme:</p>
+<ul>
+<li>start with a cheaper partial-channel search;</li>
+<li>gradually increase the channel fraction through network transformation;</li>
+<li>progressively prune weak candidate operations;</li>
+<li>keep memory usage controlled while searching on larger tasks.</li>
+</ul>
+<p>This is important because a probabilistic search method is not useful if it only works on a tiny proxy cell. The progressive schedule is the bridge from NAS-Bench&#x2F;CIFAR experiments to ImageNet-scale search.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/DrNas/fig2-3-discovered-cells.png"
+                     
+                ></p>
+<p>The discovered normal and reduction cells still look like the usual cell-based NAS artifacts. DrNAS is not replacing the DARTS search space. It is changing the optimization dynamics inside that search space.</p>
+<h2 id="CIFAR-10-Results"><a href="#CIFAR-10-Results" class="headerlink" title="CIFAR-10 Results"></a>CIFAR-10 Results</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/DrNas/table2-cifar10-results.png"
+                     
+                ></p>
+<p>On CIFAR-10, the paper reports:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="right">Test error</th>
+<th align="right">Params</th>
+<th align="right">Search cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DARTS second-order</td>
+<td align="right">2.76 +&#x2F;- 0.09%</td>
+<td align="right">3.3M</td>
+<td align="right">1.0 GPU day</td>
+</tr>
+<tr>
+<td>PC-DARTS</td>
+<td align="right">2.57 +&#x2F;- 0.07%</td>
+<td align="right">3.6M</td>
+<td align="right">0.1 GPU day</td>
+</tr>
+<tr>
+<td>DrNAS without progressive learning</td>
+<td align="right">2.54 +&#x2F;- 0.03%</td>
+<td align="right">4.0M</td>
+<td align="right">0.4 GPU day</td>
+</tr>
+<tr>
+<td>DrNAS</td>
+<td align="right">2.46 +&#x2F;- 0.03%</td>
+<td align="right">4.1M</td>
+<td align="right">0.6 GPU day</td>
+</tr>
+</tbody></table>
+<p>The interesting part is not just the 2.46% number. DrNAS improves while staying in the gradient-based NAS family, which makes the result more comparable to DARTS, PC-DARTS, and SDARTS than to very large RL&#x2F;evolution searches.</p>
+<h2 id="ImageNet-Mobile-Setting"><a href="#ImageNet-Mobile-Setting" class="headerlink" title="ImageNet Mobile Setting"></a>ImageNet Mobile Setting</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/DrNas/table3-imagenet-results.png"
+                     
+                ></p>
+<p>On ImageNet mobile classification, DrNAS reports 23.7% top-1 error and 7.1% top-5 error with 5.7M parameters and 4.6 GPU days of search. The non-progressive ImageNet version reports 24.2% &#x2F; 7.3% with 5.2M parameters.</p>
+<p>That improvement is small but meaningful in this comparison group. It supports the claim that progressive learning is not only a memory trick; it also improves the final searched architecture.</p>
+<h2 id="NAS-Bench-201"><a href="#NAS-Bench-201" class="headerlink" title="NAS-Bench-201"></a>NAS-Bench-201</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/DrNas/table4-nasbench-results.png"
+                     
+                ></p>
+<p>NAS-Bench-201 is useful because it reduces the ambiguity of retraining and random search-space quirks. In this table, DrNAS reaches strong accuracy on CIFAR-10, CIFAR-100, and ImageNet16-120. The reported CIFAR-10 test accuracy is 94.36%, with validation accuracy 91.55%.</p>
+<p>I usually trust this kind of benchmark more for stability claims than for absolute model quality. It tests whether the search method consistently selects good architectures inside a controlled finite space.</p>
+<h2 id="Regularizer-Sensitivity"><a href="#Regularizer-Sensitivity" class="headerlink" title="Regularizer Sensitivity"></a>Regularizer Sensitivity</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/DrNas/table5-anchor-regularizer.png"
+                     
+                ></p>
+<p>The anchor regularizer table is a good detail. Without the regularizer, the reported NAS-Bench-201 CIFAR-10 accuracy is 93.78%. A range of regularizer strengths reaches 94.36%, while overly large values fall back to 93.76%.</p>
+<p>This suggests the method is not tuned to one exact <code>lambda</code>, but the regularizer is still doing real work. Too little regularization leaves the distribution unstable; too much prevents useful concentration.</p>
+<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>DrNAS should be read as a stabilization paper for differentiable NAS:</p>
+<ul>
+<li>DARTS uses deterministic softmax architecture weights.</li>
+<li>DrNAS samples architecture weights from a Dirichlet distribution.</li>
+<li>The anchor regularizer controls the architecture distribution and helps avoid sharp search dynamics.</li>
+<li>Progressive learning makes the method practical beyond tiny proxy settings.</li>
+</ul>
+<p>The limitation is that the search space is still the familiar cell-based NAS space. DrNAS improves how the architecture parameters are optimized; it does not remove the assumptions baked into the candidate operations and cell topology. That is still useful, because instability is one of the main reasons DARTS-style results are hard to reproduce.</p>
+
+        </div>
+
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/NAS/">#NAS</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2021/12/24/Q8BERT/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Q8BERT: 8-bit BERT Quantization</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2021/12/15/FQViT/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">FQ-ViT: Post-Training Quantization for Fully Quantized Vision Transformer</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">DrNAS: Dirichlet Neural Architecture Search</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#From-Softmax-Weights-To-Dirichlet-Samples"><span class="nav-text">From Softmax Weights To Dirichlet Samples</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Anchor-Regularization"><span class="nav-text">Anchor Regularization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Progressive-Learning"><span class="nav-text">Progressive Learning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CIFAR-10-Results"><span class="nav-text">CIFAR-10 Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ImageNet-Mobile-Setting"><span class="nav-text">ImageNet Mobile Setting</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NAS-Bench-201"><span class="nav-text">NAS-Bench-201</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Regularizer-Sensitivity"><span class="nav-text">Regularizer Sensitivity</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">H.J. Chen</a>
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.0</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/libs/mermaid.min.js"></script>
+
+    
+<script src="/js/plugins/mermaid.js"></script>
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+    <div id="aplayer"></div>
+
+<script src="/js/libs/APlayer.min.js"></script>
+
+
+<script src="/js/plugins/aplayer.js"></script>
+
+
+</body>
+</html>

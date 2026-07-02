@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="H.J. Chen">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://baytoro.github.io.git/2025/02/06/distserve/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="DistServe separates prefill and decode workers, then optimizes per-GPU goodput under TTFT and TPOT service objectives.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DistServe: Disaggregated LLM Serving">
+<meta property="og:url" content="https://baytoro.github.io.git/2025/02/06/DistServe/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="DistServe separates prefill and decode workers, then optimizes per-GPU goodput under TTFT and TPOT service objectives.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/DistServe/fig1.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/DistServe/fig2-chunked-prefill.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/DistServe/fig3-4-phase-throughput-parallelism.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/DistServe/fig5-disaggregation-benefit.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/DistServe/fig6-system-architecture.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/DistServe/fig8-chatbot-goodput.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/DistServe/fig9-10-heterogeneous-latency.png">
+<meta property="og:image" content="https://baytoro.github.io.git/_imgs/DistServe/fig11-12-ablation-runtime.png">
+<meta property="article:published_time" content="2025-02-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-02T08:46:42.686Z">
+<meta property="article:author" content="H.J. Chen">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="Serving">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://baytoro.github.io.git/_imgs/DistServe/fig1.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/personal/avatar.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/personal/avatar.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/personal/avatar.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            DistServe: Disaggregated LLM Serving -
+        
+        Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+        <link href="" rel="stylesheet">
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"baytoro.github.io.git","root":"/","language":"en","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":false,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/picture/s1.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":true,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Welcome, traveler :)","subtitle":{"text":["May you find inspiration and joy here (scroll down ↓)"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":40,"backing_speed":10,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":"https://github.com/Baytoro","zhihu":"https://www.zhihu.com/people/baytoro","email":"guaguabear@hotmail.com"},"qrs":null}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"MapleStory Title","artist":"MapleStory","url":"/music/MapleStory Title.mp3","cover":"/picture/maple.jpeg"},{"name":"Above the Treetops","artist":"MapleStory","url":"/music/Above the Treetops.mp3","cover":"/picture/maple.jpeg"},{"name":"When the Morning Comes","artist":"MapleStory","url":"/music/When the Morning Comes.mp3","cover":"/picture/maple.jpeg"},{"name":"Missing You","artist":"MapleStory","url":"/music/Missing You.mp3","cover":"/picture/maple.jpeg"},{"name":"Shinin' Harbor","artist":"MapleStory","url":"/music/Shinin' Harbor.mp3","cover":"/picture/maple.jpeg"},{"name":"Snowy Village","artist":"MapleStory","url":"/music/Snowy Village.mp3","cover":"/picture/maple.jpeg"}]},"mermaid":{"enable":true,"version":"9.3.0"}},"version":"2.5.0","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"About":{"path":"/about","icon":"fa-regular fa-user"},"Archives":{"icon":"fa-regular fa-archive","submenus":{"Posts":"/archives","Categories":"/categories","Tags":"/tags"}},"GitHub":{"icon":"fa-brands fa-github","path":"https://github.com/Baytoro"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":false,"position":"left","first_item":"info","menu_title":"Links","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":2},"tags":{"enable":true,"limit":5}},"footerStart":"2020/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/about"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        ABOUT
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/archives">POSTS
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/categories">CATEGORIES
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/tags">TAGS
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    target="_blank" rel="noopener" href="https://github.com/Baytoro"  >
+                                    
+                                        
+                                            <i class="fa-brands fa-github"></i>
+                                        
+                                        GITHUB
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i></div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/about"  >
+                             
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                ABOUT
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES&nbsp;<i class="group-hover:rotate-180 transition-transform fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/archives">POSTS</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/categories">CATEGORIES</a>
+                            </li>
+                        
+                            <li class="drawer-navbar-item text-base flex justify-center items-center hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                <a class="py-0.5" href="/tags">TAGS</a>
+                            </li>
+                        
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        target="_blank" rel="noopener" href="https://github.com/Baytoro"  >
+                             
+                                
+                                    <i class="fa-brands fa-github"></i>
+                                
+                                GITHUB
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            
+                
+                
+                <img src="/_imgs/DistServe/thumbnail.png" alt="DistServe: Disaggregated LLM Serving" class="max-w-none"/>
+                
+                <h1 class="article-title-cover">DistServe: Disaggregated LLM Serving</h1>
+            
+            </div>
+            
+                    
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/personal/avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">H.J. Chen</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-02-06</span>
+        <span class="mobile">2025-02-06</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <!-- <span class="article-date article-meta-item"> -->
+            <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
+            <!-- <span class="desktop">2026-07-02 16:46:42</span>
+            <span class="mobile">2026-07-02 16:46:42</span> -->
+            <!-- <span class="hover-info">Updated</span> -->
+        <!-- </span> -->
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/LLM/">LLM</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Serving/">Serving</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body">
+            <blockquote>
+<p>Zhong et al. DistServe: Disaggregating Prefill and Decoding for Goodput-optimized Large Language Model Serving. 2024.</p>
+</blockquote>
+<p><a class="link"   target="_blank" rel="noopener" href="https://arxiv.org/pdf/2401.09670.pdf" >Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> &#x2F; <a class="link"   target="_blank" rel="noopener" href="https://github.com/LLMServe/DistServe" >Code <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>DistServe is a systems paper about taking the prefill&#x2F;decode split seriously. Many LLM serving engines already know that the two phases behave differently, but they still colocate them on the same worker pool. DistServe asks what happens if prefill and decoding are assigned to different GPU groups and optimized with separate parallelism plans.</p>
+<p>The paper’s metric is goodput, not raw token throughput. A request only counts if it satisfies both latency constraints.</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">goodput = SLO-satisfying requests / time</span><br></pre></td></tr></table></figure></div>
+
+<p>For LLM serving, the two SLOs are usually time to first token (TTFT) and time per output token (TPOT).</p>
+<h2 id="The-Interference-Problem"><a href="#The-Interference-Problem" class="headerlink" title="The Interference Problem"></a>The Interference Problem</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/DistServe/fig1.png"
+                     
+                ></p>
+<p>Figure 1 is the motivating result. On a 13B model with input length 512 and output length 64, colocated serving reaches about 1.6 requests&#x2F;s per A100 GPU under a 90% SLO attainment target. If the two phases are measured separately, prefill-only can support about 5.6 requests&#x2F;s and decode-only about 10 requests&#x2F;s.</p>
+<p>That gap is the opportunity. The shared worker pool is not only under-optimized; it couples two phases with different bottlenecks and different latency targets.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/DistServe/fig2-chunked-prefill.png"
+                     
+                ></p>
+<p>Chunked prefill helps but does not remove the problem. Adding a long prefill job to a decode batch delays decode steps, increasing TPOT. Adding decode jobs to prefill increases prefill execution time, hurting TTFT. The paper’s point is that better batching still leaves a fundamental resource-coupling issue.</p>
+<h2 id="Phase-Behavior"><a href="#Phase-Behavior" class="headerlink" title="Phase Behavior"></a>Phase Behavior</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/DistServe/fig3-4-phase-throughput-parallelism.png"
+                     
+                ></p>
+<p>The two phases stress hardware differently:</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Computation shape</th>
+<th>Main pressure</th>
+<th>SLO link</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Prefill</td>
+<td>many prompt tokens processed together</td>
+<td>compute and prompt-length throughput</td>
+<td>TTFT</td>
+</tr>
+<tr>
+<td>Decode</td>
+<td>one new token per active sequence per step</td>
+<td>memory bandwidth, KV access, queueing</td>
+<td>TPOT</td>
+</tr>
+</tbody></table>
+<p>Prefill benefits from enough parallelism to reduce first-token latency. Decode benefits from batching many active sequences, but each decode step is small and repeated. A single colocated plan has to compromise between these shapes.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/DistServe/fig5-disaggregation-benefit.png"
+                     
+                ></p>
+<p>Disaggregation lets the system choose different GPU allocation and model-parallel settings for each phase. The tradeoff is that the KV cache produced by prefill must move to the decode side.</p>
+<p>That KV transfer is the main skepticism point for this paper. The architecture only wins when the benefit from eliminating interference is larger than the communication and orchestration overhead.</p>
+<h2 id="DistServe-Runtime"><a href="#DistServe-Runtime" class="headerlink" title="DistServe Runtime"></a>DistServe Runtime</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/DistServe/fig6-system-architecture.png"
+                     
+                ></p>
+<p>At runtime, DistServe has a centralized controller. A request is sent to a prefill instance, which computes the first token and KV cache. Then the request is assigned to a decode instance, which fetches the KV cache and continues autoregressive generation.</p>
+<p>The implementation details that matter:</p>
+<ul>
+<li>prefill and decode instances can use different parallelism settings;</li>
+<li>the placement algorithm accounts for inter-node bandwidth;</li>
+<li>the controller uses queue lengths to dispatch work;</li>
+<li>KV cache transfer is pull-based, so decode instances fetch cache when they are ready instead of being flooded by prefill workers;</li>
+<li>workload profiling can trigger replanning when input length, output length, or arrival rate shifts.</li>
+</ul>
+<p>This is more than “put prefill on one GPU and decode on another.” The resource plan is a joint choice over phase split, parallelism, replication, and placement.</p>
+<h2 id="End-to-End-Results"><a href="#End-to-End-Results" class="headerlink" title="End-to-End Results"></a>End-to-End Results</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/DistServe/fig8-chatbot-goodput.png"
+                     
+                ></p>
+<p>The chatbot workload uses OPT-13B, OPT-66B, and OPT-175B on ShareGPT. The paper reports that DistServe sustains 2.0x to 4.6x higher request rate than vLLM and 1.6x to 7.4x higher request rate than DeepSpeed-MII under the 90% SLO attainment target.</p>
+<p>The second row of the figure varies the SLO scale. DistServe handles 1.8x to 3.2x tighter SLOs than vLLM and 1.7x to 1.8x tighter SLOs than DeepSpeed-MII on the chatbot setting.</p>
+<p>The result makes sense: chat has a strong TPOT component. Colocated systems may satisfy TTFT for many requests but fail because decode steps get delayed by prefill interference.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/DistServe/fig9-10-heterogeneous-latency.png"
+                     
+                ></p>
+<p>The code completion and summarization tasks stress different sides of the system:</p>
+<ul>
+<li>Code completion on OPT-66B demands low TTFT. DistServe reports 5.7x higher request rate than vLLM and 1.6x higher than DeepSpeed-MII.</li>
+<li>Summarization on OPT-66B uses long inputs and a looser TTFT SLO, so TPOT becomes more important. DistServe reports 4.3x higher request rate and 12.6x tighter SLO than vLLM, and 1.8x higher request rate and 2.6x tighter SLO than DeepSpeed-MII.</li>
+</ul>
+<p>The same figure also includes the latency breakdown. For OPT-175B on ShareGPT, KV transmission is reported as less than 0.1% of total latency, and over 95% of requests have transfer delay below 30 ms in the testbed. That does not mean transfer is always free, but it supports the paper’s claim that bandwidth-aware placement can keep the cost small.</p>
+<h2 id="Ablation-And-Planner-Cost"><a href="#Ablation-And-Planner-Cost" class="headerlink" title="Ablation And Planner Cost"></a>Ablation And Planner Cost</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/DistServe/fig11-12-ablation-runtime.png"
+                     
+                ></p>
+<p>The ablations separate three ideas:</p>
+<ol>
+<li>disaggregate the phases;</li>
+<li>choose phase-specific parallelism and resource allocation;</li>
+<li>use bandwidth-aware placement.</li>
+</ol>
+<p>The paper argues that all three are needed for high goodput. A naive split can still lose if the KV path is bad or if one phase is over-provisioned while the other queues.</p>
+<p>The placement algorithm is also designed to be cheap enough for replanning. The paper reports that the largest setting in its evaluation can be solved in under 1.3 minutes, while normal workload shifts happen at a much slower time scale.</p>
+<h2 id="What-I-Would-Measure-First"><a href="#What-I-Would-Measure-First" class="headerlink" title="What I Would Measure First"></a>What I Would Measure First</h2><p>Before implementing this design in another serving stack, I would measure four things separately:</p>
+<table>
+<thead>
+<tr>
+<th>Measurement</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Prefill execution time vs prompt length</td>
+<td>estimates TTFT pressure and prefill GPU allocation</td>
+</tr>
+<tr>
+<td>Decode step time vs active batch size</td>
+<td>estimates TPOT pressure and decode batching capacity</td>
+</tr>
+<tr>
+<td>KV cache size and transfer time</td>
+<td>decides whether disaggregation overhead is acceptable</td>
+</tr>
+<tr>
+<td>SLO attainment under load</td>
+<td>prevents raw throughput from hiding missed deadlines</td>
+</tr>
+</tbody></table>
+<p>If prefill and decode saturate the same resource in the same way, disaggregation is less compelling. If they bottleneck differently, DistServe’s design gives the scheduler more degrees of freedom.</p>
+<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>DistServe is the architectural counterpart to continuous batching and chunked prefill. Instead of only improving scheduling inside a colocated worker, it changes the worker layout so prefill and decode can be scaled independently.</p>
+<p>The main win is goodput under latency constraints. The main risks are operational: KV transfer, bandwidth-aware placement, failure coupling between phase instances, and workload drift. I read the paper as a strong argument that production LLM serving should evaluate TTFT and TPOT separately before treating a single token&#x2F;s number as the capacity metric.</p>
+
+        </div>
+
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/LLM/">#LLM</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Serving/">#Serving</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2025/02/12/QuaRot/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">QuaRot: Rotated 4-Bit LLM Inference</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2025/01/29/DeepSeekV3/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">DeepSeek-V3 Technical Report</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">DistServe: Disaggregated LLM Serving</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Interference-Problem"><span class="nav-text">The Interference Problem</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Phase-Behavior"><span class="nav-text">Phase Behavior</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DistServe-Runtime"><span class="nav-text">DistServe Runtime</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#End-to-End-Results"><span class="nav-text">End-to-End Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ablation-And-Planner-Cost"><span class="nav-text">Ablation And Planner Cost</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#What-I-Would-Measure-First"><span class="nav-text">What I Would Measure First</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">H.J. Chen</a>
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.0</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/libs/mermaid.min.js"></script>
+
+    
+<script src="/js/plugins/mermaid.js"></script>
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+    <div id="aplayer"></div>
+
+<script src="/js/libs/APlayer.min.js"></script>
+
+
+<script src="/js/plugins/aplayer.js"></script>
+
+
+</body>
+</html>
