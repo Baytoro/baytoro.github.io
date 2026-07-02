@@ -1,3 +1,6 @@
+https://baytoro.github.io/2020/11/10/GPT3/
+https://baytoro.github.io/2021/07/20/GPT2/
+https://baytoro.github.io/2021/04/10/GPT1/
 https://baytoro.github.io/2021/04/27/Gdas/
 https://baytoro.github.io/2021/12/22/DrNas/
 https://baytoro.github.io/2022/01/01/DFNAs/
@@ -67,7 +70,6 @@ https://baytoro.github.io/2024/01/28/LLMLingua/
 https://baytoro.github.io/2024/08/03/PowerInfer/
 https://baytoro.github.io/2023/12/27/SpQR/
 https://baytoro.github.io/2020/01/12/Enas/
-https://baytoro.github.io/2020/11/10/GPT3/
 https://baytoro.github.io/2024/08/25/OmniQuant/
 https://baytoro.github.io/2024/05/02/PagedAttention/
 https://baytoro.github.io/2025/02/12/QuaRot/
@@ -78,9 +80,8 @@ https://baytoro.github.io/2022/07/06/cuda_elementwise/
 https://baytoro.github.io/2022/08/16/cuda_transpose/
 https://baytoro.github.io/2024/02/28/CodeBear/
 https://baytoro.github.io/2022/09/03/FedMask/
-https://baytoro.github.io/2021/04/10/GPT1/
-https://baytoro.github.io/2021/04/23/HAWQ/
 https://baytoro.github.io/2021/11/09/IBERT/
+https://baytoro.github.io/2021/04/23/HAWQ/
 https://baytoro.github.io/2022/09/29/Longformer/
 https://baytoro.github.io/2020/01/12/Nasnet/
 https://baytoro.github.io/2024/05/17/PACT/
@@ -89,7 +90,6 @@ https://baytoro.github.io/2024/05/19/SARATHI/
 https://baytoro.github.io/2021/10/16/T5/
 https://baytoro.github.io/2022/11/22/ZeroQuant/
 https://baytoro.github.io/2020/02/07/proxylessnas/
-https://baytoro.github.io/2021/07/20/GPT2/
 https://baytoro.github.io/2022/08/20/LLMInt8/
 https://baytoro.github.io/2024/04/28/LQNets/
 https://baytoro.github.io/2022/04/07/LSQ/
@@ -113,8 +113,8 @@ https://baytoro.github.io/2021/12/24/Q8BERT/
 https://baytoro.github.io/2020/02/13/SingeNas/
 https://baytoro.github.io/2020/01/30/blockqnn/
 https://baytoro.github.io/2022/07/25/cuda_sgemv/
-https://baytoro.github.io/2022/10/02/fedevo/
 https://baytoro.github.io/2020/01/23/jointNasQ/
+https://baytoro.github.io/2022/10/02/fedevo/
 https://baytoro.github.io/2020/01/17/metaqnn/
 https://baytoro.github.io/2020/01/02/nas/
 https://baytoro.github.io/about/index.html

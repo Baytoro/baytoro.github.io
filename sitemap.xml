@@ -2,6 +2,33 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://baytoro.github.io/2020/11/10/GPT3/</loc>
+    
+    <lastmod>2026-07-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://baytoro.github.io/2021/07/20/GPT2/</loc>
+    
+    <lastmod>2026-07-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://baytoro.github.io/2021/04/10/GPT1/</loc>
+    
+    <lastmod>2026-07-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://baytoro.github.io/2021/04/27/Gdas/</loc>
     
     <lastmod>2026-07-02</lastmod>
@@ -623,15 +650,6 @@
   </url>
   
   <url>
-    <loc>https://baytoro.github.io/2020/11/10/GPT3/</loc>
-    
-    <lastmod>2026-07-01</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://baytoro.github.io/2024/08/25/OmniQuant/</loc>
     
     <lastmod>2026-07-01</lastmod>
@@ -722,7 +740,7 @@
   </url>
   
   <url>
-    <loc>https://baytoro.github.io/2021/04/10/GPT1/</loc>
+    <loc>https://baytoro.github.io/2021/11/09/IBERT/</loc>
     
     <lastmod>2026-07-01</lastmod>
     
@@ -732,15 +750,6 @@
   
   <url>
     <loc>https://baytoro.github.io/2021/04/23/HAWQ/</loc>
-    
-    <lastmod>2026-07-01</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://baytoro.github.io/2021/11/09/IBERT/</loc>
     
     <lastmod>2026-07-01</lastmod>
     
@@ -813,15 +822,6 @@
   
   <url>
     <loc>https://baytoro.github.io/2020/02/07/proxylessnas/</loc>
-    
-    <lastmod>2026-07-01</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://baytoro.github.io/2021/07/20/GPT2/</loc>
     
     <lastmod>2026-07-01</lastmod>
     
@@ -1037,7 +1037,7 @@
   </url>
   
   <url>
-    <loc>https://baytoro.github.io/2022/10/02/fedevo/</loc>
+    <loc>https://baytoro.github.io/2020/01/23/jointNasQ/</loc>
     
     <lastmod>2026-07-01</lastmod>
     
@@ -1046,7 +1046,7 @@
   </url>
   
   <url>
-    <loc>https://baytoro.github.io/2020/01/23/jointNasQ/</loc>
+    <loc>https://baytoro.github.io/2022/10/02/fedevo/</loc>
     
     <lastmod>2026-07-01</lastmod>
     
