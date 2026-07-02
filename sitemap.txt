@@ -79,8 +79,8 @@ https://baytoro.github.io/2022/08/16/cuda_transpose/
 https://baytoro.github.io/2024/02/28/CodeBear/
 https://baytoro.github.io/2022/09/03/FedMask/
 https://baytoro.github.io/2021/04/10/GPT1/
-https://baytoro.github.io/2021/11/09/IBERT/
 https://baytoro.github.io/2021/04/23/HAWQ/
+https://baytoro.github.io/2021/11/09/IBERT/
 https://baytoro.github.io/2022/09/29/Longformer/
 https://baytoro.github.io/2020/01/12/Nasnet/
 https://baytoro.github.io/2024/05/17/PACT/
