@@ -18,16 +18,25 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="Hierarchical NAS searches reusable motifs instead of flat cell graphs, making the representation itself part of the search bias.">
+        <meta name="description" content="Hierarchical NAS searches reusable motifs, showing that the representation can matter as much as the search algorithm.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hierarchical Representations for Efficient Architecture Search">
 <meta property="og:url" content="https://baytoro.github.io/2020/03/07/hierarchicalNas/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Hierarchical NAS searches reusable motifs instead of flat cell graphs, making the representation itself part of the search bias.">
+<meta property="og:description" content="Hierarchical NAS searches reusable motifs, showing that the representation can matter as much as the search algorithm.">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://baytoro.github.io/_imgs/hierarchicalNas/fig1-overview.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/hierarchicalNas/alg1-2-asyncevo.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/hierarchicalNas/fig2-model-stacks.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/hierarchicalNas/fig3-evolution-curves.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/hierarchicalNas/fig4-accuracy-improvement.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/hierarchicalNas/table1-search-results.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/hierarchicalNas/table2-cifar10-sota-results.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/hierarchicalNas/table3-imagenet-results.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/hierarchicalNas/fig5-7-cell-motifs.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/hierarchicalNas/fig8-11-motifs.png">
 <meta property="article:published_time" content="2020-03-06T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-01T13:28:26.860Z">
+<meta property="article:modified_time" content="2026-07-03T08:02:50.743Z">
 <meta property="article:author" content="H.J. Chen">
 <meta property="article:tag" content="NAS">
 <meta name="twitter:card" content="summary">
@@ -100,119 +109,7 @@
     
     
     
-<meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
-  direction: ltr;
-}
-
-mjx-container[jax="SVG"] > svg {
-  overflow: visible;
-}
-
-mjx-container[jax="SVG"][display="true"] {
-  display: block;
-  text-align: center;
-  margin: 1em 0;
-}
-
-mjx-container[jax="SVG"][justify="left"] {
-  text-align: left;
-}
-
-mjx-container[jax="SVG"][justify="right"] {
-  text-align: right;
-}
-
-g[data-mml-node="merror"] > g {
-  fill: red;
-  stroke: red;
-}
-
-g[data-mml-node="merror"] > rect[data-background] {
-  fill: yellow;
-  stroke: none;
-}
-
-g[data-mml-node="mtable"] > line[data-line] {
-  stroke-width: 70px;
-  fill: none;
-}
-
-g[data-mml-node="mtable"] > rect[data-frame] {
-  stroke-width: 70px;
-  fill: none;
-}
-
-g[data-mml-node="mtable"] > .mjx-dashed {
-  stroke-dasharray: 140;
-}
-
-g[data-mml-node="mtable"] > .mjx-dotted {
-  stroke-linecap: round;
-  stroke-dasharray: 0,140;
-}
-
-g[data-mml-node="mtable"] > svg {
-  overflow: visible;
-}
-
-[jax="SVG"] mjx-tool {
-  display: inline-block;
-  position: relative;
-  width: 0;
-  height: 0;
-}
-
-[jax="SVG"] mjx-tool > mjx-tip {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-mjx-tool > mjx-tip {
-  display: inline-block;
-  padding: .2em;
-  border: 1px solid #888;
-  font-size: 70%;
-  background-color: #F8F8F8;
-  color: black;
-  box-shadow: 2px 2px 5px #AAAAAA;
-}
-
-g[data-mml-node="maction"][data-toggle] {
-  cursor: pointer;
-}
-
-mjx-status {
-  display: block;
-  position: fixed;
-  left: 1em;
-  bottom: 1em;
-  min-width: 25%;
-  padding: .2em .4em;
-  border: 1px solid #888;
-  font-size: 90%;
-  background-color: #F8F8F8;
-  color: black;
-}
-
-foreignObject[data-mjx-xml] {
-  font-family: initial;
-  line-height: normal;
-  overflow: visible;
-}
-
-.MathJax path {
-  stroke-width: 3;
-}
-
-mjx-container[display="true"] {
-  overflow: auto hidden;
-}
-
-mjx-container[display="true"] + br {
-  display: none;
-}
-</style></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -487,8 +384,8 @@ mjx-container[display="true"] + br {
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2026-07-01 21:28:26</span>
-            <span class="mobile">2026-07-01 21:28:26</span> -->
+            <!-- <span class="desktop">2026-07-03 16:02:50</span>
+            <span class="mobile">2026-07-03 16:02:50</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -502,17 +399,7 @@ mjx-container[display="true"] + br {
                     
                         
                         <li>
-                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
-                        </li>
-                    
-                    
-                
-                    
-                        
-                            <li>></li>
-                        
-                        <li>
-                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
+                            <a href="/categories/Paper-Reading/">Paper Reading</a>&nbsp;
                         </li>
                     
                     
@@ -549,40 +436,182 @@ mjx-container[display="true"] + br {
 
         <div class="article-content markdown-body">
             <blockquote>
-<p>Liu C, Zoph B, Neumann M, et al. Progressive Neural Architecture Search. The hierarchical representation note is based on the ICLR 2018 hierarchical NAS line of work.</p>
+<p>Liu, Simonyan, Vinyals, Fernando, and Kavukcuoglu. Hierarchical Representations for Efficient Architecture Search. ICLR 2018.</p>
 </blockquote>
-<p><a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/1711.00436.pdf">Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>This paper is useful because it treats representation as a first-class NAS problem. Rather than searching a flat graph of operations, it builds architectures from motifs. Low-level motifs combine primitive operations; higher-level motifs combine lower-level motifs. The search space therefore encourages reuse and repeated structure.</p>
-<p>That design choice matters as much as the optimizer. A search algorithm can only find architectures that the representation makes easy to express.</p>
-<h2 id="Hierarchical-Motifs"><a href="#Hierarchical-Motifs" class="headerlink" title="Hierarchical Motifs"></a>Hierarchical Motifs</h2><p>At the lowest level, a motif is a small directed graph over primitive operations. At the next level, those motifs become building blocks for larger motifs. Repeating this process creates full network modules.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/hierarchicalNas/fig1-overview.png"></p>
-<p>The figure illustrates the three-level representation. The architecture is not just a list of edge operations; it is a grammar for composing reusable substructures.</p>
-<h2 id="Why-Hierarchy-Helps"><a href="#Why-Hierarchy-Helps" class="headerlink" title="Why Hierarchy Helps"></a>Why Hierarchy Helps</h2><p>Hierarchy adds a strong prior: good architectures often reuse useful patterns. This is common in manually designed networks as well. Residual blocks, bottlenecks, inverted residuals, and Transformer blocks all rely on repeated motifs.</p>
-<p>The advantage is search efficiency. Once a useful low-level motif is found, many high-level architectures can reuse it. The drawback is bias: if the best architecture does not fit the hierarchical grammar, the search may never find it.</p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://arxiv.org/pdf/1711.00436.pdf" >Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>This paper is a useful counterweight to early NAS papers that made the controller or optimizer look like the main story. The central claim here is simpler: if the architecture representation is well structured, even simple search methods such as random search and tournament evolution become strong.</p>
+<p>Instead of searching one flat graph of primitive operations, the paper builds networks from motifs. Low-level motifs combine primitive operations. Higher-level motifs combine lower-level motifs. A change to a lower motif can therefore propagate through many parts of the final architecture.</p>
+<h2 id="Representation"><a href="#Representation" class="headerlink" title="Representation"></a>Representation</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/hierarchicalNas/fig1-overview.png"
+                     
+                ></p>
+<p>Figure 1 shows the key idea. The bottom level contains primitive operations. A level-2 motif is assembled from those primitives. A level-3 motif is assembled from level-2 motifs. The final network is therefore a recursively composed graph, not just a one-shot list of edge operations.</p>
+<p>In plain notation:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">level-1 motifs = primitive operations</span><br><span class="line">level-l motif  = assemble(graph at level l, motifs from level l-1)</span><br><span class="line">full network   = top-level motif</span><br></pre></td></tr></table></figure></div>
+
+<p>The primitive set is intentionally small:</p>
+<ul>
+<li><code>1x1</code> convolution;</li>
+<li><code>3x3</code> depthwise convolution;</li>
+<li><code>3x3</code> separable convolution;</li>
+<li><code>3x3</code> max pooling;</li>
+<li><code>3x3</code> average pooling;</li>
+<li>identity.</li>
+</ul>
+<p>The paper also uses a <code>none</code> operation to represent missing edges. Larger receptive fields and wider computations are meant to emerge from composing these primitives rather than adding many hand-designed primitives.</p>
+<h2 id="Why-Hierarchy-Matters"><a href="#Why-Hierarchy-Matters" class="headerlink" title="Why Hierarchy Matters"></a>Why Hierarchy Matters</h2><p>The representation encodes a strong prior: good neural networks often reuse patterns. ResNet blocks, Inception modules, MobileNet inverted residuals, and Transformer layers are all examples of repeated structure. Hierarchical NAS makes that reuse part of the search space.</p>
+<p>The tradeoff is bias. A hierarchical representation can make search efficient when the true solution has reusable substructure. It can also hide architectures that do not fit the recursive grammar.</p>
 <table>
 <thead>
 <tr>
 <th>Representation</th>
-<th>Bias</th>
+<th>Search bias</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>flat graph</td>
-<td>flexible but hard to search</td>
+<td>Flat graph</td>
+<td>flexible, but harder to search and can grow parameter count quickly</td>
 </tr>
 <tr>
-<td>cell-based graph</td>
-<td>reusable normal/reduction cells</td>
+<td>Cell-based graph</td>
+<td>reusable normal&#x2F;reduction cells with a fixed macro skeleton</td>
 </tr>
 <tr>
-<td>hierarchical motif</td>
-<td>recursive reusable substructures</td>
+<td>Hierarchical motif</td>
+<td>reusable substructures at multiple levels</td>
 </tr>
 </tbody></table>
-<h2 id="Search-View"><a href="#Search-View" class="headerlink" title="Search View"></a>Search View</h2><p>The optimizer explores motif choices across levels. Because higher-level modules reuse lower-level modules, a single local change can affect many paths in the final architecture. This makes the search space compact but also more coupled.</p>
-<p>Compared with NASNet-style cell search, hierarchical NAS is less tied to one normal cell and one reduction cell. It is more general, but also harder to analyze because motif interactions happen across levels.</p>
-<h2 id="Reading-Notes"><a href="#Reading-Notes" class="headerlink" title="Reading Notes"></a>Reading Notes</h2><p>The result numbers are less important than the representation idea. Many later NAS systems, including mobile NAS and Transformer NAS, implicitly use hierarchical design: stage layout, block type, operator choice, and channel width are searched at different levels.</p>
-<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>Hierarchical NAS is a reminder that search-space design can dominate optimizer design. A structured, reusable representation can make architecture search dramatically easier, but it also encodes assumptions about what good networks should look like.</p>
+<p>This is why I read the paper as a search-space paper more than an evolution paper.</p>
+<h2 id="Search-Algorithm"><a href="#Search-Algorithm" class="headerlink" title="Search Algorithm"></a>Search Algorithm</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/hierarchicalNas/alg1-2-asyncevo.png"
+                     
+                ></p>
+<p>The search algorithm is asynchronous tournament evolution. A controller maintains a queue of unevaluated genotypes and a memory table of evaluated genotypes. Workers repeatedly pop genotypes, assemble the architecture, train it from scratch, evaluate validation fitness, and write the result back.</p>
+<p>There is no ENAS-style weight sharing and no inherited weights from parent to child. Every architecture evaluation trains a model from scratch for a fixed number of steps. That makes the fitness estimate cleaner than one-shot NAS, but it also means the method still spends serious compute.</p>
+<p>The mutation operator changes one edge in one motif:</p>
+<ol>
+<li>sample a non-primitive level;</li>
+<li>sample a motif at that level;</li>
+<li>sample a successor node and predecessor node;</li>
+<li>replace the edge operation with another operation from the previous level, possibly <code>none</code>.</li>
+</ol>
+<p>This single rule can add an edge, remove an edge, or change an existing edge. In the hierarchical case, changing a lower-level motif can affect all higher-level places where that motif is reused.</p>
+<h2 id="Model-Evaluation-Setup"><a href="#Model-Evaluation-Setup" class="headerlink" title="Model Evaluation Setup"></a>Model Evaluation Setup</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/hierarchicalNas/fig2-model-stacks.png"
+                     
+                ></p>
+<p>The paper searches for a convolutional cell on CIFAR-10, then evaluates the found cell in larger CIFAR-10 and ImageNet models.</p>
+<p>The experimental setup has three model sizes:</p>
+<ul>
+<li>a small CIFAR-10 model used during architecture search;</li>
+<li>a larger CIFAR-10 model used for final cell evaluation;</li>
+<li>an ImageNet model that transfers the searched cell to a larger-scale task.</li>
+</ul>
+<p>This is similar in spirit to NASNet: search a small reusable component, then scale it. The difference is that the searched component itself is hierarchical.</p>
+<h2 id="Search-Curves"><a href="#Search-Curves" class="headerlink" title="Search Curves"></a>Search Curves</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/hierarchicalNas/fig3-evolution-curves.png"
+                     
+                ></p>
+<p>The authors run evolution for 7000 steps using 200 GPU workers. The first 200 steps are random initialization; after that, tournament selection and mutation start.</p>
+<p>Figure 3 has an important nuance:</p>
+<ul>
+<li>the flat representation can reach higher small-model fitness;</li>
+<li>the flat representation also tends to create larger models;</li>
+<li>when the flat representation is parameter-constrained, it becomes closer to the hierarchical representation.</li>
+</ul>
+<p>So the hierarchy is not magic accuracy by itself. It is a way to bias the search toward reusable structures without letting the parameter count grow as freely.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/hierarchicalNas/fig4-accuracy-improvement.png"
+                     
+                ></p>
+<p>The authors also check whether search progress on the small model transfers to the final larger model. The curve is not perfectly proportional, but improvement in the small fitness generally corresponds to improvement in the large model. That matters because NAS often fails when the proxy task ranking does not transfer.</p>
+<h2 id="Main-Results"><a href="#Main-Results" class="headerlink" title="Main Results"></a>Main Results</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/hierarchicalNas/table1-search-results.png"
+                     
+                ></p>
+<p>Table 1 is the most useful result in the paper. The best hierarchical evolution run reports:</p>
+<table>
+<thead>
+<tr>
+<th>Search method</th>
+<th align="right">CIFAR-10 error</th>
+<th align="right">ImageNet top-1&#x2F;top-5 error</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Hierarchical random architecture</td>
+<td align="right">4.21 +&#x2F;- 0.11</td>
+<td align="right">21.5 &#x2F; 5.8</td>
+</tr>
+<tr>
+<td>Hierarchical random search, 200 samples</td>
+<td align="right">4.04 +&#x2F;- 0.20</td>
+<td align="right">20.4 &#x2F; 5.3</td>
+</tr>
+<tr>
+<td>Hierarchical random search, 7000 samples</td>
+<td align="right">3.91 +&#x2F;- 0.15</td>
+<td align="right">21.0 &#x2F; 5.5</td>
+</tr>
+<tr>
+<td>Hierarchical evolution, 7000 samples</td>
+<td align="right">3.75 +&#x2F;- 0.12</td>
+<td align="right">20.3 &#x2F; 5.2</td>
+</tr>
+</tbody></table>
+<p>Two points stand out.</p>
+<p>First, random search is surprisingly strong. With 200 samples, it is only 0.29 percentage points worse than the best hierarchical evolution result on CIFAR-10 and only 0.1 top-1 error worse on ImageNet. Because 200 samples can be evaluated in parallel, the paper reports this random-search setting as about 1 hour with 200 P100 GPUs.</p>
+<p>Second, evolution is still the best result in the table, but the paper’s own evidence says representation quality is doing a lot of the work.</p>
+<h2 id="Comparison-To-Prior-Models"><a href="#Comparison-To-Prior-Models" class="headerlink" title="Comparison To Prior Models"></a>Comparison To Prior Models</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/hierarchicalNas/table2-cifar10-sota-results.png"
+                     
+                ></p>
+<p>On CIFAR-10, the best hierarchical evolutionary architecture reaches <code>3.75 +/- 0.12%</code> error with <code>c0 = 64</code>, and <code>3.63 +/- 0.10%</code> with <code>c0 = 128</code>. In the paper’s 2018 context, this is competitive with early RL-based NAS results such as NAS v3, Block-QNN, and NASNet-A.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/hierarchicalNas/table3-imagenet-results.png"
+                     
+                ></p>
+<p>On ImageNet, the transferred hierarchical architecture reports <code>20.3%</code> top-1 error and <code>5.2%</code> top-5 error. That is behind NASNet-A in the table, but still competitive with strong manual convolutional baselines from that period. The paper notes that the ImageNet model has 64M parameters, which is larger than NASNet-A’s 22.6M.</p>
+<h2 id="Found-Cell"><a href="#Found-Cell" class="headerlink" title="Found Cell"></a>Found Cell</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/hierarchicalNas/fig5-7-cell-motifs.png"
+                     
+                ></p>
+<p>The learned cell uses motifs as edges. The paper notes that only motifs 1, 3, 4, and 5 are used in the final cell, with motifs 3 and 5 dominating.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/hierarchicalNas/fig8-11-motifs.png"
+                     
+                ></p>
+<p>The motif visualization is a good reminder that hierarchical NAS does not just learn “which operation goes on this edge.” It learns small graphs that become operations for the next level. Several motifs contain direct skip-style paths, so the final cell inherits skip connections through the motif hierarchy.</p>
+<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>The strongest lesson is that search-space design can dominate optimizer design. A well-built representation makes random search a serious baseline. This paper shows that with a hierarchical motif space, even 200 random samples are competitive with a much longer evolutionary run.</p>
+<p>The limitations are clear:</p>
+<ul>
+<li>the method still trains candidate models from scratch;</li>
+<li>the reported search uses 200 P100 workers;</li>
+<li>the ImageNet model is larger than NASNet-A;</li>
+<li>the hierarchical grammar is a strong prior and may exclude useful flat architectures;</li>
+<li>the final result is a convolutional cell search result, not a general architecture generator.</li>
+</ul>
+<p>I would use this paper as a reminder before designing a new NAS optimizer: first ask whether the representation already makes good architectures easy to sample. If random search is strong, the optimizer needs to clear a much higher bar.</p>
 
         </div>
 
@@ -647,7 +676,7 @@ mjx-container[display="true"] + br {
     <div class="post-toc">
         <div class="toc-title">On this page</div>
         <div class="page-title">Hierarchical Representations for Efficient Architecture Search</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Hierarchical-Motifs"><span class="nav-text">Hierarchical Motifs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-Hierarchy-Helps"><span class="nav-text">Why Hierarchy Helps</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-View"><span class="nav-text">Search View</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reading-Notes"><span class="nav-text">Reading Notes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Representation"><span class="nav-text">Representation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-Hierarchy-Matters"><span class="nav-text">Why Hierarchy Matters</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Algorithm"><span class="nav-text">Search Algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Model-Evaluation-Setup"><span class="nav-text">Model Evaluation Setup</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Curves"><span class="nav-text">Search Curves</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Main-Results"><span class="nav-text">Main Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Comparison-To-Prior-Models"><span class="nav-text">Comparison To Prior Models</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Found-Cell"><span class="nav-text">Found Cell</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
 
     </div>
 </div>
