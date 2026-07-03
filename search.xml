@@ -7984,7 +7984,7 @@
   </entry>
   <entry>
     <title>[LLM Inference] A Shape-First Map of Llama Forward</title>
-    <url>/2026/07/03/LLM-Inference-01-Shape-Map/</url>
+    <url>/2025/06/01/LLM-Inference-01-Shape-Map/</url>
     <content><![CDATA[<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
 <li>Teaching repo: <a class="link" href="https://github.com/Baytoro/LLM_hand">Baytoro/LLM_hand <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
 <li>Companion lesson: <a href="https://github.com/Baytoro/LLM_hand/blob/main/docs/01_text_to_next_token.md"><code>docs/01_text_to_next_token.md</code></a></li>
@@ -8218,7 +8218,7 @@
 <li>The LM head returns one distribution per position: <code>[B, T, V]</code>.</li>
 <li>Generation samples only from the last position: <code>[B, V]</code>.</li>
 </ol>
-<p>Next: <a href="/2026/07/03/LLM-Inference-02-Token-Embedding-LM-Head/">Token IDs, Embedding, and LM Head</a>.</p>
+<p>Next: <a href="/2025/06/02/LLM-Inference-02-Token-Embedding-LM-Head/">Token IDs, Embedding, and LM Head</a>.</p>
 ]]></content>
       <categories>
         <category>Engineering Notes</category>
@@ -8231,7 +8231,7 @@
   </entry>
   <entry>
     <title>[LLM Inference] Token IDs, Embedding, and LM Head</title>
-    <url>/2026/07/03/LLM-Inference-02-Token-Embedding-LM-Head/</url>
+    <url>/2025/06/02/LLM-Inference-02-Token-Embedding-LM-Head/</url>
     <content><![CDATA[<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
 <li>Teaching repo: <a class="link" href="https://github.com/Baytoro/LLM_hand">Baytoro/LLM_hand <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
 <li>Companion note: <a href="https://github.com/Baytoro/LLM_hand/blob/main/docs/02_token_embedding_lm_head.md"><code>docs/02_token_embedding_lm_head.md</code></a></li>
@@ -8359,7 +8359,7 @@
 <div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">ids [B, T] -&gt; embedding -&gt; hidden [B, T, D]</span><br><span class="line">hidden [B, T, D] -&gt; LM Head -&gt; logits [B, T, V]</span><br></pre></td></tr></table></figure></div>
 
 <p>Once this is fixed, the rest of the model is about improving the hidden states before the LM Head reads them.</p>
-<p>Previous: <a href="/2026/07/03/LLM-Inference-01-Shape-Map/">A Shape-First Map of Llama Forward</a>.<br>Next: <a href="/2026/07/03/LLM-Inference-03-RMSNorm-QKV-Projection/">RMSNorm and QKV Projection</a>.</p>
+<p>Previous: <a href="/2025/06/01/LLM-Inference-01-Shape-Map/">A Shape-First Map of Llama Forward</a>.<br>Next: <a href="/2025/06/03/LLM-Inference-03-RMSNorm-QKV-Projection/">RMSNorm and QKV Projection</a>.</p>
 ]]></content>
       <categories>
         <category>Engineering Notes</category>
@@ -8372,7 +8372,7 @@
   </entry>
   <entry>
     <title>[LLM Inference] RMSNorm and QKV Projection</title>
-    <url>/2026/07/03/LLM-Inference-03-RMSNorm-QKV-Projection/</url>
+    <url>/2025/06/03/LLM-Inference-03-RMSNorm-QKV-Projection/</url>
     <content><![CDATA[<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
 <li>Teaching repo: <a class="link" href="https://github.com/Baytoro/LLM_hand">Baytoro/LLM_hand <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
 <li>Companion notes: <a href="https://github.com/Baytoro/LLM_hand/blob/main/docs/03_rmsnorm.md"><code>docs/03_rmsnorm.md</code></a>, <a href="https://github.com/Baytoro/LLM_hand/blob/main/docs/04_qkv_projection.md"><code>docs/04_qkv_projection.md</code></a></li>
@@ -8493,7 +8493,7 @@
 <div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">[B, T, D] -&gt; RMSNorm -&gt; [B, T, D]</span><br><span class="line">[B, T, D] -&gt; q/k/v projections -&gt; [B, T, H, Dh]</span><br></pre></td></tr></table></figure></div>
 
 <p>Next, the q and k tensors receive position information through RoPE.</p>
-<p>Previous: <a href="/2026/07/03/LLM-Inference-02-Token-Embedding-LM-Head/">Token IDs, Embedding, and LM Head</a>.<br>Next: <a href="/2026/07/03/LLM-Inference-04-RoPE-Query-Key/">RoPE: Position Enters Query and Key</a>.</p>
+<p>Previous: <a href="/2025/06/02/LLM-Inference-02-Token-Embedding-LM-Head/">Token IDs, Embedding, and LM Head</a>.<br>Next: <a href="/2025/06/04/LLM-Inference-04-RoPE-Query-Key/">RoPE: Position Enters Query and Key</a>.</p>
 ]]></content>
       <categories>
         <category>Engineering Notes</category>
@@ -8506,7 +8506,7 @@
   </entry>
   <entry>
     <title>[LLM Inference] RoPE: Position Enters Query and Key</title>
-    <url>/2026/07/03/LLM-Inference-04-RoPE-Query-Key/</url>
+    <url>/2025/06/04/LLM-Inference-04-RoPE-Query-Key/</url>
     <content><![CDATA[<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
 <li>Teaching repo: <a class="link" href="https://github.com/Baytoro/LLM_hand">Baytoro/LLM_hand <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
 <li>Companion note: <a href="https://github.com/Baytoro/LLM_hand/blob/main/docs/05_rope.md"><code>docs/05_rope.md</code></a></li>
@@ -8610,7 +8610,7 @@
 <div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">q [B, T, H, Dh] -&gt; RoPE -&gt; q_rot [B, T, H, Dh]</span><br><span class="line">k [B, T, H, Dh] -&gt; RoPE -&gt; k_rot [B, T, H, Dh]</span><br><span class="line">v [B, T, H, Dh] -&gt; unchanged</span><br></pre></td></tr></table></figure></div>
 
 <p>The next step is to transpose q/k/v into attention layout and compute causal attention.</p>
-<p>Previous: <a href="/2026/07/03/LLM-Inference-03-RMSNorm-QKV-Projection/">RMSNorm and QKV Projection</a>.<br>Next: <a href="/2026/07/03/LLM-Inference-05-Causal-Self-Attention/">Causal Self-Attention by Shapes</a>.</p>
+<p>Previous: <a href="/2025/06/03/LLM-Inference-03-RMSNorm-QKV-Projection/">RMSNorm and QKV Projection</a>.<br>Next: <a href="/2025/06/05/LLM-Inference-05-Causal-Self-Attention/">Causal Self-Attention by Shapes</a>.</p>
 ]]></content>
       <categories>
         <category>Engineering Notes</category>
@@ -8623,7 +8623,7 @@
   </entry>
   <entry>
     <title>[LLM Inference] Causal Self-Attention by Shapes</title>
-    <url>/2026/07/03/LLM-Inference-05-Causal-Self-Attention/</url>
+    <url>/2025/06/05/LLM-Inference-05-Causal-Self-Attention/</url>
     <content><![CDATA[<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
 <li>Teaching repo: <a class="link" href="https://github.com/Baytoro/LLM_hand">Baytoro/LLM_hand <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
 <li>Companion note: <a href="https://github.com/Baytoro/LLM_hand/blob/main/docs/06_causal_self_attention.md"><code>docs/06_causal_self_attention.md</code></a></li>
@@ -8737,7 +8737,7 @@
 <div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">q/k/v:          [B, H, T, Dh]</span><br><span class="line">scores:         [B, H, T, T]</span><br><span class="line">mask:           [T, T] -&gt; [B, H, T, T]</span><br><span class="line">attn_weights:   [B, H, T, T]</span><br><span class="line">context:        [B, H, T, Dh]</span><br><span class="line">merged context: [B, T, D]</span><br></pre></td></tr></table></figure></div>
 
 <p>Once these shapes are stable, GQA is a controlled change to the key/value head count.</p>
-<p>Previous: <a href="/2026/07/03/LLM-Inference-04-RoPE-Query-Key/">RoPE: Position Enters Query and Key</a>.<br>Next: <a href="/2026/07/03/LLM-Inference-06-GQA-MQA-KV-Heads/">GQA and MQA: Fewer KV Heads</a>.</p>
+<p>Previous: <a href="/2025/06/04/LLM-Inference-04-RoPE-Query-Key/">RoPE: Position Enters Query and Key</a>.<br>Next: <a href="/2025/06/06/LLM-Inference-06-GQA-MQA-KV-Heads/">GQA and MQA: Fewer KV Heads</a>.</p>
 ]]></content>
       <categories>
         <category>Engineering Notes</category>
@@ -8750,7 +8750,7 @@
   </entry>
   <entry>
     <title>[LLM Inference] GQA and MQA: Fewer KV Heads</title>
-    <url>/2026/07/03/LLM-Inference-06-GQA-MQA-KV-Heads/</url>
+    <url>/2025/06/06/LLM-Inference-06-GQA-MQA-KV-Heads/</url>
     <content><![CDATA[<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
 <li>Teaching repo: <a class="link" href="https://github.com/Baytoro/LLM_hand">Baytoro/LLM_hand <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
 <li>Companion note: <a href="https://github.com/Baytoro/LLM_hand/blob/main/docs/07_gqa_mqa.md"><code>docs/07_gqa_mqa.md</code></a></li>
@@ -8873,7 +8873,7 @@
 <div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">q: [B, T, H, Dh]</span><br><span class="line">k: [B, T, G, Dh]</span><br><span class="line">v: [B, T, G, Dh]</span><br></pre></td></tr></table></figure></div>
 
 <p>At attention time, k/v are repeated to match <code>H</code>. At cache time, k/v stay compact with <code>G</code> heads.</p>
-<p>Previous: <a href="/2026/07/03/LLM-Inference-05-Causal-Self-Attention/">Causal Self-Attention by Shapes</a>.<br>Next: <a href="/2026/07/03/LLM-Inference-07-KV-Cache-Prefill-Decode/">KV Cache: Prefill and Decode</a>.</p>
+<p>Previous: <a href="/2025/06/05/LLM-Inference-05-Causal-Self-Attention/">Causal Self-Attention by Shapes</a>.<br>Next: <a href="/2025/06/07/LLM-Inference-07-KV-Cache-Prefill-Decode/">KV Cache: Prefill and Decode</a>.</p>
 ]]></content>
       <categories>
         <category>Engineering Notes</category>
@@ -13496,6 +13496,951 @@
       </categories>
       <tags>
         <tag>NAS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>[LLM Inference] KV Cache: Prefill and Decode</title>
+    <url>/2025/06/07/LLM-Inference-07-KV-Cache-Prefill-Decode/</url>
+    <content><![CDATA[<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li>Teaching repo: <a class="link" href="https://github.com/Baytoro/LLM_hand">Baytoro/LLM_hand <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>Companion note: <a href="https://github.com/Baytoro/LLM_hand/blob/main/docs/08_kv_cache.md"><code>docs/08_kv_cache.md</code></a></li>
+<li>Runnable script: <code>python -m lessons.kv_cache</code></li>
+<li>Code: <a href="https://github.com/Baytoro/LLM_hand/blob/main/tiny_llama/kv_cache.py"><code>tiny_llama/kv_cache.py</code></a></li>
+</ul>
+<p>KV cache is the point where LLM inference stops looking like a normal full-sequence forward pass. During prefill, the model processes the prompt and stores keys and values. During decode, the model processes only the newest token, then attends to cached history.</p>
+<h2 id="Goal"><a href="#Goal" class="headerlink" title="Goal"></a>Goal</h2><p>The two phases are:</p>
+<pre class="mermaid">sequenceDiagram
+    participant Prompt as Prompt tokens [B,T]
+    participant Model as Decoder model
+    participant Cache as KV cache
+    participant Next as Next token [B,1]
+
+    Prompt-&gt;&gt;Model: prefill full prompt
+    Model-&gt;&gt;Cache: store K/V [B,G,T,Dh]
+    Model-&gt;&gt;Next: sample first generated token
+    Next-&gt;&gt;Model: decode one token
+    Model-&gt;&gt;Cache: append K/V [B,G,1,Dh]
+    Model-&gt;&gt;Next: sample next token</pre>
+
+<p>The main storage object in the teaching repo is:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@dataclass(<span class="params">frozen=<span class="literal">True</span></span>)</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">KVCache</span>:</span><br><span class="line">    k: torch.Tensor  <span class="comment"># [B, G, T_cache, Dh]</span></span><br><span class="line">    v: torch.Tensor  <span class="comment"># [B, G, T_cache, Dh]</span></span><br></pre></td></tr></table></figure></div>
+
+<p>The cache stores K and V after projection and RoPE. It does not store Q.</p>
+<h2 id="Prefill"><a href="#Prefill" class="headerlink" title="Prefill"></a>Prefill</h2><p>Prefill processes the whole prompt:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">logits, caches = model(input_ids, caches=<span class="literal">None</span>, use_cache=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>If the prompt has shape <code>[B, T]</code>, then each layer cache has:</p>
+<table>
+<thead>
+<tr>
+<th>Tensor</th>
+<th align="right">Shape</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>cache.k</code></td>
+<td align="right"><code>[B, G, T, Dh]</code></td>
+</tr>
+<tr>
+<td><code>cache.v</code></td>
+<td align="right"><code>[B, G, T, Dh]</code></td>
+</tr>
+<tr>
+<td><code>logits</code></td>
+<td align="right"><code>[B, T, V]</code></td>
+</tr>
+</tbody></table>
+<p>The first generated token comes from:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">next_logits = logits[:, -<span class="number">1</span>, :]  <span class="comment"># [B, V]</span></span><br><span class="line">next_ids = sample(next_logits)  <span class="comment"># [B, 1]</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Decode"><a href="#Decode" class="headerlink" title="Decode"></a>Decode</h2><p>Decode does not feed the full prefix again. It feeds only the newest token id:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">logits, caches = model(next_ids, caches=caches, use_cache=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>If the old cache length is <code>T_cache</code>, the new token contributes K/V with shape <code>[B, G, 1, Dh]</code>. Appending gives:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">old cache: [B, G, T_cache, Dh]</span><br><span class="line">new k/v:   [B, G, 1, Dh]</span><br><span class="line">new cache: [B, G, T_cache + 1, Dh]</span><br></pre></td></tr></table></figure></div>
+
+<p>This is the core append:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">k = torch.cat([cache.k, new_k], dim=<span class="number">2</span>)  <span class="comment"># [B, G, T_cache + T_new, Dh]</span></span><br><span class="line">v = torch.cat([cache.v, new_v], dim=<span class="number">2</span>)  <span class="comment"># [B, G, T_cache + T_new, Dh]</span></span><br></pre></td></tr></table></figure></div>
+
+<p>The sequence dimension inside the cache is <code>dim=2</code>.</p>
+<h2 id="Cache-Attention-Mask"><a href="#Cache-Attention-Mask" class="headerlink" title="Cache Attention Mask"></a>Cache Attention Mask</h2><p>When decoding one token, attention scores have shape:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">q:      [B, H, 1, Dh]</span><br><span class="line">k_all:  [B, H, T_total, Dh]</span><br><span class="line">scores: [B, H, 1, T_total]</span><br></pre></td></tr></table></figure></div>
+
+<p>For multi-token cached calls, the mask is:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">build_cache_attention_mask</span>(<span class="params">q_len: <span class="built_in">int</span>, kv_len: <span class="built_in">int</span></span>):</span><br><span class="line">    past_len = kv_len - q_len</span><br><span class="line">    q_pos = torch.arange(past_len, kv_len)[:, <span class="literal">None</span>]  <span class="comment"># [T_new, 1]</span></span><br><span class="line">    k_pos = torch.arange(kv_len)[<span class="literal">None</span>, :]            <span class="comment"># [1, T_total]</span></span><br><span class="line">    <span class="keyword">return</span> k_pos &lt;= q_pos                            <span class="comment"># [T_new, T_total]</span></span><br></pre></td></tr></table></figure></div>
+
+<p>This version works for both one-token decode and chunked decode.</p>
+<h2 id="Shape-Trace"><a href="#Shape-Trace" class="headerlink" title="Shape Trace"></a>Shape Trace</h2><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th align="right">Input ids</th>
+<th align="right">New K/V</th>
+<th align="right">Cache after call</th>
+<th align="right">Logits</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>prefill</td>
+<td align="right"><code>[B, T]</code></td>
+<td align="right"><code>[B, G, T, Dh]</code></td>
+<td align="right"><code>[B, G, T, Dh]</code></td>
+<td align="right"><code>[B, T, V]</code></td>
+</tr>
+<tr>
+<td>decode step 1</td>
+<td align="right"><code>[B, 1]</code></td>
+<td align="right"><code>[B, G, 1, Dh]</code></td>
+<td align="right"><code>[B, G, T+1, Dh]</code></td>
+<td align="right"><code>[B, 1, V]</code></td>
+</tr>
+<tr>
+<td>decode step 2</td>
+<td align="right"><code>[B, 1]</code></td>
+<td align="right"><code>[B, G, 1, Dh]</code></td>
+<td align="right"><code>[B, G, T+2, Dh]</code></td>
+<td align="right"><code>[B, 1, V]</code></td>
+</tr>
+</tbody></table>
+<p>The decode logits still have a time dimension. Even when <code>T_new = 1</code>, the model returns <code>[B, 1, V]</code>.</p>
+<h2 id="Minimal-PyTorch"><a href="#Minimal-PyTorch" class="headerlink" title="Minimal PyTorch"></a>Minimal PyTorch</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@dataclass(<span class="params">frozen=<span class="literal">True</span></span>)</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">KVCache</span>:</span><br><span class="line">    k: torch.Tensor  <span class="comment"># [B, G, T_cache, Dh]</span></span><br><span class="line">    v: torch.Tensor  <span class="comment"># [B, G, T_cache, Dh]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">append_kv</span>(<span class="params">cache: KVCache | <span class="literal">None</span>, new_k: torch.Tensor, new_v: torch.Tensor</span>) -&gt; KVCache:</span><br><span class="line">    <span class="comment"># new_k/new_v: [B, G, T_new, Dh]</span></span><br><span class="line">    <span class="keyword">if</span> cache <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">return</span> KVCache(new_k, new_v)</span><br><span class="line">    k = torch.cat([cache.k, new_k], dim=<span class="number">2</span>)</span><br><span class="line">    v = torch.cat([cache.v, new_v], dim=<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> KVCache(k, v)</span><br></pre></td></tr></table></figure></div>
+
+<p>The implementation is tiny, but the shape contract is strict.</p>
+<h2 id="Common-Pitfalls"><a href="#Common-Pitfalls" class="headerlink" title="Common Pitfalls"></a>Common Pitfalls</h2><p>First, the decode input should be <code>[B, 1]</code>, not <code>[B]</code>. Keeping the time dimension avoids many special cases.</p>
+<p>Second, the cache exists per layer. A 32-layer model has 32 K/V cache pairs.</p>
+<p>Third, do not store repeated GQA K/V. Store compact <code>[B, G, T_cache, Dh]</code>; repeat to <code>[B, H, T_cache, Dh]</code> only for attention computation.</p>
+<p>Fourth, RoPE position should start at the old cache length. If the cache has 128 tokens, the next token’s <code>start_pos</code> is 128.</p>
+<h2 id="Takeaways"><a href="#Takeaways" class="headerlink" title="Takeaways"></a>Takeaways</h2><p>KV cache changes the inference rhythm:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">prefill: [B, T] -&gt; cache [B, G, T, Dh]</span><br><span class="line">decode:  [B, 1] -&gt; append [B, G, 1, Dh]</span><br></pre></td></tr></table></figure></div>
+
+<p>Once cache is in place, generation becomes a loop over one-token decode calls.</p>
+<p>Previous: <a href="/2025/06/06/LLM-Inference-06-GQA-MQA-KV-Heads/">GQA and MQA: Fewer KV Heads</a>.<br>Next: <a href="/2025/06/08/LLM-Inference-08-SwiGLU-Transformer-Block/">SwiGLU MLP and the Transformer Block</a>.</p>
+]]></content>
+      <categories>
+        <category>Engineering Notes</category>
+      </categories>
+      <tags>
+        <tag>LLM</tag>
+        <tag>Transformer</tag>
+        <tag>KV-Cache</tag>
+        <tag>Inference</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>[LLM Inference] SwiGLU MLP and the Transformer Block</title>
+    <url>/2025/06/08/LLM-Inference-08-SwiGLU-Transformer-Block/</url>
+    <content><![CDATA[<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li>Teaching repo: <a class="link" href="https://github.com/Baytoro/LLM_hand">Baytoro/LLM_hand <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>Companion notes: <a href="https://github.com/Baytoro/LLM_hand/blob/main/docs/09_swiglu_mlp.md"><code>docs/09_swiglu_mlp.md</code></a>, <a href="https://github.com/Baytoro/LLM_hand/blob/main/docs/10_transformer_block.md"><code>docs/10_transformer_block.md</code></a></li>
+<li>Runnable scripts: <code>python -m lessons.swiglu_mlp</code>, <code>python -m lessons.transformer_block</code></li>
+<li>Code: <a href="https://github.com/Baytoro/LLM_hand/blob/main/tiny_llama/mlp.py"><code>tiny_llama/mlp.py</code></a>, <a href="https://github.com/Baytoro/LLM_hand/blob/main/tiny_llama/block.py"><code>tiny_llama/block.py</code></a></li>
+</ul>
+<p>The attention path gets most of the attention, but the block is not only attention. A Llama-like block alternates normalized attention and normalized MLP, with residual connections around both.</p>
+<h2 id="Goal"><a href="#Goal" class="headerlink" title="Goal"></a>Goal</h2><p>The block-level dataflow is:</p>
+<pre class="mermaid">flowchart LR
+    x0["x<br>[B,T,D]"] --&gt; n1["RMSNorm"]
+    n1 --&gt; attn["GQA attention<br>[B,T,D]"]
+    attn --&gt; add1["residual add"]
+    x0 --&gt; add1
+    add1 --&gt; x1["x<br>[B,T,D]"]
+    x1 --&gt; n2["RMSNorm"]
+    n2 --&gt; mlp["SwiGLU MLP<br>[B,T,D]"]
+    mlp --&gt; add2["residual add"]
+    x1 --&gt; add2
+    add2 --&gt; out["block output<br>[B,T,D]"]</pre>
+
+<p>The block preserves shape. It changes the content of the hidden states, not their width or sequence length.</p>
+<h2 id="SwiGLU-MLP"><a href="#SwiGLU-MLP" class="headerlink" title="SwiGLU MLP"></a>SwiGLU MLP</h2><p>The MLP is position-wise. It applies the same feed-forward network to each token independently:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">gate = gate_proj(x)       <span class="comment"># [B, T, F]</span></span><br><span class="line">up = up_proj(x)           <span class="comment"># [B, T, F]</span></span><br><span class="line">hidden = silu(gate) * up  <span class="comment"># [B, T, F]</span></span><br><span class="line">out = down_proj(hidden)   <span class="comment"># [B, T, D]</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Mathematically:</p>
+<p><mjx-container class="MathJax" jax="SVG" display="true"><svg style="vertical-align: -0.667ex;" xmlns="http://www.w3.org/2000/svg" width="43.687ex" height="2.364ex" role="img" focusable="false" viewBox="0 -750 19309.5 1045"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="53" d="M55 507Q55 590 112 647T243 704H257Q342 704 405 641L426 672Q431 679 436 687T446 700L449 704Q450 704 453 704T459 705H463Q466 705 472 699V462L466 456H448Q437 456 435 459T430 479Q413 605 329 646Q292 662 254 662Q201 662 168 626T135 542Q135 508 152 480T200 435Q210 431 286 412T370 389Q427 367 463 314T500 191Q500 110 448 45T301 -21Q245 -21 201 -4T140 27L122 41Q118 36 107 21T87 -7T78 -21Q76 -22 68 -22H64Q61 -22 55 -16V101Q55 220 56 222Q58 227 76 227H89Q95 221 95 214Q95 182 105 151T139 90T205 42T305 24Q352 24 386 62T420 155Q420 198 398 233T340 281Q284 295 266 300Q261 301 239 306T206 314T174 325T141 343T112 367T85 402Q55 451 55 507Z"></path><path data-c="77" d="M90 368Q84 378 76 380T40 385H18V431H24L43 430Q62 430 84 429T116 428Q206 428 221 431H229V385H215Q177 383 177 368Q177 367 221 239L265 113L339 328L333 345Q323 374 316 379Q308 384 278 385H258V431H264Q270 428 348 428Q439 428 454 431H461V385H452Q404 385 404 369Q404 366 418 324T449 234T481 143L496 100L537 219Q579 341 579 347Q579 363 564 373T530 385H522V431H529Q541 428 624 428Q692 428 698 431H703V385H697Q696 385 691 385T682 384Q635 377 619 334L559 161Q546 124 528 71Q508 12 503 1T487 -11H479Q460 -11 456 -4Q455 -3 407 133L361 267Q359 263 266 -4Q261 -11 243 -11H238Q225 -11 220 -3L90 368Z" transform="translate(556,0)"></path><path data-c="69" d="M69 609Q69 637 87 653T131 669Q154 667 171 652T188 609Q188 579 171 564T129 549Q104 549 87 564T69 609ZM247 0Q232 3 143 3Q132 3 106 3T56 1L34 0H26V46H42Q70 46 91 49Q100 53 102 60T104 102V205V293Q104 345 102 359T88 378Q74 385 41 385H30V408Q30 431 32 431L42 432Q52 433 70 434T106 436Q123 437 142 438T171 441T182 442H185V62Q190 52 197 50T232 46H255V0H247Z" transform="translate(1278,0)"></path><path data-c="47" d="M56 342Q56 428 89 500T174 615T283 681T391 705Q394 705 400 705T408 704Q499 704 569 636L582 624L612 663Q639 700 643 704Q644 704 647 704T653 705H657Q660 705 666 699V419L660 413H626Q620 419 619 430Q610 512 571 572T476 651Q457 658 426 658Q401 658 376 654T316 633T254 592T205 519T177 411Q173 369 173 335Q173 259 192 201T238 111T302 58T370 31T431 24Q478 24 513 45T559 100Q562 110 562 160V212Q561 213 557 216T551 220T542 223T526 225T502 226T463 227H437V273H449L609 270Q715 270 727 273H735V227H721Q674 227 668 215Q666 211 666 108V6Q660 0 657 0Q653 0 639 10Q617 25 600 42L587 54Q571 27 524 3T406 -22Q317 -22 238 22T108 151T56 342Z" transform="translate(1556,0)"></path><path data-c="4C" d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q48 680 182 680Q324 680 348 683H360V637H333Q273 637 258 635T233 622L232 342V129Q232 57 237 52Q243 47 313 47Q384 47 410 53Q470 70 498 110T536 221Q536 226 537 238T540 261T542 272T562 273H582V268Q580 265 568 137T554 5V0H25V46H58Q100 47 109 49T128 61V622Z" transform="translate(2341,0)"></path><path data-c="55" d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q57 680 180 680Q315 680 324 683H335V637H302Q262 636 251 634T233 622L232 418V291Q232 189 240 145T280 67Q325 24 389 24Q454 24 506 64T571 183Q575 206 575 410V598Q569 608 565 613T541 627T489 637H472V683H481Q496 680 598 680T715 683H724V637H707Q634 633 622 598L621 399Q620 194 617 180Q617 179 615 171Q595 83 531 31T389 -22Q304 -22 226 33T130 192Q129 201 128 412V622Z" transform="translate(2966,0)"></path></g><g data-mml-node="mo" transform="translate(3716,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(4105,0)"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g><g data-mml-node="mo" transform="translate(4677,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="mo" transform="translate(5343.8,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="msub" transform="translate(6399.6,0)"><g data-mml-node="mi"><path data-c="1D44A" d="M436 683Q450 683 486 682T553 680Q604 680 638 681T677 682Q695 682 695 674Q695 670 692 659Q687 641 683 639T661 637Q636 636 621 632T600 624T597 615Q597 603 613 377T629 138L631 141Q633 144 637 151T649 170T666 200T690 241T720 295T759 362Q863 546 877 572T892 604Q892 619 873 628T831 637Q817 637 817 647Q817 650 819 660Q823 676 825 679T839 682Q842 682 856 682T895 682T949 681Q1015 681 1034 683Q1048 683 1048 672Q1048 666 1045 655T1038 640T1028 637Q1006 637 988 631T958 617T939 600T927 584L923 578L754 282Q586 -14 585 -15Q579 -22 561 -22Q546 -22 542 -17Q539 -14 523 229T506 480L494 462Q472 425 366 239Q222 -13 220 -15T215 -19Q210 -22 197 -22Q178 -22 176 -15Q176 -12 154 304T131 622Q129 631 121 633T82 637H58Q51 644 51 648Q52 671 64 683H76Q118 680 176 680Q301 680 313 683H323Q329 677 329 674T327 656Q322 641 318 637H297Q236 634 232 620Q262 160 266 136L501 550L499 587Q496 629 489 632Q483 636 447 637Q428 637 422 639T416 648Q416 650 418 660Q419 664 420 669T421 676T424 680T428 682T436 683Z"></path></g><g data-mml-node="TeXAtom" transform="translate(977,-150) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mi"><path data-c="1D451" d="M366 683Q367 683 438 688T511 694Q523 694 523 686Q523 679 450 384T375 83T374 68Q374 26 402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487H491Q506 153 506 145Q506 140 503 129Q490 79 473 48T445 8T417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157Q33 205 53 255T101 341Q148 398 195 420T280 442Q336 442 364 400Q369 394 369 396Q370 400 396 505T424 616Q424 629 417 632T378 637H357Q351 643 351 645T353 664Q358 683 366 683ZM352 326Q329 405 277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q233 26 290 98L298 109L352 326Z"></path></g><g data-mml-node="mi" transform="translate(520,0)"><path data-c="1D45C" d="M201 -11Q126 -11 80 38T34 156Q34 221 64 279T146 380Q222 441 301 441Q333 441 341 440Q354 437 367 433T402 417T438 387T464 338T476 268Q476 161 390 75T201 -11ZM121 120Q121 70 147 48T206 26Q250 26 289 58T351 142Q360 163 374 216T388 308Q388 352 370 375Q346 405 306 405Q243 405 195 347Q158 303 140 230T121 120Z"></path></g><g data-mml-node="mi" transform="translate(1005,0)"><path data-c="1D464" d="M580 385Q580 406 599 424T641 443Q659 443 674 425T690 368Q690 339 671 253Q656 197 644 161T609 80T554 12T482 -11Q438 -11 404 5T355 48Q354 47 352 44Q311 -11 252 -11Q226 -11 202 -5T155 14T118 53T104 116Q104 170 138 262T173 379Q173 380 173 381Q173 390 173 393T169 400T158 404H154Q131 404 112 385T82 344T65 302T57 280Q55 278 41 278H27Q21 284 21 287Q21 293 29 315T52 366T96 418T161 441Q204 441 227 416T250 358Q250 340 217 250T184 111Q184 65 205 46T258 26Q301 26 334 87L339 96V119Q339 122 339 128T340 136T341 143T342 152T345 165T348 182T354 206T362 238T373 281Q402 395 406 404Q419 431 449 431Q468 431 475 421T483 402Q483 389 454 274T422 142Q420 131 420 107V100Q420 85 423 71T442 42T487 26Q558 26 600 148Q609 171 620 213T632 273Q632 306 619 325T593 357T580 385Z"></path></g><g data-mml-node="mi" transform="translate(1721,0)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g></g></g><g data-mml-node="mo" transform="translate(9067.8,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(9456.8,0)"><path data-c="53" d="M55 507Q55 590 112 647T243 704H257Q342 704 405 641L426 672Q431 679 436 687T446 700L449 704Q450 704 453 704T459 705H463Q466 705 472 699V462L466 456H448Q437 456 435 459T430 479Q413 605 329 646Q292 662 254 662Q201 662 168 626T135 542Q135 508 152 480T200 435Q210 431 286 412T370 389Q427 367 463 314T500 191Q500 110 448 45T301 -21Q245 -21 201 -4T140 27L122 41Q118 36 107 21T87 -7T78 -21Q76 -22 68 -22H64Q61 -22 55 -16V101Q55 220 56 222Q58 227 76 227H89Q95 221 95 214Q95 182 105 151T139 90T205 42T305 24Q352 24 386 62T420 155Q420 198 398 233T340 281Q284 295 266 300Q261 301 239 306T206 314T174 325T141 343T112 367T85 402Q55 451 55 507Z"></path><path data-c="69" d="M69 609Q69 637 87 653T131 669Q154 667 171 652T188 609Q188 579 171 564T129 549Q104 549 87 564T69 609ZM247 0Q232 3 143 3Q132 3 106 3T56 1L34 0H26V46H42Q70 46 91 49Q100 53 102 60T104 102V205V293Q104 345 102 359T88 378Q74 385 41 385H30V408Q30 431 32 431L42 432Q52 433 70 434T106 436Q123 437 142 438T171 441T182 442H185V62Q190 52 197 50T232 46H255V0H247Z" transform="translate(556,0)"></path><path data-c="4C" d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q48 680 182 680Q324 680 348 683H360V637H333Q273 637 258 635T233 622L232 342V129Q232 57 237 52Q243 47 313 47Q384 47 410 53Q470 70 498 110T536 221Q536 226 537 238T540 261T542 272T562 273H582V268Q580 265 568 137T554 5V0H25V46H58Q100 47 109 49T128 61V622Z" transform="translate(834,0)"></path><path data-c="55" d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q57 680 180 680Q315 680 324 683H335V637H302Q262 636 251 634T233 622L232 418V291Q232 189 240 145T280 67Q325 24 389 24Q454 24 506 64T571 183Q575 206 575 410V598Q569 608 565 613T541 627T489 637H472V683H481Q496 680 598 680T715 683H724V637H707Q634 633 622 598L621 399Q620 194 617 180Q617 179 615 171Q595 83 531 31T389 -22Q304 -22 226 33T130 192Q129 201 128 412V622Z" transform="translate(1459,0)"></path></g><g data-mml-node="mo" transform="translate(11665.8,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="msub" transform="translate(12054.8,0)"><g data-mml-node="mi"><path data-c="1D44A" d="M436 683Q450 683 486 682T553 680Q604 680 638 681T677 682Q695 682 695 674Q695 670 692 659Q687 641 683 639T661 637Q636 636 621 632T600 624T597 615Q597 603 613 377T629 138L631 141Q633 144 637 151T649 170T666 200T690 241T720 295T759 362Q863 546 877 572T892 604Q892 619 873 628T831 637Q817 637 817 647Q817 650 819 660Q823 676 825 679T839 682Q842 682 856 682T895 682T949 681Q1015 681 1034 683Q1048 683 1048 672Q1048 666 1045 655T1038 640T1028 637Q1006 637 988 631T958 617T939 600T927 584L923 578L754 282Q586 -14 585 -15Q579 -22 561 -22Q546 -22 542 -17Q539 -14 523 229T506 480L494 462Q472 425 366 239Q222 -13 220 -15T215 -19Q210 -22 197 -22Q178 -22 176 -15Q176 -12 154 304T131 622Q129 631 121 633T82 637H58Q51 644 51 648Q52 671 64 683H76Q118 680 176 680Q301 680 313 683H323Q329 677 329 674T327 656Q322 641 318 637H297Q236 634 232 620Q262 160 266 136L501 550L499 587Q496 629 489 632Q483 636 447 637Q428 637 422 639T416 648Q416 650 418 660Q419 664 420 669T421 676T424 680T428 682T436 683Z"></path></g><g data-mml-node="TeXAtom" transform="translate(977,-150) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mi"><path data-c="1D454" d="M311 43Q296 30 267 15T206 0Q143 0 105 45T66 160Q66 265 143 353T314 442Q361 442 401 394L404 398Q406 401 409 404T418 412T431 419T447 422Q461 422 470 413T480 394Q480 379 423 152T363 -80Q345 -134 286 -169T151 -205Q10 -205 10 -137Q10 -111 28 -91T74 -71Q89 -71 102 -80T116 -111Q116 -121 114 -130T107 -144T99 -154T92 -162L90 -164H91Q101 -167 151 -167Q189 -167 211 -155Q234 -144 254 -122T282 -75Q288 -56 298 -13Q311 35 311 43ZM384 328L380 339Q377 350 375 354T369 368T359 382T346 393T328 402T306 405Q262 405 221 352Q191 313 171 233T151 117Q151 38 213 38Q269 38 323 108L331 118L384 328Z"></path></g><g data-mml-node="mi" transform="translate(477,0)"><path data-c="1D44E" d="M33 157Q33 258 109 349T280 441Q331 441 370 392Q386 422 416 422Q429 422 439 414T449 394Q449 381 412 234T374 68Q374 43 381 35T402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487Q506 153 506 144Q506 138 501 117T481 63T449 13Q436 0 417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157ZM351 328Q351 334 346 350T323 385T277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q217 26 254 59T298 110Q300 114 325 217T351 328Z"></path></g><g data-mml-node="mi" transform="translate(1006,0)"><path data-c="1D461" d="M26 385Q19 392 19 395Q19 399 22 411T27 425Q29 430 36 430T87 431H140L159 511Q162 522 166 540T173 566T179 586T187 603T197 615T211 624T229 626Q247 625 254 615T261 596Q261 589 252 549T232 470L222 433Q222 431 272 431H323Q330 424 330 420Q330 398 317 385H210L174 240Q135 80 135 68Q135 26 162 26Q197 26 230 60T283 144Q285 150 288 151T303 153H307Q322 153 322 145Q322 142 319 133Q314 117 301 95T267 48T216 6T155 -11Q125 -11 98 4T59 56Q57 64 57 83V101L92 241Q127 382 128 383Q128 385 77 385H26Z"></path></g><g data-mml-node="mi" transform="translate(1367,0)"><path data-c="1D452" d="M39 168Q39 225 58 272T107 350T174 402T244 433T307 442H310Q355 442 388 420T421 355Q421 265 310 237Q261 224 176 223Q139 223 138 221Q138 219 132 186T125 128Q125 81 146 54T209 26T302 45T394 111Q403 121 406 121Q410 121 419 112T429 98T420 82T390 55T344 24T281 -1T205 -11Q126 -11 83 42T39 168ZM373 353Q367 405 305 405Q272 405 244 391T199 357T170 316T154 280T149 261Q149 260 169 260Q282 260 327 284T373 353Z"></path></g></g></g><g data-mml-node="mi" transform="translate(14377.9,0)"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g><g data-mml-node="mo" transform="translate(14949.9,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="mo" transform="translate(15561.1,0)"><path data-c="2299" d="M56 250Q56 394 156 488T384 583Q530 583 626 485T722 250Q722 110 625 14T390 -83Q249 -83 153 14T56 250ZM682 250Q682 322 649 387T546 497T381 542Q272 542 184 459T95 250Q95 132 178 45T389 -42Q515 -42 598 45T682 250ZM311 250Q311 285 332 304T375 328Q376 328 382 328T392 329Q424 326 445 305T466 250Q466 217 445 195T389 172Q354 172 333 195T311 250Z"></path></g><g data-mml-node="msub" transform="translate(16561.3,0)"><g data-mml-node="mi"><path data-c="1D44A" d="M436 683Q450 683 486 682T553 680Q604 680 638 681T677 682Q695 682 695 674Q695 670 692 659Q687 641 683 639T661 637Q636 636 621 632T600 624T597 615Q597 603 613 377T629 138L631 141Q633 144 637 151T649 170T666 200T690 241T720 295T759 362Q863 546 877 572T892 604Q892 619 873 628T831 637Q817 637 817 647Q817 650 819 660Q823 676 825 679T839 682Q842 682 856 682T895 682T949 681Q1015 681 1034 683Q1048 683 1048 672Q1048 666 1045 655T1038 640T1028 637Q1006 637 988 631T958 617T939 600T927 584L923 578L754 282Q586 -14 585 -15Q579 -22 561 -22Q546 -22 542 -17Q539 -14 523 229T506 480L494 462Q472 425 366 239Q222 -13 220 -15T215 -19Q210 -22 197 -22Q178 -22 176 -15Q176 -12 154 304T131 622Q129 631 121 633T82 637H58Q51 644 51 648Q52 671 64 683H76Q118 680 176 680Q301 680 313 683H323Q329 677 329 674T327 656Q322 641 318 637H297Q236 634 232 620Q262 160 266 136L501 550L499 587Q496 629 489 632Q483 636 447 637Q428 637 422 639T416 648Q416 650 418 660Q419 664 420 669T421 676T424 680T428 682T436 683Z"></path></g><g data-mml-node="TeXAtom" transform="translate(977,-150) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mi"><path data-c="1D462" d="M21 287Q21 295 30 318T55 370T99 420T158 442Q204 442 227 417T250 358Q250 340 216 246T182 105Q182 62 196 45T238 27T291 44T328 78L339 95Q341 99 377 247Q407 367 413 387T427 416Q444 431 463 431Q480 431 488 421T496 402L420 84Q419 79 419 68Q419 43 426 35T447 26Q469 29 482 57T512 145Q514 153 532 153Q551 153 551 144Q550 139 549 130T540 98T523 55T498 17T462 -8Q454 -10 438 -10Q372 -10 347 46Q345 45 336 36T318 21T296 6T267 -6T233 -11Q189 -11 155 7Q103 38 103 113Q103 170 138 262T173 379Q173 380 173 381Q173 390 173 393T169 400T158 404H154Q131 404 112 385T82 344T65 302T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mi" transform="translate(572,0)"><path data-c="1D45D" d="M23 287Q24 290 25 295T30 317T40 348T55 381T75 411T101 433T134 442Q209 442 230 378L240 387Q302 442 358 442Q423 442 460 395T497 281Q497 173 421 82T249 -10Q227 -10 210 -4Q199 1 187 11T168 28L161 36Q160 35 139 -51T118 -138Q118 -144 126 -145T163 -148H188Q194 -155 194 -157T191 -175Q188 -187 185 -190T172 -194Q170 -194 161 -194T127 -193T65 -192Q-5 -192 -24 -194H-32Q-39 -187 -39 -183Q-37 -156 -26 -148H-6Q28 -147 33 -136Q36 -130 94 103T155 350Q156 355 156 364Q156 405 131 405Q109 405 94 377T71 316T59 280Q57 278 43 278H29Q23 284 23 287ZM178 102Q200 26 252 26Q282 26 310 49T356 107Q374 141 392 215T411 325V331Q411 405 350 405Q339 405 328 402T306 393T286 380T269 365T254 350T243 336T235 326L232 322Q232 321 229 308T218 264T204 212Q178 106 178 102Z"></path></g></g></g><g data-mml-node="mi" transform="translate(18348.5,0)"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g><g data-mml-node="mo" transform="translate(18920.5,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></mjx-container></p>
+<p>Shape trace:</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th align="right">Shape</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>x</code></td>
+<td align="right"><code>[B, T, D]</code></td>
+</tr>
+<tr>
+<td><code>gate_proj(x)</code></td>
+<td align="right"><code>[B, T, F]</code></td>
+</tr>
+<tr>
+<td><code>up_proj(x)</code></td>
+<td align="right"><code>[B, T, F]</code></td>
+</tr>
+<tr>
+<td><code>silu(gate) * up</code></td>
+<td align="right"><code>[B, T, F]</code></td>
+</tr>
+<tr>
+<td><code>down_proj(hidden)</code></td>
+<td align="right"><code>[B, T, D]</code></td>
+</tr>
+</tbody></table>
+<p>The MLP does not mix tokens. Token mixing happened in attention. The MLP transforms each token’s channel representation.</p>
+<h2 id="Pre-Norm-Residual-Block"><a href="#Pre-Norm-Residual-Block" class="headerlink" title="Pre-Norm Residual Block"></a>Pre-Norm Residual Block</h2><p>The teaching repo block is:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">attn_in = input_layernorm(x)                  <span class="comment"># [B, T, D]</span></span><br><span class="line">attn_out, next_cache = self_attn(attn_in)     <span class="comment"># [B, T, D]</span></span><br><span class="line">x = x + attn_out                              <span class="comment"># [B, T, D]</span></span><br><span class="line"></span><br><span class="line">mlp_in = post_attention_layernorm(x)          <span class="comment"># [B, T, D]</span></span><br><span class="line">mlp_out = mlp(mlp_in)                         <span class="comment"># [B, T, D]</span></span><br><span class="line">x = x + mlp_out                               <span class="comment"># [B, T, D]</span></span><br></pre></td></tr></table></figure></div>
+
+<p>The residual adds require exactly matching shapes. That is a useful sanity check: if attention or MLP returns anything other than <code>[B, T, D]</code>, the block cannot add it back.</p>
+<h2 id="Shape-Trace"><a href="#Shape-Trace" class="headerlink" title="Shape Trace"></a>Shape Trace</h2><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Tensor</th>
+<th align="right">Shape</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>input</td>
+<td><code>x</code></td>
+<td align="right"><code>[B, T, D]</code></td>
+</tr>
+<tr>
+<td>attention norm</td>
+<td><code>attn_in</code></td>
+<td align="right"><code>[B, T, D]</code></td>
+</tr>
+<tr>
+<td>attention</td>
+<td><code>attn_out</code></td>
+<td align="right"><code>[B, T, D]</code></td>
+</tr>
+<tr>
+<td>first residual</td>
+<td><code>x + attn_out</code></td>
+<td align="right"><code>[B, T, D]</code></td>
+</tr>
+<tr>
+<td>MLP norm</td>
+<td><code>mlp_in</code></td>
+<td align="right"><code>[B, T, D]</code></td>
+</tr>
+<tr>
+<td>SwiGLU MLP</td>
+<td><code>mlp_out</code></td>
+<td align="right"><code>[B, T, D]</code></td>
+</tr>
+<tr>
+<td>second residual</td>
+<td><code>x + mlp_out</code></td>
+<td align="right"><code>[B, T, D]</code></td>
+</tr>
+</tbody></table>
+<p>The cache is side state from the attention branch. It does not change the hidden-state shape.</p>
+<h2 id="Minimal-PyTorch"><a href="#Minimal-PyTorch" class="headerlink" title="Minimal PyTorch"></a>Minimal PyTorch</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TransformerBlock</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dim, num_heads, num_kv_heads, ffn_dim</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.input_layernorm = RMSNorm(dim)</span><br><span class="line">        self.self_attn = CachedGroupedQueryAttention(dim, num_heads, num_kv_heads)</span><br><span class="line">        self.post_attention_layernorm = RMSNorm(dim)</span><br><span class="line">        self.mlp = SwiGLUMLP(dim, ffn_dim)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, cache=<span class="literal">None</span>, use_cache=<span class="literal">True</span></span>):</span><br><span class="line">        attn_in = self.input_layernorm(x)                         <span class="comment"># [B, T, D]</span></span><br><span class="line">        attn_out, next_cache = self.self_attn(attn_in, cache=cache, use_cache=use_cache)</span><br><span class="line">        x = x + attn_out                                          <span class="comment"># [B, T, D]</span></span><br><span class="line"></span><br><span class="line">        mlp_in = self.post_attention_layernorm(x)                 <span class="comment"># [B, T, D]</span></span><br><span class="line">        mlp_out = self.mlp(mlp_in)                                <span class="comment"># [B, T, D]</span></span><br><span class="line">        x = x + mlp_out                                           <span class="comment"># [B, T, D]</span></span><br><span class="line">        <span class="keyword">return</span> x, next_cache</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Common-Pitfalls"><a href="#Common-Pitfalls" class="headerlink" title="Common Pitfalls"></a>Common Pitfalls</h2><p>First, do not put the residual around the normalized input. The residual adds the branch output back to the branch input.</p>
+<p>Second, MLP hidden dimension <code>F</code> is not vocabulary size <code>V</code>. It is an internal expansion width.</p>
+<p>Third, the block has two RMSNorm layers. One feeds attention; the other feeds MLP.</p>
+<p>Fourth, the cache belongs to attention, but the block is responsible for returning it so the full decoder can keep one cache per layer.</p>
+<h2 id="Takeaways"><a href="#Takeaways" class="headerlink" title="Takeaways"></a>Takeaways</h2><p>A Llama-like block is shape-preserving:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">[B, T, D] -&gt; attention branch -&gt; [B, T, D]</span><br><span class="line">[B, T, D] -&gt; MLP branch       -&gt; [B, T, D]</span><br></pre></td></tr></table></figure></div>
+
+<p>This makes stacking blocks straightforward: every layer consumes and produces the same hidden-state shape.</p>
+<p>Previous: <a href="/2025/06/07/LLM-Inference-07-KV-Cache-Prefill-Decode/">KV Cache: Prefill and Decode</a>.<br>Next: <a href="/2025/06/09/LLM-Inference-09-Decoder-Only-Model/">Assembling a Decoder-Only Model</a>.</p>
+]]></content>
+      <categories>
+        <category>Engineering Notes</category>
+      </categories>
+      <tags>
+        <tag>LLM</tag>
+        <tag>Transformer</tag>
+        <tag>Inference</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>[LLM Inference] Assembling a Decoder-Only Model</title>
+    <url>/2025/06/09/LLM-Inference-09-Decoder-Only-Model/</url>
+    <content><![CDATA[<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li>Teaching repo: <a class="link" href="https://github.com/Baytoro/LLM_hand">Baytoro/LLM_hand <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>Companion note: <a href="https://github.com/Baytoro/LLM_hand/blob/main/docs/11_decoder_model.md"><code>docs/11_decoder_model.md</code></a></li>
+<li>Runnable script: <code>python -m lessons.decoder_model</code></li>
+<li>Code: <a href="https://github.com/Baytoro/LLM_hand/blob/main/tiny_llama/model.py"><code>tiny_llama/model.py</code></a></li>
+</ul>
+<p>At this point the individual parts are clear enough to assemble. The full decoder-only model is just a stack of shape-preserving blocks between embedding and LM Head. The interesting part is not the module list itself; it is the cache list that runs beside it during inference.</p>
+<h2 id="Goal"><a href="#Goal" class="headerlink" title="Goal"></a>Goal</h2><pre class="mermaid">flowchart LR
+    ids["input_ids<br>[B,T]"] --&gt; emb["embed_tokens<br>[B,T,D]"]
+    emb --&gt; b0["block 0<br>[B,T,D]"]
+    b0 --&gt; b1["block 1<br>[B,T,D]"]
+    b1 --&gt; dots["..."]
+    dots --&gt; bL["block L-1<br>[B,T,D]"]
+    bL --&gt; norm["final RMSNorm<br>[B,T,D]"]
+    norm --&gt; head["LM Head<br>[B,T,V]"]</pre>
+
+<p>Every block returns two things:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">hidden states: [B, T, D]</span><br><span class="line">layer cache:   KVCache or None</span><br></pre></td></tr></table></figure></div>
+
+<p>The decoder model collects one cache per layer.</p>
+<h2 id="Model-Config"><a href="#Model-Config" class="headerlink" title="Model Config"></a>Model Config</h2><p>The teaching repo uses a small config:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@dataclass(<span class="params">frozen=<span class="literal">True</span></span>)</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TinyLlamaConfig</span>:</span><br><span class="line">    vocab_size: <span class="built_in">int</span></span><br><span class="line">    dim: <span class="built_in">int</span></span><br><span class="line">    num_layers: <span class="built_in">int</span></span><br><span class="line">    num_heads: <span class="built_in">int</span></span><br><span class="line">    num_kv_heads: <span class="built_in">int</span></span><br><span class="line">    ffn_dim: <span class="built_in">int</span></span><br><span class="line">    bias: <span class="built_in">bool</span> = <span class="literal">False</span></span><br></pre></td></tr></table></figure></div>
+
+<p>This is enough to build the forward path. It deliberately avoids training settings, tokenizer paths, checkpoint loading, quantization, and serving options.</p>
+<h2 id="Forward-Path"><a href="#Forward-Path" class="headerlink" title="Forward Path"></a>Forward Path</h2><p>The model forward is:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">x = embed_tokens(input_ids)  <span class="comment"># [B, T, D]</span></span><br><span class="line"></span><br><span class="line">next_caches = []</span><br><span class="line"><span class="keyword">for</span> layer, cache <span class="keyword">in</span> <span class="built_in">zip</span>(layers, layer_caches):</span><br><span class="line">    x, next_cache = layer(x, cache=cache, use_cache=use_cache)  <span class="comment"># [B, T, D]</span></span><br><span class="line">    next_caches.append(next_cache)</span><br><span class="line"></span><br><span class="line">x = norm(x)                 <span class="comment"># [B, T, D]</span></span><br><span class="line">logits = lm_head(x)         <span class="comment"># [B, T, V]</span></span><br></pre></td></tr></table></figure></div>
+
+<p>The key invariant is:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">len(caches) == num_layers</span><br></pre></td></tr></table></figure></div>
+
+<p>Each layer has its own attention parameters and its own K/V cache.</p>
+<h2 id="Shape-Trace"><a href="#Shape-Trace" class="headerlink" title="Shape Trace"></a>Shape Trace</h2><table>
+<thead>
+<tr>
+<th>Stage</th>
+<th align="right">Output shape</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>input_ids</code></td>
+<td align="right"><code>[B, T]</code></td>
+</tr>
+<tr>
+<td>embedding</td>
+<td align="right"><code>[B, T, D]</code></td>
+</tr>
+<tr>
+<td>block 0</td>
+<td align="right"><code>[B, T, D]</code></td>
+</tr>
+<tr>
+<td>block 1</td>
+<td align="right"><code>[B, T, D]</code></td>
+</tr>
+<tr>
+<td>block <code>L-1</code></td>
+<td align="right"><code>[B, T, D]</code></td>
+</tr>
+<tr>
+<td>final RMSNorm</td>
+<td align="right"><code>[B, T, D]</code></td>
+</tr>
+<tr>
+<td>LM Head</td>
+<td align="right"><code>[B, T, V]</code></td>
+</tr>
+<tr>
+<td>each layer cache K/V</td>
+<td align="right"><code>[B, G, T_cache, Dh]</code></td>
+</tr>
+</tbody></table>
+<p>The model depth changes compute and representation quality, but not the hidden-state shape.</p>
+<h2 id="Minimal-PyTorch"><a href="#Minimal-PyTorch" class="headerlink" title="Minimal PyTorch"></a>Minimal PyTorch</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">DecoderOnlyTransformer</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, config</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.embed_tokens = TokenEmbedding(config.vocab_size, config.dim)</span><br><span class="line">        self.layers = nn.ModuleList([</span><br><span class="line">            TransformerBlock(</span><br><span class="line">                dim=config.dim,</span><br><span class="line">                num_heads=config.num_heads,</span><br><span class="line">                num_kv_heads=config.num_kv_heads,</span><br><span class="line">                ffn_dim=config.ffn_dim,</span><br><span class="line">            )</span><br><span class="line">            <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(config.num_layers)</span><br><span class="line">        ])</span><br><span class="line">        self.norm = RMSNorm(config.dim)</span><br><span class="line">        self.lm_head = LMHead(config.dim, config.vocab_size)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, input_ids, caches=<span class="literal">None</span>, use_cache=<span class="literal">True</span></span>):</span><br><span class="line">        x = self.embed_tokens(input_ids)  <span class="comment"># [B, T, D]</span></span><br><span class="line">        layer_caches = [<span class="literal">None</span>] * <span class="built_in">len</span>(self.layers) <span class="keyword">if</span> caches <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">else</span> caches</span><br><span class="line"></span><br><span class="line">        next_caches = []</span><br><span class="line">        <span class="keyword">for</span> layer, cache <span class="keyword">in</span> <span class="built_in">zip</span>(self.layers, layer_caches):</span><br><span class="line">            x, next_cache = layer(x, cache=cache, use_cache=use_cache)</span><br><span class="line">            next_caches.append(next_cache)</span><br><span class="line"></span><br><span class="line">        logits = self.lm_head(self.norm(x))  <span class="comment"># [B, T, V]</span></span><br><span class="line">        <span class="keyword">return</span> logits, next_caches <span class="keyword">if</span> use_cache <span class="keyword">else</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Cache-List-During-Decode"><a href="#Cache-List-During-Decode" class="headerlink" title="Cache List During Decode"></a>Cache List During Decode</h2><p>For a model with <code>L = 3</code>, cache structure looks like:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">caches = [</span><br><span class="line">  KVCache(k=[B,G,T,Dh], v=[B,G,T,Dh]),  # layer 0</span><br><span class="line">  KVCache(k=[B,G,T,Dh], v=[B,G,T,Dh]),  # layer 1</span><br><span class="line">  KVCache(k=[B,G,T,Dh], v=[B,G,T,Dh]),  # layer 2</span><br><span class="line">]</span><br></pre></td></tr></table></figure></div>
+
+<p>On a decode step:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">input_ids: [B, 1]</span><br><span class="line">logits:    [B, 1, V]</span><br><span class="line">caches:    each layer grows from T to T+1</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Common-Pitfalls"><a href="#Common-Pitfalls" class="headerlink" title="Common Pitfalls"></a>Common Pitfalls</h2><p>First, do not share one cache across layers. The keys and values are produced by layer-specific projections.</p>
+<p>Second, final RMSNorm happens after the last block and before the LM Head.</p>
+<p>Third, <code>use_cache=False</code> should return no cache and should not accidentally append side state.</p>
+<p>Fourth, the model forward still returns logits for every position in the current call. During decode that current call has <code>T = 1</code>, so logits are <code>[B, 1, V]</code>.</p>
+<h2 id="Takeaways"><a href="#Takeaways" class="headerlink" title="Takeaways"></a>Takeaways</h2><p>The decoder model is structurally simple:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">Embedding -&gt; L x TransformerBlock -&gt; Final RMSNorm -&gt; LM Head</span><br></pre></td></tr></table></figure></div>
+
+<p>The inference complexity comes from the side channel: a list of K/V caches, one per layer.</p>
+<p>Previous: <a href="/2025/06/08/LLM-Inference-08-SwiGLU-Transformer-Block/">SwiGLU MLP and the Transformer Block</a>.<br>Next: <a href="/2025/06/10/LLM-Inference-10-Sampling-Generate/">Sampling and Autoregressive Generate</a>.</p>
+]]></content>
+      <categories>
+        <category>Engineering Notes</category>
+      </categories>
+      <tags>
+        <tag>LLM</tag>
+        <tag>Transformer</tag>
+        <tag>KV-Cache</tag>
+        <tag>Inference</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>[LLM Inference] Sampling and Autoregressive Generate</title>
+    <url>/2025/06/10/LLM-Inference-10-Sampling-Generate/</url>
+    <content><![CDATA[<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li>Teaching repo: <a class="link" href="https://github.com/Baytoro/LLM_hand">Baytoro/LLM_hand <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>Companion notes: <a href="https://github.com/Baytoro/LLM_hand/blob/main/docs/12_sampling.md"><code>docs/12_sampling.md</code></a>, <a href="https://github.com/Baytoro/LLM_hand/blob/main/docs/13_generate.md"><code>docs/13_generate.md</code></a></li>
+<li>Runnable scripts: <code>python -m lessons.sampling</code>, <code>python -m lessons.generate</code></li>
+<li>Code: <a href="https://github.com/Baytoro/LLM_hand/blob/main/tiny_llama/sampling.py"><code>tiny_llama/sampling.py</code></a>, <a href="https://github.com/Baytoro/LLM_hand/blob/main/tiny_llama/generation.py"><code>tiny_llama/generation.py</code></a></li>
+</ul>
+<p>Once the model returns logits, inference still needs a policy for choosing the next token. That policy can be greedy, temperature sampling, top-k sampling, or something more advanced. In this teaching repo I keep it minimal: greedy, temperature, and top-k.</p>
+<h2 id="Goal"><a href="#Goal" class="headerlink" title="Goal"></a>Goal</h2><pre class="mermaid">flowchart LR
+    prompt["prompt ids<br>[B,T]"] --&gt; model["model forward"]
+    model --&gt; logits["logits<br>[B,T,V]"]
+    logits --&gt; last["last logits<br>[B,V]"]
+    last --&gt; sample["sample_next_token"]
+    sample --&gt; next["next_ids<br>[B,1]"]
+    next --&gt; cat["concat to generated<br>[B,T+1]"]
+    next --&gt; decode["next decode call"]</pre>
+
+<p>Generation is not one model call. It is a loop around model calls.</p>
+<h2 id="From-Logits-To-Probabilities"><a href="#From-Logits-To-Probabilities" class="headerlink" title="From Logits To Probabilities"></a>From Logits To Probabilities</h2><p>For one batch item, logits are arbitrary real scores:</p>
+<p><mjx-container class="MathJax" jax="SVG" display="true"><svg style="vertical-align: -0.09ex;" xmlns="http://www.w3.org/2000/svg" width="6.87ex" height="2.118ex" role="img" focusable="false" viewBox="0 -896 3036.3 936"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D467" d="M347 338Q337 338 294 349T231 360Q211 360 197 356T174 346T162 335T155 324L153 320Q150 317 138 317Q117 317 117 325Q117 330 120 339Q133 378 163 406T229 440Q241 442 246 442Q271 442 291 425T329 392T367 375Q389 375 411 408T434 441Q435 442 449 442H462Q468 436 468 434Q468 430 463 420T449 399T432 377T418 358L411 349Q368 298 275 214T160 106L148 94L163 93Q185 93 227 82T290 71Q328 71 360 90T402 140Q406 149 409 151T424 153Q443 153 443 143Q443 138 442 134Q425 72 376 31T278 -11Q252 -11 232 6T193 40T155 57Q111 57 76 -3Q70 -11 59 -11H54H41Q35 -5 35 -2Q35 13 93 84Q132 129 225 214T340 322Q352 338 347 338Z"></path></g><g data-mml-node="mo" transform="translate(742.8,0)"><path data-c="2208" d="M84 250Q84 372 166 450T360 539Q361 539 377 539T419 540T469 540H568Q583 532 583 520Q583 511 570 501L466 500Q355 499 329 494Q280 482 242 458T183 409T147 354T129 306T124 272V270H568Q583 262 583 250T568 230H124V228Q124 207 134 177T167 112T231 48T328 7Q355 1 466 0H570Q583 -10 583 -20Q583 -32 568 -40H471Q464 -40 446 -40T417 -41Q262 -41 172 45Q84 127 84 250Z"></path></g><g data-mml-node="msup" transform="translate(1687.6,0)"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mi"><path data-c="211D" d="M17 665Q17 672 28 683H221Q415 681 439 677Q461 673 481 667T516 654T544 639T566 623T584 607T597 592T607 578T614 565T618 554L621 548Q626 530 626 497Q626 447 613 419Q578 348 473 326L455 321Q462 310 473 292T517 226T578 141T637 72T686 35Q705 30 705 16Q705 7 693 -1H510Q503 6 404 159L306 310H268V183Q270 67 271 59Q274 42 291 38Q295 37 319 35Q344 35 353 28Q362 17 353 3L346 -1H28Q16 5 16 16Q16 35 55 35Q96 38 101 52Q106 60 106 341T101 632Q95 645 55 648Q17 648 17 665ZM241 35Q238 42 237 45T235 78T233 163T233 337V621L237 635L244 648H133Q136 641 137 638T139 603T141 517T141 341Q141 131 140 89T134 37Q133 36 133 35H241ZM457 496Q457 540 449 570T425 615T400 634T377 643Q374 643 339 648Q300 648 281 635Q271 628 270 610T268 481V346H284Q327 346 375 352Q421 364 439 392T457 496ZM492 537T492 496T488 427T478 389T469 371T464 361Q464 360 465 360Q469 360 497 370Q593 400 593 495Q593 592 477 630L457 637L461 626Q474 611 488 561Q492 537 492 496ZM464 243Q411 317 410 317Q404 317 401 315Q384 315 370 312H346L526 35H619L606 50Q553 109 464 243Z"></path></g></g><g data-mml-node="TeXAtom" transform="translate(755,413) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mi"><path data-c="1D449" d="M52 648Q52 670 65 683H76Q118 680 181 680Q299 680 320 683H330Q336 677 336 674T334 656Q329 641 325 637H304Q282 635 274 635Q245 630 242 620Q242 618 271 369T301 118L374 235Q447 352 520 471T595 594Q599 601 599 609Q599 633 555 637Q537 637 537 648Q537 649 539 661Q542 675 545 679T558 683Q560 683 570 683T604 682T668 681Q737 681 755 683H762Q769 676 769 672Q769 655 760 640Q757 637 743 637Q730 636 719 635T698 630T682 623T670 615T660 608T652 599T645 592L452 282Q272 -9 266 -16Q263 -18 259 -21L241 -22H234Q216 -22 216 -15Q213 -9 177 305Q139 623 138 626Q133 637 76 637H59Q52 642 52 648Z"></path></g></g></g></g></g></svg></mjx-container></p>
+<p>Temperature rescales them:</p>
+<p><mjx-container class="MathJax" jax="SVG" display="true"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="8.05ex" height="2.396ex" role="img" focusable="false" viewBox="0 -809 3558 1059"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><path data-c="1D467" d="M347 338Q337 338 294 349T231 360Q211 360 197 356T174 346T162 335T155 324L153 320Q150 317 138 317Q117 317 117 325Q117 330 120 339Q133 378 163 406T229 440Q241 442 246 442Q271 442 291 425T329 392T367 375Q389 375 411 408T434 441Q435 442 449 442H462Q468 436 468 434Q468 430 463 420T449 399T432 377T418 358L411 349Q368 298 275 214T160 106L148 94L163 93Q185 93 227 82T290 71Q328 71 360 90T402 140Q406 149 409 151T424 153Q443 153 443 143Q443 138 442 134Q425 72 376 31T278 -11Q252 -11 232 6T193 40T155 57Q111 57 76 -3Q70 -11 59 -11H54H41Q35 -5 35 -2Q35 13 93 84Q132 129 225 214T340 322Q352 338 347 338Z"></path></g><g data-mml-node="mo" transform="translate(498,413) scale(0.707)"><path data-c="2032" d="M79 43Q73 43 52 49T30 61Q30 68 85 293T146 528Q161 560 198 560Q218 560 240 545T262 501Q262 496 260 486Q259 479 173 263T84 45T79 43Z"></path></g></g><g data-mml-node="mo" transform="translate(1020.2,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="mi" transform="translate(2076,0)"><path data-c="1D467" d="M347 338Q337 338 294 349T231 360Q211 360 197 356T174 346T162 335T155 324L153 320Q150 317 138 317Q117 317 117 325Q117 330 120 339Q133 378 163 406T229 440Q241 442 246 442Q271 442 291 425T329 392T367 375Q389 375 411 408T434 441Q435 442 449 442H462Q468 436 468 434Q468 430 463 420T449 399T432 377T418 358L411 349Q368 298 275 214T160 106L148 94L163 93Q185 93 227 82T290 71Q328 71 360 90T402 140Q406 149 409 151T424 153Q443 153 443 143Q443 138 442 134Q425 72 376 31T278 -11Q252 -11 232 6T193 40T155 57Q111 57 76 -3Q70 -11 59 -11H54H41Q35 -5 35 -2Q35 13 93 84Q132 129 225 214T340 322Q352 338 347 338Z"></path></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(2541,0)"><g data-mml-node="mo"><path data-c="2F" d="M423 750Q432 750 438 744T444 730Q444 725 271 248T92 -240Q85 -250 75 -250Q68 -250 62 -245T56 -231Q56 -221 230 257T407 740Q411 750 423 750Z"></path></g></g><g data-mml-node="mi" transform="translate(3041,0)"><path data-c="1D70F" d="M39 284Q18 284 18 294Q18 301 45 338T99 398Q134 425 164 429Q170 431 332 431Q492 431 497 429Q517 424 517 402Q517 388 508 376T485 360Q479 358 389 358T299 356Q298 355 283 274T251 109T233 20Q228 5 215 -4T186 -13Q153 -13 153 20V30L203 192Q214 228 227 272T248 336L254 357Q254 358 208 358Q206 358 197 358T183 359Q105 359 61 295Q56 287 53 286T39 284Z"></path></g></g></g></svg></mjx-container></p>
+<p>Then softmax converts scores into probabilities:</p>
+<p><mjx-container class="MathJax" jax="SVG" display="true"><svg style="vertical-align: -2.983ex;" xmlns="http://www.w3.org/2000/svg" width="12.088ex" height="6.548ex" role="img" focusable="false" viewBox="0 -1575.7 5343 2894.1"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path data-c="1D45D" d="M23 287Q24 290 25 295T30 317T40 348T55 381T75 411T101 433T134 442Q209 442 230 378L240 387Q302 442 358 442Q423 442 460 395T497 281Q497 173 421 82T249 -10Q227 -10 210 -4Q199 1 187 11T168 28L161 36Q160 35 139 -51T118 -138Q118 -144 126 -145T163 -148H188Q194 -155 194 -157T191 -175Q188 -187 185 -190T172 -194Q170 -194 161 -194T127 -193T65 -192Q-5 -192 -24 -194H-32Q-39 -187 -39 -183Q-37 -156 -26 -148H-6Q28 -147 33 -136Q36 -130 94 103T155 350Q156 355 156 364Q156 405 131 405Q109 405 94 377T71 316T59 280Q57 278 43 278H29Q23 284 23 287ZM178 102Q200 26 252 26Q282 26 310 49T356 107Q374 141 392 215T411 325V331Q411 405 350 405Q339 405 328 402T306 393T286 380T269 365T254 350T243 336T235 326L232 322Q232 321 229 308T218 264T204 212Q178 106 178 102Z"></path></g><g data-mml-node="mi" transform="translate(536,-150) scale(0.707)"><path data-c="1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path></g></g><g data-mml-node="mo" transform="translate(1107.7,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="mfrac" transform="translate(2163.5,0)"><g data-mml-node="msup" transform="translate(1035.2,676)"><g data-mml-node="mi"><path data-c="1D452" d="M39 168Q39 225 58 272T107 350T174 402T244 433T307 442H310Q355 442 388 420T421 355Q421 265 310 237Q261 224 176 223Q139 223 138 221Q138 219 132 186T125 128Q125 81 146 54T209 26T302 45T394 111Q403 121 406 121Q410 121 419 112T429 98T420 82T390 55T344 24T281 -1T205 -11Q126 -11 83 42T39 168ZM373 353Q367 405 305 405Q272 405 244 391T199 357T170 316T154 280T149 261Q149 260 169 260Q282 260 327 284T373 353Z"></path></g><g data-mml-node="TeXAtom" transform="translate(499,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="msubsup"><g data-mml-node="mi"><path data-c="1D467" d="M347 338Q337 338 294 349T231 360Q211 360 197 356T174 346T162 335T155 324L153 320Q150 317 138 317Q117 317 117 325Q117 330 120 339Q133 378 163 406T229 440Q241 442 246 442Q271 442 291 425T329 392T367 375Q389 375 411 408T434 441Q435 442 449 442H462Q468 436 468 434Q468 430 463 420T449 399T432 377T418 358L411 349Q368 298 275 214T160 106L148 94L163 93Q185 93 227 82T290 71Q328 71 360 90T402 140Q406 149 409 151T424 153Q443 153 443 143Q443 138 442 134Q425 72 376 31T278 -11Q252 -11 232 6T193 40T155 57Q111 57 76 -3Q70 -11 59 -11H54H41Q35 -5 35 -2Q35 13 93 84Q132 129 225 214T340 322Q352 338 347 338Z"></path></g><g data-mml-node="mo" transform="translate(498,363) scale(0.707)"><path data-c="2032" d="M79 43Q73 43 52 49T30 61Q30 68 85 293T146 528Q161 560 198 560Q218 560 240 545T262 501Q262 496 260 486Q259 479 173 263T84 45T79 43Z"></path></g><g data-mml-node="mi" transform="translate(498,-254) scale(0.707)"><path data-c="1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path></g></g></g></g><g data-mml-node="mrow" transform="translate(220,-888.8)"><g data-mml-node="munder"><g data-mml-node="mo"><path data-c="2211" d="M61 748Q64 750 489 750H913L954 640Q965 609 976 579T993 533T999 516H979L959 517Q936 579 886 621T777 682Q724 700 655 705T436 710H319Q183 710 183 709Q186 706 348 484T511 259Q517 250 513 244L490 216Q466 188 420 134T330 27L149 -187Q149 -188 362 -188Q388 -188 436 -188T506 -189Q679 -189 778 -162T936 -43Q946 -27 959 6H999L913 -249L489 -250Q65 -250 62 -248Q56 -246 56 -239Q56 -234 118 -161Q186 -81 245 -11L428 206Q428 207 242 462L57 717L56 728Q56 744 61 748Z"></path></g><g data-mml-node="mi" transform="translate(1089,-285.4) scale(0.707)"><path data-c="1D457" d="M297 596Q297 627 318 644T361 661Q378 661 389 651T403 623Q403 595 384 576T340 557Q322 557 310 567T297 596ZM288 376Q288 405 262 405Q240 405 220 393T185 362T161 325T144 293L137 279Q135 278 121 278H107Q101 284 101 286T105 299Q126 348 164 391T252 441Q253 441 260 441T272 442Q296 441 316 432Q341 418 354 401T367 348V332L318 133Q267 -67 264 -75Q246 -125 194 -164T75 -204Q25 -204 7 -183T-12 -137Q-12 -110 7 -91T53 -71Q70 -71 82 -81T95 -112Q95 -148 63 -167Q69 -168 77 -168Q111 -168 139 -140T182 -74L193 -32Q204 11 219 72T251 197T278 308T289 365Q289 372 288 376Z"></path></g></g><g data-mml-node="msup" transform="translate(1597,0)"><g data-mml-node="mi"><path data-c="1D452" d="M39 168Q39 225 58 272T107 350T174 402T244 433T307 442H310Q355 442 388 420T421 355Q421 265 310 237Q261 224 176 223Q139 223 138 221Q138 219 132 186T125 128Q125 81 146 54T209 26T302 45T394 111Q403 121 406 121Q410 121 419 112T429 98T420 82T390 55T344 24T281 -1T205 -11Q126 -11 83 42T39 168ZM373 353Q367 405 305 405Q272 405 244 391T199 357T170 316T154 280T149 261Q149 260 169 260Q282 260 327 284T373 353Z"></path></g><g data-mml-node="TeXAtom" transform="translate(499,420.2) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="msubsup"><g data-mml-node="mi"><path data-c="1D467" d="M347 338Q337 338 294 349T231 360Q211 360 197 356T174 346T162 335T155 324L153 320Q150 317 138 317Q117 317 117 325Q117 330 120 339Q133 378 163 406T229 440Q241 442 246 442Q271 442 291 425T329 392T367 375Q389 375 411 408T434 441Q435 442 449 442H462Q468 436 468 434Q468 430 463 420T449 399T432 377T418 358L411 349Q368 298 275 214T160 106L148 94L163 93Q185 93 227 82T290 71Q328 71 360 90T402 140Q406 149 409 151T424 153Q443 153 443 143Q443 138 442 134Q425 72 376 31T278 -11Q252 -11 232 6T193 40T155 57Q111 57 76 -3Q70 -11 59 -11H54H41Q35 -5 35 -2Q35 13 93 84Q132 129 225 214T340 322Q352 338 347 338Z"></path></g><g data-mml-node="mo" transform="translate(498,323.2) scale(0.707)"><path data-c="2032" d="M79 43Q73 43 52 49T30 61Q30 68 85 293T146 528Q161 560 198 560Q218 560 240 545T262 501Q262 496 260 486Q259 479 173 263T84 45T79 43Z"></path></g><g data-mml-node="mi" transform="translate(498,-293.8) scale(0.707)"><path data-c="1D457" d="M297 596Q297 627 318 644T361 661Q378 661 389 651T403 623Q403 595 384 576T340 557Q322 557 310 567T297 596ZM288 376Q288 405 262 405Q240 405 220 393T185 362T161 325T144 293L137 279Q135 278 121 278H107Q101 284 101 286T105 299Q126 348 164 391T252 441Q253 441 260 441T272 442Q296 441 316 432Q341 418 354 401T367 348V332L318 133Q267 -67 264 -75Q246 -125 194 -164T75 -204Q25 -204 7 -183T-12 -137Q-12 -110 7 -91T53 -71Q70 -71 82 -81T95 -112Q95 -148 63 -167Q69 -168 77 -168Q111 -168 139 -140T182 -74L193 -32Q204 11 219 72T251 197T278 308T289 365Q289 372 288 376Z"></path></g></g></g></g></g><rect width="2939.5" height="60" x="120" y="220"></rect></g></g></g></svg></mjx-container></p>
+<p>The teaching implementation treats <code>temperature = 0</code> as greedy decoding:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> temperature == <span class="number">0</span>:</span><br><span class="line">    probs = torch.softmax(logits, dim=-<span class="number">1</span>)  <span class="comment"># [B, V]</span></span><br><span class="line">    next_ids = torch.argmax(logits, dim=-<span class="number">1</span>, keepdim=<span class="literal">True</span>)  <span class="comment"># [B, 1]</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Top-k"><a href="#Top-k" class="headerlink" title="Top-k"></a>Top-k</h2><p>Top-k keeps only the largest <code>k</code> logits per batch item:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">values, _ = torch.topk(scaled, k, dim=-<span class="number">1</span>)  <span class="comment"># [B, k]</span></span><br><span class="line">cutoff = values[:, -<span class="number">1</span>:]                    <span class="comment"># [B, 1]</span></span><br><span class="line">scaled = scaled.masked_fill(scaled &lt; cutoff, <span class="built_in">float</span>(<span class="string">"-inf"</span>))</span><br></pre></td></tr></table></figure></div>
+
+<p>Shape does not change:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">before top-k: [B, V]</span><br><span class="line">after top-k:  [B, V]</span><br></pre></td></tr></table></figure></div>
+
+<p>Only the values change; low-ranked tokens become impossible after softmax.</p>
+<h2 id="Generate-Without-Cache"><a href="#Generate-Without-Cache" class="headerlink" title="Generate Without Cache"></a>Generate Without Cache</h2><p>The simplest generate loop feeds the whole generated sequence every time:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">generated = input_ids  <span class="comment"># [B, T]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(max_new_tokens):</span><br><span class="line">    logits, _ = model(generated, use_cache=<span class="literal">False</span>)  <span class="comment"># [B, T_now, V]</span></span><br><span class="line">    next_logits = logits[:, -<span class="number">1</span>, :]                 <span class="comment"># [B, V]</span></span><br><span class="line">    next_ids, _ = sample_next_token(next_logits)   <span class="comment"># [B, 1]</span></span><br><span class="line">    generated = torch.cat([generated, next_ids], dim=<span class="number">1</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>This is easy to reason about but wastes work. Every step recomputes the whole prefix.</p>
+<h2 id="Generate-With-Cache"><a href="#Generate-With-Cache" class="headerlink" title="Generate With Cache"></a>Generate With Cache</h2><p>The cache path separates prefill and decode:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">generated = input_ids</span><br><span class="line">logits, caches = model(input_ids, caches=<span class="literal">None</span>, use_cache=<span class="literal">True</span>)  <span class="comment"># prefill</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> step <span class="keyword">in</span> <span class="built_in">range</span>(max_new_tokens):</span><br><span class="line">    next_logits = logits[:, -<span class="number">1</span>, :]                 <span class="comment"># [B, V]</span></span><br><span class="line">    next_ids, _ = sample_next_token(next_logits)   <span class="comment"># [B, 1]</span></span><br><span class="line">    generated = torch.cat([generated, next_ids], dim=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> step + <span class="number">1</span> == max_new_tokens:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    logits, caches = model(next_ids, caches=caches, use_cache=<span class="literal">True</span>)  <span class="comment"># [B, 1, V]</span></span><br></pre></td></tr></table></figure></div>
+
+<p>The first sampled token is produced from prefill logits. The next model call consumes that sampled token and appends its K/V to cache.</p>
+<h2 id="Shape-Trace"><a href="#Shape-Trace" class="headerlink" title="Shape Trace"></a>Shape Trace</h2><table>
+<thead>
+<tr>
+<th>Step</th>
+<th align="right">Model input</th>
+<th align="right">Logits used for sampling</th>
+<th align="right">Generated shape</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>prefill</td>
+<td align="right"><code>[B, T]</code></td>
+<td align="right"><code>[B, V]</code> from <code>logits[:, -1, :]</code></td>
+<td align="right"><code>[B, T]</code></td>
+</tr>
+<tr>
+<td>sample 1</td>
+<td align="right">none yet</td>
+<td align="right"><code>[B, V]</code></td>
+<td align="right"><code>[B, T+1]</code></td>
+</tr>
+<tr>
+<td>decode 1</td>
+<td align="right"><code>[B, 1]</code></td>
+<td align="right">next loop uses <code>[B, V]</code></td>
+<td align="right"><code>[B, T+1]</code></td>
+</tr>
+<tr>
+<td>sample 2</td>
+<td align="right">none yet</td>
+<td align="right"><code>[B, V]</code></td>
+<td align="right"><code>[B, T+2]</code></td>
+</tr>
+</tbody></table>
+<p>The ordering is subtle: sampling happens from the previous logits, then the sampled token is fed into the next decode call if another step is needed.</p>
+<h2 id="Common-Pitfalls"><a href="#Common-Pitfalls" class="headerlink" title="Common Pitfalls"></a>Common Pitfalls</h2><p>First, <code>generate()</code> returns the prompt plus new tokens. If the prompt length is <code>T</code> and <code>max_new_tokens = N</code>, the output is <code>[B, T + N]</code>.</p>
+<p>Second, <code>next_ids</code> should stay <code>[B, 1]</code>. Do not squeeze it into <code>[B]</code>, because the model expects a sequence dimension.</p>
+<p>Third, with cache enabled, do not feed the entire generated sequence after prefill. Feed only <code>next_ids</code>.</p>
+<p>Fourth, top-k changes probability support, not tensor shape.</p>
+<h2 id="Takeaways"><a href="#Takeaways" class="headerlink" title="Takeaways"></a>Takeaways</h2><p>The generation loop is:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">last logits [B,V] -&gt; sample [B,1] -&gt; append -&gt; optional decode [B,1]</span><br></pre></td></tr></table></figure></div>
+
+<p>Sampling is the policy. KV cache is the mechanism that keeps the loop efficient.</p>
+<p>Previous: <a href="/2025/06/09/LLM-Inference-09-Decoder-Only-Model/">Assembling a Decoder-Only Model</a>.<br>Next: <a href="/2025/06/11/LLM-Inference-11-Token-KV-Trace/">A Token-by-Token KV Cache Trace</a>.</p>
+]]></content>
+      <categories>
+        <category>Engineering Notes</category>
+      </categories>
+      <tags>
+        <tag>LLM</tag>
+        <tag>Transformer</tag>
+        <tag>KV-Cache</tag>
+        <tag>Inference</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>[LLM Inference] A Token-by-Token KV Cache Trace</title>
+    <url>/2025/06/11/LLM-Inference-11-Token-KV-Trace/</url>
+    <content><![CDATA[<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li>Teaching repo: <a class="link" href="https://github.com/Baytoro/LLM_hand">Baytoro/LLM_hand <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>Companion note: <a href="https://github.com/Baytoro/LLM_hand/blob/main/docs/14_kv_cache_token_trace.md"><code>docs/14_kv_cache_token_trace.md</code></a></li>
+<li>Runnable script: <code>python -m lessons.kv_cache_token_trace</code></li>
+<li>Code: <a href="https://github.com/Baytoro/LLM_hand/blob/main/tiny_llama/generation.py"><code>tiny_llama/generation.py</code></a>, <a href="https://github.com/Baytoro/LLM_hand/blob/main/tiny_llama/kv_cache.py"><code>tiny_llama/kv_cache.py</code></a></li>
+</ul>
+<p>This is the trace I wish I had before reading inference systems papers. It follows one prompt through prefill and then follows generated tokens through decode. The point is not model quality; the point is knowing what shape should exist at every step.</p>
+<h2 id="Setup"><a href="#Setup" class="headerlink" title="Setup"></a>Setup</h2><p>Use a tiny model:</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th align="right">Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>B</code></td>
+<td align="right">1</td>
+<td>one prompt</td>
+</tr>
+<tr>
+<td><code>T</code></td>
+<td align="right">2</td>
+<td>prompt has two tokens</td>
+</tr>
+<tr>
+<td><code>D</code></td>
+<td align="right">8</td>
+<td>hidden size</td>
+</tr>
+<tr>
+<td><code>L</code></td>
+<td align="right">2</td>
+<td>two decoder blocks</td>
+</tr>
+<tr>
+<td><code>H</code></td>
+<td align="right">4</td>
+<td>query heads</td>
+</tr>
+<tr>
+<td><code>G</code></td>
+<td align="right">2</td>
+<td>KV heads</td>
+</tr>
+<tr>
+<td><code>Dh</code></td>
+<td align="right">2</td>
+<td>head dimension</td>
+</tr>
+<tr>
+<td><code>V</code></td>
+<td align="right">10</td>
+<td>tiny vocabulary</td>
+</tr>
+</tbody></table>
+<p>The prompt is:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">input_ids = torch.tensor([[<span class="number">1</span>, <span class="number">2</span>]])  <span class="comment"># [B, T]</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Timeline"><a href="#Timeline" class="headerlink" title="Timeline"></a>Timeline</h2><pre class="mermaid">sequenceDiagram
+    participant P as Prompt [B,T]
+    participant M as Model
+    participant C as Cache per layer
+    participant S as Sampler
+
+    P-&gt;&gt;M: prefill
+    M-&gt;&gt;C: K/V length T
+    M-&gt;&gt;S: logits[:, -1, :] [B,V]
+    S-&gt;&gt;M: next_ids [B,1]
+    M-&gt;&gt;C: decode, append length +1
+    M-&gt;&gt;S: logits[:, -1, :] [B,V]
+    S-&gt;&gt;M: next_ids [B,1]
+    M-&gt;&gt;C: decode, append length +1</pre>
+
+<h2 id="Prefill-Trace"><a href="#Prefill-Trace" class="headerlink" title="Prefill Trace"></a>Prefill Trace</h2><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Tensor</th>
+<th align="right">Shape</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>prompt ids</td>
+<td><code>input_ids</code></td>
+<td align="right"><code>[1, 2]</code></td>
+</tr>
+<tr>
+<td>embedding</td>
+<td><code>x</code></td>
+<td align="right"><code>[1, 2, 8]</code></td>
+</tr>
+<tr>
+<td>block 0 output</td>
+<td><code>x</code></td>
+<td align="right"><code>[1, 2, 8]</code></td>
+</tr>
+<tr>
+<td>block 0 cache K/V</td>
+<td><code>cache_0.k/v</code></td>
+<td align="right"><code>[1, 2, 2, 2]</code></td>
+</tr>
+<tr>
+<td>block 1 output</td>
+<td><code>x</code></td>
+<td align="right"><code>[1, 2, 8]</code></td>
+</tr>
+<tr>
+<td>block 1 cache K/V</td>
+<td><code>cache_1.k/v</code></td>
+<td align="right"><code>[1, 2, 2, 2]</code></td>
+</tr>
+<tr>
+<td>final logits</td>
+<td><code>logits</code></td>
+<td align="right"><code>[1, 2, 10]</code></td>
+</tr>
+<tr>
+<td>next logits</td>
+<td><code>logits[:, -1, :]</code></td>
+<td align="right"><code>[1, 10]</code></td>
+</tr>
+</tbody></table>
+<p>The cache sequence length is 2 because the prompt had two tokens.</p>
+<h2 id="First-Decode-Step"><a href="#First-Decode-Step" class="headerlink" title="First Decode Step"></a>First Decode Step</h2><p>Assume the first sampled token is:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">next_ids = torch.tensor([[<span class="number">0</span>]])  <span class="comment"># [B, 1]</span></span><br></pre></td></tr></table></figure></div>
+
+<p>The model consumes only that token:</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Tensor</th>
+<th align="right">Shape</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>decode input</td>
+<td><code>next_ids</code></td>
+<td align="right"><code>[1, 1]</code></td>
+</tr>
+<tr>
+<td>token embedding</td>
+<td><code>x</code></td>
+<td align="right"><code>[1, 1, 8]</code></td>
+</tr>
+<tr>
+<td>new q</td>
+<td><code>q</code></td>
+<td align="right"><code>[1, 1, 4, 2]</code></td>
+</tr>
+<tr>
+<td>new k/v before transpose</td>
+<td><code>k/v</code></td>
+<td align="right"><code>[1, 1, 2, 2]</code></td>
+</tr>
+<tr>
+<td>new k/v in cache layout</td>
+<td><code>new_k/new_v</code></td>
+<td align="right"><code>[1, 2, 1, 2]</code></td>
+</tr>
+<tr>
+<td>cache after append</td>
+<td><code>cache.k/v</code></td>
+<td align="right"><code>[1, 2, 3, 2]</code></td>
+</tr>
+<tr>
+<td>attention scores</td>
+<td><code>scores</code></td>
+<td align="right"><code>[1, 4, 1, 3]</code></td>
+</tr>
+<tr>
+<td>block output</td>
+<td><code>x</code></td>
+<td align="right"><code>[1, 1, 8]</code></td>
+</tr>
+<tr>
+<td>logits</td>
+<td><code>logits</code></td>
+<td align="right"><code>[1, 1, 10]</code></td>
+</tr>
+</tbody></table>
+<p>The score shape <code>[1, 4, 1, 3]</code> is the decode signature: one query token attends to three cached key positions.</p>
+<h2 id="Second-Decode-Step"><a href="#Second-Decode-Step" class="headerlink" title="Second Decode Step"></a>Second Decode Step</h2><p>The next decode token again has shape <code>[1, 1]</code>, but the cache is longer:</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th align="right">Shape</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>decode input</td>
+<td align="right"><code>[1, 1]</code></td>
+</tr>
+<tr>
+<td>old cache</td>
+<td align="right"><code>[1, 2, 3, 2]</code></td>
+</tr>
+<tr>
+<td>new k/v</td>
+<td align="right"><code>[1, 2, 1, 2]</code></td>
+</tr>
+<tr>
+<td>new cache</td>
+<td align="right"><code>[1, 2, 4, 2]</code></td>
+</tr>
+<tr>
+<td>attention scores</td>
+<td align="right"><code>[1, 4, 1, 4]</code></td>
+</tr>
+<tr>
+<td>logits</td>
+<td align="right"><code>[1, 1, 10]</code></td>
+</tr>
+</tbody></table>
+<p>Only the last axis of scores grows as the sequence grows.</p>
+<h2 id="Debug-Checklist"><a href="#Debug-Checklist" class="headerlink" title="Debug Checklist"></a>Debug Checklist</h2><p>When I debug a cache path, I check these invariants:</p>
+<table>
+<thead>
+<tr>
+<th>Invariant</th>
+<th>Expected</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>decode input rank</td>
+<td>always <code>[B, 1]</code></td>
+</tr>
+<tr>
+<td>cache list length</td>
+<td><code>num_layers</code></td>
+</tr>
+<tr>
+<td>cache head count</td>
+<td><code>G</code>, not <code>H</code></td>
+</tr>
+<tr>
+<td>cache append dimension</td>
+<td><code>dim=2</code></td>
+</tr>
+<tr>
+<td>RoPE start position</td>
+<td>old <code>cache.seq_len</code></td>
+</tr>
+<tr>
+<td>decode score shape</td>
+<td><code>[B, H, 1, T_total]</code></td>
+</tr>
+<tr>
+<td>decode logits shape</td>
+<td><code>[B, 1, V]</code></td>
+</tr>
+</tbody></table>
+<p>If one of these is wrong, generation might still run for a few steps but the attention history is no longer what I think it is.</p>
+<h2 id="Minimal-Trace-Code"><a href="#Minimal-Trace-Code" class="headerlink" title="Minimal Trace Code"></a>Minimal Trace Code</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">generated = input_ids                         <span class="comment"># [B, T]</span></span><br><span class="line">logits, caches = model(input_ids, use_cache=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> step <span class="keyword">in</span> <span class="built_in">range</span>(max_new_tokens):</span><br><span class="line">    next_logits = logits[:, -<span class="number">1</span>, :]            <span class="comment"># [B, V]</span></span><br><span class="line">    next_ids, _ = sample_next_token(next_logits, temperature=<span class="number">0</span>)  <span class="comment"># [B, 1]</span></span><br><span class="line">    generated = torch.cat([generated, next_ids], dim=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> step + <span class="number">1</span> == max_new_tokens:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    logits, caches = model(next_ids, caches=caches, use_cache=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>This is almost the whole generate algorithm. The rest is validation and sampling options.</p>
+<h2 id="Takeaways"><a href="#Takeaways" class="headerlink" title="Takeaways"></a>Takeaways</h2><p>The entire KV-cache inference path can be summarized as:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">prefill builds history</span><br><span class="line">decode appends one token at a time</span><br><span class="line">attention reads all cached K/V but computes Q only for the new token</span><br></pre></td></tr></table></figure></div>
+
+<p>Once I understood this trace, papers like PagedAttention, FlashInfer, and disaggregated prefill/decode became much easier to place.</p>
+<p>Previous: <a href="/2025/06/10/LLM-Inference-10-Sampling-Generate/">Sampling and Autoregressive Generate</a>.<br>Next: <a href="/2025/06/12/LLM-Inference-12-Tiny-Llama-Limits/">What This Tiny Llama Leaves Out</a>.</p>
+]]></content>
+      <categories>
+        <category>Engineering Notes</category>
+      </categories>
+      <tags>
+        <tag>LLM</tag>
+        <tag>Transformer</tag>
+        <tag>KV-Cache</tag>
+        <tag>Inference</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>[LLM Inference] What This Tiny Llama Leaves Out</title>
+    <url>/2025/06/12/LLM-Inference-12-Tiny-Llama-Limits/</url>
+    <content><![CDATA[<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li>Teaching repo: <a class="link" href="https://github.com/Baytoro/LLM_hand">Baytoro/LLM_hand <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>Full review note: <a href="https://github.com/Baytoro/LLM_hand/blob/main/docs/feishu/llm_forward_inference_review.md"><code>docs/feishu/llm_forward_inference_review.md</code></a></li>
+<li>LLaMA paper: <a class="link" href="https://arxiv.org/abs/2302.13971">LLaMA: Open and Efficient Foundation Language Models <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>Llama 2 paper: <a class="link" href="https://arxiv.org/abs/2307.09288">Llama 2: Open Foundation and Fine-Tuned Chat Models <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>Llama 3 paper: <a class="link" href="https://arxiv.org/abs/2407.21783">The Llama 3 Herd of Models <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ul>
+<p>This final post is a boundary marker. The tiny implementation in this series is useful because it is small enough to inspect. But real Llama inference is not just these 200 lines of model code. It adds tokenizer details, checkpoint loading, optimized kernels, paged memory, batching, scheduling, and system-level tradeoffs.</p>
+<h2 id="What-The-Tiny-Model-Teaches-Well"><a href="#What-The-Tiny-Model-Teaches-Well" class="headerlink" title="What The Tiny Model Teaches Well"></a>What The Tiny Model Teaches Well</h2><p>The tiny model is good for the core forward path:</p>
+<pre class="mermaid">flowchart LR
+    ids["token ids"] --&gt; emb["embedding"]
+    emb --&gt; norm1["RMSNorm"]
+    norm1 --&gt; attn["RoPE + GQA attention"]
+    attn --&gt; res1["residual"]
+    res1 --&gt; norm2["RMSNorm"]
+    norm2 --&gt; mlp["SwiGLU MLP"]
+    mlp --&gt; res2["residual"]
+    res2 --&gt; head["LM Head"]
+    head --&gt; logits["next-token logits"]</pre>
+
+<p>It teaches these invariants:</p>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th align="right">Shape to remember</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>token ids</td>
+<td align="right"><code>[B, T]</code></td>
+</tr>
+<tr>
+<td>hidden states</td>
+<td align="right"><code>[B, T, D]</code></td>
+</tr>
+<tr>
+<td>q</td>
+<td align="right"><code>[B, T, H, Dh]</code></td>
+</tr>
+<tr>
+<td>k/v in GQA</td>
+<td align="right"><code>[B, T, G, Dh]</code></td>
+</tr>
+<tr>
+<td>K/V cache</td>
+<td align="right"><code>[B, G, T_cache, Dh]</code></td>
+</tr>
+<tr>
+<td>logits</td>
+<td align="right"><code>[B, T, V]</code></td>
+</tr>
+<tr>
+<td>next-token logits</td>
+<td align="right"><code>[B, V]</code></td>
+</tr>
+</tbody></table>
+<p>These are the shapes I want in muscle memory before reading optimized inference code.</p>
+<h2 id="What-It-Leaves-Out"><a href="#What-It-Leaves-Out" class="headerlink" title="What It Leaves Out"></a>What It Leaves Out</h2><h3 id="Real-Tokenization"><a href="#Real-Tokenization" class="headerlink" title="Real Tokenization"></a>Real Tokenization</h3><p>The teaching tokenizer is a greedy toy tokenizer. Real Llama models use trained subword tokenizers with special tokens, chat templates, BOS/EOS handling, and compatibility constraints between tokenizer files and model checkpoints.</p>
+<h3 id="Real-Weights"><a href="#Real-Weights" class="headerlink" title="Real Weights"></a>Real Weights</h3><p>The tiny model initializes random weights. It demonstrates dataflow, not language quality. Loading real weights introduces:</p>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>parameter naming</td>
+<td>checkpoint keys must match module names</td>
+</tr>
+<tr>
+<td>tensor parallel layout</td>
+<td>weights may be sharded</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>fp16/bf16/fp8/int4 affect kernels</td>
+</tr>
+<tr>
+<td>tied embeddings</td>
+<td>some models tie embedding and LM Head weights</td>
+</tr>
+</tbody></table>
+<h3 id="Optimized-Attention-Kernels"><a href="#Optimized-Attention-Kernels" class="headerlink" title="Optimized Attention Kernels"></a>Optimized Attention Kernels</h3><p>The teaching code uses explicit <code>q @ k.transpose(...)</code> and softmax. Production inference often uses FlashAttention-like kernels or decode-specialized kernels. Those kernels preserve the same mathematical contract but avoid materializing some intermediate tensors.</p>
+<p>The learning version exposes:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">scores [B, H, T, T]</span><br></pre></td></tr></table></figure></div>
+
+<p>An optimized kernel may never store that full tensor. The shape reasoning still helps, but the memory behavior changes.</p>
+<h3 id="Paged-KV-Cache"><a href="#Paged-KV-Cache" class="headerlink" title="Paged KV Cache"></a>Paged KV Cache</h3><p>The teaching cache is a simple concatenated tensor:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">[B, G, T_cache, Dh]</span><br></pre></td></tr></table></figure></div>
+
+<p>Serving systems often use paged or block-based KV memory so many requests can share GPU memory efficiently. The logical shape remains similar, but physical storage becomes an indirection problem.</p>
+<h3 id="Batching-And-Scheduling"><a href="#Batching-And-Scheduling" class="headerlink" title="Batching And Scheduling"></a>Batching And Scheduling</h3><p>The tiny generate loop assumes a simple batch. Real serving systems handle:</p>
+<table>
+<thead>
+<tr>
+<th>Serving issue</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mixed prompt lengths</td>
+<td>different <code>T</code> per request</td>
+</tr>
+<tr>
+<td>continuous batching</td>
+<td>new requests join while others decode</td>
+</tr>
+<tr>
+<td>prefill/decode imbalance</td>
+<td>prefill is compute-heavy, decode is memory-heavy</td>
+</tr>
+<tr>
+<td>cancellation</td>
+<td>user stops generation</td>
+</tr>
+<tr>
+<td>streaming</td>
+<td>tokens are returned before the full sequence finishes</td>
+</tr>
+</tbody></table>
+<p>This is where systems papers become necessary.</p>
+<h2 id="How-I-Would-Continue"><a href="#How-I-Would-Continue" class="headerlink" title="How I Would Continue"></a>How I Would Continue</h2><p>After this series, the natural next topics are:</p>
+<ol>
+<li>PagedAttention and block-based KV memory.</li>
+<li>FlashAttention and decode attention kernels.</li>
+<li>Continuous batching and request scheduling.</li>
+<li>Tensor parallel inference.</li>
+<li>Quantized weight-only inference.</li>
+<li>Speculative decoding.</li>
+</ol>
+<p>Those are not replacements for the shape-first model. They are layers on top of it.</p>
+<h2 id="Series-Index"><a href="#Series-Index" class="headerlink" title="Series Index"></a>Series Index</h2><table>
+<thead>
+<tr>
+<th align="right">#</th>
+<th>Post</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">1</td>
+<td><a href="/2025/06/01/LLM-Inference-01-Shape-Map/">A Shape-First Map of Llama Forward</a></td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td><a href="/2025/06/02/LLM-Inference-02-Token-Embedding-LM-Head/">Token IDs, Embedding, and LM Head</a></td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td><a href="/2025/06/03/LLM-Inference-03-RMSNorm-QKV-Projection/">RMSNorm and QKV Projection</a></td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td><a href="/2025/06/04/LLM-Inference-04-RoPE-Query-Key/">RoPE: Position Enters Query and Key</a></td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td><a href="/2025/06/05/LLM-Inference-05-Causal-Self-Attention/">Causal Self-Attention by Shapes</a></td>
+</tr>
+<tr>
+<td align="right">6</td>
+<td><a href="/2025/06/06/LLM-Inference-06-GQA-MQA-KV-Heads/">GQA and MQA: Fewer KV Heads</a></td>
+</tr>
+<tr>
+<td align="right">7</td>
+<td><a href="/2025/06/07/LLM-Inference-07-KV-Cache-Prefill-Decode/">KV Cache: Prefill and Decode</a></td>
+</tr>
+<tr>
+<td align="right">8</td>
+<td><a href="/2025/06/08/LLM-Inference-08-SwiGLU-Transformer-Block/">SwiGLU MLP and the Transformer Block</a></td>
+</tr>
+<tr>
+<td align="right">9</td>
+<td><a href="/2025/06/09/LLM-Inference-09-Decoder-Only-Model/">Assembling a Decoder-Only Model</a></td>
+</tr>
+<tr>
+<td align="right">10</td>
+<td><a href="/2025/06/10/LLM-Inference-10-Sampling-Generate/">Sampling and Autoregressive Generate</a></td>
+</tr>
+<tr>
+<td align="right">11</td>
+<td><a href="/2025/06/11/LLM-Inference-11-Token-KV-Trace/">A Token-by-Token KV Cache Trace</a></td>
+</tr>
+<tr>
+<td align="right">12</td>
+<td><a href="/2025/06/12/LLM-Inference-12-Tiny-Llama-Limits/">What This Tiny Llama Leaves Out</a></td>
+</tr>
+</tbody></table>
+<h2 id="Takeaways"><a href="#Takeaways" class="headerlink" title="Takeaways"></a>Takeaways</h2><p>The tiny repo is not an inference framework. It is a map. It makes the core forward path small enough to hold in working memory:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">[B,T] ids</span><br><span class="line">-&gt; [B,T,D] hidden states</span><br><span class="line">-&gt; q/k/v heads</span><br><span class="line">-&gt; attention + MLP blocks</span><br><span class="line">-&gt; [B,T,V] logits</span><br><span class="line">-&gt; [B,1] next token</span><br></pre></td></tr></table></figure></div>
+
+<p>Once that map is stable, the larger serving stack becomes a series of implementation choices rather than a black box.</p>
+<p>Previous: <a href="/2025/06/11/LLM-Inference-11-Token-KV-Trace/">A Token-by-Token KV Cache Trace</a>.</p>
+]]></content>
+      <categories>
+        <category>Engineering Notes</category>
+      </categories>
+      <tags>
+        <tag>LLM</tag>
+        <tag>Transformer</tag>
+        <tag>Inference</tag>
+        <tag>Serving</tag>
       </tags>
   </entry>
 </search>

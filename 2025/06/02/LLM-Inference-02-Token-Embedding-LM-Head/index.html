@@ -13,20 +13,20 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://baytoro.github.io/2026/07/03/llm-inference-01-shape-map/"/>
+    <link rel="canonical" href="https://baytoro.github.io/2025/06/02/llm-inference-02-token-embedding-lm-head/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="A shape-first map of Llama-like decoder-only inference, from token ids to next-token logits.">
+        <meta name="description" content="Token embedding and LM Head are the two vocabulary-facing boundaries of a Llama-like decoder model.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[LLM Inference] A Shape-First Map of Llama Forward">
-<meta property="og:url" content="https://baytoro.github.io/2026/07/03/LLM-Inference-01-Shape-Map/index.html">
+<meta property="og:title" content="[LLM Inference] Token IDs, Embedding, and LM Head">
+<meta property="og:url" content="https://baytoro.github.io/2025/06/02/LLM-Inference-02-Token-Embedding-LM-Head/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="A shape-first map of Llama-like decoder-only inference, from token ids to next-token logits.">
+<meta property="og:description" content="Token embedding and LM Head are the two vocabulary-facing boundaries of a Llama-like decoder model.">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2026-07-03T01:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-03T09:10:55.838Z">
+<meta property="article:published_time" content="2025-06-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-03T09:15:54.340Z">
 <meta property="article:author" content="H.J. Chen">
 <meta property="article:tag" content="LLM">
 <meta property="article:tag" content="Transformer">
@@ -43,7 +43,7 @@
     
     <title>
         
-            [LLM Inference] A Shape-First Map of Llama Forward -
+            [LLM Inference] Token IDs, Embedding, and LM Head -
         
         Blog
     </title>
@@ -458,9 +458,9 @@ mjx-container[display="true"] + br {
             
                 
                 
-                <img src="/picture/llms.jpeg" alt="[LLM Inference] A Shape-First Map of Llama Forward" class="max-w-none"/>
+                <img src="/picture/llms.jpeg" alt="[LLM Inference] Token IDs, Embedding, and LM Head" class="max-w-none"/>
                 
-                <h1 class="article-title-cover">[LLM Inference] A Shape-First Map of Llama Forward</h1>
+                <h1 class="article-title-cover">[LLM Inference] Token IDs, Embedding, and LM Head</h1>
             
             </div>
             
@@ -480,15 +480,15 @@ mjx-container[display="true"] + br {
                         <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2026-07-03 09:00</span>
-        <span class="mobile">2026-07-03 09:00</span>
+        <span class="desktop">2025-06-02</span>
+        <span class="mobile">2025-06-02</span>
         <span class="hover-info">Created</span>
     </span>
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2026-07-03 17:10:55</span>
-            <span class="mobile">2026-07-03 17:10:55</span> -->
+            <!-- <span class="desktop">2026-07-03 17:15:54</span>
+            <span class="mobile">2026-07-03 17:15:54</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -548,238 +548,132 @@ mjx-container[display="true"] + br {
         <div class="article-content markdown-body">
             <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
 <li>Teaching repo: <a class="link" target="_blank" rel="noopener" href="https://github.com/Baytoro/LLM_hand">Baytoro/LLM_hand <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-<li>Companion lesson: <a target="_blank" rel="noopener" href="https://github.com/Baytoro/LLM_hand/blob/main/docs/01_text_to_next_token.md"><code>docs/01_text_to_next_token.md</code></a></li>
-<li>Runnable script: <code>python -m lessons.text_to_next_token</code></li>
-<li>LLaMA paper: <a class="link" target="_blank" rel="noopener" href="https://arxiv.org/abs/2302.13971">LLaMA: Open and Efficient Foundation Language Models <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-<li>Llama 2 paper: <a class="link" target="_blank" rel="noopener" href="https://arxiv.org/abs/2307.09288">Llama 2: Open Foundation and Fine-Tuned Chat Models <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-<li>Llama 3 paper: <a class="link" target="_blank" rel="noopener" href="https://arxiv.org/abs/2407.21783">The Llama 3 Herd of Models <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>Companion note: <a target="_blank" rel="noopener" href="https://github.com/Baytoro/LLM_hand/blob/main/docs/02_token_embedding_lm_head.md"><code>docs/02_token_embedding_lm_head.md</code></a></li>
+<li>Runnable script: <code>python -m lessons.token_embedding_lm_head</code></li>
+<li>Code: <a target="_blank" rel="noopener" href="https://github.com/Baytoro/LLM_hand/blob/main/tiny_llama/embedding.py"><code>tiny_llama/embedding.py</code></a>, <a target="_blank" rel="noopener" href="https://github.com/Baytoro/LLM_hand/blob/main/tiny_llama/lm_head.py"><code>tiny_llama/lm_head.py</code></a></li>
 </ul>
-<p>This series is my shape-first walkthrough of Llama-style inference. I am not trying to reproduce a production inference engine here. The goal is narrower: if I look at one token batch and one decoder-only Transformer, can I tell where every tensor goes, what each dimension means, and which object gets cached during generation?</p>
-<p>The source of truth for the runnable code is the small teaching repo above. The blog version is a more narrative set of notes: what I had to keep straight, where I usually make mistakes, and how I would debug the forward path when a tensor shape does not match.</p>
-<h2 id="Goal"><a href="#Goal" class="headerlink" title="Goal"></a>Goal</h2><p>The full inference path can be compressed into one sentence:</p>
-<blockquote>
-<p>A decoder-only language model turns token ids with shape <code>[B, T]</code> into logits with shape <code>[B, T, V]</code>, then uses the last position <code>[B, V]</code> to choose the next token.</p>
-</blockquote>
-<p>Here is the high-level dataflow:</p>
+<p>The first time I tried to trace a decoder model, I mixed up two very different spaces: token-id space and hidden-vector space. Token ids are integers. Hidden states are vectors. The model only enters hidden-vector space after the embedding table, and it only returns to vocabulary space at the LM Head.</p>
+<h2 id="Goal"><a href="#Goal" class="headerlink" title="Goal"></a>Goal</h2><p>This post isolates the two boundaries:</p>
 <pre class="mermaid">flowchart LR
-    text["text prompt"] --&gt; tok["tokenizer"]
-    tok --&gt; ids["input_ids<br>[B, T]"]
-    ids --&gt; emb["token embedding<br>[B, T, D]"]
-    emb --&gt; blocks["L decoder blocks<br>[B, T, D]"]
-    blocks --&gt; norm["final RMSNorm<br>[B, T, D]"]
-    norm --&gt; head["LM Head<br>[B, T, V]"]
-    head --&gt; last["last position<br>[B, V]"]
-    last --&gt; sample["sample / argmax<br>[B, 1]"]</pre>
+    ids["input_ids<br>[B, T]<br>integer ids"] --&gt; emb["Embedding table<br>[V, D]"]
+    emb --&gt; x["hidden states<br>[B, T, D]"]
+    x --&gt; model["decoder blocks<br>[B, T, D]"]
+    model --&gt; head["LM Head<br>Linear(D, V)"]
+    head --&gt; logits["logits<br>[B, T, V]"]</pre>
 
-<p>The main symbols I use throughout the series are:</p>
+<p>The embedding table answers: “What vector should represent this token id?”<br>The LM Head answers: “Given this hidden vector, how much should each vocabulary token score?”</p>
+<h2 id="Token-IDs-Are-Not-Vectors"><a href="#Token-IDs-Are-Not-Vectors" class="headerlink" title="Token IDs Are Not Vectors"></a>Token IDs Are Not Vectors</h2><p>A tokenizer maps text to integer ids:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">prompt = <span class="string">"hello world"</span></span><br><span class="line">input_ids = torch.tensor([[<span class="number">1</span>, <span class="number">2</span>]], dtype=torch.long)  <span class="comment"># [B, T]</span></span><br></pre></td></tr></table></figure></div>
+
+<p>The tensor shape is <code>[B, T]</code>, not <code>[B, T, D]</code>. The values are indices into a vocabulary. If <code>V = 10</code>, valid ids are in <code>[0, 9]</code>.</p>
+<p>In the teaching repo, <a target="_blank" rel="noopener" href="https://github.com/Baytoro/LLM_hand/blob/main/tiny_llama/tokenizer.py"><code>GreedySubwordTokenizer</code></a> is intentionally simple. It is not a production Llama tokenizer. It exists so the shape flow remains realistic:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">text -&gt; token pieces -&gt; token ids</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Token-Embedding"><a href="#Token-Embedding" class="headerlink" title="Token Embedding"></a>Token Embedding</h2><p>The embedding table has shape <code>[V, D]</code>. Looking up <code>[B, T]</code> ids returns <code>[B, T, D]</code> vectors.</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TokenEmbedding</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, vocab_size: <span class="built_in">int</span>, dim: <span class="built_in">int</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.embedding = nn.Embedding(vocab_size, dim)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, input_ids: torch.Tensor</span>) -&gt; torch.Tensor:</span><br><span class="line">        <span class="keyword">return</span> self.embedding(input_ids)  <span class="comment"># [B, T, D]</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Shape trace:</p>
 <table>
 <thead>
 <tr>
-<th>Symbol</th>
+<th>Tensor</th>
+<th align="right">Shape</th>
 <th>Meaning</th>
-<th>Example</th>
 </tr>
 </thead>
 <tbody><tr>
-<td><code>B</code></td>
-<td>batch size</td>
-<td>number of prompts</td>
+<td><code>input_ids</code></td>
+<td align="right"><code>[B, T]</code></td>
+<td>integer token ids</td>
 </tr>
 <tr>
-<td><code>T</code></td>
-<td>sequence length</td>
-<td>number of tokens in the current forward call</td>
+<td><code>embedding.weight</code></td>
+<td align="right"><code>[V, D]</code></td>
+<td>one row per vocab token</td>
 </tr>
 <tr>
-<td><code>V</code></td>
-<td>vocabulary size</td>
-<td>number of possible next tokens</td>
-</tr>
-<tr>
-<td><code>D</code></td>
-<td>hidden size</td>
-<td>width of the model state</td>
-</tr>
-<tr>
-<td><code>L</code></td>
-<td>number of decoder blocks</td>
-<td>model depth</td>
-</tr>
-<tr>
-<td><code>H</code></td>
-<td>query attention heads</td>
-<td>attention parallel groups</td>
-</tr>
-<tr>
-<td><code>G</code></td>
-<td>key/value heads</td>
-<td><code>G &lt;= H</code> in GQA</td>
-</tr>
-<tr>
-<td><code>Dh</code></td>
-<td>head dimension</td>
-<td><code>D / H</code></td>
-</tr>
-<tr>
-<td><code>F</code></td>
-<td>MLP hidden dimension</td>
-<td>SwiGLU expansion width</td>
+<td><code>x</code></td>
+<td align="right"><code>[B, T, D]</code></td>
+<td>dense hidden states</td>
 </tr>
 </tbody></table>
-<p>The shape convention matters more than it looks. A lot of LLM bugs are not conceptual bugs; they are mistakes like taking softmax over the wrong axis, flattening batch and time too early, or feeding <code>[B]</code> into a decode step that expects <code>[B, 1]</code>.</p>
-<h2 id="Forward-Path"><a href="#Forward-Path" class="headerlink" title="Forward Path"></a>Forward Path</h2><p>For a tiny Llama-like model, the forward path is:</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">input_ids = tokenizer.encode(prompt)        <span class="comment"># [T]</span></span><br><span class="line">input_ids = torch.tensor([input_ids])       <span class="comment"># [B, T]</span></span><br><span class="line"></span><br><span class="line">x = embed_tokens(input_ids)                 <span class="comment"># [B, T, D]</span></span><br><span class="line"><span class="keyword">for</span> block <span class="keyword">in</span> layers:</span><br><span class="line">    x = block(x)                            <span class="comment"># [B, T, D]</span></span><br><span class="line">x = final_norm(x)                           <span class="comment"># [B, T, D]</span></span><br><span class="line">logits = lm_head(x)                         <span class="comment"># [B, T, V]</span></span><br><span class="line">next_logits = logits[:, -<span class="number">1</span>, :]              <span class="comment"># [B, V]</span></span><br></pre></td></tr></table></figure></div>
+<p>This is a lookup, not a matrix multiplication over <code>[B, T]</code>. Each token id selects one row from the table.</p>
+<h2 id="LM-Head"><a href="#LM-Head" class="headerlink" title="LM Head"></a>LM Head</h2><p>The LM Head maps hidden states back to vocabulary logits:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">LMHead</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dim: <span class="built_in">int</span>, vocab_size: <span class="built_in">int</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.proj = nn.Linear(dim, vocab_size, bias=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, hidden_states: torch.Tensor</span>) -&gt; torch.Tensor:</span><br><span class="line">        <span class="keyword">return</span> self.proj(hidden_states)  <span class="comment"># [B, T, V]</span></span><br></pre></td></tr></table></figure></div>
 
-<p>In <a target="_blank" rel="noopener" href="https://github.com/Baytoro/LLM_hand/blob/main/tiny_llama/model.py"><code>tiny_llama/model.py</code></a>, the same path is implemented as <code>DecoderOnlyTransformer.forward</code>. The module returns <code>(logits, caches)</code> because later posts use the same model for KV-cache decoding.</p>
-<h2 id="Shape-Trace"><a href="#Shape-Trace" class="headerlink" title="Shape Trace"></a>Shape Trace</h2><p>The first trace I want to keep in my head is the non-cache forward pass.</p>
-<table>
+<p>Mathematically, for one hidden vector <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.65ex;" xmlns="http://www.w3.org/2000/svg" width="9.111ex" height="2.564ex" role="img" focusable="false" viewBox="0 -846 4027.2 1133.1"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path data-c="210E" d="M137 683Q138 683 209 688T282 694Q294 694 294 685Q294 674 258 534Q220 386 220 383Q220 381 227 388Q288 442 357 442Q411 442 444 415T478 336Q478 285 440 178T402 50Q403 36 407 31T422 26Q450 26 474 56T513 138Q516 149 519 151T535 153Q555 153 555 145Q555 144 551 130Q535 71 500 33Q466 -10 419 -10H414Q367 -10 346 17T325 74Q325 90 361 192T398 345Q398 404 354 404H349Q266 404 205 306L198 293L164 158Q132 28 127 16Q114 -11 83 -11Q69 -11 59 -2T48 16Q48 30 121 320L195 616Q195 629 188 632T149 637H128Q122 643 122 645T124 664Q129 683 137 683Z"></path></g><g data-mml-node="TeXAtom" transform="translate(609,-150) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mi"><path data-c="1D44F" d="M73 647Q73 657 77 670T89 683Q90 683 161 688T234 694Q246 694 246 685T212 542Q204 508 195 472T180 418L176 399Q176 396 182 402Q231 442 283 442Q345 442 383 396T422 280Q422 169 343 79T173 -11Q123 -11 82 27T40 150V159Q40 180 48 217T97 414Q147 611 147 623T109 637Q104 637 101 637H96Q86 637 83 637T76 640T73 647ZM336 325V331Q336 405 275 405Q258 405 240 397T207 376T181 352T163 330L157 322L136 236Q114 150 114 114Q114 66 138 42Q154 26 178 26Q211 26 245 58Q270 81 285 114T318 219Q336 291 336 325Z"></path></g><g data-mml-node="mo" transform="translate(429,0)"><path data-c="2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path></g><g data-mml-node="mi" transform="translate(707,0)"><path data-c="1D461" d="M26 385Q19 392 19 395Q19 399 22 411T27 425Q29 430 36 430T87 431H140L159 511Q162 522 166 540T173 566T179 586T187 603T197 615T211 624T229 626Q247 625 254 615T261 596Q261 589 252 549T232 470L222 433Q222 431 272 431H323Q330 424 330 420Q330 398 317 385H210L174 240Q135 80 135 68Q135 26 162 26Q197 26 230 60T283 144Q285 150 288 151T303 153H307Q322 153 322 145Q322 142 319 133Q314 117 301 95T267 48T216 6T155 -11Q125 -11 98 4T59 56Q57 64 57 83V101L92 241Q127 382 128 383Q128 385 77 385H26Z"></path></g></g></g><g data-mml-node="mo" transform="translate(1692,0)"><path data-c="2208" d="M84 250Q84 372 166 450T360 539Q361 539 377 539T419 540T469 540H568Q583 532 583 520Q583 511 570 501L466 500Q355 499 329 494Q280 482 242 458T183 409T147 354T129 306T124 272V270H568Q583 262 583 250T568 230H124V228Q124 207 134 177T167 112T231 48T328 7Q355 1 466 0H570Q583 -10 583 -20Q583 -32 568 -40H471Q464 -40 446 -40T417 -41Q262 -41 172 45Q84 127 84 250Z"></path></g><g data-mml-node="msup" transform="translate(2636.7,0)"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mi"><path data-c="211D" d="M17 665Q17 672 28 683H221Q415 681 439 677Q461 673 481 667T516 654T544 639T566 623T584 607T597 592T607 578T614 565T618 554L621 548Q626 530 626 497Q626 447 613 419Q578 348 473 326L455 321Q462 310 473 292T517 226T578 141T637 72T686 35Q705 30 705 16Q705 7 693 -1H510Q503 6 404 159L306 310H268V183Q270 67 271 59Q274 42 291 38Q295 37 319 35Q344 35 353 28Q362 17 353 3L346 -1H28Q16 5 16 16Q16 35 55 35Q96 38 101 52Q106 60 106 341T101 632Q95 645 55 648Q17 648 17 665ZM241 35Q238 42 237 45T235 78T233 163T233 337V621L237 635L244 648H133Q136 641 137 638T139 603T141 517T141 341Q141 131 140 89T134 37Q133 36 133 35H241ZM457 496Q457 540 449 570T425 615T400 634T377 643Q374 643 339 648Q300 648 281 635Q271 628 270 610T268 481V346H284Q327 346 375 352Q421 364 439 392T457 496ZM492 537T492 496T488 427T478 389T469 371T464 361Q464 360 465 360Q469 360 497 370Q593 400 593 495Q593 592 477 630L457 637L461 626Q474 611 488 561Q492 537 492 496ZM464 243Q411 317 410 317Q404 317 401 315Q384 315 370 312H346L526 35H619L606 50Q553 109 464 243Z"></path></g></g><g data-mml-node="mi" transform="translate(755,363) scale(0.707)"><path data-c="1D437" d="M287 628Q287 635 230 637Q207 637 200 638T193 647Q193 655 197 667T204 682Q206 683 403 683Q570 682 590 682T630 676Q702 659 752 597T803 431Q803 275 696 151T444 3L430 1L236 0H125H72Q48 0 41 2T33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM703 469Q703 507 692 537T666 584T629 613T590 629T555 636Q553 636 541 636T512 636T479 637H436Q392 637 386 627Q384 623 313 339T242 52Q242 48 253 48T330 47Q335 47 349 47T373 46Q499 46 581 128Q617 164 640 212T683 339T703 469Z"></path></g></g></g></g></svg></mjx-container>:</p>
+<p>$$<br>\text{logits}<em>{b,t} = h</em>{b,t} W^T<br>$$</p>
+<p>where <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.09ex;" xmlns="http://www.w3.org/2000/svg" width="10.758ex" height="2.004ex" role="img" focusable="false" viewBox="0 -846 4754.9 886"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D44A" d="M436 683Q450 683 486 682T553 680Q604 680 638 681T677 682Q695 682 695 674Q695 670 692 659Q687 641 683 639T661 637Q636 636 621 632T600 624T597 615Q597 603 613 377T629 138L631 141Q633 144 637 151T649 170T666 200T690 241T720 295T759 362Q863 546 877 572T892 604Q892 619 873 628T831 637Q817 637 817 647Q817 650 819 660Q823 676 825 679T839 682Q842 682 856 682T895 682T949 681Q1015 681 1034 683Q1048 683 1048 672Q1048 666 1045 655T1038 640T1028 637Q1006 637 988 631T958 617T939 600T927 584L923 578L754 282Q586 -14 585 -15Q579 -22 561 -22Q546 -22 542 -17Q539 -14 523 229T506 480L494 462Q472 425 366 239Q222 -13 220 -15T215 -19Q210 -22 197 -22Q178 -22 176 -15Q176 -12 154 304T131 622Q129 631 121 633T82 637H58Q51 644 51 648Q52 671 64 683H76Q118 680 176 680Q301 680 313 683H323Q329 677 329 674T327 656Q322 641 318 637H297Q236 634 232 620Q262 160 266 136L501 550L499 587Q496 629 489 632Q483 636 447 637Q428 637 422 639T416 648Q416 650 418 660Q419 664 420 669T421 676T424 680T428 682T436 683Z"></path></g><g data-mml-node="mo" transform="translate(1325.8,0)"><path data-c="2208" d="M84 250Q84 372 166 450T360 539Q361 539 377 539T419 540T469 540H568Q583 532 583 520Q583 511 570 501L466 500Q355 499 329 494Q280 482 242 458T183 409T147 354T129 306T124 272V270H568Q583 262 583 250T568 230H124V228Q124 207 134 177T167 112T231 48T328 7Q355 1 466 0H570Q583 -10 583 -20Q583 -32 568 -40H471Q464 -40 446 -40T417 -41Q262 -41 172 45Q84 127 84 250Z"></path></g><g data-mml-node="msup" transform="translate(2270.6,0)"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mi"><path data-c="211D" d="M17 665Q17 672 28 683H221Q415 681 439 677Q461 673 481 667T516 654T544 639T566 623T584 607T597 592T607 578T614 565T618 554L621 548Q626 530 626 497Q626 447 613 419Q578 348 473 326L455 321Q462 310 473 292T517 226T578 141T637 72T686 35Q705 30 705 16Q705 7 693 -1H510Q503 6 404 159L306 310H268V183Q270 67 271 59Q274 42 291 38Q295 37 319 35Q344 35 353 28Q362 17 353 3L346 -1H28Q16 5 16 16Q16 35 55 35Q96 38 101 52Q106 60 106 341T101 632Q95 645 55 648Q17 648 17 665ZM241 35Q238 42 237 45T235 78T233 163T233 337V621L237 635L244 648H133Q136 641 137 638T139 603T141 517T141 341Q141 131 140 89T134 37Q133 36 133 35H241ZM457 496Q457 540 449 570T425 615T400 634T377 643Q374 643 339 648Q300 648 281 635Q271 628 270 610T268 481V346H284Q327 346 375 352Q421 364 439 392T457 496ZM492 537T492 496T488 427T478 389T469 371T464 361Q464 360 465 360Q469 360 497 370Q593 400 593 495Q593 592 477 630L457 637L461 626Q474 611 488 561Q492 537 492 496ZM464 243Q411 317 410 317Q404 317 401 315Q384 315 370 312H346L526 35H619L606 50Q553 109 464 243Z"></path></g></g><g data-mml-node="TeXAtom" transform="translate(755,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mi"><path data-c="1D449" d="M52 648Q52 670 65 683H76Q118 680 181 680Q299 680 320 683H330Q336 677 336 674T334 656Q329 641 325 637H304Q282 635 274 635Q245 630 242 620Q242 618 271 369T301 118L374 235Q447 352 520 471T595 594Q599 601 599 609Q599 633 555 637Q537 637 537 648Q537 649 539 661Q542 675 545 679T558 683Q560 683 570 683T604 682T668 681Q737 681 755 683H762Q769 676 769 672Q769 655 760 640Q757 637 743 637Q730 636 719 635T698 630T682 623T670 615T660 608T652 599T645 592L452 282Q272 -9 266 -16Q263 -18 259 -21L241 -22H234Q216 -22 216 -15Q213 -9 177 305Q139 623 138 626Q133 637 76 637H59Q52 642 52 648Z"></path></g><g data-mml-node="mo" transform="translate(769,0)"><path data-c="D7" d="M630 29Q630 9 609 9Q604 9 587 25T493 118L389 222L284 117Q178 13 175 11Q171 9 168 9Q160 9 154 15T147 29Q147 36 161 51T255 146L359 250L255 354Q174 435 161 449T147 471Q147 480 153 485T168 490Q173 490 175 489Q178 487 284 383L389 278L493 382Q570 459 587 475T609 491Q630 491 630 471Q630 464 620 453T522 355L418 250L522 145Q606 61 618 48T630 29Z"></path></g><g data-mml-node="mi" transform="translate(1547,0)"><path data-c="1D437" d="M287 628Q287 635 230 637Q207 637 200 638T193 647Q193 655 197 667T204 682Q206 683 403 683Q570 682 590 682T630 676Q702 659 752 597T803 431Q803 275 696 151T444 3L430 1L236 0H125H72Q48 0 41 2T33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM703 469Q703 507 692 537T666 584T629 613T590 629T555 636Q553 636 541 636T512 636T479 637H436Q392 637 386 627Q384 623 313 339T242 52Q242 48 253 48T330 47Q335 47 349 47T373 46Q499 46 581 128Q617 164 640 212T683 339T703 469Z"></path></g></g></g></g></g></svg></mjx-container> in PyTorch’s <code>nn.Linear(D, V)</code> storage convention.</p>
+<h2 id="Shape-Trace"><a href="#Shape-Trace" class="headerlink" title="Shape Trace"></a>Shape Trace</h2><table>
 <thead>
 <tr>
 <th>Step</th>
 <th>Operation</th>
-<th align="right">Input shape</th>
-<th align="right">Output shape</th>
-<th>What changed</th>
+<th align="right">Shape</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>1</td>
-<td>tokenizer</td>
-<td align="right">text</td>
+<td>prompt ids</td>
+<td>tokenizer output</td>
 <td align="right"><code>[B, T]</code></td>
-<td>string becomes integer ids</td>
 </tr>
 <tr>
-<td>2</td>
-<td>embedding</td>
-<td align="right"><code>[B, T]</code></td>
+<td>embedding lookup</td>
+<td><code>nn.Embedding(V, D)</code></td>
 <td align="right"><code>[B, T, D]</code></td>
-<td>each id gets a learned vector</td>
 </tr>
 <tr>
-<td>3</td>
-<td>decoder block</td>
+<td>decoder body</td>
+<td>many blocks</td>
 <td align="right"><code>[B, T, D]</code></td>
-<td align="right"><code>[B, T, D]</code></td>
-<td>context is mixed, shape preserved</td>
 </tr>
 <tr>
-<td>4</td>
-<td>final RMSNorm</td>
-<td align="right"><code>[B, T, D]</code></td>
-<td align="right"><code>[B, T, D]</code></td>
-<td>normalize hidden states</td>
-</tr>
-<tr>
-<td>5</td>
 <td>LM Head</td>
-<td align="right"><code>[B, T, D]</code></td>
+<td><code>nn.Linear(D, V)</code></td>
 <td align="right"><code>[B, T, V]</code></td>
-<td>hidden state becomes vocab logits</td>
 </tr>
 <tr>
-<td>6</td>
-<td>last position</td>
-<td align="right"><code>[B, T, V]</code></td>
+<td>next-token slice</td>
+<td><code>logits[:, -1, :]</code></td>
 <td align="right"><code>[B, V]</code></td>
-<td>only the last token predicts the next token</td>
-</tr>
-<tr>
-<td>7</td>
-<td>sampling</td>
-<td align="right"><code>[B, V]</code></td>
-<td align="right"><code>[B, 1]</code></td>
-<td>choose one next token id</td>
 </tr>
 </tbody></table>
-<p>The important invariant is that the Transformer body works in hidden space. The vocabulary dimension <code>V</code> appears only at the LM head. Until then, every block keeps <code>[B, T, D]</code>.</p>
-<h2 id="Minimal-PyTorch"><a href="#Minimal-PyTorch" class="headerlink" title="Minimal PyTorch"></a>Minimal PyTorch</h2><p>This is the smallest runnable skeleton I use before adding attention:</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"></span><br><span class="line">B, T, V, D = <span class="number">2</span>, <span class="number">4</span>, <span class="number">32</span>, <span class="number">8</span></span><br><span class="line">input_ids = torch.randint(<span class="number">0</span>, V, (B, T))  <span class="comment"># [B, T]</span></span><br><span class="line"></span><br><span class="line">embed = nn.Embedding(V, D)</span><br><span class="line">lm_head = nn.Linear(D, V, bias=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">x = embed(input_ids)                     <span class="comment"># [B, T, D]</span></span><br><span class="line">logits = lm_head(x)                      <span class="comment"># [B, T, V]</span></span><br><span class="line">next_logits = logits[:, -<span class="number">1</span>, :]           <span class="comment"># [B, V]</span></span><br><span class="line">next_ids = torch.argmax(next_logits, dim=-<span class="number">1</span>, keepdim=<span class="literal">True</span>)  <span class="comment"># [B, 1]</span></span><br></pre></td></tr></table></figure></div>
+<p>The decoder body is deliberately shown as a black box for now. It will be expanded in later posts.</p>
+<h2 id="Minimal-PyTorch"><a href="#Minimal-PyTorch" class="headerlink" title="Minimal PyTorch"></a>Minimal PyTorch</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"></span><br><span class="line">B, T, V, D = <span class="number">1</span>, <span class="number">3</span>, <span class="number">8</span>, <span class="number">4</span></span><br><span class="line">input_ids = torch.tensor([[<span class="number">2</span>, <span class="number">5</span>, <span class="number">1</span>]])  <span class="comment"># [B, T]</span></span><br><span class="line"></span><br><span class="line">embed_tokens = nn.Embedding(V, D)</span><br><span class="line">lm_head = nn.Linear(D, V, bias=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">x = embed_tokens(input_ids)            <span class="comment"># [B, T, D]</span></span><br><span class="line">logits = lm_head(x)                    <span class="comment"># [B, T, V]</span></span><br><span class="line">next_logits = logits[:, -<span class="number">1</span>, :]         <span class="comment"># [B, V]</span></span><br><span class="line">next_id = torch.argmax(next_logits, dim=-<span class="number">1</span>, keepdim=<span class="literal">True</span>)  <span class="comment"># [B, 1]</span></span><br></pre></td></tr></table></figure></div>
 
-<p>This code has no Transformer block yet, but it already fixes the beginning and end of the inference contract. Every later module just fills in the middle.</p>
-<h2 id="Series-Map"><a href="#Series-Map" class="headerlink" title="Series Map"></a>Series Map</h2><p>I will build the forward path in this order:</p>
+<p>The logits are scores, not probabilities. Softmax comes later during sampling.</p>
+<h2 id="A-Useful-Debug-Check"><a href="#A-Useful-Debug-Check" class="headerlink" title="A Useful Debug Check"></a>A Useful Debug Check</h2><p>When the model crashes before attention, I first check three things:</p>
 <table>
 <thead>
 <tr>
-<th>Post</th>
-<th>Topic</th>
-<th>Main shape</th>
+<th>Check</th>
+<th>Why</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>1</td>
-<td>Shape-first overview</td>
-<td><code>[B, T] -&gt; [B, T, V]</code></td>
+<td><code>input_ids.dtype == torch.long</code></td>
+<td>embedding lookup needs integer indices</td>
 </tr>
 <tr>
-<td>2</td>
-<td>Embedding and LM Head</td>
-<td><code>[B, T] -&gt; [B, T, D] -&gt; [B, T, V]</code></td>
+<td><code>input_ids.max() &lt; V</code></td>
+<td>ids must be inside the vocab</td>
 </tr>
 <tr>
-<td>3</td>
-<td>RMSNorm and QKV Projection</td>
-<td><code>[B, T, D] -&gt; q/k/v</code></td>
-</tr>
-<tr>
-<td>4</td>
-<td>RoPE</td>
-<td>q/k position rotation</td>
-</tr>
-<tr>
-<td>5</td>
-<td>Causal Self-Attention</td>
-<td><code>[B, H, T, Dh]</code></td>
-</tr>
-<tr>
-<td>6</td>
-<td>GQA / MQA</td>
-<td><code>H</code> query heads, <code>G</code> KV heads</td>
-</tr>
-<tr>
-<td>7</td>
-<td>KV Cache</td>
-<td><code>[B, G, T_cache, Dh]</code></td>
-</tr>
-<tr>
-<td>8</td>
-<td>SwiGLU and TransformerBlock</td>
-<td><code>[B, T, D] -&gt; [B, T, D]</code></td>
-</tr>
-<tr>
-<td>9</td>
-<td>Decoder-only model</td>
-<td><code>L</code> stacked blocks</td>
-</tr>
-<tr>
-<td>10</td>
-<td>Sampling and generate</td>
-<td><code>[B, V] -&gt; [B, 1]</code></td>
-</tr>
-<tr>
-<td>11</td>
-<td>Token-by-token trace</td>
-<td>prefill plus decode loop</td>
-</tr>
-<tr>
-<td>12</td>
-<td>What the tiny model leaves out</td>
-<td>production gaps</td>
+<td><code>x.shape[-1] == D</code></td>
+<td>every later module expects hidden size <code>D</code></td>
 </tr>
 </tbody></table>
-<h2 id="Common-Pitfalls"><a href="#Common-Pitfalls" class="headerlink" title="Common Pitfalls"></a>Common Pitfalls</h2><p>The first mistake is treating token ids as vectors. They are not. Token ids are integer indices with shape <code>[B, T]</code>. The embedding table is what maps them into dense vectors.</p>
-<p>The second mistake is using the whole logits tensor for sampling. During autoregressive generation, the next token is predicted from the last sequence position:</p>
+<p>In a real inference stack, tokenizer bugs often look like model bugs. A wrong special token id, an out-of-range id, or a mismatched tokenizer/model vocabulary can break the path before attention even starts.</p>
+<h2 id="Common-Pitfalls"><a href="#Common-Pitfalls" class="headerlink" title="Common Pitfalls"></a>Common Pitfalls</h2><p>First, do not flatten <code>[B, T]</code> unless you are explicitly preparing a training loss. In inference, we keep batch and time dimensions visible.</p>
+<p>Second, do not call <code>argmax</code> over <code>[B, T, V]</code> directly. For next-token generation:</p>
 <div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">next_logits = logits[:, -<span class="number">1</span>, :]  <span class="comment"># [B, V]</span></span><br></pre></td></tr></table></figure></div>
 
-<p>The third mistake is forgetting that generation keeps appending to the sequence. The prompt is not discarded. If the prompt has length <code>T</code> and we generate <code>N</code> new tokens, the final id tensor has shape <code>[B, T + N]</code>.</p>
-<h2 id="Takeaways"><a href="#Takeaways" class="headerlink" title="Takeaways"></a>Takeaways</h2><p>For me, the clean mental model is:</p>
-<ol>
-<li><code>input_ids</code> carry positions and token choices: <code>[B, T]</code>.</li>
-<li>The Transformer body carries contextual hidden states: <code>[B, T, D]</code>.</li>
-<li>The LM head returns one distribution per position: <code>[B, T, V]</code>.</li>
-<li>Generation samples only from the last position: <code>[B, V]</code>.</li>
-</ol>
-<p>Next: <a href="/2026/07/03/LLM-Inference-02-Token-Embedding-LM-Head/">Token IDs, Embedding, and LM Head</a>.</p>
+<p>Third, remember that <code>nn.Linear(D, V)</code> stores weight as <code>[V, D]</code>. That storage shape is easy to confuse with the mathematical notation.</p>
+<h2 id="Takeaways"><a href="#Takeaways" class="headerlink" title="Takeaways"></a>Takeaways</h2><p>Embedding and LM Head are mirror-like boundaries:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ids [B, T] -&gt; embedding -&gt; hidden [B, T, D]</span><br><span class="line">hidden [B, T, D] -&gt; LM Head -&gt; logits [B, T, V]</span><br></pre></td></tr></table></figure></div>
+
+<p>Once this is fixed, the rest of the model is about improving the hidden states before the LM Head reads them.</p>
+<p>Previous: <a href="/2025/06/01/LLM-Inference-01-Shape-Map/">A Shape-First Map of Llama Forward</a>.<br>Next: <a href="/2025/06/03/LLM-Inference-03-RMSNorm-QKV-Projection/">RMSNorm and QKV Projection</a>.</p>
 
         </div>
 
@@ -811,13 +705,13 @@ mjx-container[display="true"] + br {
                     <div class="article-prev">
                         <a class="prev"
                         rel="prev"
-                        href="/2026/07/03/LLM-Inference-02-Token-Embedding-LM-Head/"
+                        href="/2025/06/03/LLM-Inference-03-RMSNorm-QKV-Projection/"
                         >
                             <span class="left arrow-icon flex justify-center items-center">
                                 <i class="fa-solid fa-chevron-left"></i>
                             </span>
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">[LLM Inference] Token IDs, Embedding, and LM Head</span>
+                                <span class="post-nav-title-item">[LLM Inference] RMSNorm and QKV Projection</span>
                                 <span class="post-nav-item">Prev posts</span>
                             </span>
                         </a>
@@ -827,10 +721,10 @@ mjx-container[display="true"] + br {
                     <div class="article-next">
                         <a class="next"
                         rel="next"
-                        href="/2025/05/16/Mooncake/"
+                        href="/2025/06/01/LLM-Inference-01-Shape-Map/"
                         >
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Mooncake: KVCache-Centric LLM Serving</span>
+                                <span class="post-nav-title-item">[LLM Inference] A Shape-First Map of Llama Forward</span>
                                 <span class="post-nav-item">Next posts</span>
                             </span>
                             <span class="right arrow-icon flex justify-center items-center">
@@ -851,8 +745,8 @@ mjx-container[display="true"] + br {
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">[LLM Inference] A Shape-First Map of Llama Forward</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-text">Reference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Goal"><span class="nav-text">Goal</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Forward-Path"><span class="nav-text">Forward Path</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shape-Trace"><span class="nav-text">Shape Trace</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Minimal-PyTorch"><span class="nav-text">Minimal PyTorch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Series-Map"><span class="nav-text">Series Map</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Common-Pitfalls"><span class="nav-text">Common Pitfalls</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaways"><span class="nav-text">Takeaways</span></a></li></ol>
+        <div class="page-title">[LLM Inference] Token IDs, Embedding, and LM Head</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-text">Reference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Goal"><span class="nav-text">Goal</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Token-IDs-Are-Not-Vectors"><span class="nav-text">Token IDs Are Not Vectors</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Token-Embedding"><span class="nav-text">Token Embedding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LM-Head"><span class="nav-text">LM Head</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shape-Trace"><span class="nav-text">Shape Trace</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Minimal-PyTorch"><span class="nav-text">Minimal PyTorch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-Useful-Debug-Check"><span class="nav-text">A Useful Debug Check</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Common-Pitfalls"><span class="nav-text">Common Pitfalls</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaways"><span class="nav-text">Takeaways</span></a></li></ol>
 
     </div>
 </div>

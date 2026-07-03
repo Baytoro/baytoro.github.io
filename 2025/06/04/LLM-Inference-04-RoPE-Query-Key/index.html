@@ -13,7 +13,7 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://baytoro.github.io/2026/07/03/llm-inference-04-rope-query-key/"/>
+    <link rel="canonical" href="https://baytoro.github.io/2025/06/04/llm-inference-04-rope-query-key/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
@@ -21,12 +21,12 @@
         <meta name="description" content="RoPE injects token position into query and key vectors by rotating head-dimension pairs.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[LLM Inference] RoPE: Position Enters Query and Key">
-<meta property="og:url" content="https://baytoro.github.io/2026/07/03/LLM-Inference-04-RoPE-Query-Key/index.html">
+<meta property="og:url" content="https://baytoro.github.io/2025/06/04/LLM-Inference-04-RoPE-Query-Key/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="RoPE injects token position into query and key vectors by rotating head-dimension pairs.">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2026-07-03T01:30:00.000Z">
-<meta property="article:modified_time" content="2026-07-03T09:10:56.140Z">
+<meta property="article:published_time" content="2025-06-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-03T09:15:54.340Z">
 <meta property="article:author" content="H.J. Chen">
 <meta property="article:tag" content="LLM">
 <meta property="article:tag" content="Transformer">
@@ -480,15 +480,15 @@ mjx-container[display="true"] + br {
                         <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2026-07-03 09:30</span>
-        <span class="mobile">2026-07-03 09:30</span>
+        <span class="desktop">2025-06-04</span>
+        <span class="mobile">2025-06-04</span>
         <span class="hover-info">Created</span>
     </span>
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2026-07-03 17:10:56</span>
-            <span class="mobile">2026-07-03 17:10:56</span> -->
+            <!-- <span class="desktop">2026-07-03 17:15:54</span>
+            <span class="mobile">2026-07-03 17:15:54</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -649,7 +649,7 @@ mjx-container[display="true"] + br {
 <div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">q [B, T, H, Dh] -&gt; RoPE -&gt; q_rot [B, T, H, Dh]</span><br><span class="line">k [B, T, H, Dh] -&gt; RoPE -&gt; k_rot [B, T, H, Dh]</span><br><span class="line">v [B, T, H, Dh] -&gt; unchanged</span><br></pre></td></tr></table></figure></div>
 
 <p>The next step is to transpose q/k/v into attention layout and compute causal attention.</p>
-<p>Previous: <a href="/2026/07/03/LLM-Inference-03-RMSNorm-QKV-Projection/">RMSNorm and QKV Projection</a>.<br>Next: <a href="/2026/07/03/LLM-Inference-05-Causal-Self-Attention/">Causal Self-Attention by Shapes</a>.</p>
+<p>Previous: <a href="/2025/06/03/LLM-Inference-03-RMSNorm-QKV-Projection/">RMSNorm and QKV Projection</a>.<br>Next: <a href="/2025/06/05/LLM-Inference-05-Causal-Self-Attention/">Causal Self-Attention by Shapes</a>.</p>
 
         </div>
 
@@ -681,7 +681,7 @@ mjx-container[display="true"] + br {
                     <div class="article-prev">
                         <a class="prev"
                         rel="prev"
-                        href="/2026/07/03/LLM-Inference-05-Causal-Self-Attention/"
+                        href="/2025/06/05/LLM-Inference-05-Causal-Self-Attention/"
                         >
                             <span class="left arrow-icon flex justify-center items-center">
                                 <i class="fa-solid fa-chevron-left"></i>
@@ -697,7 +697,7 @@ mjx-container[display="true"] + br {
                     <div class="article-next">
                         <a class="next"
                         rel="next"
-                        href="/2026/07/03/LLM-Inference-03-RMSNorm-QKV-Projection/"
+                        href="/2025/06/03/LLM-Inference-03-RMSNorm-QKV-Projection/"
                         >
                             <span class="title flex justify-center items-center">
                                 <span class="post-nav-title-item">[LLM Inference] RMSNorm and QKV Projection</span>
