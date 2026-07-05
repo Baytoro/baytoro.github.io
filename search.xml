@@ -14379,4 +14379,276 @@
         <tag>NAS</tag>
       </tags>
   </entry>
+  <entry>
+    <title>[CUDA] Warp Timeline with NVBit and Modal</title>
+    <url>/2025/07/01/CudaWarpTimeline/</url>
+    <content><![CDATA[<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li>GitHub repo: <a class="link"   href="https://github.com/Baytoro/warptrace" >Baytoro&#x2F;warptrace <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>Main entrypoint: <code>warp_timeline_modal.py</code></li>
+<li>NVBit tool: <code>nvbit_tool/warp_timeline_nvbit.cu</code>, <code>nvbit_tool/inject_funcs.cu</code></li>
+<li>Example kernel: <code>example/warp_paths.cu</code></li>
+<li>Exported viewer: <code>build/warp-timeline/timeline.html</code></li>
+<li>NVIDIA NVBit release used by the repo: <code>nvbit-Linux-x86_64-1.8</code></li>
+</ul>
+<p>This note is about a small but useful CUDA profiling project. The repo has one clear goal: run a CUDA executable on a remote Modal B200 machine, inject an NVBit tool with <code>LD_PRELOAD</code>, collect warp-level basic-block timestamps, map those basic blocks back to SASS, and render the result as a local HTML timeline.</p>
+<p>I like this project because it sits between two common debugging levels. It is lower level than Nsight Systems, because it records warp&#x2F;basic-block behavior inside a kernel. It is higher level than reading raw SASS, because it groups basic blocks into visible timeline spans: load, compute, sync, and store. It is not a replacement for Nsight Compute metrics. It is closer to an explanatory microscope for one kernel.</p>
+<p>The final output looks like this:</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/CudaWarpTimeline/timeline-overview.png"
+                     
+                ></p>
+<p>This screenshot is from the exported <code>timeline.html</code>. The example run has one block, four warps, and one SM. The horizontal axis is raw <code>globaltimer</code> cycles. Each row is a warp row. Green spans are compute, blue spans are load, orange spans are sync, and red spans are store.</p>
+<h2 id="What-The-Repo-Builds"><a href="#What-The-Repo-Builds" class="headerlink" title="What The Repo Builds"></a>What The Repo Builds</h2><p>The project has four moving parts:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">warptrace</span><br><span class="line">├── warp_timeline_modal.py          # profile binary on Modal and render HTML</span><br><span class="line">├── build_example_modal.py          # build the bundled CUDA example remotely</span><br><span class="line">├── build-example.sh                # thin wrapper around build_example_modal.py</span><br><span class="line">├── nvbit_tool/</span><br><span class="line">│   ├── warp_timeline_nvbit.cu      # NVBit host-side instrumentation</span><br><span class="line">│   ├── inject_funcs.cu             # device-side record_bb()</span><br><span class="line">│   ├── common.h                    # event record schema</span><br><span class="line">│   └── Makefile                    # builds warp_timeline_nvbit.so</span><br><span class="line">├── example/</span><br><span class="line">│   ├── warp_paths.cu               # warp-specialized GEMM + SiLU example</span><br><span class="line">│   └── CMakeLists.txt</span><br><span class="line">└── build/warp-timeline/</span><br><span class="line">    ├── trace.json                  # raw/enriched trace</span><br><span class="line">    ├── timeline.html               # self-contained viewer</span><br><span class="line">    ├── remote.log                  # Modal build/run log</span><br><span class="line">    └── sass.txt                    # cuobjdump --dump-sass output</span><br></pre></td></tr></table></figure></div>
+
+<p>The run command is intentionally simple:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">./warp_timeline_modal.py build/example/warp_paths</span><br></pre></td></tr></table></figure></div>
+
+<p>The tool assumes the input is already a Linux <code>x86_64</code> CUDA executable. That detail matters because the Modal container is <code>x86_64</code>; a local <code>aarch64</code> binary would not run there. The bundled example avoids this mismatch by building remotely:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">./build-example.sh</span><br></pre></td></tr></table></figure></div>
+
+<p>The outputs are local:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">build/warp-timeline/trace.json</span><br><span class="line">build/warp-timeline/timeline.html</span><br><span class="line">build/warp-timeline/remote.log</span><br><span class="line">build/warp-timeline/sass.txt</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="End-To-End-Flow"><a href="#End-To-End-Flow" class="headerlink" title="End-To-End Flow"></a>End-To-End Flow</h2><p>The whole pipeline can be read as a dataflow:</p>
+<pre class="mermaid">flowchart TB
+    src["CUDA executable<br/>target_app"] --> modal["Modal B200 container"]
+    toolsrc["nvbit_tool/*.cu"] --> buildtool["build NVBit shared object"]
+    nvbit["warp_timeline_nvbit.so"] --> preload["LD_PRELOAD"]
+    buildtool --> nvbit
+    modal --> preload
+    preload --> run["run target CUDA program"]
+    run --> events["managed event buffer<br/>basic-block records"]
+    events --> trace["trace.json"]
+    run --> sass["cuobjdump --dump-sass"]
+    sass --> enrich["map PC offsets to SASS"]
+    trace --> enrich
+    enrich --> viewer["timeline.html"]</pre>
+
+<p>The important design choice is that the CUDA source does not need to be changed. The target program is launched normally, except that the process loads <code>warp_timeline_nvbit.so</code> through <code>LD_PRELOAD</code>. NVBit then instruments the CUDA function at runtime before the kernel launch.</p>
+<p>The remote runner sets the environment like this:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">env = &#123;</span><br><span class="line">    <span class="string">&quot;LD_PRELOAD&quot;</span>: <span class="built_in">str</span>(tool),</span><br><span class="line">    <span class="string">&quot;NOBANNER&quot;</span>: <span class="string">&quot;1&quot;</span>,</span><br><span class="line">    <span class="string">&quot;WARP_TIMELINE_TRACE&quot;</span>: <span class="built_in">str</span>(trace_path),</span><br><span class="line">    <span class="string">&quot;WARP_TIMELINE_MAX_EVENTS&quot;</span>: <span class="built_in">str</span>(event_capacity),</span><br><span class="line">&#125;</span><br><span class="line">log += remote_run([<span class="built_in">str</span>(target), *args], cwd=work_dir, env=env)</span><br></pre></td></tr></table></figure></div>
+
+<p>After the kernel finishes, the runner also calls:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">cuobjdump --dump-sass target_app</span><br></pre></td></tr></table></figure></div>
+
+<p>That SASS dump is not needed to record timing. It is needed to make the timeline human-readable. Without it, a span would only be something like <code>bb_96_pc_0x11b0</code>. With the SASS dump, the viewer can show that this block contains shared-memory loads, integer address arithmetic, branches, and so on.</p>
+<h2 id="The-Example-Kernel"><a href="#The-Example-Kernel" class="headerlink" title="The Example Kernel"></a>The Example Kernel</h2><p>The bundled example is deliberately small and structured. It launches one block with 128 threads, i.e. four warps:</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">constexpr</span> <span class="type">int</span> kThreads = <span class="number">128</span>;</span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">int</span> kWarps = kThreads / <span class="number">32</span>;</span><br></pre></td></tr></table></figure></div>
+
+<p>The kernel is a warp-specialized GEMM followed by SiLU. The roles are hard-coded:</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (warp == <span class="number">0</span>) &#123;</span><br><span class="line">  <span class="built_in">load_a_tile</span>(a, shared_a, k, kt, lane);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (warp == <span class="number">1</span>) &#123;</span><br><span class="line">  <span class="built_in">load_b_tile</span>(b, shared_b, k, kt, lane);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">__syncthreads();</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (warp == <span class="number">2</span>) &#123;</span><br><span class="line">  <span class="built_in">compute_half_tile</span>(shared_a, shared_b, accum, lane, <span class="number">0</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (warp == <span class="number">3</span>) &#123;</span><br><span class="line">  <span class="built_in">compute_half_tile</span>(shared_a, shared_b, accum, lane, <span class="number">8</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">__syncthreads();</span><br></pre></td></tr></table></figure></div>
+
+<p>This makes the timeline easy to interpret:</p>
+<table>
+<thead>
+<tr>
+<th align="right">Warp</th>
+<th>Intended role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right"><code>warp 0</code></td>
+<td>load the A tile into shared memory</td>
+</tr>
+<tr>
+<td align="right"><code>warp 1</code></td>
+<td>load the B tile into shared memory</td>
+</tr>
+<tr>
+<td align="right"><code>warp 2</code></td>
+<td>compute rows <code>0..7</code>, apply SiLU, store</td>
+</tr>
+<tr>
+<td align="right"><code>warp 3</code></td>
+<td>compute rows <code>8..15</code>, apply SiLU, store</td>
+</tr>
+</tbody></table>
+<p>The default problem shape is small:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">M = 16</span><br><span class="line">N = 16</span><br><span class="line">K = 128</span><br><span class="line">repeats = 2</span><br></pre></td></tr></table></figure></div>
+
+<p>That is not meant to be a benchmark. It is meant to produce a trace where warp roles are visible. In the exported trace I inspected, there are 783 raw basic-block events, one kernel, one block, four warps, and one SM:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">schema: cuda-warp-timeline/v1</span><br><span class="line">events: 783</span><br><span class="line">kernel: warp_specialized_gemm_silu_kernel(...)</span><br><span class="line">blocks: [0]</span><br><span class="line">warps:  [0, 1, 2, 3]</span><br><span class="line">SMs:    [142]</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="What-NVBit-Records"><a href="#What-NVBit-Records" class="headerlink" title="What NVBit Records"></a>What NVBit Records</h2><p>The event schema lives in <code>nvbit_tool/common.h</code>:</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> &#123;</span><br><span class="line">    <span class="type">uint64_t</span> time;</span><br><span class="line">    <span class="type">uint64_t</span> grid_launch_id;</span><br><span class="line">    <span class="type">uint64_t</span> pc_offset;</span><br><span class="line">    <span class="type">uint32_t</span> bb_id;</span><br><span class="line">    <span class="type">uint32_t</span> num_instrs;</span><br><span class="line">    <span class="type">int32_t</span> cta_id_x;</span><br><span class="line">    <span class="type">int32_t</span> cta_id_y;</span><br><span class="line">    <span class="type">int32_t</span> cta_id_z;</span><br><span class="line">    <span class="type">int32_t</span> warp_id;</span><br><span class="line">    <span class="type">int32_t</span> sm_id;</span><br><span class="line">&#125; <span class="type">warp_timeline_event_t</span>;</span><br></pre></td></tr></table></figure></div>
+
+<p>Each record is intentionally small:</p>
+<p><code>time</code>: the GPU <code>globaltimer</code> value at basic-block entry.</p>
+<p><code>grid_launch_id</code>: a monotonically increasing launch id assigned by the host-side NVBit callback.</p>
+<p><code>pc_offset</code>: SASS PC offset of the first instruction in the basic block.</p>
+<p><code>bb_id</code>: the tool’s basic-block id inside the function CFG.</p>
+<p><code>num_instrs</code>: number of instructions in that basic block.</p>
+<p><code>cta_id_*</code>: CUDA block coordinates.</p>
+<p><code>warp_id</code>: warp id inside the block.</p>
+<p><code>sm_id</code>: SM that executed the recording lane.</p>
+<p>The device-side injected function is <code>record_bb</code>:</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="function">__device__ __noinline__ <span class="type">void</span> <span class="title">record_bb</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">uint32_t</span> bb_id,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">uint32_t</span> num_instrs,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">uint64_t</span> pc_offset,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">uint64_t</span> grid_launch_id,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">uint64_t</span> pevents,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">uint64_t</span> pcounter,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">uint32_t</span> capacity)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> active_mask = __ballot_sync(__activemask(), <span class="number">1</span>);</span><br><span class="line">    <span class="type">int</span> laneid = <span class="built_in">get_laneid</span>();</span><br><span class="line">    <span class="type">int</span> first_laneid = __ffs(active_mask) - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (laneid != first_laneid) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span> idx = <span class="built_in">atomicAdd</span>((<span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span>*)pcounter, <span class="number">1ULL</span>);</span><br><span class="line">    <span class="keyword">if</span> (idx &gt;= capacity) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">warp_timeline_event_t</span>* events = (<span class="type">warp_timeline_event_t</span>*)pevents;</span><br><span class="line">    int4 cta = <span class="built_in">get_ctaid</span>();</span><br><span class="line">    <span class="type">warp_timeline_event_t</span>* event = &amp;events[idx];</span><br><span class="line">    event-&gt;time = <span class="built_in">global_timer</span>();</span><br><span class="line">    event-&gt;grid_launch_id = grid_launch_id;</span><br><span class="line">    event-&gt;pc_offset = pc_offset;</span><br><span class="line">    event-&gt;bb_id = bb_id;</span><br><span class="line">    event-&gt;num_instrs = num_instrs;</span><br><span class="line">    event-&gt;cta_id_x = cta.x;</span><br><span class="line">    event-&gt;cta_id_y = cta.y;</span><br><span class="line">    event-&gt;cta_id_z = cta.z;</span><br><span class="line">    event-&gt;warp_id = <span class="built_in">block_local_warp_id</span>();</span><br><span class="line">    event-&gt;sm_id = <span class="built_in">get_smid</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>There are two details here that I would keep:</p>
+<p>First, only one active lane records the event. The function computes the first active lane with <code>__ffs(active_mask) - 1</code>, then returns for all other lanes. This makes each basic-block entry a warp-level event instead of a thread-level event.</p>
+<p>Second, the timestamp is taken from <code>globaltimer</code>:</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">asm</span> <span class="title">volatile</span><span class="params">(<span class="string">&quot;mov.u64 %0, %%globaltimer;&quot;</span> : <span class="string">&quot;=l&quot;</span>(t))</span></span>;</span><br></pre></td></tr></table></figure></div>
+
+<p>That gives a single device-wide time base. The viewer does not convert it to seconds. It keeps raw ticks, which is honest for this kind of tool: the relative shape of the timeline matters more than pretending to have calibrated wall-clock units.</p>
+<h2 id="Where-The-Injection-Happens"><a href="#Where-The-Injection-Happens" class="headerlink" title="Where The Injection Happens"></a>Where The Injection Happens</h2><p>The host-side NVBit code instruments the first instruction of each basic block:</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">const</span> CFG_t&amp; cfg = <span class="built_in">nvbit_get_CFG</span>(ctx, func);</span><br><span class="line"></span><br><span class="line"><span class="type">uint32_t</span> bb_id = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span>&amp; bb : cfg.bbs) &#123;</span><br><span class="line">    <span class="keyword">if</span> (bb-&gt;instrs.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    Instr* instr = bb-&gt;instrs[<span class="number">0</span>];</span><br><span class="line">    <span class="built_in">nvbit_insert_call</span>(instr, <span class="string">&quot;record_bb&quot;</span>, IPOINT_BEFORE);</span><br><span class="line">    <span class="built_in">nvbit_add_call_arg_const_val32</span>(instr, bb_id);</span><br><span class="line">    <span class="built_in">nvbit_add_call_arg_const_val32</span>(instr, bb-&gt;instrs.<span class="built_in">size</span>());</span><br><span class="line">    <span class="built_in">nvbit_add_call_arg_const_val64</span>(instr, instr-&gt;<span class="built_in">getOffset</span>());</span><br><span class="line">    <span class="built_in">nvbit_add_call_arg_launch_val64</span>(instr, <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">nvbit_add_call_arg_const_val64</span>(instr, (<span class="type">uint64_t</span>)events);</span><br><span class="line">    <span class="built_in">nvbit_add_call_arg_const_val64</span>(instr, (<span class="type">uint64_t</span>)&amp;event_count);</span><br><span class="line">    <span class="built_in">nvbit_add_call_arg_const_val32</span>(instr, max_events);</span><br><span class="line">    bb_id++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>This is the core idea of the project. Instead of instrumenting every instruction, it instruments basic-block entries. That has three consequences:</p>
+<ol>
+<li>The trace is smaller.</li>
+<li>The overhead is lower than instruction-level tracing.</li>
+<li>The timeline loses instruction-by-instruction detail, but keeps the control-flow path and approximate phase shape.</li>
+</ol>
+<p>For this project, that tradeoff is reasonable. I usually want to know whether a warp is in a load-heavy region, compute-heavy region, barrier region, or store region. Basic-block granularity is enough for that first pass.</p>
+<p>The launch callback wires everything together:</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (!is_exit) &#123;</span><br><span class="line">    <span class="built_in">pthread_mutex_lock</span>(&amp;mutex);</span><br><span class="line">    <span class="built_in">instrument_function_if_needed</span>(ctx, func);</span><br><span class="line">    <span class="built_in">nvbit_set_at_launch</span>(ctx, func, global_grid_launch_id);</span><br><span class="line">    <span class="built_in">nvbit_enable_instrumented</span>(ctx, func, <span class="literal">true</span>);</span><br><span class="line">    event_count = <span class="number">0</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">CUDA_SAFECALL</span>(<span class="built_in">cudaDeviceSynchronize</span>());</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>* func_name = <span class="built_in">nvbit_get_func_name</span>(ctx, func);</span><br><span class="line">    <span class="built_in">append_spans_for_kernel</span>(func_name ? func_name : <span class="string">&quot;kernel&quot;</span>);</span><br><span class="line">    global_grid_launch_id++;</span><br><span class="line">    <span class="built_in">pthread_mutex_unlock</span>(&amp;mutex);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>On launch entry, the function is instrumented and the event counter is reset. On launch exit, the host synchronizes, reads the managed event buffer, converts records into spans, and appends them to the trace.</p>
+<h2 id="From-Records-To-Spans"><a href="#From-Records-To-Spans" class="headerlink" title="From Records To Spans"></a>From Records To Spans</h2><p>The raw event records are point samples: one timestamp per basic-block entry. The viewer needs spans. The conversion is simple:</p>
+<ol>
+<li>Sort events by launch id, block, warp, time, and basic-block id.</li>
+<li>For each event, use the next event from the same block and warp as the end time.</li>
+<li>If there is no next event, use <code>time + 1</code>.</li>
+</ol>
+<p>The relevant logic is in <code>append_spans_for_kernel</code>:</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">uint64_t</span> end = event.time + <span class="number">1</span>;</span><br><span class="line"><span class="keyword">if</span> (i + <span class="number">1</span> &lt; batch.<span class="built_in">size</span>() &amp;&amp;</span><br><span class="line">    batch[i + <span class="number">1</span>].grid_launch_id == event.grid_launch_id &amp;&amp;</span><br><span class="line">    <span class="built_in">flattened_block</span>(batch[i + <span class="number">1</span>]) == <span class="built_in">flattened_block</span>(event) &amp;&amp;</span><br><span class="line">    batch[i + <span class="number">1</span>].warp_id == event.warp_id &amp;&amp;</span><br><span class="line">    batch[i + <span class="number">1</span>].time &gt; event.time) &#123;</span><br><span class="line">    end = batch[i + <span class="number">1</span>].time;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">char</span> phase[<span class="number">96</span>];</span><br><span class="line"><span class="built_in">snprintf</span>(phase, <span class="built_in">sizeof</span>(phase), <span class="string">&quot;bb_%u_pc_0x%llx&quot;</span>, event.bb_id,</span><br><span class="line">         (<span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span>)event.pc_offset);</span><br></pre></td></tr></table></figure></div>
+
+<p>At this stage, <code>phase</code> is not yet <code>load</code> or <code>compute</code>. It is still a basic-block identity such as:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">bb_96_pc_0x11b0</span><br></pre></td></tr></table></figure></div>
+
+<p>The JSON event then looks conceptually like this:</p>
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;kernel&quot;</span><span class="punctuation">:</span> <span class="string">&quot;warp_specialized_gemm_silu_kernel(...)&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;block&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;warp&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;sm&quot;</span><span class="punctuation">:</span> <span class="number">142</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;instructions&quot;</span><span class="punctuation">:</span> <span class="number">11</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;phase&quot;</span><span class="punctuation">:</span> <span class="string">&quot;bb_0_pc_0x0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;start&quot;</span><span class="punctuation">:</span> <span class="number">1782366955280956192</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;end&quot;</span><span class="punctuation">:</span> <span class="number">1782366955280995264</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>This raw format is useful because it keeps the profiler side small. The richer interpretation happens later in Python.</p>
+<h2 id="SASS-Enrichment"><a href="#SASS-Enrichment" class="headerlink" title="SASS Enrichment"></a>SASS Enrichment</h2><p>The Python runner parses <code>cuobjdump --dump-sass</code> output. It builds a function list, an instruction list per function, and a PC-index map:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">FUNCTION_RE = re.<span class="built_in">compile</span>(<span class="string">r&quot;^\s*Function\s*:\s*(\S+)&quot;</span>)</span><br><span class="line">SASS_RE = re.<span class="built_in">compile</span>(<span class="string">r&quot;/\*\s*([0-9a-fA-F]+)\s*\*/\s*(.*)$&quot;</span>)</span><br><span class="line">OPCODE_RE = re.<span class="built_in">compile</span>(<span class="string">r&quot;(?:@\!?P\d+\s+)?([A-Z][A-Z0-9_.]*)\b&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>For every <code>bb_*_pc_*</code> span, it extracts the PC offset and instruction count, then looks up the corresponding SASS slice:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">resolve_sass_instructions</span>(<span class="params">functions, kernel_name, pc, instruction_count</span>):</span><br><span class="line">    <span class="keyword">if</span> pc <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> instruction_count &lt;= <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> []</span><br><span class="line">    <span class="keyword">for</span> function <span class="keyword">in</span> matching_sass_functions(functions, kernel_name):</span><br><span class="line">        index = function[<span class="string">&quot;pc_index&quot;</span>].get(pc)</span><br><span class="line">        <span class="keyword">if</span> index <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">return</span> function[<span class="string">&quot;instructions&quot;</span>][index : index + instruction_count]</span><br><span class="line">    <span class="keyword">return</span> []</span><br></pre></td></tr></table></figure></div>
+
+<p>The next step is classification. The tool assigns each instruction an opcode category, then assigns the basic block a phase class:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">phase_for_basic_block</span>(<span class="params">instructions, category</span>):</span><br><span class="line">    bases = [opcode_base(<span class="built_in">str</span>(instr.get(<span class="string">&quot;opcode&quot;</span>, <span class="string">&quot;&quot;</span>))) <span class="keyword">for</span> instr <span class="keyword">in</span> instructions]</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">any</span>(base.startswith(<span class="string">&quot;STG&quot;</span>) <span class="keyword">for</span> base <span class="keyword">in</span> bases):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;store&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">any</span>(base.startswith((<span class="string">&quot;BAR&quot;</span>, <span class="string">&quot;MEMBAR&quot;</span>, <span class="string">&quot;WARPSYNC&quot;</span>, <span class="string">&quot;NANOSLEEP&quot;</span>, <span class="string">&quot;DEPBAR&quot;</span>)) <span class="keyword">for</span> base <span class="keyword">in</span> bases):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;sync&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">any</span>(base.startswith((<span class="string">&quot;LDG&quot;</span>, <span class="string">&quot;LDGSTS&quot;</span>, <span class="string">&quot;STS&quot;</span>)) <span class="keyword">for</span> base <span class="keyword">in</span> bases):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;load&quot;</span></span><br><span class="line">    <span class="keyword">if</span> category == <span class="string">&quot;sync&quot;</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;sync&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;compute&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>This heuristic is intentionally practical. It does not try to prove what the block does semantically. It asks: what kind of operations dominate the block enough to color the timeline?</p>
+<p>That is why the viewer can show four fixed phase colors:</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Meaning in this viewer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>load</code></td>
+<td>data movement or tile staging, including selected shared&#x2F;global memory instructions</td>
+</tr>
+<tr>
+<td><code>compute</code></td>
+<td>arithmetic, address arithmetic, predicate work, and general non-memory execution</td>
+</tr>
+<tr>
+<td><code>sync</code></td>
+<td>barriers and synchronization&#x2F;wait blocks</td>
+</tr>
+<tr>
+<td><code>store</code></td>
+<td>global stores</td>
+</tr>
+</tbody></table>
+<h2 id="What-The-HTML-Viewer-Adds"><a href="#What-The-HTML-Viewer-Adds" class="headerlink" title="What The HTML Viewer Adds"></a>What The HTML Viewer Adds</h2><p>The HTML renderer normalizes time by subtracting the first event timestamp. It also merges adjacent spans from the same row when they share the same phase class:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (</span><br><span class="line">    merged_events</span><br><span class="line">    <span class="keyword">and</span> merged_events[-<span class="number">1</span>][<span class="string">&quot;row&quot;</span>] == event[<span class="string">&quot;row&quot;</span>]</span><br><span class="line">    <span class="keyword">and</span> merged_events[-<span class="number">1</span>][<span class="string">&quot;phaseClass&quot;</span>] == event[<span class="string">&quot;phaseClass&quot;</span>]</span><br><span class="line">    <span class="keyword">and</span> <span class="built_in">abs</span>(<span class="built_in">float</span>(merged_events[-<span class="number">1</span>][<span class="string">&quot;end&quot;</span>]) - <span class="built_in">float</span>(event[<span class="string">&quot;start&quot;</span>])) &lt;= <span class="number">1.0</span></span><br><span class="line">):</span><br><span class="line">    merged_events[-<span class="number">1</span>][<span class="string">&quot;end&quot;</span>] = event[<span class="string">&quot;end&quot;</span>]</span><br><span class="line">    merged_events[-<span class="number">1</span>][<span class="string">&quot;bbKeys&quot;</span>].append(event[<span class="string">&quot;bbKey&quot;</span>])</span><br><span class="line">    merged_events[-<span class="number">1</span>][<span class="string">&quot;bbCount&quot;</span>] += <span class="number">1</span></span><br></pre></td></tr></table></figure></div>
+
+<p>This is why the screenshot reports 332 phase spans, even though the raw trace contains 783 events. The viewer is not hiding information permanently. It is compressing adjacent same-phase basic blocks into readable bars, while still keeping the list of merged basic-block ids for hover&#x2F;click details.</p>
+<p>The selected-span view shows the payoff:</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/CudaWarpTimeline/timeline-selected-sass.png"
+                     
+                ></p>
+<p>After selecting a bar, the viewer can show:</p>
+<ul>
+<li>row identity: SM, block, warp;</li>
+<li>start&#x2F;end&#x2F;duration in cycles;</li>
+<li>merged basic-block count;</li>
+<li>opcode summary;</li>
+<li>basic-block id and PC offset;</li>
+<li>SASS sample for the selected basic block.</li>
+</ul>
+<p>This is the part I find most valuable. A normal timeline can tell me that a warp had a long green region. This viewer lets me click into that region and see which basic-block path and SASS sample produced it.</p>
+<h2 id="Reading-The-Example-Timeline"><a href="#Reading-The-Example-Timeline" class="headerlink" title="Reading The Example Timeline"></a>Reading The Example Timeline</h2><p>The overview screenshot is already enough to confirm that the example kernel is behaving as intended.</p>
+<p>Warp rows:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">B0 W0 SM142</span><br><span class="line">B0 W1 SM142</span><br><span class="line">B0 W2 SM142</span><br><span class="line">B0 W3 SM142</span><br></pre></td></tr></table></figure></div>
+
+<p>The rows match one CUDA block, four warps, one SM. In the unzoomed overview, most of the visible time is compute-colored because adjacent compute blocks are merged. In the more zoomed selected-span screenshot, the repeated structure appears: short load segments, compute regions, sync regions, and store at the end.</p>
+<p>The expected warp-specialized behavior is:</p>
+<p><code>W0</code>: mostly data movement into shared memory for the A tile.</p>
+<p><code>W1</code>: mostly data movement into shared memory for the B tile.</p>
+<p><code>W2</code> and <code>W3</code>: compute-heavy regions for two row groups, with synchronization between K tiles and stores near the end.</p>
+<p>One thing to remember: this is basic-block tracing, not occupancy analysis. If a row is green, it does not mean the warp was continuously executing useful floating-point math with perfect efficiency. It means the merged basic blocks were classified as compute. To understand throughput, memory transactions, issue stalls, or cache behavior, I would still use Nsight Compute.</p>
+<h2 id="Why-Basic-Block-Level-Is-A-Good-Compromise"><a href="#Why-Basic-Block-Level-Is-A-Good-Compromise" class="headerlink" title="Why Basic-Block Level Is A Good Compromise"></a>Why Basic-Block Level Is A Good Compromise</h2><p>Instruction-level tracing is tempting, but it can explode quickly. Every instruction from every active lane would create a massive trace and heavy overhead. This tool uses one record per warp per basic-block entry. That keeps the trace small enough for a browser viewer.</p>
+<p>For kernel understanding, the information I usually need first is:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">Which warp ran which code path?</span><br><span class="line">When did it hit a barrier?</span><br><span class="line">Which basic blocks were repeated?</span><br><span class="line">Did the loader warps and compute warps follow the roles I expected?</span><br><span class="line">Which PC offset should I inspect in SASS?</span><br></pre></td></tr></table></figure></div>
+
+<p>Basic-block tracing answers those questions. It will not answer:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">Why did a memory instruction stall?</span><br><span class="line">How many sectors did this load touch?</span><br><span class="line">Was occupancy limited by registers or shared memory?</span><br><span class="line">Did tensor cores reach peak utilization?</span><br></pre></td></tr></table></figure></div>
+
+<p>That boundary is fine. The tool explains control-flow and phase shape. It does not replace hardware counter profiling.</p>
+<h2 id="Modal-Side"><a href="#Modal-Side" class="headerlink" title="Modal Side"></a>Modal Side</h2><p>The Modal part is mostly engineering glue, but it is important glue. The runner builds an image from:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line">modal.Image.from_registry(</span><br><span class="line">    <span class="string">&quot;nvidia/cuda:13.0.2-devel-ubuntu24.04&quot;</span>,</span><br><span class="line">    add_python=<span class="string">&quot;3.13&quot;</span>,</span><br><span class="line">)</span><br><span class="line">.apt_install(<span class="string">&quot;bc&quot;</span>, <span class="string">&quot;binutils&quot;</span>, <span class="string">&quot;bzip2&quot;</span>, <span class="string">&quot;build-essential&quot;</span>, <span class="string">&quot;ca-certificates&quot;</span>, <span class="string">&quot;make&quot;</span>)</span><br><span class="line">.env(&#123;</span><br><span class="line">    <span class="string">&quot;CUDA_HOME&quot;</span>: <span class="string">&quot;/usr/local/cuda&quot;</span>,</span><br><span class="line">    <span class="string">&quot;PATH&quot;</span>: <span class="string">&quot;/usr/local/cuda/bin:/usr/local/bin:/usr/bin:/bin&quot;</span>,</span><br><span class="line">&#125;)</span><br><span class="line">.add_local_dir(ROOT / <span class="string">&quot;nvbit_tool&quot;</span>, <span class="string">&quot;/workspace/project/nvbit_tool&quot;</span>, copy=<span class="literal">True</span>)</span><br><span class="line">.add_local_file(binary, <span class="string">&quot;/workspace/input/target_app&quot;</span>, copy=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>Then the remote function:</p>
+<ol>
+<li>checks architecture with <code>uname -m</code>;</li>
+<li>checks the GPU with <code>nvidia-smi</code>;</li>
+<li>downloads or reuses the NVBit archive;</li>
+<li>builds <code>warp_timeline_nvbit.so</code>;</li>
+<li>runs the target with <code>LD_PRELOAD</code>;</li>
+<li>captures <code>cuobjdump --dump-sass</code>;</li>
+<li>returns trace, log, and SASS text to the local machine.</li>
+</ol>
+<p>NVBit is cached under <code>/cache/warp-timeline/</code>, and the built tool is keyed by a hash of the <code>nvbit_tool</code> source files. That avoids rebuilding the instrumentation shared object every time if the tool source did not change.</p>
+<p>This is also why no local GPU is required for profiling. The local machine runs Python and receives artifacts. The CUDA execution and NVBit instrumentation happen remotely.</p>
+<h2 id="Build-And-Profile-Commands"><a href="#Build-And-Profile-Commands" class="headerlink" title="Build And Profile Commands"></a>Build And Profile Commands</h2><p>For the bundled example:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">./build-example.sh</span><br><span class="line">./warp_timeline_modal.py build/example/warp_paths</span><br></pre></td></tr></table></figure></div>
+
+<p>To pass arguments to the example:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">./warp_timeline_modal.py build/example/warp_paths 16 4</span><br></pre></td></tr></table></figure></div>
+
+<p>Those arguments mean:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">k_tiles = 16</span><br><span class="line">repeats = 4</span><br><span class="line">K = k_tiles * 16</span><br></pre></td></tr></table></figure></div>
+
+<p>For another prebuilt CUDA binary:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">./warp_timeline_modal.py /path/to/your_cuda_app arg1 arg2</span><br></pre></td></tr></table></figure></div>
+
+<p>The binary must be Linux <code>x86_64</code>, because the Modal CUDA container is Linux <code>x86_64</code>.</p>
+<h2 id="Things-I-Would-Improve-Next"><a href="#Things-I-Would-Improve-Next" class="headerlink" title="Things I Would Improve Next"></a>Things I Would Improve Next</h2><p>The current tool is already useful, but the design leaves several obvious next steps.</p>
+<p>First, I would add an option to record only selected kernels. Right now the NVBit callback instruments launched CUDA functions as they appear. For a larger application, the trace could include setup kernels or library kernels that are not the current target.</p>
+<p>Second, I would make phase classification configurable. The current opcode heuristic is a good default, but a kernel author may want to label selected PC ranges manually as <code>prologue</code>, <code>tile-load</code>, <code>mma-mainloop</code>, <code>epilogue</code>, or <code>store</code>.</p>
+<p>Third, I would add a small summary table next to the viewer:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">warp | load cycles | compute cycles | sync cycles | store cycles</span><br></pre></td></tr></table></figure></div>
+
+<p>This would make it easier to compare loader warps and compute warps without eyeballing bar widths.</p>
+<p>Fourth, I would preserve multidimensional block ids as structured fields in the viewer. The current renderer flattens block coordinates into one integer. That is convenient for the first version, but a 2D&#x2F;3D grid would be easier to inspect if block coordinates stayed as <code>(x, y, z)</code>.</p>
+<p>Fifth, I would add a direct “open source line” mapping only when debug&#x2F;source information is available. For optimized CUDA kernels, SASS and PC offsets are often the real source of truth, but source correlation would still help during early kernel development.</p>
+<h2 id="Takeaways"><a href="#Takeaways" class="headerlink" title="Takeaways"></a>Takeaways</h2><p>This repo is a compact example of how to build a custom CUDA introspection tool:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="code"><pre><span class="line">NVBit basic-block entry injection</span><br><span class="line">-&gt; one event per warp/basic-block entry</span><br><span class="line">-&gt; globaltimer timestamp</span><br><span class="line">-&gt; host-side span construction</span><br><span class="line">-&gt; cuobjdump SASS enrichment</span><br><span class="line">-&gt; browser timeline</span><br></pre></td></tr></table></figure></div>
+
+<p>The strongest part is the workflow. I can run an unmodified CUDA binary, get a trace, open one HTML file, and inspect warp paths with SASS context. The exported timeline is not trying to be a full profiler. It is a focused tool for answering one question:</p>
+<blockquote>
+<p>What did each warp do, in what order, and which SASS basic blocks explain the visible phases?</p>
+</blockquote>
+<p>For warp-specialized kernels, that is exactly the kind of question I want to answer before going deeper into Nsight Compute metrics.</p>
+]]></content>
+      <categories>
+        <category>Engineering Notes</category>
+      </categories>
+      <tags>
+        <tag>CUDA</tag>
+        <tag>Runtime</tag>
+      </tags>
+  </entry>
 </search>
