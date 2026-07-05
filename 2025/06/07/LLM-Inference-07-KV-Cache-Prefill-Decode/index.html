@@ -26,7 +26,7 @@
 <meta property="og:description" content="KV cache turns autoregressive generation from repeated full-prefix attention into prefill plus one-token decode steps.">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-06-06T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-03T09:15:54.340Z">
+<meta property="article:modified_time" content="2026-07-03T09:32:16.456Z">
 <meta property="article:author" content="H.J. Chen">
 <meta property="article:tag" content="LLM">
 <meta property="article:tag" content="Transformer">
@@ -101,119 +101,7 @@
     
     
     
-<meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
-  direction: ltr;
-}
-
-mjx-container[jax="SVG"] > svg {
-  overflow: visible;
-}
-
-mjx-container[jax="SVG"][display="true"] {
-  display: block;
-  text-align: center;
-  margin: 1em 0;
-}
-
-mjx-container[jax="SVG"][justify="left"] {
-  text-align: left;
-}
-
-mjx-container[jax="SVG"][justify="right"] {
-  text-align: right;
-}
-
-g[data-mml-node="merror"] > g {
-  fill: red;
-  stroke: red;
-}
-
-g[data-mml-node="merror"] > rect[data-background] {
-  fill: yellow;
-  stroke: none;
-}
-
-g[data-mml-node="mtable"] > line[data-line] {
-  stroke-width: 70px;
-  fill: none;
-}
-
-g[data-mml-node="mtable"] > rect[data-frame] {
-  stroke-width: 70px;
-  fill: none;
-}
-
-g[data-mml-node="mtable"] > .mjx-dashed {
-  stroke-dasharray: 140;
-}
-
-g[data-mml-node="mtable"] > .mjx-dotted {
-  stroke-linecap: round;
-  stroke-dasharray: 0,140;
-}
-
-g[data-mml-node="mtable"] > svg {
-  overflow: visible;
-}
-
-[jax="SVG"] mjx-tool {
-  display: inline-block;
-  position: relative;
-  width: 0;
-  height: 0;
-}
-
-[jax="SVG"] mjx-tool > mjx-tip {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-mjx-tool > mjx-tip {
-  display: inline-block;
-  padding: .2em;
-  border: 1px solid #888;
-  font-size: 70%;
-  background-color: #F8F8F8;
-  color: black;
-  box-shadow: 2px 2px 5px #AAAAAA;
-}
-
-g[data-mml-node="maction"][data-toggle] {
-  cursor: pointer;
-}
-
-mjx-status {
-  display: block;
-  position: fixed;
-  left: 1em;
-  bottom: 1em;
-  min-width: 25%;
-  padding: .2em .4em;
-  border: 1px solid #888;
-  font-size: 90%;
-  background-color: #F8F8F8;
-  color: black;
-}
-
-foreignObject[data-mjx-xml] {
-  font-family: initial;
-  line-height: normal;
-  overflow: visible;
-}
-
-.MathJax path {
-  stroke-width: 3;
-}
-
-mjx-container[display="true"] {
-  overflow: auto hidden;
-}
-
-mjx-container[display="true"] + br {
-  display: none;
-}
-</style></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -488,8 +376,8 @@ mjx-container[display="true"] + br {
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2026-07-03 17:15:54</span>
-            <span class="mobile">2026-07-03 17:15:54</span> -->
+            <!-- <span class="desktop">2026-07-03 17:32:16</span>
+            <span class="mobile">2026-07-03 17:32:16</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -552,7 +440,7 @@ mjx-container[display="true"] + br {
 
         <div class="article-content markdown-body">
             <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li>Teaching repo: <a class="link" target="_blank" rel="noopener" href="https://github.com/Baytoro/LLM_hand">Baytoro/LLM_hand <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>Teaching repo: <a class="link"   target="_blank" rel="noopener" href="https://github.com/Baytoro/LLM_hand" >Baytoro&#x2F;LLM_hand <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
 <li>Companion note: <a target="_blank" rel="noopener" href="https://github.com/Baytoro/LLM_hand/blob/main/docs/08_kv_cache.md"><code>docs/08_kv_cache.md</code></a></li>
 <li>Runnable script: <code>python -m lessons.kv_cache</code></li>
 <li>Code: <a target="_blank" rel="noopener" href="https://github.com/Baytoro/LLM_hand/blob/main/tiny_llama/kv_cache.py"><code>tiny_llama/kv_cache.py</code></a></li>
@@ -565,12 +453,12 @@ mjx-container[display="true"] + br {
     participant Cache as KV cache
     participant Next as Next token [B,1]
 
-    Prompt-&gt;&gt;Model: prefill full prompt
-    Model-&gt;&gt;Cache: store K/V [B,G,T,Dh]
-    Model-&gt;&gt;Next: sample first generated token
-    Next-&gt;&gt;Model: decode one token
-    Model-&gt;&gt;Cache: append K/V [B,G,1,Dh]
-    Model-&gt;&gt;Next: sample next token</pre>
+    Prompt->>Model: prefill full prompt
+    Model->>Cache: store K/V [B,G,T,Dh]
+    Model->>Next: sample first generated token
+    Next->>Model: decode one token
+    Model->>Cache: append K/V [B,G,1,Dh]
+    Model->>Next: sample next token</pre>
 
 <p>The main storage object in the teaching repo is:</p>
 <div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@dataclass(<span class="params">frozen=<span class="literal">True</span></span>)</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">KVCache</span>:</span><br><span class="line">    k: torch.Tensor  <span class="comment"># [B, G, T_cache, Dh]</span></span><br><span class="line">    v: torch.Tensor  <span class="comment"># [B, G, T_cache, Dh]</span></span><br></pre></td></tr></table></figure></div>
@@ -606,7 +494,7 @@ mjx-container[display="true"] + br {
 <h2 id="Decode"><a href="#Decode" class="headerlink" title="Decode"></a>Decode</h2><p>Decode does not feed the full prefix again. It feeds only the newest token id:</p>
 <div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logits, caches = model(next_ids, caches=caches, use_cache=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure></div>
 
-<p>If the old cache length is <code>T_cache</code>, the new token contributes K/V with shape <code>[B, G, 1, Dh]</code>. Appending gives:</p>
+<p>If the old cache length is <code>T_cache</code>, the new token contributes K&#x2F;V with shape <code>[B, G, 1, Dh]</code>. Appending gives:</p>
 <div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">old cache: [B, G, T_cache, Dh]</span><br><span class="line">new k/v:   [B, G, 1, Dh]</span><br><span class="line">new cache: [B, G, T_cache + 1, Dh]</span><br></pre></td></tr></table></figure></div>
 
 <p>This is the core append:</p>
@@ -620,45 +508,22 @@ mjx-container[display="true"] + br {
 <div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">build_cache_attention_mask</span>(<span class="params">q_len: <span class="built_in">int</span>, kv_len: <span class="built_in">int</span></span>):</span><br><span class="line">    past_len = kv_len - q_len</span><br><span class="line">    q_pos = torch.arange(past_len, kv_len)[:, <span class="literal">None</span>]  <span class="comment"># [T_new, 1]</span></span><br><span class="line">    k_pos = torch.arange(kv_len)[<span class="literal">None</span>, :]            <span class="comment"># [1, T_total]</span></span><br><span class="line">    <span class="keyword">return</span> k_pos &lt;= q_pos                            <span class="comment"># [T_new, T_total]</span></span><br></pre></td></tr></table></figure></div>
 
 <p>This version works for both one-token decode and chunked decode.</p>
-<h2 id="Shape-Trace"><a href="#Shape-Trace" class="headerlink" title="Shape Trace"></a>Shape Trace</h2><table>
-<thead>
-<tr>
-<th>Phase</th>
-<th align="right">Input ids</th>
-<th align="right">New K/V</th>
-<th align="right">Cache after call</th>
-<th align="right">Logits</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>prefill</td>
-<td align="right"><code>[B, T]</code></td>
-<td align="right"><code>[B, G, T, Dh]</code></td>
-<td align="right"><code>[B, G, T, Dh]</code></td>
-<td align="right"><code>[B, T, V]</code></td>
-</tr>
-<tr>
-<td>decode step 1</td>
-<td align="right"><code>[B, 1]</code></td>
-<td align="right"><code>[B, G, 1, Dh]</code></td>
-<td align="right"><code>[B, G, T+1, Dh]</code></td>
-<td align="right"><code>[B, 1, V]</code></td>
-</tr>
-<tr>
-<td>decode step 2</td>
-<td align="right"><code>[B, 1]</code></td>
-<td align="right"><code>[B, G, 1, Dh]</code></td>
-<td align="right"><code>[B, G, T+2, Dh]</code></td>
-<td align="right"><code>[B, 1, V]</code></td>
-</tr>
-</tbody></table>
+<h2 id="Shape-Trace"><a href="#Shape-Trace" class="headerlink" title="Shape Trace"></a>Shape Trace</h2><p>Prefill:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">input ids:        [B, T]</span><br><span class="line">new K/V:          [B, G, T, Dh]</span><br><span class="line">cache after call: [B, G, T, Dh]</span><br><span class="line">logits:           [B, T, V]</span><br></pre></td></tr></table></figure></div>
+
+<p>Decode step 1:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">input ids:        [B, 1]</span><br><span class="line">new K/V:          [B, G, 1, Dh]</span><br><span class="line">cache after call: [B, G, T + 1, Dh]</span><br><span class="line">logits:           [B, 1, V]</span><br></pre></td></tr></table></figure></div>
+
+<p>Decode step 2:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">input ids:        [B, 1]</span><br><span class="line">new K/V:          [B, G, 1, Dh]</span><br><span class="line">cache after call: [B, G, T + 2, Dh]</span><br><span class="line">logits:           [B, 1, V]</span><br></pre></td></tr></table></figure></div>
+
 <p>The decode logits still have a time dimension. Even when <code>T_new = 1</code>, the model returns <code>[B, 1, V]</code>.</p>
 <h2 id="Minimal-PyTorch"><a href="#Minimal-PyTorch" class="headerlink" title="Minimal PyTorch"></a>Minimal PyTorch</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@dataclass(<span class="params">frozen=<span class="literal">True</span></span>)</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">KVCache</span>:</span><br><span class="line">    k: torch.Tensor  <span class="comment"># [B, G, T_cache, Dh]</span></span><br><span class="line">    v: torch.Tensor  <span class="comment"># [B, G, T_cache, Dh]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">append_kv</span>(<span class="params">cache: KVCache | <span class="literal">None</span>, new_k: torch.Tensor, new_v: torch.Tensor</span>) -&gt; KVCache:</span><br><span class="line">    <span class="comment"># new_k/new_v: [B, G, T_new, Dh]</span></span><br><span class="line">    <span class="keyword">if</span> cache <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">return</span> KVCache(new_k, new_v)</span><br><span class="line">    k = torch.cat([cache.k, new_k], dim=<span class="number">2</span>)</span><br><span class="line">    v = torch.cat([cache.v, new_v], dim=<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> KVCache(k, v)</span><br></pre></td></tr></table></figure></div>
 
 <p>The implementation is tiny, but the shape contract is strict.</p>
 <h2 id="Common-Pitfalls"><a href="#Common-Pitfalls" class="headerlink" title="Common Pitfalls"></a>Common Pitfalls</h2><p>First, the decode input should be <code>[B, 1]</code>, not <code>[B]</code>. Keeping the time dimension avoids many special cases.</p>
-<p>Second, the cache exists per layer. A 32-layer model has 32 K/V cache pairs.</p>
-<p>Third, do not store repeated GQA K/V. Store compact <code>[B, G, T_cache, Dh]</code>; repeat to <code>[B, H, T_cache, Dh]</code> only for attention computation.</p>
+<p>Second, the cache exists per layer. A 32-layer model has 32 K&#x2F;V cache pairs.</p>
+<p>Third, do not store repeated GQA K&#x2F;V. Store compact <code>[B, G, T_cache, Dh]</code>; repeat to <code>[B, H, T_cache, Dh]</code> only for attention computation.</p>
 <p>Fourth, RoPE position should start at the old cache length. If the cache has 128 tokens, the next token’s <code>start_pos</code> is 128.</p>
 <h2 id="Takeaways"><a href="#Takeaways" class="headerlink" title="Takeaways"></a>Takeaways</h2><p>KV cache changes the inference rhythm:</p>
 <div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">prefill: [B, T] -&gt; cache [B, G, T, Dh]</span><br><span class="line">decode:  [B, 1] -&gt; append [B, G, 1, Dh]</span><br></pre></td></tr></table></figure></div>
