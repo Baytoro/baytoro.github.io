@@ -18,20 +18,25 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="Large-Scale Evolution shows that simple mutation and tournament selection can discover competitive image classifiers at scale.">
+        <meta name="description" content="Large-Scale Evolution shows that simple tournament selection and mutation can discover competitive CNN architectures when the evaluation pipeline is scaled hard enough.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Large-Scale Evolution of Image Classifiers">
 <meta property="og:url" content="https://baytoro.github.io/2020/01/18/largeScaleEvolution/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Large-Scale Evolution shows that simple mutation and tournament selection can discover competitive image classifiers at scale.">
+<meta property="og:description" content="Large-Scale Evolution shows that simple tournament selection and mutation can discover competitive CNN architectures when the evaluation pipeline is scaled hard enough.">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/largeScaleEvolution/table1-hand-designed-results.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/largeScaleEvolution/table2-automatic-results.png">
 <meta property="og:image" content="https://baytoro.github.io/_imgs/largeScaleEvolution/fig1-overview.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/largeScaleEvolution/fig2-repeatability-controls.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/largeScaleEvolution/fig3-meta-parameters.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/largeScaleEvolution/fig4-local-optima.png">
 <meta property="article:published_time" content="2020-01-17T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-03T08:02:50.743Z">
+<meta property="article:modified_time" content="2026-07-07T10:26:40.128Z">
 <meta property="article:author" content="H.J. Chen">
 <meta property="article:tag" content="NAS">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://baytoro.github.io/_imgs/largeScaleEvolution/fig1-overview.png">
+<meta name="twitter:image" content="https://baytoro.github.io/_imgs/largeScaleEvolution/table1-hand-designed-results.png">
     
     
     <!--- Icon Part-->
@@ -100,119 +105,7 @@
     
     
     
-<meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
-  direction: ltr;
-}
-
-mjx-container[jax="SVG"] > svg {
-  overflow: visible;
-}
-
-mjx-container[jax="SVG"][display="true"] {
-  display: block;
-  text-align: center;
-  margin: 1em 0;
-}
-
-mjx-container[jax="SVG"][justify="left"] {
-  text-align: left;
-}
-
-mjx-container[jax="SVG"][justify="right"] {
-  text-align: right;
-}
-
-g[data-mml-node="merror"] > g {
-  fill: red;
-  stroke: red;
-}
-
-g[data-mml-node="merror"] > rect[data-background] {
-  fill: yellow;
-  stroke: none;
-}
-
-g[data-mml-node="mtable"] > line[data-line] {
-  stroke-width: 70px;
-  fill: none;
-}
-
-g[data-mml-node="mtable"] > rect[data-frame] {
-  stroke-width: 70px;
-  fill: none;
-}
-
-g[data-mml-node="mtable"] > .mjx-dashed {
-  stroke-dasharray: 140;
-}
-
-g[data-mml-node="mtable"] > .mjx-dotted {
-  stroke-linecap: round;
-  stroke-dasharray: 0,140;
-}
-
-g[data-mml-node="mtable"] > svg {
-  overflow: visible;
-}
-
-[jax="SVG"] mjx-tool {
-  display: inline-block;
-  position: relative;
-  width: 0;
-  height: 0;
-}
-
-[jax="SVG"] mjx-tool > mjx-tip {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-mjx-tool > mjx-tip {
-  display: inline-block;
-  padding: .2em;
-  border: 1px solid #888;
-  font-size: 70%;
-  background-color: #F8F8F8;
-  color: black;
-  box-shadow: 2px 2px 5px #AAAAAA;
-}
-
-g[data-mml-node="maction"][data-toggle] {
-  cursor: pointer;
-}
-
-mjx-status {
-  display: block;
-  position: fixed;
-  left: 1em;
-  bottom: 1em;
-  min-width: 25%;
-  padding: .2em .4em;
-  border: 1px solid #888;
-  font-size: 90%;
-  background-color: #F8F8F8;
-  color: black;
-}
-
-foreignObject[data-mjx-xml] {
-  font-family: initial;
-  line-height: normal;
-  overflow: visible;
-}
-
-.MathJax path {
-  stroke-width: 3;
-}
-
-mjx-container[display="true"] {
-  overflow: auto hidden;
-}
-
-mjx-container[display="true"] + br {
-  display: none;
-}
-</style></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -487,8 +380,8 @@ mjx-container[display="true"] + br {
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2026-07-03 16:02:50</span>
-            <span class="mobile">2026-07-03 16:02:50</span> -->
+            <!-- <span class="desktop">2026-07-07 18:26:40</span>
+            <span class="mobile">2026-07-07 18:26:40</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -541,56 +434,63 @@ mjx-container[display="true"] + br {
             <blockquote>
 <p>Real E, Moore S, Selle A, et al. Large-Scale Evolution of Image Classifiers. ICML 2017.</p>
 </blockquote>
-<p><a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/1703.01041.pdf">Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>This paper is one of the early large-scale demonstrations that neural architectures can be optimized by evolutionary search. It does not formulate architecture generation as a reinforcement-learning sequence model, and it does not relax the graph into differentiable operation weights. The system keeps a population of trained CNNs, repeatedly selects a parent, mutates it, trains the child, and uses validation accuracy as selection pressure.</p>
-<p>The important point is not that one particular mutation operator is clever. The important point is that a simple, asynchronous, parallel search process can keep improving image classifiers when enough workers are available.</p>
-<h2 id="Search-Object"><a href="#Search-Object" class="headerlink" title="Search Object"></a>Search Object</h2><p>Each individual is a CNN architecture plus some training hyperparameters. Mutations can change convolution filter sizes, channel counts, strides, connections, and learning-rate related settings. This is less tidy than later cell-based NAS spaces, but it is closer to the idea of evolving whole model programs.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/largeScaleEvolution/fig1-overview.png"></p>
-<p>The figure shows the best validation accuracy improving as the evolutionary process runs. The search is not just random wandering: once a good model appears, local mutations around it create a useful neighborhood for further exploration.</p>
-<h2 id="Tournament-Selection"><a href="#Tournament-Selection" class="headerlink" title="Tournament Selection"></a>Tournament Selection</h2><p>The loop is straightforward:</p>
-<ol>
-<li>Sample a small tournament set from the population.</li>
-<li>Pick the highest-validation-accuracy individual as parent.</li>
-<li>Copy and mutate it to create a child.</li>
-<li>Train the child from scratch.</li>
-<li>Insert the child back into the population and remove a weaker or older individual.</li>
-</ol>
-<p>This is easy to parallelize. Each worker can train a candidate independently, then return the result. Compared with RL-based NAS, there is no controller to train; compared with differentiable NAS, there is no soft-to-discrete mismatch.</p>
-<h2 id="Why-It-Worked"><a href="#Why-It-Worked" class="headerlink" title="Why It Worked"></a>Why It Worked</h2><p>Evolution is useful here because architecture quality is locally correlated. A small mutation around a good model is more likely to remain reasonable than a uniformly random sample. The population keeps multiple lineages alive, so the search is not forced into a single trajectory.</p>
-<table>
-<thead>
-<tr>
-<th>Property</th>
-<th>Practical effect</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Local mutation</td>
-<td>Explores around known good designs</td>
-</tr>
-<tr>
-<td>Population</td>
-<td>Keeps diversity and avoids one-path search</td>
-</tr>
-<tr>
-<td>Tournament selection</td>
-<td>Adds pressure without requiring gradients</td>
-</tr>
-<tr>
-<td>Parallel training</td>
-<td>Converts compute into exploration rate</td>
-</tr>
-</tbody></table>
-<p>The cost is obvious: each candidate still requires real training. This makes the paper expensive by modern benchmark standards, but it also avoids the proxy bias that later NAS systems often suffer from.</p>
-<h2 id="Reproduction-Notes"><a href="#Reproduction-Notes" class="headerlink" title="Reproduction Notes"></a>Reproduction Notes</h2><p>If I were reproducing this paper, I would not only report the final CIFAR accuracy. I would first lock down three details:</p>
-<ul>
-<li>the exact mutation space;</li>
-<li>the training budget per child;</li>
-<li>the asynchronous worker behavior.</li>
-</ul>
-<p>The last point matters. If faster architectures return results earlier, they may enter the population sooner and receive more opportunities to mutate. That is not necessarily bad, but it is an implicit bias of the system.</p>
-<p>I would also plot parent-child lineages. If high-performing children mostly descend from one ancestor, the search has converged. If strong models come from several lineages, population diversity is still doing real work.</p>
-<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>Large-Scale Evolution is rough by today’s NAS standards: the search space is not standardized, compute is high, and the recipe is hard to compare against modern tabular benchmarks. Still, it established a durable lesson: architecture search does not have to be differentiable or controller-based. A simple black-box evolutionary system can be highly competitive when the evaluation pipeline is scalable.</p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://arxiv.org/pdf/1703.01041.pdf" >Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>This paper is an early large-scale neural architecture search result, but it does not look like later RL-controller NAS or differentiable NAS. The algorithm keeps a population of trained CNNs, repeatedly mutates selected parents, trains the children, and uses validation accuracy as the selection signal.</p>
+<p>The interesting part is how little algorithmic machinery is needed. The search is black-box, asynchronous, and almost embarrassingly parallel. The expensive part is that every child still has to be trained for real.</p>
+<h2 id="Result-Positioning"><a href="#Result-Positioning" class="headerlink" title="Result Positioning"></a>Result Positioning</h2><p>The paper reports 94.6% CIFAR-10 accuracy for a single evolved model, 95.6% for an ensemble, and 77.0% on CIFAR-100. At the time, this was not just a toy architecture search demo.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/largeScaleEvolution/table1-hand-designed-results.png"
+                     
+                ></p>
+<p>Table 1 compares the evolved model with hand-designed CNNs. The evolved CIFAR-10 model is below the strongest Wide ResNet and DenseNet numbers, but it is competitive with a much less human-designed starting point. The “Reachable?” column also matters: some hand-designed baselines live outside the search space.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/largeScaleEvolution/table2-automatic-results.png"
+                     
+                ></p>
+<p>Table 2 is the more relevant comparison. Against other automatically discovered architectures, the evolutionary run reaches 94.6% on CIFAR-10, 77.0% on CIFAR-100, and 95.6% with an ensemble. The starting point is deliberately weak: a single layer with zero convolutions.</p>
+<h2 id="Search-Loop"><a href="#Search-Loop" class="headerlink" title="Search Loop"></a>Search Loop</h2><p>The evolutionary loop is pairwise tournament selection:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">repeat asynchronously on many workers:</span><br><span class="line">    sample two individuals from the population</span><br><span class="line">    kill the lower-fitness individual</span><br><span class="line">    copy the higher-fitness individual</span><br><span class="line">    mutate the copy</span><br><span class="line">    train the child</span><br><span class="line">    insert the child back into the population</span><br></pre></td></tr></table></figure></div>
+
+<p>Fitness is validation accuracy. The population size in the main experiments is 1000, and the paper reports running experiments over 250 parallel workers. Each child is trained for 25,600 SGD steps with momentum 0.9, batch size 50, and weight decay 0.0001.</p>
+<p>The search object is a full CNN graph plus training hyperparameters, not a neat repeated cell. Mutations can insert or remove convolutions, alter filter size, channel count, stride, learning rate, skip connections, and weight state. Some mutations preserve all weights, some preserve none, and many preserve only the compatible subset.</p>
+<h2 id="What-Evolution-Finds"><a href="#What-Evolution-Finds" class="headerlink" title="What Evolution Finds"></a>What Evolution Finds</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/largeScaleEvolution/fig1-overview.png"
+                     
+                ></p>
+<p>Figure 1 shows a useful shape: many weak individuals appear early, then the population quickly moves into a high-accuracy band. The architecture sketches attached to lineage points are also instructive. The evolved networks are not clean human-designed templates; they contain stacked convolutions, skips, and repeated convolution-BN-ReLU patterns in places that a human probably would not draw first.</p>
+<p>This is why I would not summarize the paper as “evolution invents ResNet.” It is closer to: given a mutation grammar and enough training budget, local search can build competent CNN programs from very weak initial conditions.</p>
+<h2 id="Controls"><a href="#Controls" class="headerlink" title="Controls"></a>Controls</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/largeScaleEvolution/fig2-repeatability-controls.png"
+                     
+                ></p>
+<p>The controls are important. Random search is much worse in the reported wall-clock comparison. Evolution without weight inheritance is close early on but stays lower later. That does not prove evolutionary search is always better, but it does show the result is not only coming from repeatedly sampling random architectures.</p>
+<p>The paper also makes a practical point about asynchronous search. Fast-training bad models can return early, enter the population, and get more chances to reproduce. That implicit bias is part of the system, so any reproduction should preserve the worker behavior instead of only copying the mutation list.</p>
+<h2 id="Meta-Parameters"><a href="#Meta-Parameters" class="headerlink" title="Meta-Parameters"></a>Meta-Parameters</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/largeScaleEvolution/fig3-meta-parameters.png"
+                     
+                ></p>
+<p>The population-size and training-step sweeps explain why small NAS demos can be misleading. Larger populations explore more lineages, and longer child training gives the fitness estimate a better chance to reflect the architecture rather than just early optimization noise.</p>
+<p>The downside is direct: the main result costs a huge amount of compute. The paper reports the best CIFAR-10 run at about <code>4 x 10^20</code> FLOPs, with the five-experiment average around <code>9 x 10^19</code> FLOPs. This is not a cheap recipe.</p>
+<h2 id="Local-Optima"><a href="#Local-Optima" class="headerlink" title="Local Optima"></a>Local Optima</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/largeScaleEvolution/fig4-local-optima.png"
+                     
+                ></p>
+<p>Figure 4 is a good reminder that evolutionary search is not magic. Populations can plateau. The authors tried increasing the mutation rate and resetting weights to help populations escape local optima. Both can work, but both are blunt tools.</p>
+<p>The weight reset example is especially interesting. Weight inheritance helps make full-model evolution practical, but it can also make a mediocre architecture look good because it has accumulated more training. Resetting weights partially breaks that advantage and forces the population to re-evaluate architecture quality.</p>
+<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>Large-Scale Evolution is rough by modern NAS benchmark standards. The search space is broad, the compute budget is large, and the results are not directly comparable to later cell-based search spaces or tabular NAS benchmarks.</p>
+<p>The durable lesson is simpler: architecture search does not need a controller, relaxation, or differentiable proxy to be useful. If the evaluation loop is scalable and the mutation operators preserve enough structure, plain evolutionary pressure can discover strong trained models.</p>
 
         </div>
 
@@ -655,7 +555,7 @@ mjx-container[display="true"] + br {
     <div class="post-toc">
         <div class="toc-title">On this page</div>
         <div class="page-title">Large-Scale Evolution of Image Classifiers</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Object"><span class="nav-text">Search Object</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tournament-Selection"><span class="nav-text">Tournament Selection</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-It-Worked"><span class="nav-text">Why It Worked</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reproduction-Notes"><span class="nav-text">Reproduction Notes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Result-Positioning"><span class="nav-text">Result Positioning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Loop"><span class="nav-text">Search Loop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#What-Evolution-Finds"><span class="nav-text">What Evolution Finds</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Controls"><span class="nav-text">Controls</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Meta-Parameters"><span class="nav-text">Meta-Parameters</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Local-Optima"><span class="nav-text">Local Optima</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
 
     </div>
 </div>
