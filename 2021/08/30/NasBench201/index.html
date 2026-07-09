@@ -18,16 +18,27 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="NAS-Bench-201 provides a fully enumerated cell benchmark across multiple datasets for reliable NAS algorithm diagnosis.">
+        <meta name="description" content="NAS-Bench-201 enumerates a compact cell search space across CIFAR-10, CIFAR-100, and ImageNet16-120 to diagnose NAS optimizers.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="NAS-Bench-201: Extending the Scope of Reproducible Neural Architecture Search">
 <meta property="og:url" content="https://baytoro.github.io/2021/08/30/NasBench201/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="NAS-Bench-201 provides a fully enumerated cell benchmark across multiple datasets for reliable NAS algorithm diagnosis.">
+<meta property="og:description" content="NAS-Bench-201 enumerates a compact cell search space across CIFAR-10, CIFAR-100, and ImageNet16-120 to diagnose NAS optimizers.">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://baytoro.github.io/_imgs/NasBench201/fig1-overview.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/NasBench201/table3-benchmark-comparison.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/NasBench201/fig2-architecture-distribution.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/NasBench201/fig3-cross-dataset-ranking.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/NasBench201/fig4-correlation-matrices.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/NasBench201/fig5-dynamic-ranking.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/NasBench201/table5-algorithm-results.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/NasBench201/fig6-search-runs.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/NasBench201/fig7-parameter-sharing-running-bn.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/NasBench201/fig8-parameter-sharing-batch-stats.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/NasBench201/table6-early-correlation.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/NasBench201/fig9-api-example.png">
 <meta property="article:published_time" content="2021-08-29T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-03T08:02:50.739Z">
+<meta property="article:modified_time" content="2026-07-08T09:39:50.913Z">
 <meta property="article:author" content="H.J. Chen">
 <meta property="article:tag" content="NAS">
 <meta property="article:tag" content="Benchmark">
@@ -488,8 +499,8 @@ mjx-container[display="true"] + br {
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2026-07-03 16:02:50</span>
-            <span class="mobile">2026-07-03 16:02:50</span> -->
+            <!-- <span class="desktop">2026-07-08 17:39:50</span>
+            <span class="mobile">2026-07-08 17:39:50</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -546,24 +557,84 @@ mjx-container[display="true"] + br {
             <blockquote>
 <p>Dong X, Yang Y. NAS-Bench-201: Extending the Scope of Reproducible Neural Architecture Search. ICLR 2020.</p>
 </blockquote>
-<p><a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/2001.00326.pdf">Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>NAS-Bench-201 is a compact, fully enumerated NAS benchmark. It was designed to make algorithm comparison cheaper and more reliable than repeated GPU-heavy search experiments.</p>
-<h2 id="Search-Space"><a href="#Search-Space" class="headerlink" title="Search Space"></a>Search Space</h2><p>The cell has four nodes. Each edge chooses one operation from a fixed operation set, including zero, skip connection, convolution, and average pooling.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench201/fig1-overview.png"></p>
-<p>The figure shows the macro skeleton and the operation choices inside the cell. The space is small enough to enumerate, but rich enough to expose common NAS failure modes.</p>
-<h2 id="What-Is-Stored"><a href="#What-Is-Stored" class="headerlink" title="What Is Stored"></a>What Is Stored</h2><p>For each architecture, the benchmark stores results on several datasets, including CIFAR-10, CIFAR-100, and ImageNet16-120. This enables cross-dataset ranking analysis.</p>
-<p>That is a major advantage over single-dataset benchmarks. A method that only works on one dataset may be exploiting dataset-specific quirks.</p>
-<h2 id="Why-It-Matters"><a href="#Why-It-Matters" class="headerlink" title="Why It Matters"></a>Why It Matters</h2><p>NAS-Bench-201 is useful for diagnosing search behavior:</p>
 <ul>
-<li>Does the optimizer beat random search under the same query budget?</li>
-<li>Does it collapse toward skip connections?</li>
-<li>Is the ranking stable across seeds?</li>
-<li>Does performance transfer across datasets?</li>
+<li>Paper: <a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/2001.00326.pdf">https://arxiv.org/pdf/2001.00326.pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>Code/API: <a class="link" target="_blank" rel="noopener" href="https://github.com/D-X-Y/NAS-Bench-201">https://github.com/D-X-Y/NAS-Bench-201 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
 </ul>
-<p>These questions are hard to answer when each architecture requires a new training run.</p>
-<h2 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h2><p>The benchmark is still a small image-classification cell space. It does not include device latency, mobile inverted residual blocks, segmentation, detection, or Transformer architectures.</p>
-<p>Therefore, success on NAS-Bench-201 should be treated as algorithm sanity evidence, not proof of deployment superiority.</p>
-<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>NAS-Bench-201 is one of the most useful controlled testbeds for NAS. If a method is unstable here, it is probably not ready for larger and noisier search spaces.</p>
+<p>NAS-Bench-201 is the natural follow-up to NAS-Bench-101. NAS-Bench-101 made a large cell space queryable, but it used only one dataset and imposed graph constraints that excluded some NAS algorithms. NAS-Bench-201 chooses a smaller fully enumerated space, then spends the saved budget on cleaner diagnostics: multiple datasets, more operations, and better support for different optimizer families.</p>
+<p>The result is one of the most useful sanity-check benchmarks for NAS. It is small enough to be completely tabular, but rich enough to expose failure modes such as skip-connection collapse, weak transfer across datasets, and misleading early validation signals.</p>
+<h2 id="Search-Space"><a href="#Search-Space" class="headerlink" title="Search Space"></a>Search Space</h2><p>NAS-Bench-201 uses a four-node cell. Every directed edge chooses one operation from a fixed set:</p>
+<ul>
+<li>zeroize;</li>
+<li>skip connection;</li>
+<li><code>1x1</code> convolution;</li>
+<li><code>3x3</code> convolution;</li>
+<li><code>3x3</code> average pooling.</li>
+</ul>
+<p>There are 6 edges and 5 possible operations per edge, so the encoded search space has <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.439ex;" xmlns="http://www.w3.org/2000/svg" width="11.798ex" height="2.326ex" role="img" focusable="false" viewBox="0 -833.9 5214.8 1027.9"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mn"><path data-c="35" d="M164 157Q164 133 148 117T109 101H102Q148 22 224 22Q294 22 326 82Q345 115 345 210Q345 313 318 349Q292 382 260 382H254Q176 382 136 314Q132 307 129 306T114 304Q97 304 95 310Q93 314 93 485V614Q93 664 98 664Q100 666 102 666Q103 666 123 658T178 642T253 634Q324 634 389 662Q397 666 402 666Q410 666 410 648V635Q328 538 205 538Q174 538 149 544L139 546V374Q158 388 169 396T205 412T256 420Q337 420 393 355T449 201Q449 109 385 44T229 -22Q148 -22 99 32T50 154Q50 178 61 192T84 210T107 214Q132 214 148 197T164 157Z"></path></g><g data-mml-node="mn" transform="translate(533,363) scale(0.707)"><path data-c="36" d="M42 313Q42 476 123 571T303 666Q372 666 402 630T432 550Q432 525 418 510T379 495Q356 495 341 509T326 548Q326 592 373 601Q351 623 311 626Q240 626 194 566Q147 500 147 364L148 360Q153 366 156 373Q197 433 263 433H267Q313 433 348 414Q372 400 396 374T435 317Q456 268 456 210V192Q456 169 451 149Q440 90 387 34T253 -22Q225 -22 199 -14T143 16T92 75T56 172T42 313ZM257 397Q227 397 205 380T171 335T154 278T148 216Q148 133 160 97T198 39Q222 21 251 21Q302 21 329 59Q342 77 347 104T352 209Q352 289 347 316T329 361Q302 397 257 397Z"></path></g></g><g data-mml-node="mo" transform="translate(1214.3,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="mn" transform="translate(2270.1,0)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path><path data-c="35" d="M164 157Q164 133 148 117T109 101H102Q148 22 224 22Q294 22 326 82Q345 115 345 210Q345 313 318 349Q292 382 260 382H254Q176 382 136 314Q132 307 129 306T114 304Q97 304 95 310Q93 314 93 485V614Q93 664 98 664Q100 666 102 666Q103 666 123 658T178 642T253 634Q324 634 389 662Q397 666 402 666Q410 666 410 648V635Q328 538 205 538Q174 538 149 544L139 546V374Q158 388 169 396T205 412T256 420Q337 420 393 355T449 201Q449 109 385 44T229 -22Q148 -22 99 32T50 154Q50 178 61 192T84 210T107 214Q132 214 148 197T164 157Z" transform="translate(500,0)"></path></g><g data-mml-node="mo" transform="translate(3270.1,0)"><path data-c="2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path></g><g data-mml-node="mn" transform="translate(3714.8,0)"><path data-c="36" d="M42 313Q42 476 123 571T303 666Q372 666 402 630T432 550Q432 525 418 510T379 495Q356 495 341 509T326 548Q326 592 373 601Q351 623 311 626Q240 626 194 566Q147 500 147 364L148 360Q153 366 156 373Q197 433 263 433H267Q313 433 348 414Q372 400 396 374T435 317Q456 268 456 210V192Q456 169 451 149Q440 90 387 34T253 -22Q225 -22 199 -14T143 16T92 75T56 172T42 313ZM257 397Q227 397 205 380T171 335T154 278T148 216Q148 133 160 97T198 39Q222 21 251 21Q302 21 329 59Q342 77 347 104T352 209Q352 289 347 316T329 361Q302 397 257 397Z"></path><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z" transform="translate(500,0)"></path><path data-c="35" d="M164 157Q164 133 148 117T109 101H102Q148 22 224 22Q294 22 326 82Q345 115 345 210Q345 313 318 349Q292 382 260 382H254Q176 382 136 314Q132 307 129 306T114 304Q97 304 95 310Q93 314 93 485V614Q93 664 98 664Q100 666 102 666Q103 666 123 658T178 642T253 634Q324 634 389 662Q397 666 402 666Q410 666 410 648V635Q328 538 205 538Q174 538 149 544L139 546V374Q158 388 169 396T205 412T256 420Q337 420 393 355T449 201Q449 109 385 44T229 -22Q148 -22 99 32T50 154Q50 178 61 192T84 210T107 214Q132 214 148 197T164 157Z" transform="translate(1000,0)"></path></g></g></g></svg></mjx-container> architectures.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench201/fig1-overview.png"></p>
+<p>The macro network repeats the searched cell inside a fixed skeleton. Compared with NAS-Bench-101, the cell is smaller, but the operation set is broader and the graph is unconstrained enough to support reinforcement learning, evolution, differentiable NAS, and hyperparameter-optimization-style search.</p>
+<p>The paper also reports fewer unique topologies after accounting for equivalence: 12,751 if skip-connection isomorphism is considered, and 6,466 if both skip and zeroize isomorphisms are considered. That is a good reminder that an encoded search space and a semantic search space are not always the same thing.</p>
+<h2 id="What-It-Adds-Over-NAS-Bench-101"><a href="#What-It-Adds-Over-NAS-Bench-101" class="headerlink" title="What It Adds Over NAS-Bench-101"></a>What It Adds Over NAS-Bench-101</h2><p>The paper includes a concise comparison table. The main differences are not only size. NAS-Bench-201 is multi-dataset, supports more NAS families, and exposes more diagnostic information.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench201/table3-benchmark-comparison.png"></p>
+<p>NAS-Bench-201 stores results on:</p>
+<ul>
+<li>CIFAR-10;</li>
+<li>CIFAR-100;</li>
+<li>ImageNet16-120.</li>
+</ul>
+<p>For each architecture, it stores training, validation, and test loss/accuracy, plus compute-related properties such as parameter count, FLOPs, and latency. The latency measurement in the released benchmark was collected on a GTX 1080 Ti with batch size 256 for the non-CIFAR-10 settings.</p>
+<p>This changes the kind of question the benchmark can answer. Instead of asking only “which method wins on CIFAR-10?”, we can ask whether a search method finds architectures that transfer across datasets and whether its behavior is stable when the target distribution changes.</p>
+<h2 id="Distribution-of-Architectures"><a href="#Distribution-of-Architectures" class="headerlink" title="Distribution of Architectures"></a>Distribution of Architectures</h2><p>The full enumeration gives a view of the entire space, not just the subset visited by a search algorithm.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench201/fig2-architecture-distribution.png"></p>
+<p>The scatter plots show training, validation, and test behavior over all 15,625 architectures on all three datasets. The orange ResNet marker is a useful anchor. It is competitive, but not optimal: the paper notes that there is still about a 2% gap to the best architecture on CIFAR-100 and ImageNet16-120, and about a 1% gap among models with comparable parameter count.</p>
+<p>The benchmark therefore has room for search algorithms to improve over a hand-designed baseline, while still being small enough that we can know the actual optimum.</p>
+<h2 id="Cross-Dataset-Transfer"><a href="#Cross-Dataset-Transfer" class="headerlink" title="Cross-Dataset Transfer"></a>Cross-Dataset Transfer</h2><p>One of the strongest reasons to use NAS-Bench-201 is cross-dataset analysis. The paper sorts architectures by CIFAR-10 ranking and then shows where the same architectures rank on CIFAR-100 and ImageNet16-120.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench201/fig3-cross-dataset-ranking.png"></p>
+<p>The rankings are broadly correlated, but not identical. This matters for NAS claims. An optimizer that looks strong on CIFAR-10 may be exploiting a region that does not transfer cleanly to the other two datasets.</p>
+<p>The correlation matrices make the same point more explicitly.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench201/fig4-correlation-matrices.png"></p>
+<p>Within-dataset validation/test correlation is high. Cross-dataset correlation is lower, and it becomes weaker when focusing only on high-performing subsets. That is the practical regime of NAS: after a method filters out weak models, it still needs to rank good models, and that ranking is much harder to transfer.</p>
+<h2 id="Dynamic-Ranking-During-Training"><a href="#Dynamic-Ranking-During-Training" class="headerlink" title="Dynamic Ranking During Training"></a>Dynamic Ranking During Training</h2><p>NAS-Bench-201 also records training curves, which makes it possible to ask how early validation accuracy relates to final test ranking.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench201/fig5-dynamic-ranking.png"></p>
+<p>The rank ordering becomes clearer as training progresses. At 1 epoch, the ranking is noisy. By 150 to 200 epochs, the validation ranking is much closer to final test ranking. This is the same lesson as NAS-Bench-101: early signals are useful, but using them as exact rank labels for the top architectures is risky.</p>
+<h2 id="Search-Algorithm-Results"><a href="#Search-Algorithm-Results" class="headerlink" title="Search Algorithm Results"></a>Search Algorithm Results</h2><p>The paper evaluates ten search algorithms, including random search, regularized evolution, REINFORCE, BOHB, DARTS variants, GDAS, SETN, ENAS, and random search with parameter sharing.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench201/table5-algorithm-results.png"></p>
+<p>The table is valuable because it includes both search time and final validation/test performance across all three datasets. A few points stand out:</p>
+<ul>
+<li>Random search is already a strong baseline in this compact space.</li>
+<li>Regularized evolution is consistently competitive and extremely cheap when evaluated through the benchmark API.</li>
+<li>Differentiable and parameter-sharing methods can fail badly if their search dynamics collapse to degenerate cells.</li>
+<li>The optimal row is known, so the gap to the true best architecture is visible.</li>
+</ul>
+<p>The paper also runs 500 trials for several non-weight-sharing search methods and plots trajectories across datasets.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench201/fig6-search-runs.png"></p>
+<p>This plot is closer to how NAS optimizers should be compared: many runs, explicit distribution, and both validation and test behavior. A single lucky search run is not enough evidence.</p>
+<h2 id="Parameter-Sharing-Failure-Mode"><a href="#Parameter-Sharing-Failure-Mode" class="headerlink" title="Parameter-Sharing Failure Mode"></a>Parameter-Sharing Failure Mode</h2><p>NAS-Bench-201 is especially useful for diagnosing parameter-sharing methods. In the reported experiments, DARTS-V1 and DARTS-V2 quickly move toward architectures dominated by skip connections, causing poor final performance.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench201/fig7-parameter-sharing-running-bn.png"></p>
+<p>The batch-normalization statistic strategy also matters. When using batch statistics instead of keeping running estimates for BN layers in each searched cell, the trajectories change.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench201/fig8-parameter-sharing-batch-stats.png"></p>
+<p>This is a good example of why benchmarks need fine-grained traces. If a paper reports only the final architecture, we cannot tell whether the method failed because the search space is bad, the optimizer is bad, or the shared-weight evaluation protocol is biased.</p>
+<h2 id="Early-Training-Correlation"><a href="#Early-Training-Correlation" class="headerlink" title="Early Training Correlation"></a>Early Training Correlation</h2><p>The appendix compares early-budget correlations with full-budget metrics.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench201/table6-early-correlation.png"></p>
+<p>Twelve-epoch training already gives a useful signal. For example, the 12-epoch diagnostic setting has strong correlations with full validation/test metrics across the three datasets. But the correlations are not perfect, especially for transfer to ImageNet16-120. Early stopping is a useful accelerator, not a replacement for final evaluation.</p>
+<h2 id="API-Shape"><a href="#API-Shape" class="headerlink" title="API Shape"></a>API Shape</h2><p>The released API makes the benchmark easy to use from a script. The paper includes a short example showing architecture lookup, metric access, compute-cost access, and query by architecture string.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench201/fig9-api-example.png"></p>
+<p>A typical use should keep the protocol explicit:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> nas_201_api <span class="keyword">import</span> NASBench201API <span class="keyword">as</span> API</span><br><span class="line"></span><br><span class="line">api = API(<span class="string">"NAS-Bench-201-v1_0-e61699.pth"</span>)</span><br><span class="line">arch_index = api.query_index_by_arch(</span><br><span class="line">    <span class="string">"|nor_conv_3x3~0|+|nor_conv_3x3~0|nor_conv_3x3~1|"</span></span><br><span class="line">)</span><br><span class="line">info = api.query_meta_info_by_index(arch_index)</span><br><span class="line">metrics = info.get_metrics(<span class="string">"cifar10"</span>, <span class="string">"valid"</span>)</span><br><span class="line">cost = info.get_compute_costs(<span class="string">"cifar10"</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>When reporting results, it is worth stating the dataset split, search budget, number of seeds, whether validation or test accuracy was queried during search, and whether any training-curve information was allowed.</p>
+<h2 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h2><p>NAS-Bench-201 is controlled and compact, which is exactly why it is useful. But the same design also limits its scope:</p>
+<ul>
+<li>the search space has only 15,625 encoded architectures;</li>
+<li>all tasks are image classification;</li>
+<li>the macro skeleton is fixed;</li>
+<li>latency is measured in a limited hardware setting;</li>
+<li>operation choices are small compared with modern mobile or Transformer spaces;</li>
+<li>parameter-sharing results can depend strongly on implementation details.</li>
+</ul>
+<p>Success on NAS-Bench-201 is therefore not proof that a method will work on every large real search space. It is evidence that the method survives a clean, fully observable diagnostic environment.</p>
+<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>NAS-Bench-201 is a stronger NAS sanity check than a single-dataset benchmark. It tests whether a search algorithm beats simple baselines, avoids degenerate skip-heavy cells, and transfers across CIFAR-10, CIFAR-100, and ImageNet16-120. I would use it after NAS-Bench-101 and before moving to larger surrogate or real-training benchmarks.</p>
 
         </div>
 
@@ -632,7 +703,7 @@ mjx-container[display="true"] + br {
     <div class="post-toc">
         <div class="toc-title">On this page</div>
         <div class="page-title">NAS-Bench-201: Extending the Scope of Reproducible Neural Architecture Search</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Space"><span class="nav-text">Search Space</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#What-Is-Stored"><span class="nav-text">What Is Stored</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-It-Matters"><span class="nav-text">Why It Matters</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Limitations"><span class="nav-text">Limitations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Space"><span class="nav-text">Search Space</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#What-It-Adds-Over-NAS-Bench-101"><span class="nav-text">What It Adds Over NAS-Bench-101</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Distribution-of-Architectures"><span class="nav-text">Distribution of Architectures</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cross-Dataset-Transfer"><span class="nav-text">Cross-Dataset Transfer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dynamic-Ranking-During-Training"><span class="nav-text">Dynamic Ranking During Training</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Algorithm-Results"><span class="nav-text">Search Algorithm Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Parameter-Sharing-Failure-Mode"><span class="nav-text">Parameter-Sharing Failure Mode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Early-Training-Correlation"><span class="nav-text">Early Training Correlation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API-Shape"><span class="nav-text">API Shape</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Limitations"><span class="nav-text">Limitations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
 
     </div>
 </div>

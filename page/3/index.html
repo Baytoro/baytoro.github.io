@@ -754,20 +754,20 @@ mjx-container[display="true"] + br {
                 
                     <div id="home-article-thumbnail" class="relative h-[150px] overflow-hidden rounded-t-[10.8px] md:rounded-t-large -m-5 mb-3 sm:-m-6 sm:mb-4 md:-m-7 md:mb-5">
                         <a href="/2024/12/29/Medusa/">
-                            <img src="/_imgs/Medusa/thumbnail.png" alt="Medusa: Simple LLM Inference Acceleration Framework with Multiple Decoding Heads" class="w-full h-full object-cover dark:brightness-75 transition-all" />
+                            <img src="/_imgs/Medusa/thumbnail.png" alt="Medusa: LLM Inference with Multiple Decoding Heads" class="w-full h-full object-cover dark:brightness-75 transition-all" />
                         </a>
                     </div>
                 
 
                 <h3 class="home-article-title">
                     <a href="/2024/12/29/Medusa/">
-                        Medusa: Simple LLM Inference Acceleration Framework with Multiple Decoding Heads
+                        Medusa: LLM Inference with Multiple Decoding Heads
                     </a>
                 </h3>
 
                 <div class="home-article-content markdown-body">
                     
-                        <p>Medusa adds multiple lightweight decoding heads to draft future tokens and verifies them with tree attention.</p>
+                        <p>Medusa attaches lightweight future-token heads to an LLM, builds a candidate tree, and verifies multiple continuations in one target-model forward pass.</p>
 
                     
                 </div>
@@ -818,7 +818,7 @@ mjx-container[display="true"] + br {
         
     </div>
 
-    <a href="/2024/12/29/Medusa/">Read more<span class="seo-reader-text">Medusa: Simple LLM Inference Acceleration Framework with Multiple Decoding Heads</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2024/12/29/Medusa/">Read more<span class="seo-reader-text">Medusa: LLM Inference with Multiple Decoding Heads</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
             </li>
@@ -924,20 +924,20 @@ mjx-container[display="true"] + br {
                 
                     <div id="home-article-thumbnail" class="relative h-[150px] overflow-hidden rounded-t-[10.8px] md:rounded-t-large -m-5 mb-3 sm:-m-6 sm:mb-4 md:-m-7 md:mb-5">
                         <a href="/2024/11/09/Mamba2/">
-                            <img src="/_imgs/Mamba2/thumbnail.png" alt="Transformers are SSMs: Generalized Models and Efficient Algorithms Through Structured State Space Duality" class="w-full h-full object-cover dark:brightness-75 transition-all" />
+                            <img src="/_imgs/Mamba2/thumbnail.png" alt="Mamba-2: Structured State Space Duality" class="w-full h-full object-cover dark:brightness-75 transition-all" />
                         </a>
                     </div>
                 
 
                 <h3 class="home-article-title">
                     <a href="/2024/11/09/Mamba2/">
-                        Transformers are SSMs: Generalized Models and Efficient Algorithms Through Structured State Space Duality
+                        Mamba-2: Structured State Space Duality
                     </a>
                 </h3>
 
                 <div class="home-article-content markdown-body">
                     
-                        <p>Mamba-2 connects state-space models and attention through structured state space duality and more GPU-friendly algorithms.</p>
+                        <p>Mamba-2 connects selective SSMs and attention through semiseparable matrices, then turns that duality into a faster GPU-friendly sequence mixer.</p>
 
                     
                 </div>
@@ -960,7 +960,17 @@ mjx-container[display="true"] + br {
                     
                         
                         <li>
-                            <a href="/categories/Paper-Reading/">Paper Reading</a>&nbsp;
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
                         </li>
                     
                     
@@ -980,6 +990,11 @@ mjx-container[display="true"] + br {
                     
                         <li>
                             | 
+                            <a href="/tags/Transformer/">Transformer</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
                             <a href="/tags/Inference/">Inference</a>&nbsp;
                         </li>
                     
@@ -988,7 +1003,7 @@ mjx-container[display="true"] + br {
         
     </div>
 
-    <a href="/2024/11/09/Mamba2/">Read more<span class="seo-reader-text">Transformers are SSMs: Generalized Models and Efficient Algorithms Through Structured State Space Duality</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2024/11/09/Mamba2/">Read more<span class="seo-reader-text">Mamba-2: Structured State Space Duality</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
             </li>
@@ -1089,20 +1104,20 @@ mjx-container[display="true"] + br {
                 
                     <div id="home-article-thumbnail" class="relative h-[150px] overflow-hidden rounded-t-[10.8px] md:rounded-t-large -m-5 mb-3 sm:-m-6 sm:mb-4 md:-m-7 md:mb-5">
                         <a href="/2024/08/25/OmniQuant/">
-                            <img src="/_imgs/OmniQuant/thumbnail.png" alt="OmniQuant: Calibrated LLM Quantization" class="w-full h-full object-cover dark:brightness-75 transition-all" />
+                            <img src="/_imgs/OmniQuant/thumbnail.png" alt="OmniQuant: Omnidirectionally Calibrated LLM Quantization" class="w-full h-full object-cover dark:brightness-75 transition-all" />
                         </a>
                     </div>
                 
 
                 <h3 class="home-article-title">
                     <a href="/2024/08/25/OmniQuant/">
-                        OmniQuant: Calibrated LLM Quantization
+                        OmniQuant: Omnidirectionally Calibrated LLM Quantization
                     </a>
                 </h3>
 
                 <div class="home-article-content markdown-body">
                     
-                        <p>OmniQuant calibrates weight, activation, and KV-cache quantization with learnable clipping and equivalent transformations.</p>
+                        <p>OmniQuant learns clipping and equivalent-transform parameters under a block-wise PTQ objective, pushing LLMs into W2A16, W3A16, W4A16, W6A6, and W4A4 regimes without full QAT.</p>
 
                     
                 </div>
@@ -1148,12 +1163,17 @@ mjx-container[display="true"] + br {
                             <a href="/tags/LLM/">LLM</a>&nbsp;
                         </li>
                     
+                        <li>
+                            | 
+                            <a href="/tags/Inference/">Inference</a>&nbsp;
+                        </li>
+                    
                 </ul>
             </span>
         
     </div>
 
-    <a href="/2024/08/25/OmniQuant/">Read more<span class="seo-reader-text">OmniQuant: Calibrated LLM Quantization</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2024/08/25/OmniQuant/">Read more<span class="seo-reader-text">OmniQuant: Omnidirectionally Calibrated LLM Quantization</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
             </li>

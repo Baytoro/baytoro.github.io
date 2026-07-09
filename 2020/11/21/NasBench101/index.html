@@ -18,16 +18,24 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="NAS-Bench-101 makes NAS algorithm comparison reproducible by tabulating a large cell search space with fixed training results.">
+        <meta name="description" content="NAS-Bench-101 makes NAS algorithm comparison reproducible by tabulating 423k CIFAR-10 cell architectures with fixed training metrics.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="NAS-Bench-101: Towards Reproducible Neural Architecture Search">
 <meta property="og:url" content="https://baytoro.github.io/2020/11/21/NasBench101/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="NAS-Bench-101 makes NAS algorithm comparison reproducible by tabulating a large cell search space with fixed training results.">
+<meta property="og:description" content="NAS-Bench-101 makes NAS algorithm comparison reproducible by tabulating 423k CIFAR-10 cell architectures with fixed training metrics.">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://baytoro.github.io/_imgs/NasBench101/fig1-overview.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/NasBench101/fig2-final-accuracy-ecdf.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/NasBench101/fig3-cost-and-correlation.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/NasBench101/fig4-operation-replacement.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/NasBench101/fig5-depth-width.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/NasBench101/fig6-locality.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/NasBench101/fig7-search-algorithms.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/NasBench101/fig8-bootstrap-mini.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/NasBench101/fig9-early-epoch-correlation.png">
 <meta property="article:published_time" content="2020-11-20T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-03T08:02:50.739Z">
+<meta property="article:modified_time" content="2026-07-08T09:39:50.660Z">
 <meta property="article:author" content="H.J. Chen">
 <meta property="article:tag" content="NAS">
 <meta property="article:tag" content="Benchmark">
@@ -488,8 +496,8 @@ mjx-container[display="true"] + br {
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2026-07-03 16:02:50</span>
-            <span class="mobile">2026-07-03 16:02:50</span> -->
+            <!-- <span class="desktop">2026-07-08 17:39:50</span>
+            <span class="mobile">2026-07-08 17:39:50</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -544,27 +552,80 @@ mjx-container[display="true"] + br {
 
         <div class="article-content markdown-body">
             <blockquote>
-<p>Ying C, Klein A, Christiansen E, et al. NAS-Bench-101: Towards Reproducible Neural Architecture Search. ICML 2019.</p>
+<p>Ying C, Klein A, Christiansen E, Real E, Murphy K, Hutter F. NAS-Bench-101: Towards Reproducible Neural Architecture Search. ICML 2019.</p>
 </blockquote>
-<p><a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/1902.09635.pdf">Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>NAS-Bench-101 is a benchmark paper, not a method paper. Its contribution is to make NAS experiments repeatable. Instead of requiring every researcher to retrain thousands of architectures, it tabulates a large set of cell architectures with fixed training and evaluation results.</p>
-<p>This changes NAS research from “I spent more GPU days” to “under the same query budget, which optimizer finds better architectures?”</p>
-<h2 id="Search-Space"><a href="#Search-Space" class="headerlink" title="Search Space"></a>Search Space</h2><p>The search space is a directed acyclic graph cell with a fixed maximum number of nodes and edges. Intermediate nodes choose operations such as convolution and pooling. Equivalent graphs are canonicalized to reduce duplicates.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench101/fig1-overview.png"></p>
-<p>The figure shows the outer CNN skeleton and example cell structures. The benchmark focuses on small cell DAGs, not complete mobile or Transformer architectures.</p>
-<h2 id="What-Is-Stored"><a href="#What-Is-Stored" class="headerlink" title="What Is Stored"></a>What Is Stored</h2><p>For each valid architecture, NAS-Bench-101 stores training results under a fixed recipe. This allows algorithms to query validation accuracy without actually training the model.</p>
-<p>The most useful evaluation is a best-so-far curve under a fixed number of queries. Reporting only the final best architecture hides sample efficiency.</p>
-<h2 id="Query-Protocol"><a href="#Query-Protocol" class="headerlink" title="Query Protocol"></a>Query Protocol</h2><p>A serious benchmark use should specify:</p>
 <ul>
-<li>query budget;</li>
-<li>whether validation or test accuracy is used for search;</li>
-<li>number of random seeds;</li>
-<li>whether intermediate learning-curve information is allowed;</li>
-<li>whether the final architecture is retrained outside the benchmark.</li>
+<li>Paper: <a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/1902.09635.pdf">https://arxiv.org/pdf/1902.09635.pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>Code: <a class="link" target="_blank" rel="noopener" href="https://github.com/google-research/nasbench">https://github.com/google-research/nasbench <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
 </ul>
-<p>If an optimizer can query indefinitely, the benchmark becomes a lookup table.</p>
-<h2 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h2><p>NAS-Bench-101 is intentionally constrained. It does not cover latency, large-resolution ImageNet training, mobile inverted residual blocks, or Transformer dimensions. Winning on NAS-Bench-101 proves something about a small DAG cell space, not universal architecture design.</p>
-<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>NAS-Bench-101 made NAS algorithm comparison much more scientific. It is best used as a controlled diagnostic environment. If a method is unstable even here, it is unlikely to be reliable in a real deployment search space.</p>
+<p>NAS-Bench-101 is a benchmark paper rather than a new NAS optimizer. Its main contribution is to turn a large but still controlled cell search space into a queryable table. The table maps each valid architecture to fixed training results, so an optimizer can be evaluated without retraining thousands of CIFAR-10 models.</p>
+<p>That sounds simple, but it fixes a real problem in early NAS papers: algorithm comparisons were often dominated by GPU budget, implementation choices, and hidden training recipes. NAS-Bench-101 changes the experiment into a cleaner question: under the same query budget, which optimizer finds better architectures, and how stable is that behavior over many independent runs?</p>
+<h2 id="Search-Space"><a href="#Search-Space" class="headerlink" title="Search Space"></a>Search Space</h2><p>NAS-Bench-101 uses the familiar cell-based CNN setup. A macro skeleton repeats a learned cell several times, and the cell itself is a directed acyclic graph. The original encoded space contains about 510 million possible graphs before validity checks and canonicalization. After removing invalid and isomorphic cases, the benchmark contains 423k unique valid architectures.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench101/fig1-overview.png"></p>
+<p>The cell has at most 7 vertices and at most 9 edges. The input and output nodes are fixed, while intermediate nodes select one of three operations:</p>
+<ul>
+<li><code>3x3</code> convolution;</li>
+<li><code>1x1</code> convolution;</li>
+<li><code>3x3</code> max pooling.</li>
+</ul>
+<p>This is intentionally narrower than a production architecture search space. It does not include inverted residual blocks, device latency choices, width multipliers, activation choices, or Transformer-style dimensions. The point is controlled diagnosis, not direct deployment search.</p>
+<h2 id="Query-Protocol"><a href="#Query-Protocol" class="headerlink" title="Query Protocol"></a>Query Protocol</h2><p>For every architecture, NAS-Bench-101 stores multiple training budgets: 4, 12, 36, and 108 epochs. Each architecture is trained and evaluated three times, so the API can return either repeated observations or a particular trial index. This matters because a realistic search algorithm should see noisy observations, not an oracle with the exact mean performance.</p>
+<p>The paper is also explicit about validation and test usage. During search, the optimizer should use training and validation metrics. Test accuracy should only be queried offline after the search has selected an architecture. If an algorithm uses test accuracy during search, it is no longer measuring generalization; it is optimizing the benchmark’s hidden answer key.</p>
+<p>The stored metrics include:</p>
+<ul>
+<li>training time;</li>
+<li>train accuracy;</li>
+<li>validation accuracy;</li>
+<li>test accuracy.</li>
+</ul>
+<p>The cleanest evaluation is a best-so-far curve under a fixed budget. Reporting only the final architecture hides whether the method was sample efficient or just used enough queries to eventually stumble into a good cell.</p>
+<h2 id="Dataset-Shape"><a href="#Dataset-Shape" class="headerlink" title="Dataset Shape"></a>Dataset Shape</h2><p>The ECDF plots show two useful properties. First, most valid architectures are not terrible after 108 epochs; a large fraction already exceeds 90% validation and test accuracy. Second, stochastic training noise shrinks with longer training budgets, which is why early-epoch signals are useful but not equivalent to final ranking.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench101/fig2-final-accuracy-ecdf.png"></p>
+<p>The best architecture in the table reaches 94.32% mean test accuracy. The paper compares this with two hand-designed cells: a ResNet-like cell at 93.12% and an Inception-like cell at 92.95%. The final validation and test accuracies are almost perfectly correlated at 108 epochs, with correlation around 0.999. That makes NAS-Bench-101 a good place to study optimizer behavior without getting too distracted by validation/test mismatch.</p>
+<p>Training time is not just a function of parameter count. The plot below shows that more parameters usually cost more time, but topology still matters: two cells with similar parameter counts can have different runtime because of branching and operation placement.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench101/fig3-cost-and-correlation.png"></p>
+<p>That is one reason a benchmark table is useful. If the only feedback is accuracy, an optimizer may overfit to expensive cells. If the table also exposes time, one can evaluate regret over estimated wall-clock time instead of only over number of queries.</p>
+<h2 id="Architecture-Diagnostics"><a href="#Architecture-Diagnostics" class="headerlink" title="Architecture Diagnostics"></a>Architecture Diagnostics</h2><p>The operation replacement experiment is one of the most useful parts of the paper. The authors replace one operation type with another across architectures and measure the average effect on validation accuracy and training time.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench101/fig4-operation-replacement.png"></p>
+<p>Replacing <code>3x3</code> convolution with <code>1x1</code> convolution drops average validation accuracy by about 1.16%, while replacing it with max pooling drops it by about 1.99%. The training-time changes go in the opposite direction: <code>1x1</code> convolution and max pooling are cheaper. A simple search algorithm can therefore get an apparent speed benefit while moving into a weaker region of the space.</p>
+<p>The depth/width analysis is also a useful sanity check. In this benchmark, average validation accuracy peaks around depth 3, while increasing width helps up to the maximum width considered in the space.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench101/fig5-depth-width.png"></p>
+<p>This is a reminder that “deeper is better” is not a universal claim inside a constrained DAG cell. The combine semantics and edge constraints shape the distribution of architectures. A benchmark should be interpreted together with its encoding rules.</p>
+<h2 id="Locality"><a href="#Locality" class="headerlink" title="Locality"></a>Locality</h2><p>NAS algorithms often assume locality: a small architecture edit should usually cause a small performance change. NAS-Bench-101 lets the paper test that assumption directly.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench101/fig6-locality.png"></p>
+<p>The random-walk autocorrelation and fitness-distance correlation suggest locality up to a rough edit distance of about 6. The paper also notes that high-performing cells are rare in the encoded space: the chance of sampling one of the top graphs is roughly 1 in 50,000, while about 35.4% of the search space lies within distance 6 of the closest top graph. This explains why local search can be meaningful here, but also why pure random search needs many queries.</p>
+<h2 id="Search-Algorithm-Benchmarking"><a href="#Search-Algorithm-Benchmarking" class="headerlink" title="Search Algorithm Benchmarking"></a>Search Algorithm Benchmarking</h2><p>The benchmark section compares random search, regularized evolution, reinforcement learning, SMAC, TPE, BOHB, and Hyperband-like methods. Each algorithm is run 500 times, and performance is plotted as test regret over estimated wall-clock time.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench101/fig7-search-algorithms.png"></p>
+<p>This presentation is more informative than a single best score. The left plot captures convergence speed. The right ECDF shows how often an optimizer ends near the optimum. A method with a strong median but a bad tail may be unreliable, while a method with slower median progress but high robustness may be preferable for expensive real searches.</p>
+<p>The comparison also highlights a subtle issue: algorithms that exploit lower training budgets, such as Hyperband and BOHB, are using a different kind of signal from optimizers that query only 108-epoch results. That is legitimate, but it must be stated. Otherwise “query count” is not a fair budget unit.</p>
+<h2 id="Mini-Benchmark-and-Early-Epochs"><a href="#Mini-Benchmark-and-Early-Epochs" class="headerlink" title="Mini-Benchmark and Early Epochs"></a>Mini-Benchmark and Early Epochs</h2><p>The paper bootstraps a smaller NASBench-Mini with at most 6 vertices, giving around 64.5k cells instead of the full 423k. The relative ranking of random search, non-regularized evolution, and regularized evolution remains consistent across the smaller and larger tables.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench101/fig8-bootstrap-mini.png"></p>
+<p>This is useful because it suggests that a reduced space can still preserve some optimizer-ordering signal. It does not mean every algorithm conclusion transfers, but it gives evidence that the benchmark is not completely brittle to space size.</p>
+<p>Early-epoch correlation is more complicated. The appendix reports Spearman rank correlations between early and final accuracies under different percentile slices.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/NasBench101/fig9-early-epoch-correlation.png"></p>
+<p>The full-space 36-to-108-epoch correlation is high, around 0.902. But within the top 10% of architectures it drops sharply, to about 0.495. That is exactly the regime where strong NAS algorithms operate. Early training is useful for pruning weak models, but it is much less reliable for sorting the best models.</p>
+<h2 id="How-I-Would-Use-It"><a href="#How-I-Would-Use-It" class="headerlink" title="How I Would Use It"></a>How I Would Use It</h2><p>For a new black-box NAS optimizer, I would use NAS-Bench-101 as a first diagnostic step:</p>
+<ol>
+<li>Fix a query budget and wall-clock budget model.</li>
+<li>Run at least dozens of independent seeds, not just one or three.</li>
+<li>Use validation accuracy for search and reserve test accuracy for post-search reporting.</li>
+<li>Report best-so-far curves, not only the final best cell.</li>
+<li>Compare against random search and regularized evolution.</li>
+<li>State whether the optimizer can query 4/12/36-epoch results or only 108-epoch results.</li>
+<li>Check whether improvements survive on NAS-Bench-201 or a larger surrogate benchmark.</li>
+</ol>
+<p>The important part is not to claim too much. A win on NAS-Bench-101 says that the optimizer navigates a small CIFAR-10 cell space well. It does not prove that the method will discover strong ImageNet, mobile, language, or hardware-aware architectures.</p>
+<h2 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h2><p>NAS-Bench-101 is deliberately constrained:</p>
+<ul>
+<li>only CIFAR-10 is used;</li>
+<li>the operation set has only three choices;</li>
+<li>the macro skeleton is fixed;</li>
+<li>latency and memory are not first-class objectives;</li>
+<li>the benchmark is small enough that repeated querying can turn into table exploitation;</li>
+<li>the top region is narrow enough that early-epoch ranking becomes noisy.</li>
+</ul>
+<p>These limitations do not make the benchmark weak. They define what the benchmark is for: controlled, reproducible optimizer analysis.</p>
+<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>NAS-Bench-101 made NAS evaluation much more scientific. It replaced many expensive and hard-to-reproduce claims with a shared table, a clear query protocol, and enough repeated runs to study robustness. I would treat it as a unit test for NAS optimizers. Passing that unit test is not enough for real architecture design, but failing it is a strong warning sign.</p>
 
         </div>
 
@@ -633,7 +694,7 @@ mjx-container[display="true"] + br {
     <div class="post-toc">
         <div class="toc-title">On this page</div>
         <div class="page-title">NAS-Bench-101: Towards Reproducible Neural Architecture Search</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Space"><span class="nav-text">Search Space</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#What-Is-Stored"><span class="nav-text">What Is Stored</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Query-Protocol"><span class="nav-text">Query Protocol</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Limitations"><span class="nav-text">Limitations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Space"><span class="nav-text">Search Space</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Query-Protocol"><span class="nav-text">Query Protocol</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dataset-Shape"><span class="nav-text">Dataset Shape</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Architecture-Diagnostics"><span class="nav-text">Architecture Diagnostics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Locality"><span class="nav-text">Locality</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Algorithm-Benchmarking"><span class="nav-text">Search Algorithm Benchmarking</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mini-Benchmark-and-Early-Epochs"><span class="nav-text">Mini-Benchmark and Early Epochs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-I-Would-Use-It"><span class="nav-text">How I Would Use It</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Limitations"><span class="nav-text">Limitations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
 
     </div>
 </div>
