@@ -18,21 +18,33 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="TransNAS-Bench-101 studies whether architecture knowledge transfers across vision tasks instead of only classification.">
+        <meta name="description" content="TransNAS-Bench-101 evaluates 7,352 architectures across seven vision tasks, making NAS transfer and task generalization measurable.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TransNAS-Bench-101: Improving Transferability and Generalizability of Cross-Task NAS">
+<meta property="og:title" content="TransNAS-Bench-101: Cross-Task NAS Benchmarking">
 <meta property="og:url" content="https://baytoro.github.io/2022/06/17/TransNasBench101/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="TransNAS-Bench-101 studies whether architecture knowledge transfers across vision tasks instead of only classification.">
+<meta property="og:description" content="TransNAS-Bench-101 evaluates 7,352 architectures across seven vision tasks, making NAS transfer and task generalization measurable.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://baytoro.github.io/_imgs/TransNasBench101/fig1-overview.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/TransNasBench101/fig1-search-spaces.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/TransNasBench101/fig2-seven-tasks.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/TransNasBench101/table1-task-training-details.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/TransNasBench101/table2-benchmark-comparison.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/TransNasBench101/table3-search-space-statistics.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/TransNasBench101/fig3-performance-landscape.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/TransNasBench101/fig4-task-rank-correlation.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/TransNasBench101/fig5-high-low-correlation.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/TransNasBench101/fig8-cross-task-performance.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/TransNasBench101/fig6-rea-transfer.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/TransNasBench101/fig7-ppo-catch-transfer.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/TransNasBench101/table4-transfer-results.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/TransNasBench101/fig9-rank-convergence.png">
 <meta property="article:published_time" content="2022-06-16T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-03T08:02:50.742Z">
+<meta property="article:modified_time" content="2026-07-13T02:41:53.733Z">
 <meta property="article:author" content="H.J. Chen">
 <meta property="article:tag" content="NAS">
 <meta property="article:tag" content="Benchmark">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://baytoro.github.io/_imgs/TransNasBench101/fig1-overview.png">
+<meta name="twitter:image" content="https://baytoro.github.io/_imgs/TransNasBench101/fig1-search-spaces.png">
     
     
     <!--- Icon Part-->
@@ -44,7 +56,7 @@
     
     <title>
         
-            TransNAS-Bench-101: Improving Transferability and Generalizability of Cross-Task NAS -
+            TransNAS-Bench-101: Cross-Task NAS Benchmarking -
         
         Blog
     </title>
@@ -101,119 +113,7 @@
     
     
     
-<meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
-  direction: ltr;
-}
-
-mjx-container[jax="SVG"] > svg {
-  overflow: visible;
-}
-
-mjx-container[jax="SVG"][display="true"] {
-  display: block;
-  text-align: center;
-  margin: 1em 0;
-}
-
-mjx-container[jax="SVG"][justify="left"] {
-  text-align: left;
-}
-
-mjx-container[jax="SVG"][justify="right"] {
-  text-align: right;
-}
-
-g[data-mml-node="merror"] > g {
-  fill: red;
-  stroke: red;
-}
-
-g[data-mml-node="merror"] > rect[data-background] {
-  fill: yellow;
-  stroke: none;
-}
-
-g[data-mml-node="mtable"] > line[data-line] {
-  stroke-width: 70px;
-  fill: none;
-}
-
-g[data-mml-node="mtable"] > rect[data-frame] {
-  stroke-width: 70px;
-  fill: none;
-}
-
-g[data-mml-node="mtable"] > .mjx-dashed {
-  stroke-dasharray: 140;
-}
-
-g[data-mml-node="mtable"] > .mjx-dotted {
-  stroke-linecap: round;
-  stroke-dasharray: 0,140;
-}
-
-g[data-mml-node="mtable"] > svg {
-  overflow: visible;
-}
-
-[jax="SVG"] mjx-tool {
-  display: inline-block;
-  position: relative;
-  width: 0;
-  height: 0;
-}
-
-[jax="SVG"] mjx-tool > mjx-tip {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-mjx-tool > mjx-tip {
-  display: inline-block;
-  padding: .2em;
-  border: 1px solid #888;
-  font-size: 70%;
-  background-color: #F8F8F8;
-  color: black;
-  box-shadow: 2px 2px 5px #AAAAAA;
-}
-
-g[data-mml-node="maction"][data-toggle] {
-  cursor: pointer;
-}
-
-mjx-status {
-  display: block;
-  position: fixed;
-  left: 1em;
-  bottom: 1em;
-  min-width: 25%;
-  padding: .2em .4em;
-  border: 1px solid #888;
-  font-size: 90%;
-  background-color: #F8F8F8;
-  color: black;
-}
-
-foreignObject[data-mjx-xml] {
-  font-family: initial;
-  line-height: normal;
-  overflow: visible;
-}
-
-.MathJax path {
-  stroke-width: 3;
-}
-
-mjx-container[display="true"] {
-  overflow: auto hidden;
-}
-
-mjx-container[display="true"] + br {
-  display: none;
-}
-</style></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -459,9 +359,9 @@ mjx-container[display="true"] + br {
             
                 
                 
-                <img src="/_imgs/TransNasBench101/thumbnail.png" alt="TransNAS-Bench-101: Improving Transferability and Generalizability of Cross-Task NAS" class="max-w-none"/>
+                <img src="/_imgs/TransNasBench101/thumbnail.png" alt="TransNAS-Bench-101: Cross-Task NAS Benchmarking" class="max-w-none"/>
                 
-                <h1 class="article-title-cover">TransNAS-Bench-101: Improving Transferability and Generalizability of Cross-Task NAS</h1>
+                <h1 class="article-title-cover">TransNAS-Bench-101: Cross-Task NAS Benchmarking</h1>
             
             </div>
             
@@ -488,8 +388,8 @@ mjx-container[display="true"] + br {
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2026-07-03 16:02:50</span>
-            <span class="mobile">2026-07-03 16:02:50</span> -->
+            <!-- <span class="desktop">2026-07-13 10:41:53</span>
+            <span class="mobile">2026-07-13 10:41:53</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -503,7 +403,17 @@ mjx-container[display="true"] + br {
                     
                         
                         <li>
-                            <a href="/categories/Paper-Reading/">Paper Reading</a>&nbsp;
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
                         </li>
                     
                     
@@ -544,25 +454,193 @@ mjx-container[display="true"] + br {
 
         <div class="article-content markdown-body">
             <blockquote>
-<p>Duan Y, Chen X, Xu H, et al. TransNAS-Bench-101: Improving Transferability and Generalizability of Cross-Task NAS.</p>
+<p>Duan Y, Chen X, Xu H, et al. TransNAS-Bench-101: Improving Transferability and Generalizability of Cross-Task Neural Architecture Search. 2021.</p>
 </blockquote>
-<p><a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/2105.11871.pdf">Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>TransNAS-Bench-101 moves NAS benchmarking beyond single-task image classification. It evaluates architectures across multiple vision tasks, making it possible to ask whether architecture knowledge transfers.</p>
-<p>This is an important shift. A cell that works well for classification may not be best for segmentation, depth prediction, or surface normal estimation.</p>
-<h2 id="Search-Spaces"><a href="#Search-Spaces" class="headerlink" title="Search Spaces"></a>Search Spaces</h2><p>The benchmark includes both micro-level cell choices and macro-level skeleton choices.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/TransNasBench101/fig1-overview.png"></p>
-<p>The figure shows the cell-level and macro-level search spaces, as well as the task-specific decoders. The benchmark explicitly includes the interaction between architecture and task.</p>
-<h2 id="Why-Cross-Task-Matters"><a href="#Why-Cross-Task-Matters" class="headerlink" title="Why Cross-Task Matters"></a>Why Cross-Task Matters</h2><p>Real vision backbones are often reused across tasks. A model may need to support classification, detection, segmentation, and dense prediction. If a NAS method only works on one classification dataset, it may not discover generally useful architectures.</p>
-<h2 id="Transfer-Questions"><a href="#Transfer-Questions" class="headerlink" title="Transfer Questions"></a>Transfer Questions</h2><p>The benchmark lets us ask:</p>
 <ul>
-<li>Does ranking correlate across tasks?</li>
-<li>Does a cell found on one task transfer to another?</li>
-<li>Are macro skeleton choices more important than micro cells?</li>
-<li>Do some architectures specialize strongly by task?</li>
+<li>Paper: <a class="link"   target="_blank" rel="noopener" href="https://arxiv.org/pdf/2105.11871.pdf" >https://arxiv.org/pdf/2105.11871.pdf <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>Dataset: <a class="link"   target="_blank" rel="noopener" href="https://download.mindspore.cn/dataset/TransNAS-Bench-101" >MindSpore TransNAS-Bench-101 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>VEGA docs: <a class="link"   target="_blank" rel="noopener" href="https://www.noahlab.com.hk/opensource/vega/page/doc.html?path=datasets/transnasbench101" >TransNAS-Bench-101 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
 </ul>
-<p>These questions are more realistic than only optimizing CIFAR classification error.</p>
-<h2 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h2><p>The benchmark is still controlled and limited compared with large-scale real training. It should be used for diagnosis, not as a final replacement for task-specific evaluation.</p>
-<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>TransNAS-Bench-101 is valuable because it reframes NAS as architecture-task interaction. General NAS claims should be tested on cross-task benchmarks, not only on small classification cell spaces.</p>
+<p>TransNAS-Bench-101 is a NAS benchmark for a question that older tabular benchmarks only partially answer: if an architecture is good on one vision task, does that tell us anything about another task?</p>
+<p>NAS-Bench-101 and NAS-Bench-201 are useful because they make architecture search queryable, repeatable, and cheap. But both are still classification-centered. TransNAS-Bench-101 shifts the benchmark target from “find a good cell for classification” to “understand how architecture choices behave across tasks.”</p>
+<p>The benchmark evaluates 7,352 backbones on seven vision tasks. That means 51,464 trained models, plus per-epoch metrics, inference time, FLOPs, parameter counts, and training time. The paper says the full generation cost was 193,760 V100 GPU hours, about 22.12 years on one V100. The point is not that everyone should reproduce this cost. The point is that the cost has already been paid once, so transfer-NAS algorithms can be tested without training tens of thousands of networks again.</p>
+<h2 id="What-It-Adds"><a href="#What-It-Adds" class="headerlink" title="What It Adds"></a>What It Adds</h2><p>The main contribution is not simply a larger table. It is a benchmark design that makes task transfer explicit.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/TransNasBench101/fig1-search-spaces.png"
+                      alt="Cell-level and macro-level search spaces used by TransNAS-Bench-101."
+                ></p>
+<p>There are two search spaces:</p>
+<ul>
+<li>Cell-level search space: 4,096 DAG cells following the NAS-Bench-201 style, with four operation candidates: zeroize, skip connection, <code>1x1</code> convolution, and <code>3x3</code> convolution.</li>
+<li>Macro-level search space: 3,256 residual-block skeletons where depth, downsampling locations, and channel-doubling locations vary.</li>
+</ul>
+<p>This distinction matters. A lot of early NAS work searches cells while keeping the macro skeleton fixed. TransNAS-Bench-101 asks whether that is enough when the target task changes. Dense prediction, image reconstruction, and layout regression may care more about where resolution is lost, how channels expand, and how much capacity is allocated at each stage.</p>
+<h2 id="Seven-Tasks"><a href="#Seven-Tasks" class="headerlink" title="Seven Tasks"></a>Seven Tasks</h2><p>The benchmark uses Taskonomy-style indoor images and constructs seven tasks from the same visual source distribution.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/TransNasBench101/fig2-seven-tasks.png"
+                      alt="Seven vision tasks in the benchmark."
+                ></p>
+<p>The tasks cover several types of supervision:</p>
+<ul>
+<li>Classification: object classification and scene classification.</li>
+<li>Point regression: room layout.</li>
+<li>Self-supervised learning: jigsaw puzzle and autoencoding.</li>
+<li>Pixel-level prediction: surface normal and semantic segmentation.</li>
+</ul>
+<p>This choice is deliberate. If every task came from unrelated datasets, transfer failure could be blamed on dataset shift. Here, the images share a common source, so architecture-task interaction becomes easier to isolate.</p>
+<p>The paper uses 24 buildings from Taskonomy, about 120K images, split into 80K train, 20K validation, and 20K test. Every architecture is trained on every task.</p>
+<h2 id="Task-Specific-Heads"><a href="#Task-Specific-Heads" class="headerlink" title="Task-Specific Heads"></a>Task-Specific Heads</h2><p>The benchmark searches the backbone and plugs it into task-specific decoders.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/TransNasBench101/table1-task-training-details.png"
+                      alt="Training details and task-specific decoders."
+                ></p>
+<p>Classification-like tasks use global average pooling plus a linear head. Pixel-level prediction tasks use convolution and deconvolution decoders. Losses and metrics also differ by task: accuracy for classification and jigsaw, SSIM for autoencoding and surface normal, mIoU for semantic segmentation, and L2 loss for room layout.</p>
+<p>This is important for reading the results. The benchmark is not forcing all tasks into a classification interface. The backbone is the common object being searched, but the task head and metric remain task-specific.</p>
+<h2 id="Compared-With-NAS-Bench-101-And-NAS-Bench-201"><a href="#Compared-With-NAS-Bench-101-And-NAS-Bench-201" class="headerlink" title="Compared With NAS-Bench-101 And NAS-Bench-201"></a>Compared With NAS-Bench-101 And NAS-Bench-201</h2><p>The paper includes a short benchmark comparison.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/TransNasBench101/table2-benchmark-comparison.png"
+                      alt="Comparison with NAS-Bench-101 and NAS-Bench-201."
+                ></p>
+<p>TransNAS-Bench-101 is smaller than NAS-Bench-101 in raw search-space size, but broader in task coverage:</p>
+<ul>
+<li>NAS-Bench-101: one dataset, one task domain, cell search.</li>
+<li>NAS-Bench-201: three datasets, one task domain, cell search.</li>
+<li>TransNAS-Bench-101: one image source, seven task domains, cell and macro search.</li>
+</ul>
+<p>That is the right tradeoff for cross-task NAS. Exhaustively evaluating hundreds of millions of architectures across seven tasks would be impractical. A smaller but fully trained benchmark is more useful for diagnosing transfer behavior.</p>
+<h2 id="Search-Space-Statistics"><a href="#Search-Space-Statistics" class="headerlink" title="Search-Space Statistics"></a>Search-Space Statistics</h2><p>The aggregate statistics already show that the macro and cell spaces are not interchangeable.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/TransNasBench101/table3-search-space-statistics.png"
+                      alt="Average task performance and compute statistics for cell and macro spaces."
+                ></p>
+<p>The macro-level space reports better average performance on all seven tasks in the table. It also tends to cost more, especially for dense output tasks such as autoencoding, surface normal, and semantic segmentation.</p>
+<p>A few numbers are useful anchors:</p>
+<ul>
+<li>Object classification average accuracy: 39.71 for cell-level vs 44.24 for macro-level.</li>
+<li>Scene classification average accuracy: 45.23 for cell-level vs 52.92 for macro-level.</li>
+<li>Semantic segmentation average mIoU: 19.95 for cell-level vs 24.47 for macro-level.</li>
+<li>Jigsaw average accuracy: 76.57 for cell-level vs 93.43 for macro-level.</li>
+</ul>
+<p>This does not mean macro search is always the final answer. It means that benchmark conclusions can change when the search space changes. A transfer-NAS method that only works on a cell grammar may not be robust enough.</p>
+<h2 id="Architecture-Landscape"><a href="#Architecture-Landscape" class="headerlink" title="Architecture Landscape"></a>Architecture Landscape</h2><p>Figure 3 plots average task ranking against FLOPs and parameter count.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/TransNasBench101/fig3-performance-landscape.png"
+                      alt="Performance ranking, FLOPs, parameters, and training time across search spaces."
+                ></p>
+<p>The macro space has a smoother spread of architectures across compute. The cell space is more clustered because the macro skeleton is fixed and only the cell operation choices vary. This makes the macro search space more expressive for compute allocation, but also creates a wider range of training costs.</p>
+<p>The paper observes that more FLOPs and longer training time often correlate with better average ranking, but only within a reasonable range. The largest networks are not automatically the best. This is exactly why the benchmark records compute information: an algorithm should not be rewarded only for discovering expensive architectures.</p>
+<h2 id="Cross-Task-Correlation"><a href="#Cross-Task-Correlation" class="headerlink" title="Cross-Task Correlation"></a>Cross-Task Correlation</h2><p>The most useful part of the paper is the cross-task rank-correlation analysis.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/TransNasBench101/fig4-task-rank-correlation.png"
+                      alt="Spearman rank correlations among tasks."
+                ></p>
+<p>The all-network correlations can look encouraging. Many task pairs have positive rank correlation, especially in the cell-level search space. But the top-half correlations shrink quickly. This is the hard NAS regime: after weak architectures are filtered out, the remaining candidates are all plausible, and task transfer becomes much less reliable.</p>
+<p>The paper gives a concrete example in the macro search space.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/TransNasBench101/fig5-high-low-correlation.png"
+                      alt="Task pairs with high and low macro-space correlations."
+                ></p>
+<p>Scene classification and semantic segmentation have a high correlation in the macro-level space. Room layout and autoencoding are much weaker. This is not obvious from the task names alone. Both room layout and autoencoding use the same image source, but architecture ranking still behaves differently.</p>
+<p>The autoencoding example is even more revealing:</p>
+<ul>
+<li>In the macro space, autoencoding has moderate correlation with semantic segmentation and surface normal.</li>
+<li>In the cell space, autoencoding has almost no correlation with semantic segmentation and only weak correlation with surface normal.</li>
+</ul>
+<p>So transferability is not only a property of source and target tasks. It also depends on the search space. That is the core lesson of this benchmark.</p>
+<h2 id="Cross-Task-Performance-Structure"><a href="#Cross-Task-Performance-Structure" class="headerlink" title="Cross-Task Performance Structure"></a>Cross-Task Performance Structure</h2><p>The appendix gives a more detailed pairwise view of task performance.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/TransNasBench101/fig8-cross-task-performance.png"
+                      alt="Pairwise task performance in cell-level and macro-level spaces."
+                ></p>
+<p>The cell-level plots show more fragmented behavior. Some cell choices produce very poor networks on particular tasks, which creates larger gaps. The macro-level plots look smoother because changing downsampling and channel schedules affects the backbone more globally.</p>
+<p>This is useful when designing a transfer method. If the target task enters a part of the architecture space where source-task ranking is unstable, direct transfer can become negative transfer.</p>
+<h2 id="Transfer-Baselines"><a href="#Transfer-Baselines" class="headerlink" title="Transfer Baselines"></a>Transfer Baselines</h2><p>The paper evaluates five transfer&#x2F;search schemes:</p>
+<ul>
+<li>Random search.</li>
+<li>Direct transfer of top architectures.</li>
+<li>Regularized evolution trained from scratch.</li>
+<li>Regularized evolution with transferred population initialization.</li>
+<li>PPO-style policy transfer and CATCH-style contextual policy transfer.</li>
+</ul>
+<p>The REA curves are a good baseline because evolution is simple and robust.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/TransNasBench101/fig6-rea-transfer.png"
+                      alt="Regularized evolution with and without transfer."
+                ></p>
+<p>REA-transfer gives small but stable improvements. It does not magically solve transfer, but it is less brittle than directly reusing the best architecture from another task. The transferred population gives the target-task search a better starting point while still allowing mutation to adapt.</p>
+<p>The policy-transfer result is more cautionary.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/TransNasBench101/fig7-ppo-catch-transfer.png"
+                      alt="PPO transfer and CATCH comparison."
+                ></p>
+<p>Plain PPO transfer can underperform PPO trained from scratch. That is classic negative transfer: the policy overfits to the source task and starts the target task with the wrong bias. CATCH helps by adding task context and an evaluator, and it can work very well on some settings such as macro-space object classification. But the paper is careful not to present policy transfer as universally solved.</p>
+<h2 id="Overall-Transfer-Results"><a href="#Overall-Transfer-Results" class="headerlink" title="Overall Transfer Results"></a>Overall Transfer Results</h2><p>The full result table makes the baseline story concrete.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/TransNasBench101/table4-transfer-results.png"
+                      alt="Transfer NAS baseline results."
+                ></p>
+<p>A few takeaways from the table:</p>
+<ul>
+<li>Direct transfer is weak. Its percentile is 77.17 in the cell space and 83.59 in the macro space, far below random search.</li>
+<li>Random search is already strong: 97.91 percentile in the cell space and 98.18 in the macro space.</li>
+<li>REA-transfer is near the top: 99.02 percentile in the cell space and 99.11 in the macro space.</li>
+<li>PPO-transfer is fragile: it drops to 94.94 percentile in the cell space, below PPO trained from scratch.</li>
+<li>CATCH improves policy transfer in some cases, but it is not uniformly best.</li>
+</ul>
+<p>This is a good benchmark behavior. It does not let a paper win by beating a weak baseline once. Random search is strong, direct transfer can fail, and the algorithm has to be robust across task families and search spaces.</p>
+<h2 id="Ranking-Convergence"><a href="#Ranking-Convergence" class="headerlink" title="Ranking Convergence"></a>Ranking Convergence</h2><p>The appendix also checks whether per-epoch rankings stabilize.</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/_imgs/TransNasBench101/fig9-rank-convergence.png"
+                      alt="Rank correlation between adjacent training epochs."
+                ></p>
+<p>Most tasks trend upward: later-epoch rankings become more consistent with previous-epoch rankings. Some tasks stabilize quickly, while room layout and semantic segmentation are noisier. This matters if a NAS algorithm wants to use early training curves. Early signals may be useful, but the benchmark warns against treating early rank as exact final rank.</p>
+<h2 id="How-I-Would-Use-It"><a href="#How-I-Would-Use-It" class="headerlink" title="How I Would Use It"></a>How I Would Use It</h2><p>TransNAS-Bench-101 is most useful as a diagnostic benchmark, not as a final claim that an architecture will transfer to all real systems.</p>
+<p>I would use it to answer questions like:</p>
+<ul>
+<li>Does my search method beat random search consistently?</li>
+<li>Does it still work when the target task is dense prediction instead of classification?</li>
+<li>Does it depend on cell search, or can it handle macro skeleton choices?</li>
+<li>Does transfer help after the method is allowed to adapt, or is it just direct reuse?</li>
+<li>Does the method avoid negative transfer when the source and target task rankings disagree?</li>
+</ul>
+<p>Those questions are closer to real NAS deployment than “did it win on one small classification dataset?”</p>
+<h2 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h2><p>The benchmark is still controlled.</p>
+<ul>
+<li>All tasks come from an indoor-scene image source.</li>
+<li>The search spaces are finite and handcrafted.</li>
+<li>The cell space has only four operation choices.</li>
+<li>The macro space searches a residual-block skeleton, not arbitrary modern backbones.</li>
+<li>Hardware measurements are tied to the benchmark setup.</li>
+<li>Querying the benchmark is much cheaper than real training, so algorithms can accidentally overfit to the tabular benchmark if evaluation protocol is loose.</li>
+</ul>
+<p>The value is that these constraints are explicit. They make controlled transfer experiments possible.</p>
+<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>TransNAS-Bench-101 is a good reminder that NAS transfer is not a free byproduct of finding a strong architecture on one task. Architecture rankings can change across tasks, and the amount of transfer depends heavily on the search space. A convincing NAS method should beat strong simple baselines, adapt after transfer, and survive both cell-level and macro-level search spaces.</p>
 
         </div>
 
@@ -609,7 +687,7 @@ mjx-container[display="true"] + br {
                         href="/2022/05/09/TeNas/"
                         >
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Neural Architecture Search on ImageNet in Four GPU Hours: A Theoretically Inspired Perspective</span>
+                                <span class="post-nav-title-item">TE-NAS: Training-Free Architecture Search</span>
                                 <span class="post-nav-item">Next posts</span>
                             </span>
                             <span class="right arrow-icon flex justify-center items-center">
@@ -630,8 +708,8 @@ mjx-container[display="true"] + br {
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">TransNAS-Bench-101: Improving Transferability and Generalizability of Cross-Task NAS</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Spaces"><span class="nav-text">Search Spaces</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-Cross-Task-Matters"><span class="nav-text">Why Cross-Task Matters</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Transfer-Questions"><span class="nav-text">Transfer Questions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Limitations"><span class="nav-text">Limitations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
+        <div class="page-title">TransNAS-Bench-101: Cross-Task NAS Benchmarking</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#What-It-Adds"><span class="nav-text">What It Adds</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Seven-Tasks"><span class="nav-text">Seven Tasks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Task-Specific-Heads"><span class="nav-text">Task-Specific Heads</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Compared-With-NAS-Bench-101-And-NAS-Bench-201"><span class="nav-text">Compared With NAS-Bench-101 And NAS-Bench-201</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Space-Statistics"><span class="nav-text">Search-Space Statistics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Architecture-Landscape"><span class="nav-text">Architecture Landscape</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cross-Task-Correlation"><span class="nav-text">Cross-Task Correlation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cross-Task-Performance-Structure"><span class="nav-text">Cross-Task Performance Structure</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Transfer-Baselines"><span class="nav-text">Transfer Baselines</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Overall-Transfer-Results"><span class="nav-text">Overall Transfer Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ranking-Convergence"><span class="nav-text">Ranking Convergence</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-I-Would-Use-It"><span class="nav-text">How I Would Use It</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Limitations"><span class="nav-text">Limitations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
 
     </div>
 </div>

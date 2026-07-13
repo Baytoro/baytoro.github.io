@@ -18,21 +18,43 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="PowerInfer exploits activation sparsity to serve large LLMs on consumer GPUs with a CPU-GPU hybrid hot&#x2F;cold neuron layout.">
+        <meta name="description" content="PowerInfer exploits activation locality to place hot neurons on GPU, execute cold neurons on CPU, and serve large LLMs on a single consumer-grade GPU.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="PowerInfer: Consumer-GPU LLM Serving">
+<meta property="og:title" content="PowerInfer: Fast LLM Serving on a Consumer GPU">
 <meta property="og:url" content="https://baytoro.github.io/2024/08/03/PowerInfer/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="PowerInfer exploits activation sparsity to serve large LLMs on consumer GPUs with a CPU-GPU hybrid hot&#x2F;cold neuron layout.">
+<meta property="og:description" content="PowerInfer exploits activation locality to place hot neurons on GPU, execute cold neurons on CPU, and serve large LLMs on a single consumer-grade GPU.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/fig1.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/fig1-transformer-neuron-activation.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/table1-activation-sparsity.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/fig2-offloading-baselines.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/fig3-baseline-latency-breakdown.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/fig4-powerlaw-cdf.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/fig5-activation-hotness.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/fig6-direct-cpu-execute.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/fig7-powerinfer-architecture.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/fig8-single-layer-example.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/fig9-predictor-size-sparsity.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/table6-predictor-size.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/fig16-sparse-operator.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/table3-evaluation-models-sparsity.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/fig10-pchigh-fp16-speedup.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/fig11-pclow-fp16-speedup.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/fig12-neuron-load-distribution.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/table4-long-input-latency.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/fig13-int4-speedup.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/fig14-batch-speedup.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/fig15-component-breakdown.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/fig17-prediction-overhead.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/PowerInfer/fig18-4090-vs-a100.png">
 <meta property="article:published_time" content="2024-08-02T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-03T08:02:50.741Z">
+<meta property="article:modified_time" content="2026-07-09T04:50:00.963Z">
 <meta property="article:author" content="H.J. Chen">
 <meta property="article:tag" content="LLM">
+<meta property="article:tag" content="Inference">
 <meta property="article:tag" content="Serving">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://baytoro.github.io/_imgs/PowerInfer/fig1.png">
+<meta name="twitter:image" content="https://baytoro.github.io/_imgs/PowerInfer/fig1-transformer-neuron-activation.png">
     
     
     <!--- Icon Part-->
@@ -44,7 +66,7 @@
     
     <title>
         
-            PowerInfer: Consumer-GPU LLM Serving -
+            PowerInfer: Fast LLM Serving on a Consumer GPU -
         
         Blog
     </title>
@@ -459,9 +481,9 @@ mjx-container[display="true"] + br {
             
                 
                 
-                <img src="/_imgs/PowerInfer/thumbnail.png" alt="PowerInfer: Consumer-GPU LLM Serving" class="max-w-none"/>
+                <img src="/_imgs/PowerInfer/thumbnail.png" alt="PowerInfer: Fast LLM Serving on a Consumer GPU" class="max-w-none"/>
                 
-                <h1 class="article-title-cover">PowerInfer: Consumer-GPU LLM Serving</h1>
+                <h1 class="article-title-cover">PowerInfer: Fast LLM Serving on a Consumer GPU</h1>
             
             </div>
             
@@ -488,8 +510,8 @@ mjx-container[display="true"] + br {
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2026-07-03 16:02:50</span>
-            <span class="mobile">2026-07-03 16:02:50</span> -->
+            <!-- <span class="desktop">2026-07-09 12:50</span>
+            <span class="mobile">2026-07-09 12:50</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -521,6 +543,10 @@ mjx-container[display="true"] + br {
                     </li>
                 
                     <li>
+                        | <a href="/tags/Inference/">Inference</a>&nbsp;
+                    </li>
+                
+                    <li>
                         | <a href="/tags/Serving/">Serving</a>&nbsp;
                     </li>
                 
@@ -543,31 +569,309 @@ mjx-container[display="true"] + br {
 
 
         <div class="article-content markdown-body">
-            <p>Paper: <a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/2312.12456.pdf">PowerInfer: Fast Large Language Model Serving with a Consumer-grade GPU <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>PowerInfer targets a different environment from vLLM or DistServe: local serving with a consumer GPU. The constraint is a hard GPU-memory limit, not cluster-level batching.</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Many LLM feed-forward neurons are not active for every token. If active neurons are predictable, the runtime can keep frequently used parts on GPU and handle colder parts through CPU-GPU hybrid execution.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/fig1.png"></p>
-<p>The figure shows hot/cold neuron placement and the hybrid execution path.</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>PowerInfer profiles activation sparsity and partitions model components into hot and cold regions. Hot neurons stay on GPU for fast access. Cold neurons can be placed on CPU or handled with offloading, reducing GPU memory pressure.</p>
-<p>This is not weight quantization. It is placement and execution based on activation sparsity.</p>
-<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><p>The paper reports faster local inference on consumer GPU setups compared with straightforward offloading baselines. The speedup depends on how stable activation sparsity is and how much CPU-GPU transfer overhead can be avoided.</p>
-<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>PowerInfer is a local-inference branch of serving research. Datacenter systems optimize batching, KV cache, and SLOs. Consumer-GPU systems optimize around fitting the model into limited GPU memory. Activation sparsity gives another lever besides quantization and paging.</p>
-<h2 id="Hot-Cold-Placement"><a href="#Hot-Cold-Placement" class="headerlink" title="Hot/Cold Placement"></a>Hot/Cold Placement</h2><p>PowerInfer depends on activation sparsity being predictable enough to partition neurons. Hot neurons are worth keeping on GPU because they are used frequently. Cold neurons can be offloaded because they are rarely active.</p>
-<p>The idea is similar to cache hierarchy: GPU memory is the fast cache, CPU memory is the larger slow store, and activation prediction decides what belongs where.</p>
-<h2 id="Different-From-Quantization"><a href="#Different-From-Quantization" class="headerlink" title="Different From Quantization"></a>Different From Quantization</h2><p>Quantization reduces the size of every weight. PowerInfer reduces effective GPU demand by exploiting which weights are needed for a token. These can be combined, but they solve different problems.</p>
-<h2 id="Limitation"><a href="#Limitation" class="headerlink" title="Limitation"></a>Limitation</h2><p>The method is workload- and model-dependent. If activation sparsity is weak or unpredictable, CPU-GPU transfers can erase the benefit. It is most relevant for local inference where the model barely exceeds GPU memory.</p>
-<h2 id="Source-Level-Notes"><a href="#Source-Level-Notes" class="headerlink" title="Source-Level Notes"></a>Source-Level Notes</h2><p>PowerInfer targets consumer-grade GPU serving by exploiting activation sparsity. In many Transformer feed-forward layers, only a subset of neurons are strongly activated for a given token. The paper separates neurons into hot and cold groups and places them differently across GPU and CPU memory.</p>
-<p>A simplified FFN view is:</p>
-<p><mjx-container class="MathJax" jax="SVG" display="true"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="21.316ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 9421.7 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="46" d="M128 619Q121 626 117 628T101 631T58 634H25V680H582V676Q584 670 596 560T610 444V440H570V444Q563 493 561 501Q555 538 543 563T516 601T477 622T431 631T374 633H334H286Q252 633 244 631T233 621Q232 619 232 490V363H284Q287 363 303 363T327 364T349 367T372 373T389 385Q407 403 410 459V480H450V200H410V221Q407 276 389 296Q381 303 371 307T348 313T327 316T303 317T284 317H232V189L233 61Q240 54 245 52T270 48T333 46H360V0H348Q324 3 182 3Q51 3 36 0H25V46H58Q100 47 109 49T128 61V619Z"></path><path data-c="46" d="M128 619Q121 626 117 628T101 631T58 634H25V680H582V676Q584 670 596 560T610 444V440H570V444Q563 493 561 501Q555 538 543 563T516 601T477 622T431 631T374 633H334H286Q252 633 244 631T233 621Q232 619 232 490V363H284Q287 363 303 363T327 364T349 367T372 373T389 385Q407 403 410 459V480H450V200H410V221Q407 276 389 296Q381 303 371 307T348 313T327 316T303 317T284 317H232V189L233 61Q240 54 245 52T270 48T333 46H360V0H348Q324 3 182 3Q51 3 36 0H25V46H58Q100 47 109 49T128 61V619Z" transform="translate(653,0)"></path><path data-c="4E" d="M42 46Q74 48 94 56T118 69T128 86V634H124Q114 637 52 637H25V683H232L235 680Q237 679 322 554T493 303L578 178V598Q572 608 568 613T544 627T492 637H475V683H483Q498 680 600 680Q706 680 715 683H724V637H707Q634 633 622 598L621 302V6L614 0H600Q585 0 582 3T481 150T282 443T171 605V345L172 86Q183 50 257 46H274V0H265Q250 3 150 3Q48 3 33 0H25V46H42Z" transform="translate(1306,0)"></path></g><g data-mml-node="mo" transform="translate(2056,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(2445,0)"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g><g data-mml-node="mo" transform="translate(3017,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="mo" transform="translate(3683.8,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="msub" transform="translate(4739.6,0)"><g data-mml-node="mi"><path data-c="1D44A" d="M436 683Q450 683 486 682T553 680Q604 680 638 681T677 682Q695 682 695 674Q695 670 692 659Q687 641 683 639T661 637Q636 636 621 632T600 624T597 615Q597 603 613 377T629 138L631 141Q633 144 637 151T649 170T666 200T690 241T720 295T759 362Q863 546 877 572T892 604Q892 619 873 628T831 637Q817 637 817 647Q817 650 819 660Q823 676 825 679T839 682Q842 682 856 682T895 682T949 681Q1015 681 1034 683Q1048 683 1048 672Q1048 666 1045 655T1038 640T1028 637Q1006 637 988 631T958 617T939 600T927 584L923 578L754 282Q586 -14 585 -15Q579 -22 561 -22Q546 -22 542 -17Q539 -14 523 229T506 480L494 462Q472 425 366 239Q222 -13 220 -15T215 -19Q210 -22 197 -22Q178 -22 176 -15Q176 -12 154 304T131 622Q129 631 121 633T82 637H58Q51 644 51 648Q52 671 64 683H76Q118 680 176 680Q301 680 313 683H323Q329 677 329 674T327 656Q322 641 318 637H297Q236 634 232 620Q262 160 266 136L501 550L499 587Q496 629 489 632Q483 636 447 637Q428 637 422 639T416 648Q416 650 418 660Q419 664 420 669T421 676T424 680T428 682T436 683Z"></path></g><g data-mml-node="mn" transform="translate(977,-150) scale(0.707)"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g></g><g data-mml-node="mi" transform="translate(6120.1,0)"><path data-c="1D70E" d="M184 -11Q116 -11 74 34T31 147Q31 247 104 333T274 430Q275 431 414 431H552Q553 430 555 429T559 427T562 425T565 422T567 420T569 416T570 412T571 407T572 401Q572 357 507 357Q500 357 490 357T476 358H416L421 348Q439 310 439 263Q439 153 359 71T184 -11ZM361 278Q361 358 276 358Q152 358 115 184Q114 180 114 178Q106 141 106 117Q106 67 131 47T188 26Q242 26 287 73Q316 103 334 153T356 233T361 278Z"></path></g><g data-mml-node="mo" transform="translate(6691.1,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="msub" transform="translate(7080.1,0)"><g data-mml-node="mi"><path data-c="1D44A" d="M436 683Q450 683 486 682T553 680Q604 680 638 681T677 682Q695 682 695 674Q695 670 692 659Q687 641 683 639T661 637Q636 636 621 632T600 624T597 615Q597 603 613 377T629 138L631 141Q633 144 637 151T649 170T666 200T690 241T720 295T759 362Q863 546 877 572T892 604Q892 619 873 628T831 637Q817 637 817 647Q817 650 819 660Q823 676 825 679T839 682Q842 682 856 682T895 682T949 681Q1015 681 1034 683Q1048 683 1048 672Q1048 666 1045 655T1038 640T1028 637Q1006 637 988 631T958 617T939 600T927 584L923 578L754 282Q586 -14 585 -15Q579 -22 561 -22Q546 -22 542 -17Q539 -14 523 229T506 480L494 462Q472 425 366 239Q222 -13 220 -15T215 -19Q210 -22 197 -22Q178 -22 176 -15Q176 -12 154 304T131 622Q129 631 121 633T82 637H58Q51 644 51 648Q52 671 64 683H76Q118 680 176 680Q301 680 313 683H323Q329 677 329 674T327 656Q322 641 318 637H297Q236 634 232 620Q262 160 266 136L501 550L499 587Q496 629 489 632Q483 636 447 637Q428 637 422 639T416 648Q416 650 418 660Q419 664 420 669T421 676T424 680T428 682T436 683Z"></path></g><g data-mml-node="mn" transform="translate(977,-150) scale(0.707)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g></g><g data-mml-node="mi" transform="translate(8460.7,0)"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g><g data-mml-node="mo" transform="translate(9032.7,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></mjx-container></p>
-<p>If many entries of <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="7.47ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 3301.6 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D70E" d="M184 -11Q116 -11 74 34T31 147Q31 247 104 333T274 430Q275 431 414 431H552Q553 430 555 429T559 427T562 425T565 422T567 420T569 416T570 412T571 407T572 401Q572 357 507 357Q500 357 490 357T476 358H416L421 348Q439 310 439 263Q439 153 359 71T184 -11ZM361 278Q361 358 276 358Q152 358 115 184Q114 180 114 178Q106 141 106 117Q106 67 131 47T188 26Q242 26 287 73Q316 103 334 153T356 233T361 278Z"></path></g><g data-mml-node="mo" transform="translate(571,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="msub" transform="translate(960,0)"><g data-mml-node="mi"><path data-c="1D44A" d="M436 683Q450 683 486 682T553 680Q604 680 638 681T677 682Q695 682 695 674Q695 670 692 659Q687 641 683 639T661 637Q636 636 621 632T600 624T597 615Q597 603 613 377T629 138L631 141Q633 144 637 151T649 170T666 200T690 241T720 295T759 362Q863 546 877 572T892 604Q892 619 873 628T831 637Q817 637 817 647Q817 650 819 660Q823 676 825 679T839 682Q842 682 856 682T895 682T949 681Q1015 681 1034 683Q1048 683 1048 672Q1048 666 1045 655T1038 640T1028 637Q1006 637 988 631T958 617T939 600T927 584L923 578L754 282Q586 -14 585 -15Q579 -22 561 -22Q546 -22 542 -17Q539 -14 523 229T506 480L494 462Q472 425 366 239Q222 -13 220 -15T215 -19Q210 -22 197 -22Q178 -22 176 -15Q176 -12 154 304T131 622Q129 631 121 633T82 637H58Q51 644 51 648Q52 671 64 683H76Q118 680 176 680Q301 680 313 683H323Q329 677 329 674T327 656Q322 641 318 637H297Q236 634 232 620Q262 160 266 136L501 550L499 587Q496 629 489 632Q483 636 447 637Q428 637 422 639T416 648Q416 650 418 660Q419 664 420 669T421 676T424 680T428 682T436 683Z"></path></g><g data-mml-node="mn" transform="translate(977,-150) scale(0.707)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g></g><g data-mml-node="mi" transform="translate(2340.6,0)"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g><g data-mml-node="mo" transform="translate(2912.6,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></mjx-container> are near zero or predictable as inactive, the system can avoid treating all neurons equally for placement and computation.</p>
-<h2 id="Systems-Reading"><a href="#Systems-Reading" class="headerlink" title="Systems Reading"></a>Systems Reading</h2><p>This is different from quantization. Quantization shrinks every weight. PowerInfer changes where computation and weights live based on activation likelihood. Hot neurons stay on GPU for speed; colder parts can be offloaded or handled with less GPU residency.</p>
-<p>The limitation is prediction and workload dependence. If the hot/cold split is wrong for a domain, CPU-GPU transfer or missed GPU locality can erase the benefit. The paper is best read as a local-inference/offloading design rather than a datacenter serving baseline like vLLM.</p>
-<h2 id="Experiment-Reading"><a href="#Experiment-Reading" class="headerlink" title="Experiment Reading"></a>Experiment Reading</h2><p>The hot-neuron profile should be measured per model and workload. Activation sparsity is not a universal constant. A chat workload, code workload, and math workload can activate different FFN paths. If the hot set shifts, placement decisions need updating.</p>
-<p>The predictor overhead also matters. Predicting active neurons must be cheaper than simply computing them on GPU. Otherwise the hybrid path adds complexity without improving latency.</p>
-<p>PowerInfer is most useful when GPU memory is the limiting resource and CPU memory is abundant. In a datacenter GPU server with enough HBM, the CPU-GPU split may be less attractive than straightforward batching, quantization, or tensor parallelism.</p>
-<h2 id="Reproduction-Checklist"><a href="#Reproduction-Checklist" class="headerlink" title="Reproduction Checklist"></a>Reproduction Checklist</h2><p>The key profile is neuron activation frequency. I would collect activation statistics over representative prompts, choose hot neurons, then test on a different prompt distribution. If the hot set is stable, placement can be static. If it drifts, the system needs adaptation or loses accuracy/performance.</p>
-<p>The CPU-GPU transfer path must also be measured directly. A hybrid system can look good in memory accounting but lose time moving cold activations or weights. The right metric is token latency under a fixed consumer GPU memory budget.</p>
-<h2 id="Boundary-Failure-Mode"><a href="#Boundary-Failure-Mode" class="headerlink" title="Boundary / Failure Mode"></a>Boundary / Failure Mode</h2><p>The method also assumes the FFN activation pattern is exploitable at serving time. If batching mixes many unrelated prompts, hot neurons across the batch may cover most of the network and reduce sparsity. A good benchmark should include realistic batch composition, not just single-prompt traces where activation locality is easiest to exploit.</p>
+            <blockquote>
+<p>Song et al. PowerInfer: Fast Large Language Model Serving with a Consumer-grade GPU. SOSP 2024.</p>
+</blockquote>
+<p>Paper: <a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/2312.12456.pdf">PowerInfer: Fast Large Language Model Serving with a Consumer-grade GPU <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>PowerInfer is a local LLM serving paper. It is not trying to beat datacenter serving systems under large batches. It asks a narrower and very practical question:</p>
+<blockquote>
+<p>If the model is too large for a single consumer GPU, can we use CPU memory without making every token wait on CPU-GPU weight transfer?</p>
+</blockquote>
+<p>The paper’s answer is to exploit activation locality. A small subset of MLP neurons is activated frequently across inputs. PowerInfer treats these as hot neurons and keeps them on the GPU. The remaining cold neurons stay in CPU memory and are computed on the CPU only when an online predictor says they are needed.</p>
+<p>This is different from quantization and different from layer-level offloading. Quantization shrinks all weights. Layer offloading moves whole Transformer layers between GPU and CPU. PowerInfer instead works at neuron granularity inside layers.</p>
+<h2 id="The-Local-Serving-Problem"><a href="#The-Local-Serving-Problem" class="headerlink" title="The Local Serving Problem"></a>The Local Serving Problem</h2><p>Consumer GPUs have much less memory than datacenter GPUs. An RTX 4090 has 24 GB of VRAM. That is large for games, but not large enough for many FP16 LLMs, and still tight for some quantized large models once runtime buffers are included.</p>
+<p>The naive offloading solution is simple: keep part of the model in CPU memory and move weights to GPU when needed. The problem is that autoregressive decoding runs the full model for every generated token. If a token step repeatedly transfers large weights over PCIe, latency becomes dominated by data movement.</p>
+<p>PowerInfer’s key claim is that LLM inference has enough neuron-level locality to use the GPU as a hot-neuron cache and the CPU as a cold-neuron executor.</p>
+<h2 id="What-Is-A-Neuron-Here"><a href="#What-Is-A-Neuron-Here" class="headerlink" title="What Is A Neuron Here?"></a>What Is A Neuron Here?</h2><p>The paper defines a neuron as a row or column in a weight matrix. In an MLP block, the simplified shape is:</p>
+<p><mjx-container class="MathJax" jax="SVG" display="true"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="22.323ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 9866.7 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="4D" d="M132 622Q125 629 121 631T105 634T62 637H29V683H135Q221 683 232 682T249 675Q250 674 354 398L458 124L562 398Q666 674 668 675Q671 681 683 682T781 683H887V637H854Q814 636 803 634T785 622V61Q791 51 802 49T854 46H887V0H876Q855 3 736 3Q605 3 596 0H585V46H618Q660 47 669 49T688 61V347Q688 424 688 461T688 546T688 613L687 632Q454 14 450 7Q446 1 430 1T410 7Q409 9 292 316L176 624V606Q175 588 175 543T175 463T175 356L176 86Q187 50 261 46H278V0H269Q254 3 154 3Q52 3 37 0H29V46H46Q78 48 98 56T122 69T132 86V622Z"></path><path data-c="4C" d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q48 680 182 680Q324 680 348 683H360V637H333Q273 637 258 635T233 622L232 342V129Q232 57 237 52Q243 47 313 47Q384 47 410 53Q470 70 498 110T536 221Q536 226 537 238T540 261T542 272T562 273H582V268Q580 265 568 137T554 5V0H25V46H58Q100 47 109 49T128 61V622Z" transform="translate(917,0)"></path><path data-c="50" d="M130 622Q123 629 119 631T103 634T60 637H27V683H214Q237 683 276 683T331 684Q419 684 471 671T567 616Q624 563 624 489Q624 421 573 372T451 307Q429 302 328 301H234V181Q234 62 237 58Q245 47 304 46H337V0H326Q305 3 182 3Q47 3 38 0H27V46H60Q102 47 111 49T130 61V622ZM507 488Q507 514 506 528T500 564T483 597T450 620T397 635Q385 637 307 637H286Q237 637 234 628Q231 624 231 483V342H302H339Q390 342 423 349T481 382Q507 411 507 488Z" transform="translate(1542,0)"></path></g><g data-mml-node="mo" transform="translate(2223,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(2612,0)"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g><g data-mml-node="mo" transform="translate(3184,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="mo" transform="translate(3850.8,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="msub" transform="translate(4906.6,0)"><g data-mml-node="mi"><path data-c="1D44A" d="M436 683Q450 683 486 682T553 680Q604 680 638 681T677 682Q695 682 695 674Q695 670 692 659Q687 641 683 639T661 637Q636 636 621 632T600 624T597 615Q597 603 613 377T629 138L631 141Q633 144 637 151T649 170T666 200T690 241T720 295T759 362Q863 546 877 572T892 604Q892 619 873 628T831 637Q817 637 817 647Q817 650 819 660Q823 676 825 679T839 682Q842 682 856 682T895 682T949 681Q1015 681 1034 683Q1048 683 1048 672Q1048 666 1045 655T1038 640T1028 637Q1006 637 988 631T958 617T939 600T927 584L923 578L754 282Q586 -14 585 -15Q579 -22 561 -22Q546 -22 542 -17Q539 -14 523 229T506 480L494 462Q472 425 366 239Q222 -13 220 -15T215 -19Q210 -22 197 -22Q178 -22 176 -15Q176 -12 154 304T131 622Q129 631 121 633T82 637H58Q51 644 51 648Q52 671 64 683H76Q118 680 176 680Q301 680 313 683H323Q329 677 329 674T327 656Q322 641 318 637H297Q236 634 232 620Q262 160 266 136L501 550L499 587Q496 629 489 632Q483 636 447 637Q428 637 422 639T416 648Q416 650 418 660Q419 664 420 669T421 676T424 680T428 682T436 683Z"></path></g><g data-mml-node="mn" transform="translate(977,-150) scale(0.707)"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g></g><g data-mml-node="mi" transform="translate(6287.1,0)"><path data-c="1D70E" d="M184 -11Q116 -11 74 34T31 147Q31 247 104 333T274 430Q275 431 414 431H552Q553 430 555 429T559 427T562 425T565 422T567 420T569 416T570 412T571 407T572 401Q572 357 507 357Q500 357 490 357T476 358H416L421 348Q439 310 439 263Q439 153 359 71T184 -11ZM361 278Q361 358 276 358Q152 358 115 184Q114 180 114 178Q106 141 106 117Q106 67 131 47T188 26Q242 26 287 73Q316 103 334 153T356 233T361 278Z"></path></g><g data-mml-node="mo" transform="translate(6858.1,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="msub" transform="translate(7247.1,0)"><g data-mml-node="mi"><path data-c="1D44A" d="M436 683Q450 683 486 682T553 680Q604 680 638 681T677 682Q695 682 695 674Q695 670 692 659Q687 641 683 639T661 637Q636 636 621 632T600 624T597 615Q597 603 613 377T629 138L631 141Q633 144 637 151T649 170T666 200T690 241T720 295T759 362Q863 546 877 572T892 604Q892 619 873 628T831 637Q817 637 817 647Q817 650 819 660Q823 676 825 679T839 682Q842 682 856 682T895 682T949 681Q1015 681 1034 683Q1048 683 1048 672Q1048 666 1045 655T1038 640T1028 637Q1006 637 988 631T958 617T939 600T927 584L923 578L754 282Q586 -14 585 -15Q579 -22 561 -22Q546 -22 542 -17Q539 -14 523 229T506 480L494 462Q472 425 366 239Q222 -13 220 -15T215 -19Q210 -22 197 -22Q178 -22 176 -15Q176 -12 154 304T131 622Q129 631 121 633T82 637H58Q51 644 51 648Q52 671 64 683H76Q118 680 176 680Q301 680 313 683H323Q329 677 329 674T327 656Q322 641 318 637H297Q236 634 232 620Q262 160 266 136L501 550L499 587Q496 629 489 632Q483 636 447 637Q428 637 422 639T416 648Q416 650 418 660Q419 664 420 669T421 676T424 680T428 682T436 683Z"></path></g><g data-mml-node="mn" transform="translate(977,-150) scale(0.707)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g></g><g data-mml-node="mi" transform="translate(8627.7,0)"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g><g data-mml-node="mo" transform="translate(9199.7,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="mo" transform="translate(9588.7,0)"><path data-c="2E" d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60Z"></path></g></g></g></svg></mjx-container></p>
+<p>For ReLU-style activations, many entries of <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="7.47ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 3301.6 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D70E" d="M184 -11Q116 -11 74 34T31 147Q31 247 104 333T274 430Q275 431 414 431H552Q553 430 555 429T559 427T562 425T565 422T567 420T569 416T570 412T571 407T572 401Q572 357 507 357Q500 357 490 357T476 358H416L421 348Q439 310 439 263Q439 153 359 71T184 -11ZM361 278Q361 358 276 358Q152 358 115 184Q114 180 114 178Q106 141 106 117Q106 67 131 47T188 26Q242 26 287 73Q316 103 334 153T356 233T361 278Z"></path></g><g data-mml-node="mo" transform="translate(571,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="msub" transform="translate(960,0)"><g data-mml-node="mi"><path data-c="1D44A" d="M436 683Q450 683 486 682T553 680Q604 680 638 681T677 682Q695 682 695 674Q695 670 692 659Q687 641 683 639T661 637Q636 636 621 632T600 624T597 615Q597 603 613 377T629 138L631 141Q633 144 637 151T649 170T666 200T690 241T720 295T759 362Q863 546 877 572T892 604Q892 619 873 628T831 637Q817 637 817 647Q817 650 819 660Q823 676 825 679T839 682Q842 682 856 682T895 682T949 681Q1015 681 1034 683Q1048 683 1048 672Q1048 666 1045 655T1038 640T1028 637Q1006 637 988 631T958 617T939 600T927 584L923 578L754 282Q586 -14 585 -15Q579 -22 561 -22Q546 -22 542 -17Q539 -14 523 229T506 480L494 462Q472 425 366 239Q222 -13 220 -15T215 -19Q210 -22 197 -22Q178 -22 176 -15Q176 -12 154 304T131 622Q129 631 121 633T82 637H58Q51 644 51 648Q52 671 64 683H76Q118 680 176 680Q301 680 313 683H323Q329 677 329 674T327 656Q322 641 318 637H297Q236 634 232 620Q262 160 266 136L501 550L499 587Q496 629 489 632Q483 636 447 637Q428 637 422 639T416 648Q416 650 418 660Q419 664 420 669T421 676T424 680T428 682T436 683Z"></path></g><g data-mml-node="mn" transform="translate(977,-150) scale(0.707)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g></g><g data-mml-node="mi" transform="translate(2340.6,0)"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g><g data-mml-node="mo" transform="translate(2912.6,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></mjx-container> are zero or near-zero for a given token. If an intermediate activation entry is inactive, the corresponding work in the following projection can be skipped.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/fig1-transformer-neuron-activation.png"></p>
+<p>Figure 1 shows this at the MLP level. The activation function gates FC1 outputs, and only the activated rows or columns contribute to the FC2 computation.</p>
+<p>The paper reports substantial MLP sparsity even outside pure ReLU models.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/table1-activation-sparsity.png"></p>
+<p>Table 1 is the quick motivation:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Activation</th>
+<th align="right">Reported MLP sparsity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OPT-30B</td>
+<td>ReLU</td>
+<td align="right">97%</td>
+</tr>
+<tr>
+<td>LLaMA2-13B</td>
+<td>SwiGLU</td>
+<td align="right">43%</td>
+</tr>
+<tr>
+<td>Yi-34B</td>
+<td>SwiGLU</td>
+<td align="right">53%</td>
+</tr>
+</tbody></table>
+<p>For ReLU-based models, sparsity means zero activation. For SwiGLU-based models, the paper measures the proportion of neurons that can be dynamically pruned with less than 1% perplexity impact. That distinction matters: PowerInfer is strongest on ReLU-family models, but the authors also test lower-sparsity non-ReLU settings.</p>
+<h2 id="Why-Existing-Offloading-Is-Slow"><a href="#Why-Existing-Offloading-Is-Slow" class="headerlink" title="Why Existing Offloading Is Slow"></a>Why Existing Offloading Is Slow</h2><p>The paper separates two common approaches.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/fig2-offloading-baselines.png"></p>
+<p>GPU-centric offloading stores overflow parameters in CPU memory, then transfers needed weights to GPU at runtime. This can make a large model fit, but every token can pay PCIe transfer cost.</p>
+<p>Hybrid CPU-GPU offloading splits layers between CPU and GPU. This reduces transfer volume, but it gives the CPU too much compute when the GPU cannot hold enough of the model.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/fig3-baseline-latency-breakdown.png"></p>
+<p>Figure 3 shows the failure on OPT-30B with an RTX 4090. FlexGen and DejaVu with unified memory are dominated by CPU-GPU movement. The paper states that more than 99.5% of FlexGen processing time is spent transferring LLM weights from CPU to GPU. The llama.cpp-style hybrid path avoids much of that transfer, but for OPT-30B on a 24 GB 4090 only about 37% of the model is on GPU, and the CPU ends up handling most of the computation time.</p>
+<p>PowerInfer is trying to get the best of both:</p>
+<ul>
+<li>Keep the most frequently useful weights in GPU memory.</li>
+<li>Avoid moving cold weights to GPU for each token.</li>
+<li>Compute cold activated neurons directly on CPU.</li>
+<li>Skip inactive neurons entirely.</li>
+</ul>
+<h2 id="Insight-1-Power-Law-Activation"><a href="#Insight-1-Power-Law-Activation" class="headerlink" title="Insight 1: Power-Law Activation"></a>Insight 1: Power-Law Activation</h2><p>The central observation is not only “activations are sparse.” It is that activation frequency is highly skewed.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/fig4-powerlaw-cdf.png"></p>
+<p>Figure 4 profiles about 1M tokens from Wikipedia. In one MLP block, the paper reports that 26% of OPT-30B neurons, 43% of LLaMA2-ReGLU-70B neurons, and 69% of LLaMA2-SwiGLU-70B neurons account for 80% of activations. Across the entire model, the corresponding proportions are 17%, 26%, and 75%.</p>
+<p>This is the hot/cold split:</p>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Meaning</th>
+<th>Placement intuition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Hot neurons</td>
+<td>Frequently activated across many inputs</td>
+<td>Keep on GPU</td>
+</tr>
+<tr>
+<td>Cold neurons</td>
+<td>Input-dependent and less frequently activated</td>
+<td>Keep on CPU, compute only when predicted active</td>
+</tr>
+</tbody></table>
+<p>The split is useful only if it is stable across tasks. The paper checks that too.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/fig5-activation-hotness.png"></p>
+<p>Figure 5 shows OPT-30B activation frequency by layer and across tasks. The paper reports more than 90% overlap in the top 20% most frequently activated neurons across the profiled downstream domains. That is the key evidence behind the offline placement step. If the hot set changed completely between tasks, static placement would be fragile.</p>
+<h2 id="Insight-2-CPU-Computation-Can-Beat-Weight-Transfer"><a href="#Insight-2-CPU-Computation-Can-Beat-Weight-Transfer" class="headerlink" title="Insight 2: CPU Computation Can Beat Weight Transfer"></a>Insight 2: CPU Computation Can Beat Weight Transfer</h2><p>If a cold activated neuron lives in CPU memory, there are two options:</p>
+<ol>
+<li>Load the neuron’s weights to GPU and compute there.</li>
+<li>Compute the neuron directly on CPU and transfer only the result.</li>
+</ol>
+<p>For small local-serving batches, PowerInfer chooses the second path.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/fig6-direct-cpu-execute.png"></p>
+<p>Figure 6 compares load-then-execute with direct CPU execution for OPT-30B. For batch sizes under 32, direct CPU computation is faster than transferring those weights to the RTX 4090 and computing on GPU. This is the second reason the design is neuron-level rather than layer-level: the CPU should not own whole layers, but it can handle a small set of cold activated neurons.</p>
+<h2 id="System-Overview"><a href="#System-Overview" class="headerlink" title="System Overview"></a>System Overview</h2><p>PowerInfer has an offline part and an online part.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/fig7-powerinfer-architecture.png"></p>
+<p>The offline part profiles activation statistics, classifies neurons as hot or cold, trains adaptive activation predictors, and solves a placement problem under GPU memory and bandwidth constraints. The online part loads the selected hot neurons on GPU, keeps cold neurons on CPU, predicts active neurons per input, and runs GPU and CPU work concurrently.</p>
+<p>The high-level workflow is:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">offline:</span><br><span class="line">  profile neuron activation frequency on a general corpus</span><br><span class="line">  train per-layer activation predictors</span><br><span class="line">  solve hot/cold placement under GPU memory and transfer constraints</span><br><span class="line">  load hot neurons on GPU and cold neurons on CPU</span><br><span class="line"></span><br><span class="line">online for each token step:</span><br><span class="line">  predict active neurons</span><br><span class="line">  run active hot neurons on GPU</span><br><span class="line">  run active cold neurons on CPU</span><br><span class="line">  transfer cold-neuron outputs to GPU</span><br><span class="line">  merge GPU and CPU results</span><br></pre></td></tr></table></figure></div>
+
+<p>The model is still the same model. PowerInfer is changing the runtime path, not replacing the LLM with a smaller model.</p>
+<h2 id="Single-Layer-Execution"><a href="#Single-Layer-Execution" class="headerlink" title="Single-Layer Execution"></a>Single-Layer Execution</h2><p>The single-layer example is the easiest way to understand the runtime.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/fig8-single-layer-example.png"></p>
+<p>In the example, neurons 3, 5, and 7 are classified as hot offline and are stored on GPU. At runtime, the predictor says neurons 3, 4, and 5 are active. The GPU computes 3 and 5. The CPU computes 4. Neuron 7 is hot but predicted inactive, so it is skipped. After CPU computation finishes, its output is transferred to GPU and merged with the GPU result.</p>
+<p>This is why PowerInfer needs three pieces to work together:</p>
+<ul>
+<li>The offline hot/cold split controls memory placement.</li>
+<li>The online predictor controls which neurons are computed for a particular token.</li>
+<li>The hybrid executor overlaps CPU and GPU work and merges partial results.</li>
+</ul>
+<p>If any piece is weak, the design loses its advantage. A bad predictor computes too much or misses useful neurons. A bad placement policy leaves hot work on CPU. A bad executor spends the saved compute on synchronization.</p>
+<h2 id="Adaptive-Predictors"><a href="#Adaptive-Predictors" class="headerlink" title="Adaptive Predictors"></a>Adaptive Predictors</h2><p>PowerInfer inherits the idea of activation predictors from DejaVu, but local deployment changes the predictor budget. Fixed-size predictors can be too large. The paper gives a concrete example: predictors for OPT-175B would require around 27 GB of GPU memory, more than an RTX 4090 has.</p>
+<p>The paper’s solution is to size predictors according to layer sparsity and skewness. Sparse, highly skewed layers need smaller predictors because the active set is easier to identify. Dense or less skewed layers need larger predictors.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/fig9-predictor-size-sparsity.png"></p>
+<p>Figure 9 shows the relationship for OPT-175B at a guaranteed 95% predictor accuracy level. Higher sparsity generally permits smaller predictors, while the error bars reflect skewness differences inside layers.</p>
+<p>Later, the evaluation reports predictor sizes for several models.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/table6-predictor-size.png"></p>
+<p>The predictor ratio is not free, but it is bounded. The paper reports that predictor parameters are about 7.09% of model weights on average, and predictor execution contributes less than 10% of total inference time.</p>
+<h2 id="Placement-Policy"><a href="#Placement-Policy" class="headerlink" title="Placement Policy"></a>Placement Policy</h2><p>The placement policy is more subtle than “put the hottest neurons on GPU.”</p>
+<p>The GPU has limited memory and high bandwidth. The CPU has more memory and lower compute throughput. PCIe transfer is expensive. A placement policy therefore needs to balance:</p>
+<table>
+<thead>
+<tr>
+<th>Factor</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Activation frequency</td>
+<td>Hot neurons are likely to be used often</td>
+</tr>
+<tr>
+<td>Neuron impact</td>
+<td>Some neurons matter more to model output</td>
+</tr>
+<tr>
+<td>GPU memory capacity</td>
+<td>The hot set cannot exceed available VRAM</td>
+</tr>
+<tr>
+<td>CPU-GPU transfer</td>
+<td>Too much split work can create communication overhead</td>
+</tr>
+<tr>
+<td>Layer structure</td>
+<td>Partial placement inside a layer must still be executable efficiently</td>
+</tr>
+</tbody></table>
+<p>The paper formulates this as an integer linear programming problem. The objective is to maximize the impact of neurons placed on GPU while satisfying memory and communication constraints. That offline solver is what turns the activation profile into an actual memory layout.</p>
+<p>The practical reading: PowerInfer is a cache placement system for neurons, but the cache item is not only chosen by frequency. It also needs to respect layer-level execution cost.</p>
+<h2 id="Neuron-Aware-Operators"><a href="#Neuron-Aware-Operators" class="headerlink" title="Neuron-Aware Operators"></a>Neuron-Aware Operators</h2><p>Normal sparse kernels are not automatically a good fit here. The sparsity is dynamic, neuron-granular, and split across CPU and GPU. Converting dense matrices into generic sparse formats at runtime can erase the win.</p>
+<p>PowerInfer implements neuron-aware operators that directly compute activated neurons and their weights. On GPU, the operator maps individual activated neurons to thread blocks. On CPU, the operator assigns activated neuron work to available CPU cores.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/fig16-sparse-operator.png"></p>
+<p>Figure 16 compares PowerInfer’s operators with dense computation, PyTorch sparse on CPU, and PIT on GPU. The CPU result is the most striking: PyTorch sparse does not beat dense computation until sparsity is above 87%, while PowerInfer’s CPU operator beats dense even below 10% sparsity. On GPU, PowerInfer is close to PIT, but PowerInfer’s advantage is that the same framework supports hybrid CPU-GPU execution.</p>
+<h2 id="Evaluation-Setup"><a href="#Evaluation-Setup" class="headerlink" title="Evaluation Setup"></a>Evaluation Setup</h2><p>The evaluation uses two local PC configurations.</p>
+<table>
+<thead>
+<tr>
+<th>Setup</th>
+<th>CPU</th>
+<th>Host memory</th>
+<th>GPU</th>
+<th>PCIe</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PC-High</td>
+<td>Intel i9-13900K, eight 5.4 GHz cores</td>
+<td>192 GB, 67.2 GB/s</td>
+<td>RTX 4090, 24 GB</td>
+<td>PCIe 4.0, 64 GB/s</td>
+</tr>
+<tr>
+<td>PC-Low</td>
+<td>Intel i7-12700K, eight 4.9 GHz cores</td>
+<td>64 GB, 38.4 GB/s</td>
+<td>RTX 2080Ti, 11 GB</td>
+<td>PCIe 3.0, 32 GB/s</td>
+</tr>
+</tbody></table>
+<p>The tested models cover ReLU, ReGLU, SwiGLU, and dReLU variants.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/table3-evaluation-models-sparsity.png"></p>
+<p>Table 3 is useful because it explains the result spread. OPT and Falcon are highly sparse. LLaMA2-ReGLU is less sparse but still favorable. SwiGLU models have lower sparsity, so PowerInfer still helps but with smaller speedups.</p>
+<p>The baselines are llama.cpp and SpecInfer. The paper also analyzes FlexGen and DejaVu earlier, but they are not the main end-to-end baselines because their latency is poor in this local, batch-small setting.</p>
+<h2 id="FP16-Results"><a href="#FP16-Results" class="headerlink" title="FP16 Results"></a>FP16 Results</h2><p>The main FP16 result is batch size 1 generation speed, which matches the local interactive setting better than a throughput-oriented server benchmark.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/fig10-pchigh-fp16-speedup.png"></p>
+<p>On PC-High with RTX 4090, the paper reports an average PowerInfer generation speed of 8.32 tokens/s and a peak of 16.06 tokens/s. It reports average speedups of 7.23x over llama.cpp and 6.19x over SpecInfer, with Falcon-40B reaching up to 11.69x over llama.cpp.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/fig11-pclow-fp16-speedup.png"></p>
+<p>On PC-Low with RTX 2080Ti, PowerInfer still improves performance, but the margin is smaller because the 11 GB GPU can host fewer hot neurons. The paper reports average speedups of 4.71x over llama.cpp and 5.97x over SpecInfer, with peaks of 7.06x and 7.47x.</p>
+<p>This is a useful boundary condition. PowerInfer benefits from GPU memory even though it is designed for limited VRAM. If the GPU is too small relative to the model, more hot neurons spill to CPU and the CPU becomes the bottleneck.</p>
+<h2 id="Where-The-Work-Runs"><a href="#Where-The-Work-Runs" class="headerlink" title="Where The Work Runs"></a>Where The Work Runs</h2><p>Figure 12 explains why PowerInfer is faster than layer-level hybrid offloading.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/fig12-neuron-load-distribution.png"></p>
+<p>The paper defines neuron load as the proportion of activated neuron computations executed by each device. On PC-High, PowerInfer increases the GPU’s share from about 20% in llama.cpp to about 70%. This is the runtime effect of hot-neuron placement: the GPU gets the common work even though the whole model does not fit in VRAM.</p>
+<p>On PC-Low, the GPU share can fall. The paper gives the example of running a roughly 60 GB model on an 11 GB RTX 2080Ti, where the GPU handles about 42% of the neuron load because it cannot hold enough hot neurons.</p>
+<h2 id="Long-Input-And-INT4"><a href="#Long-Input-And-INT4" class="headerlink" title="Long Input And INT4"></a>Long Input And INT4</h2><p>Long prompts change the behavior. During prefill, many tokens are processed together, and their combined active-neuron set is less sparse. PowerInfer switches to dense GPU computation in prefill, then uses sparse hybrid execution during generation.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/table4-long-input-latency.png"></p>
+<p>For 1.5K input length and 256 output length on PC-High, the paper still reports 3.47x to 5.69x speedup over llama.cpp. This is not as clean as single-token decode, but it shows that the system is not only a short-prompt trick.</p>
+<p>The paper also evaluates INT4 models.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/fig13-int4-speedup.png"></p>
+<p>With INT4 quantization, PC-High reaches 13.20 tokens/s on average and 29.08 tokens/s at peak. The average speedup over llama.cpp is 2.89x, with a maximum of 4.28x. On PC-Low, the average speedup is 5.01x and the peak is 8.00x. The OPT-175B result is especially interesting: PowerInfer nearly reaches 2 tokens/s on PC-High and is 2.66x faster than llama.cpp.</p>
+<p>Quantization and PowerInfer are complementary. Quantization reduces the memory footprint of every weight. PowerInfer changes where and whether neuron computations happen.</p>
+<h2 id="Batching-Boundary"><a href="#Batching-Boundary" class="headerlink" title="Batching Boundary"></a>Batching Boundary</h2><p>PowerInfer is aimed at small-batch local serving. The batch-size result makes that explicit.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/fig14-batch-speedup.png"></p>
+<p>On Falcon-40B with PC-High, the paper reports strong speedups when batch size is below 32, with an average 6.08x improvement over llama.cpp. At batch size 32, PowerInfer still reports 4.38x speedup, but the ratio declines as batch size grows.</p>
+<p>The reason is joint activation. With more requests in a batch, the union of active neurons grows. Eventually the batch activates enough of the model that sparsity is less useful. This is why PowerInfer should not be read as a replacement for high-throughput datacenter batching systems. It is a local, latency-sensitive path.</p>
+<h2 id="Ablation"><a href="#Ablation" class="headerlink" title="Ablation"></a>Ablation</h2><p>The ablation separates three ideas:</p>
+<ol>
+<li><code>+PO</code>: add predictors and neuron-aware operators, but keep layer-wise execution.</li>
+<li><code>+Engine</code>: allow GPU and CPU to process neurons from the same layer concurrently.</li>
+<li><code>+Policy</code>: add the optimized placement policy from the offline solver.</li>
+</ol>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/fig15-component-breakdown.png"></p>
+<p>The paper reports:</p>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th align="right">Bamboo-7B speedup</th>
+<th align="right">Falcon-40B speedup</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>+PO</td>
+<td align="right">1.87x</td>
+<td align="right">3.32x</td>
+</tr>
+<tr>
+<td>+Engine</td>
+<td align="right">2.60x</td>
+<td align="right">7.80x</td>
+</tr>
+<tr>
+<td>+Policy</td>
+<td align="right">3.62x</td>
+<td align="right">11.69x</td>
+</tr>
+</tbody></table>
+<p>The large jump from <code>+PO</code> to <code>+Engine</code> shows that neuron sparsity alone is not enough. The runtime must split work inside a layer so the GPU and CPU are both useful. The final jump from <code>+Engine</code> to <code>+Policy</code> shows that random neuron placement wastes GPU memory and creates bad communication patterns.</p>
+<h2 id="Predictor-Overhead-And-Accuracy"><a href="#Predictor-Overhead-And-Accuracy" class="headerlink" title="Predictor Overhead And Accuracy"></a>Predictor Overhead And Accuracy</h2><p>Prediction is not free, but it is small enough in the measured setting.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/fig17-prediction-overhead.png"></p>
+<p>Figure 17 shows predictor overhead on PC-Low. The paper reports that online predictor execution is less than 10% of total inference time on average. This matters because a perfect sparsity plan would be useless if the predictor cost were comparable to the skipped MLP work.</p>
+<p>The paper also evaluates model accuracy after using predictors. The short version is that the reported benchmark averages remain close to the original models. This does not mean misprediction is harmless. It means the missed neurons tend to have small contribution in the evaluated tasks, and the predictors were sized to keep perplexity close to baseline.</p>
+<h2 id="RTX-4090-Versus-A100"><a href="#RTX-4090-Versus-A100" class="headerlink" title="RTX 4090 Versus A100"></a>RTX 4090 Versus A100</h2><p>The headline comparison is not “4090 beats A100.” It is more careful: PowerInfer narrows the gap between a local consumer GPU setup and a server GPU that can hold the whole model.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/PowerInfer/fig18-4090-vs-a100.png"></p>
+<p>The paper compares PowerInfer on RTX 4090 with vLLM on an 80 GB A100 for OPT-30B and Falcon-40B. With input length 1, llama.cpp on 4090 is 93% and 92% slower than vLLM on A100, while PowerInfer reduces the gap to 18% and 23%. With input length 64, PowerInfer reduces the gap to 28% and 29%.</p>
+<p>This result is the strongest systems message in the paper. The 4090 does not magically become an A100. The CPU still becomes a bottleneck in some cases. But neuron-level locality makes the consumer-GPU setup much closer than layer offloading can.</p>
+<h2 id="What-I-Would-Check-In-A-Reproduction"><a href="#What-I-Would-Check-In-A-Reproduction" class="headerlink" title="What I Would Check In A Reproduction"></a>What I Would Check In A Reproduction</h2><p>For a real reproduction, I would measure these items separately:</p>
+<table>
+<thead>
+<tr>
+<th>Measurement</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Per-layer activation sparsity</td>
+<td>Decides whether PowerInfer is applicable</td>
+</tr>
+<tr>
+<td>Hot-neuron overlap across tasks</td>
+<td>Tests whether offline placement generalizes</td>
+</tr>
+<tr>
+<td>Predictor false negatives</td>
+<td>Missed active neurons can hurt accuracy</td>
+</tr>
+<tr>
+<td>Predictor runtime and memory</td>
+<td>Predictor overhead can consume the saved budget</td>
+</tr>
+<tr>
+<td>GPU/CPU neuron load split</td>
+<td>Shows whether the GPU is actually doing the common work</td>
+</tr>
+<tr>
+<td>PCIe transfer volume</td>
+<td>Verifies that the system is not secretly transfer-bound</td>
+</tr>
+<tr>
+<td>Prefill versus decode latency</td>
+<td>Sparsity is much cleaner during token-by-token generation</td>
+</tr>
+<tr>
+<td>Batch size sweep</td>
+<td>Finds where joint activation destroys sparsity</td>
+</tr>
+</tbody></table>
+<p>The most important test is distribution shift. If a new workload activates a different hot set, an offline policy from Wikipedia may be less effective. The paper’s task-overlap result is encouraging, but a deployment should still profile on representative prompts.</p>
+<h2 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h2><p>PowerInfer has clear boundaries:</p>
+<ul>
+<li>It works best when MLP activation sparsity is high. ReLU-family models are the best fit.</li>
+<li>Larger batches reduce the advantage because the union of active neurons grows.</li>
+<li>Long prefill is less sparse than single-token decode, so the generation phase carries most of the win.</li>
+<li>The system needs an offline profiling, predictor training, and placement step per model.</li>
+<li>Predictor errors are acceptable only if missed neurons have low output impact.</li>
+<li>CPU execution can become the bottleneck when the GPU cannot host enough hot neurons.</li>
+<li>The design is more complex than quantization or simple layer offloading.</li>
+</ul>
+<p>The paper is therefore not a universal serving recipe. It is a strong design for one important corner: large-model, low-latency, small-batch inference on a local machine with limited GPU memory and enough CPU memory.</p>
+<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>PowerInfer reframes local LLM serving as a locality problem. Instead of asking only “how do I make the model smaller?”, it asks:</p>
+<blockquote>
+<p>Which parts of the model are usually needed for the next token, and where should those parts live?</p>
+</blockquote>
+<p>That makes the paper complementary to quantization, KV-cache paging, and speculative decoding. PowerInfer’s useful lesson is that activation sparsity is not only an arithmetic shortcut. When the hot set is stable, it becomes a memory-placement primitive.</p>
 
         </div>
 
@@ -578,6 +882,10 @@ mjx-container[display="true"] + br {
                 
                     <li class="tag-item">
                         <a href="/tags/LLM/">#LLM</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Inference/">#Inference</a>&nbsp;
                     </li>
                 
                     <li class="tag-item">
@@ -635,8 +943,8 @@ mjx-container[display="true"] + br {
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">PowerInfer: Consumer-GPU LLM Serving</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Results"><span class="nav-text">Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hot-Cold-Placement"><span class="nav-text">Hot&#x2F;Cold Placement</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Different-From-Quantization"><span class="nav-text">Different From Quantization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Limitation"><span class="nav-text">Limitation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Source-Level-Notes"><span class="nav-text">Source-Level Notes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Systems-Reading"><span class="nav-text">Systems Reading</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment-Reading"><span class="nav-text">Experiment Reading</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reproduction-Checklist"><span class="nav-text">Reproduction Checklist</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Boundary-Failure-Mode"><span class="nav-text">Boundary &#x2F; Failure Mode</span></a></li></ol>
+        <div class="page-title">PowerInfer: Fast LLM Serving on a Consumer GPU</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Local-Serving-Problem"><span class="nav-text">The Local Serving Problem</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#What-Is-A-Neuron-Here"><span class="nav-text">What Is A Neuron Here?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-Existing-Offloading-Is-Slow"><span class="nav-text">Why Existing Offloading Is Slow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Insight-1-Power-Law-Activation"><span class="nav-text">Insight 1: Power-Law Activation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Insight-2-CPU-Computation-Can-Beat-Weight-Transfer"><span class="nav-text">Insight 2: CPU Computation Can Beat Weight Transfer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#System-Overview"><span class="nav-text">System Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Single-Layer-Execution"><span class="nav-text">Single-Layer Execution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adaptive-Predictors"><span class="nav-text">Adaptive Predictors</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Placement-Policy"><span class="nav-text">Placement Policy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Neuron-Aware-Operators"><span class="nav-text">Neuron-Aware Operators</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Evaluation-Setup"><span class="nav-text">Evaluation Setup</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FP16-Results"><span class="nav-text">FP16 Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Where-The-Work-Runs"><span class="nav-text">Where The Work Runs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Long-Input-And-INT4"><span class="nav-text">Long Input And INT4</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Batching-Boundary"><span class="nav-text">Batching Boundary</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ablation"><span class="nav-text">Ablation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Predictor-Overhead-And-Accuracy"><span class="nav-text">Predictor Overhead And Accuracy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RTX-4090-Versus-A100"><span class="nav-text">RTX 4090 Versus A100</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#What-I-Would-Check-In-A-Reproduction"><span class="nav-text">What I Would Check In A Reproduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Limitations"><span class="nav-text">Limitations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
 
     </div>
 </div>

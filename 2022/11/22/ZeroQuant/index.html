@@ -18,21 +18,29 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="ZeroQuant combines fine-grained transformer quantization with layer-wise distillation to make large-scale INT8&#x2F;INT4 PTQ affordable.">
+        <meta name="description" content="ZeroQuant makes post-training quantization practical for large Transformers with fine-grained W8A8&#x2F;W4A8 quantization, layer-by-layer distillation, and fused INT8 kernels.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ZeroQuant: Large Transformer PTQ">
+<meta property="og:title" content="ZeroQuant: Efficient and Affordable PTQ for Large Transformers">
 <meta property="og:url" content="https://baytoro.github.io/2022/11/22/ZeroQuant/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="ZeroQuant combines fine-grained transformer quantization with layer-wise distillation to make large-scale INT8&#x2F;INT4 PTQ affordable.">
+<meta property="og:description" content="ZeroQuant makes post-training quantization practical for large Transformers with fine-grained W8A8&#x2F;W4A8 quantization, layer-by-layer distillation, and fused INT8 kernels.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://baytoro.github.io/_imgs/ZeroQuant/fig1.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ZeroQuant/fig1-range-imbalance.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ZeroQuant/table1-gpt350m-naive-ptq.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ZeroQuant/fig2-fused-int8-gemm.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ZeroQuant/table2-bertbase-results.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ZeroQuant/table4-gpt350m-results.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ZeroQuant/table6-bert-latency.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ZeroQuant/table9-component-ablation.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ZeroQuant/table10-lkd-data-source.png">
 <meta property="article:published_time" content="2022-11-21T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-03T08:02:50.742Z">
+<meta property="article:modified_time" content="2026-07-13T04:50:24.670Z">
 <meta property="article:author" content="H.J. Chen">
 <meta property="article:tag" content="Quantization">
+<meta property="article:tag" content="LLM">
 <meta property="article:tag" content="Transformer">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://baytoro.github.io/_imgs/ZeroQuant/fig1.png">
+<meta name="twitter:image" content="https://baytoro.github.io/_imgs/ZeroQuant/fig1-range-imbalance.png">
     
     
     <!--- Icon Part-->
@@ -44,7 +52,7 @@
     
     <title>
         
-            ZeroQuant: Large Transformer PTQ -
+            ZeroQuant: Efficient and Affordable PTQ for Large Transformers -
         
         Blog
     </title>
@@ -459,9 +467,9 @@ mjx-container[display="true"] + br {
             
                 
                 
-                <img src="/_imgs/ZeroQuant/thumbnail.png" alt="ZeroQuant: Large Transformer PTQ" class="max-w-none"/>
+                <img src="/_imgs/ZeroQuant/thumbnail.png" alt="ZeroQuant: Efficient and Affordable PTQ for Large Transformers" class="max-w-none"/>
                 
-                <h1 class="article-title-cover">ZeroQuant: Large Transformer PTQ</h1>
+                <h1 class="article-title-cover">ZeroQuant: Efficient and Affordable PTQ for Large Transformers</h1>
             
             </div>
             
@@ -488,8 +496,8 @@ mjx-container[display="true"] + br {
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2026-07-03 16:02:50</span>
-            <span class="mobile">2026-07-03 16:02:50</span> -->
+            <!-- <span class="desktop">2026-07-13 12:50:24</span>
+            <span class="mobile">2026-07-13 12:50:24</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -503,7 +511,17 @@ mjx-container[display="true"] + br {
                     
                         
                         <li>
-                            <a href="/categories/Paper-Reading/">Paper Reading</a>&nbsp;
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
                         </li>
                     
                     
@@ -518,6 +536,10 @@ mjx-container[display="true"] + br {
                 
                     <li>
                         <a href="/tags/Quantization/">Quantization</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/LLM/">LLM</a>&nbsp;
                     </li>
                 
                     <li>
@@ -544,41 +566,421 @@ mjx-container[display="true"] + br {
 
         <div class="article-content markdown-body">
             <p>Paper: <a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/2206.01861.pdf">ZeroQuant: Efficient and Affordable Post-Training Quantization for Large-Scale Transformers <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>ZeroQuant sits between classic CNN PTQ and the LLM-specific wave. It already targets large transformers, but it still uses a general framework: fine-grained quantization plus layer-wise distillation.</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Full quantization-aware training is too expensive for billion-parameter transformers. Plain PTQ can be too inaccurate, especially for low-bit weights. ZeroQuant tries to get most of the benefit of distillation without retraining the whole model end to end.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ZeroQuant/fig1.png"></p>
-<p>The figure shows the method flow: quantize the model, reconstruct layer behavior using teacher outputs, and avoid full-model retraining cost.</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>ZeroQuant uses three main ideas:</p>
-<ol>
-<li><strong>Fine-grained quantization.</strong> Transformer matrices are quantized with granularities better matched to their distributions than a single global scale.</li>
-<li><strong>Layer-by-layer distillation.</strong> Each quantized layer is trained to match the corresponding full-precision layer output.</li>
-<li><strong>Affordable calibration.</strong> The method uses limited data and local reconstruction rather than full task training.</li>
-</ol>
-<p>For a layer <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.464ex;" xmlns="http://www.w3.org/2000/svg" width="1.773ex" height="2.059ex" role="img" focusable="false" viewBox="0 -705 783.7 910"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path data-c="1D453" d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z"></path></g><g data-mml-node="mi" transform="translate(523,-150) scale(0.707)"><path data-c="1D459" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path></g></g></g></g></svg></mjx-container>, the local objective is conceptually:</p>
-<p><mjx-container class="MathJax" jax="SVG" display="true"><svg style="vertical-align: -2.649ex;" xmlns="http://www.w3.org/2000/svg" width="20.144ex" height="5.076ex" role="img" focusable="false" viewBox="0 -1073 8903.5 2243.7"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="munder"><g data-mml-node="mo"><path data-c="6D" d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q351 442 364 440T387 434T406 426T421 417T432 406T441 395T448 384T452 374T455 366L457 361L460 365Q463 369 466 373T475 384T488 397T503 410T523 422T546 432T572 439T603 442Q729 442 740 329Q741 322 741 190V104Q741 66 743 59T754 49Q775 46 803 46H819V0H811L788 1Q764 2 737 2T699 3Q596 3 587 0H579V46H595Q656 46 656 62Q657 64 657 200Q656 335 655 343Q649 371 635 385T611 402T585 404Q540 404 506 370Q479 343 472 315T464 232V168V108Q464 78 465 68T468 55T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z"></path><path data-c="69" d="M69 609Q69 637 87 653T131 669Q154 667 171 652T188 609Q188 579 171 564T129 549Q104 549 87 564T69 609ZM247 0Q232 3 143 3Q132 3 106 3T56 1L34 0H26V46H42Q70 46 91 49Q100 53 102 60T104 102V205V293Q104 345 102 359T88 378Q74 385 41 385H30V408Q30 431 32 431L42 432Q52 433 70 434T106 436Q123 437 142 438T171 441T182 442H185V62Q190 52 197 50T232 46H255V0H247Z" transform="translate(833,0)"></path><path data-c="6E" d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q450 438 463 329Q464 322 464 190V104Q464 66 466 59T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z" transform="translate(1111,0)"></path></g><g data-mml-node="TeXAtom" transform="translate(556.4,-925.7) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="msub"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mover"><g data-mml-node="mi"><path data-c="1D453" d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z"></path></g><g data-mml-node="mo" transform="translate(457,279) translate(-250 0)"><path data-c="5E" d="M112 560L249 694L257 686Q387 562 387 560L361 531Q359 532 303 581L250 627L195 580Q182 569 169 557T148 538L140 532Q138 530 125 546L112 560Z"></path></g></g></g><g data-mml-node="mi" transform="translate(523,-150) scale(0.707)"><path data-c="1D459" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path></g></g></g></g><g data-mml-node="mo" transform="translate(1833.7,0) translate(0 -0.5)"><path data-c="7C" d="M139 -249H137Q125 -249 119 -235V251L120 737Q130 750 139 750Q152 750 159 735V-235Q151 -249 141 -249H139Z"></path></g><g data-mml-node="msub" transform="translate(2111.7,0)"><g data-mml-node="mi"><path data-c="1D453" d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z"></path></g><g data-mml-node="mi" transform="translate(523,-150) scale(0.707)"><path data-c="1D459" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path></g></g><g data-mml-node="mo" transform="translate(2895.4,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="msub" transform="translate(3284.4,0)"><g data-mml-node="mi"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g><g data-mml-node="mi" transform="translate(605,-150) scale(0.707)"><path data-c="1D459" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path></g></g><g data-mml-node="mo" transform="translate(4150.1,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="mo" transform="translate(4761.3,0)"><path data-c="2212" d="M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z"></path></g><g data-mml-node="msub" transform="translate(5761.5,0)"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mover"><g data-mml-node="mi"><path data-c="1D453" d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z"></path></g><g data-mml-node="mo" transform="translate(457,279) translate(-250 0)"><path data-c="5E" d="M112 560L249 694L257 686Q387 562 387 560L361 531Q359 532 303 581L250 627L195 580Q182 569 169 557T148 538L140 532Q138 530 125 546L112 560Z"></path></g></g></g><g data-mml-node="mi" transform="translate(523,-150) scale(0.707)"><path data-c="1D459" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path></g></g><g data-mml-node="mo" transform="translate(6545.3,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="msub" transform="translate(6934.3,0)"><g data-mml-node="mi"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g><g data-mml-node="mi" transform="translate(605,-150) scale(0.707)"><path data-c="1D459" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path></g></g><g data-mml-node="mo" transform="translate(7800,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="msubsup" transform="translate(8189,0)"><g data-mml-node="mo" transform="translate(0 -0.5)"><path data-c="7C" d="M139 -249H137Q125 -249 119 -235V251L120 737Q130 750 139 750Q152 750 159 735V-235Q151 -249 141 -249H139Z"></path></g><g data-mml-node="mn" transform="translate(311,413) scale(0.707)"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g><g data-mml-node="mn" transform="translate(311,-247) scale(0.707)"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g></g></g></g></svg></mjx-container></p>
-<p>where <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.357ex;" xmlns="http://www.w3.org/2000/svg" width="1.959ex" height="1.357ex" role="img" focusable="false" viewBox="0 -442 865.7 599.8"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g><g data-mml-node="mi" transform="translate(605,-150) scale(0.707)"><path data-c="1D459" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path></g></g></g></g></svg></mjx-container> is the layer input collected from calibration data.</p>
-<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><p>ZeroQuant reports INT8 and INT4-style results on large transformer models, including GPT and BERT variants. INT8 weight/activation quantization is relatively robust; INT4 weight settings need distillation and more careful granularity.</p>
-<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>ZeroQuant is a useful pre-LLM-int8 paper because it shows the system direction: PTQ must be cheap enough for large models. Later papers become more specialized: LLM.int8 focuses on outlier features, GPTQ on second-order weight-only rounding, SmoothQuant on W8A8 activation smoothing, and AWQ on activation-salient channels.</p>
-<h2 id="Layer-Wise-Distillation-Versus-Full-QAT"><a href="#Layer-Wise-Distillation-Versus-Full-QAT" class="headerlink" title="Layer-Wise Distillation Versus Full QAT"></a>Layer-Wise Distillation Versus Full QAT</h2><p>ZeroQuant reduces training cost by distilling one layer at a time. This avoids holding a full optimizer state for all model parameters and avoids long task-level fine-tuning.</p>
-<p>The tradeoff is that local reconstruction may miss global interactions. If every layer is slightly reconstructed under its own objective, errors can still accumulate. Later methods such as GPTQ accept this local nature but use stronger second-order compensation inside each matrix.</p>
-<h2 id="What-To-Compare-Against"><a href="#What-To-Compare-Against" class="headerlink" title="What To Compare Against"></a>What To Compare Against</h2><p>When reading ZeroQuant results, I compare three baselines:</p>
+<p>Code: <a class="link" target="_blank" rel="noopener" href="https://github.com/microsoft/DeepSpeed">microsoft/DeepSpeed <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>ZeroQuant is an important paper because it treats quantization as a <strong>modeling problem and a serving-system problem at the same time</strong>. The paper is not just saying “large Transformers can use INT8.” It asks a more practical question:</p>
+<blockquote>
+<p>Can post-training quantization serve BERT-size and GPT-style models without full quantization-aware training, while still producing real GPU latency gains?</p>
+</blockquote>
+<p>The answer is a system recipe:</p>
 <ul>
-<li>naive PTQ: cheap but often inaccurate at low bit;</li>
-<li>QAT/distillation: accurate but expensive;</li>
-<li>layer-wise PTQ distillation: middle ground.</li>
+<li>use group-wise quantization for weights, because a single matrix scale wastes range on rows with small magnitude;</li>
+<li>use token-wise quantization for activations, because different tokens can have very different ranges;</li>
+<li>use layer-by-layer knowledge distillation when INT4 weights are involved;</li>
+<li>fuse quantization and dequantization around INT8 GEMM, otherwise fine-grained quantization can lose its latency benefit to memory traffic.</li>
 </ul>
-<p>ZeroQuant’s role is the middle ground for large transformers before LLM-specific outlier methods became standard.</p>
-<h2 id="Source-Level-Notes"><a href="#Source-Level-Notes" class="headerlink" title="Source-Level Notes"></a>Source-Level Notes</h2><p>ZeroQuant targets large Transformer PTQ with two practical constraints: limited calibration data and limited optimization time. It combines group-wise quantization, activation quantization, and layer-by-layer knowledge distillation.</p>
-<p>Layer-wise distillation uses the full precision layer as a teacher for the quantized layer:</p>
-<p><mjx-container class="MathJax" jax="SVG" display="true"><svg style="vertical-align: -2.538ex;" xmlns="http://www.w3.org/2000/svg" width="28.785ex" height="4.916ex" role="img" focusable="false" viewBox="0 -1051 12722.9 2172.7"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="munder"><g data-mml-node="mo"><path data-c="6D" d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q351 442 364 440T387 434T406 426T421 417T432 406T441 395T448 384T452 374T455 366L457 361L460 365Q463 369 466 373T475 384T488 397T503 410T523 422T546 432T572 439T603 442Q729 442 740 329Q741 322 741 190V104Q741 66 743 59T754 49Q775 46 803 46H819V0H811L788 1Q764 2 737 2T699 3Q596 3 587 0H579V46H595Q656 46 656 62Q657 64 657 200Q656 335 655 343Q649 371 635 385T611 402T585 404Q540 404 506 370Q479 343 472 315T464 232V168V108Q464 78 465 68T468 55T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z"></path><path data-c="69" d="M69 609Q69 637 87 653T131 669Q154 667 171 652T188 609Q188 579 171 564T129 549Q104 549 87 564T69 609ZM247 0Q232 3 143 3Q132 3 106 3T56 1L34 0H26V46H42Q70 46 91 49Q100 53 102 60T104 102V205V293Q104 345 102 359T88 378Q74 385 41 385H30V408Q30 431 32 431L42 432Q52 433 70 434T106 436Q123 437 142 438T171 441T182 442H185V62Q190 52 197 50T232 46H255V0H247Z" transform="translate(833,0)"></path><path data-c="6E" d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q450 438 463 329Q464 322 464 190V104Q464 66 466 59T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z" transform="translate(1111,0)"></path></g><g data-mml-node="TeXAtom" transform="translate(395.9,-910.2) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="msub"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mover"><g data-mml-node="mi"><path data-c="1D44A" d="M436 683Q450 683 486 682T553 680Q604 680 638 681T677 682Q695 682 695 674Q695 670 692 659Q687 641 683 639T661 637Q636 636 621 632T600 624T597 615Q597 603 613 377T629 138L631 141Q633 144 637 151T649 170T666 200T690 241T720 295T759 362Q863 546 877 572T892 604Q892 619 873 628T831 637Q817 637 817 647Q817 650 819 660Q823 676 825 679T839 682Q842 682 856 682T895 682T949 681Q1015 681 1034 683Q1048 683 1048 672Q1048 666 1045 655T1038 640T1028 637Q1006 637 988 631T958 617T939 600T927 584L923 578L754 282Q586 -14 585 -15Q579 -22 561 -22Q546 -22 542 -17Q539 -14 523 229T506 480L494 462Q472 425 366 239Q222 -13 220 -15T215 -19Q210 -22 197 -22Q178 -22 176 -15Q176 -12 154 304T131 622Q129 631 121 633T82 637H58Q51 644 51 648Q52 671 64 683H76Q118 680 176 680Q301 680 313 683H323Q329 677 329 674T327 656Q322 641 318 637H297Q236 634 232 620Q262 160 266 136L501 550L499 587Q496 629 489 632Q483 636 447 637Q428 637 422 639T416 648Q416 650 418 660Q419 664 420 669T421 676T424 680T428 682T436 683Z"></path></g><g data-mml-node="mo" transform="translate(550,257) translate(-250 0)"><path data-c="5E" d="M112 560L249 694L257 686Q387 562 387 560L361 531Q359 532 303 581L250 627L195 580Q182 569 169 557T148 538L140 532Q138 530 125 546L112 560Z"></path></g></g></g><g data-mml-node="mi" transform="translate(977,-150) scale(0.707)"><path data-c="1D459" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path></g></g></g></g><g data-mml-node="mo" transform="translate(1833.7,0) translate(0 -0.5)"><path data-c="7C" d="M139 -249H137Q125 -249 119 -235V251L120 737Q130 750 139 750Q152 750 159 735V-235Q151 -249 141 -249H139Z"></path></g><g data-mml-node="msub" transform="translate(2111.7,0)"><g data-mml-node="mi"><path data-c="1D439" d="M48 1Q31 1 31 11Q31 13 34 25Q38 41 42 43T65 46Q92 46 125 49Q139 52 144 61Q146 66 215 342T285 622Q285 629 281 629Q273 632 228 634H197Q191 640 191 642T193 659Q197 676 203 680H742Q749 676 749 669Q749 664 736 557T722 447Q720 440 702 440H690Q683 445 683 453Q683 454 686 477T689 530Q689 560 682 579T663 610T626 626T575 633T503 634H480Q398 633 393 631Q388 629 386 623Q385 622 352 492L320 363H375Q378 363 398 363T426 364T448 367T472 374T489 386Q502 398 511 419T524 457T529 475Q532 480 548 480H560Q567 475 567 470Q567 467 536 339T502 207Q500 200 482 200H470Q463 206 463 212Q463 215 468 234T473 274Q473 303 453 310T364 317H309L277 190Q245 66 245 60Q245 46 334 46H359Q365 40 365 39T363 19Q359 6 353 0H336Q295 2 185 2Q120 2 86 2T48 1Z"></path></g><g data-mml-node="mi" transform="translate(676,-150) scale(0.707)"><path data-c="1D459" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path></g></g><g data-mml-node="mo" transform="translate(3048.4,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(3437.4,0)"><path data-c="1D44B" d="M42 0H40Q26 0 26 11Q26 15 29 27Q33 41 36 43T55 46Q141 49 190 98Q200 108 306 224T411 342Q302 620 297 625Q288 636 234 637H206Q200 643 200 645T202 664Q206 677 212 683H226Q260 681 347 681Q380 681 408 681T453 682T473 682Q490 682 490 671Q490 670 488 658Q484 643 481 640T465 637Q434 634 411 620L488 426L541 485Q646 598 646 610Q646 628 622 635Q617 635 609 637Q594 637 594 648Q594 650 596 664Q600 677 606 683H618Q619 683 643 683T697 681T738 680Q828 680 837 683H845Q852 676 852 672Q850 647 840 637H824Q790 636 763 628T722 611T698 593L687 584Q687 585 592 480L505 384Q505 383 536 304T601 142T638 56Q648 47 699 46Q734 46 734 37Q734 35 732 23Q728 7 725 4T711 1Q708 1 678 1T589 2Q528 2 496 2T461 1Q444 1 444 10Q444 11 446 25Q448 35 450 39T455 44T464 46T480 47T506 54Q523 62 523 64Q522 64 476 181L429 299Q241 95 236 84Q232 76 232 72Q232 53 261 47Q262 47 267 47T273 46Q276 46 277 46T280 45T283 42T284 35Q284 26 282 19Q279 6 276 4T261 1Q258 1 243 1T201 2T142 2Q64 2 42 0Z"></path></g><g data-mml-node="mo" transform="translate(4289.4,0)"><path data-c="3B" d="M78 370Q78 394 95 412T138 430Q162 430 180 414T199 371Q199 346 182 328T139 310T96 327T78 370ZM78 60Q78 85 94 103T137 121Q202 121 202 8Q202 -44 183 -94T144 -169T118 -194Q115 -194 106 -186T95 -174Q94 -171 107 -155T137 -107T160 -38Q161 -32 162 -22T165 -4T165 4Q165 5 161 4T142 0Q110 0 94 18T78 60Z"></path></g><g data-mml-node="msub" transform="translate(4734.1,0)"><g data-mml-node="mi"><path data-c="1D44A" d="M436 683Q450 683 486 682T553 680Q604 680 638 681T677 682Q695 682 695 674Q695 670 692 659Q687 641 683 639T661 637Q636 636 621 632T600 624T597 615Q597 603 613 377T629 138L631 141Q633 144 637 151T649 170T666 200T690 241T720 295T759 362Q863 546 877 572T892 604Q892 619 873 628T831 637Q817 637 817 647Q817 650 819 660Q823 676 825 679T839 682Q842 682 856 682T895 682T949 681Q1015 681 1034 683Q1048 683 1048 672Q1048 666 1045 655T1038 640T1028 637Q1006 637 988 631T958 617T939 600T927 584L923 578L754 282Q586 -14 585 -15Q579 -22 561 -22Q546 -22 542 -17Q539 -14 523 229T506 480L494 462Q472 425 366 239Q222 -13 220 -15T215 -19Q210 -22 197 -22Q178 -22 176 -15Q176 -12 154 304T131 622Q129 631 121 633T82 637H58Q51 644 51 648Q52 671 64 683H76Q118 680 176 680Q301 680 313 683H323Q329 677 329 674T327 656Q322 641 318 637H297Q236 634 232 620Q262 160 266 136L501 550L499 587Q496 629 489 632Q483 636 447 637Q428 637 422 639T416 648Q416 650 418 660Q419 664 420 669T421 676T424 680T428 682T436 683Z"></path></g><g data-mml-node="mi" transform="translate(977,-150) scale(0.707)"><path data-c="1D459" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path></g></g><g data-mml-node="mo" transform="translate(5971.8,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="mo" transform="translate(6583,0)"><path data-c="2212" d="M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z"></path></g><g data-mml-node="msub" transform="translate(7583.2,0)"><g data-mml-node="mi"><path data-c="1D439" d="M48 1Q31 1 31 11Q31 13 34 25Q38 41 42 43T65 46Q92 46 125 49Q139 52 144 61Q146 66 215 342T285 622Q285 629 281 629Q273 632 228 634H197Q191 640 191 642T193 659Q197 676 203 680H742Q749 676 749 669Q749 664 736 557T722 447Q720 440 702 440H690Q683 445 683 453Q683 454 686 477T689 530Q689 560 682 579T663 610T626 626T575 633T503 634H480Q398 633 393 631Q388 629 386 623Q385 622 352 492L320 363H375Q378 363 398 363T426 364T448 367T472 374T489 386Q502 398 511 419T524 457T529 475Q532 480 548 480H560Q567 475 567 470Q567 467 536 339T502 207Q500 200 482 200H470Q463 206 463 212Q463 215 468 234T473 274Q473 303 453 310T364 317H309L277 190Q245 66 245 60Q245 46 334 46H359Q365 40 365 39T363 19Q359 6 353 0H336Q295 2 185 2Q120 2 86 2T48 1Z"></path></g><g data-mml-node="mi" transform="translate(676,-150) scale(0.707)"><path data-c="1D459" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path></g></g><g data-mml-node="mo" transform="translate(8519.9,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(8908.9,0)"><path data-c="1D44B" d="M42 0H40Q26 0 26 11Q26 15 29 27Q33 41 36 43T55 46Q141 49 190 98Q200 108 306 224T411 342Q302 620 297 625Q288 636 234 637H206Q200 643 200 645T202 664Q206 677 212 683H226Q260 681 347 681Q380 681 408 681T453 682T473 682Q490 682 490 671Q490 670 488 658Q484 643 481 640T465 637Q434 634 411 620L488 426L541 485Q646 598 646 610Q646 628 622 635Q617 635 609 637Q594 637 594 648Q594 650 596 664Q600 677 606 683H618Q619 683 643 683T697 681T738 680Q828 680 837 683H845Q852 676 852 672Q850 647 840 637H824Q790 636 763 628T722 611T698 593L687 584Q687 585 592 480L505 384Q505 383 536 304T601 142T638 56Q648 47 699 46Q734 46 734 37Q734 35 732 23Q728 7 725 4T711 1Q708 1 678 1T589 2Q528 2 496 2T461 1Q444 1 444 10Q444 11 446 25Q448 35 450 39T455 44T464 46T480 47T506 54Q523 62 523 64Q522 64 476 181L429 299Q241 95 236 84Q232 76 232 72Q232 53 261 47Q262 47 267 47T273 46Q276 46 277 46T280 45T283 42T284 35Q284 26 282 19Q279 6 276 4T261 1Q258 1 243 1T201 2T142 2Q64 2 42 0Z"></path></g><g data-mml-node="mo" transform="translate(9760.9,0)"><path data-c="3B" d="M78 370Q78 394 95 412T138 430Q162 430 180 414T199 371Q199 346 182 328T139 310T96 327T78 370ZM78 60Q78 85 94 103T137 121Q202 121 202 8Q202 -44 183 -94T144 -169T118 -194Q115 -194 106 -186T95 -174Q94 -171 107 -155T137 -107T160 -38Q161 -32 162 -22T165 -4T165 4Q165 5 161 4T142 0Q110 0 94 18T78 60Z"></path></g><g data-mml-node="msub" transform="translate(10205.6,0)"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mover"><g data-mml-node="mi"><path data-c="1D44A" d="M436 683Q450 683 486 682T553 680Q604 680 638 681T677 682Q695 682 695 674Q695 670 692 659Q687 641 683 639T661 637Q636 636 621 632T600 624T597 615Q597 603 613 377T629 138L631 141Q633 144 637 151T649 170T666 200T690 241T720 295T759 362Q863 546 877 572T892 604Q892 619 873 628T831 637Q817 637 817 647Q817 650 819 660Q823 676 825 679T839 682Q842 682 856 682T895 682T949 681Q1015 681 1034 683Q1048 683 1048 672Q1048 666 1045 655T1038 640T1028 637Q1006 637 988 631T958 617T939 600T927 584L923 578L754 282Q586 -14 585 -15Q579 -22 561 -22Q546 -22 542 -17Q539 -14 523 229T506 480L494 462Q472 425 366 239Q222 -13 220 -15T215 -19Q210 -22 197 -22Q178 -22 176 -15Q176 -12 154 304T131 622Q129 631 121 633T82 637H58Q51 644 51 648Q52 671 64 683H76Q118 680 176 680Q301 680 313 683H323Q329 677 329 674T327 656Q322 641 318 637H297Q236 634 232 620Q262 160 266 136L501 550L499 587Q496 629 489 632Q483 636 447 637Q428 637 422 639T416 648Q416 650 418 660Q419 664 420 669T421 676T424 680T428 682T436 683Z"></path></g><g data-mml-node="mo" transform="translate(550,257) translate(-250 0)"><path data-c="5E" d="M112 560L249 694L257 686Q387 562 387 560L361 531Q359 532 303 581L250 627L195 580Q182 569 169 557T148 538L140 532Q138 530 125 546L112 560Z"></path></g></g></g><g data-mml-node="mi" transform="translate(977,-150) scale(0.707)"><path data-c="1D459" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path></g></g><g data-mml-node="mo" transform="translate(11443.3,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="msubsup" transform="translate(11832.3,0)"><g data-mml-node="mo" transform="translate(0 -0.5)"><path data-c="7C" d="M139 -249H137Q125 -249 119 -235V251L120 737Q130 750 139 750Q152 750 159 735V-235Q151 -249 141 -249H139Z"></path></g><g data-mml-node="mn" transform="translate(311,413) scale(0.707)"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g><g data-mml-node="mi" transform="translate(311,-247.8) scale(0.707)"><path data-c="1D439" d="M48 1Q31 1 31 11Q31 13 34 25Q38 41 42 43T65 46Q92 46 125 49Q139 52 144 61Q146 66 215 342T285 622Q285 629 281 629Q273 632 228 634H197Q191 640 191 642T193 659Q197 676 203 680H742Q749 676 749 669Q749 664 736 557T722 447Q720 440 702 440H690Q683 445 683 453Q683 454 686 477T689 530Q689 560 682 579T663 610T626 626T575 633T503 634H480Q398 633 393 631Q388 629 386 623Q385 622 352 492L320 363H375Q378 363 398 363T426 364T448 367T472 374T489 386Q502 398 511 419T524 457T529 475Q532 480 548 480H560Q567 475 567 470Q567 467 536 339T502 207Q500 200 482 200H470Q463 206 463 212Q463 215 468 234T473 274Q473 303 453 310T364 317H309L277 190Q245 66 245 60Q245 46 334 46H359Q365 40 365 39T363 19Q359 6 353 0H336Q295 2 185 2Q120 2 86 2T48 1Z"></path></g></g></g></g></svg></mjx-container></p>
-<p>Because only one layer is optimized at a time, the method avoids the cost of full-model QAT while still using data-aware reconstruction.</p>
-<h2 id="Reading-Detail"><a href="#Reading-Detail" class="headerlink" title="Reading Detail"></a>Reading Detail</h2><p>ZeroQuant sits between BERT-era INT8 work and later LLM-specific methods. It recognizes that full QAT is too expensive for very large Transformers, but naive PTQ is too weak. The compromise is local distillation with small calibration data.</p>
-<p>Compared with SmoothQuant, ZeroQuant is more of a PTQ system recipe. SmoothQuant has one very clean mathematical transform for activation outliers. Compared with GPTQ, ZeroQuant is broader in operator coverage but less famous for the weight-only solver.</p>
-<h2 id="Experiment-Reading"><a href="#Experiment-Reading" class="headerlink" title="Experiment Reading"></a>Experiment Reading</h2><p>ZeroQuant’s layer-by-layer distillation should be read as an engineering compromise. Full-model QAT for billion-parameter Transformers is expensive; pure rounding is inaccurate. Local distillation gives each quantized layer a teacher signal without updating the entire network.</p>
-<p>I would check the difference between INT8 and INT4 settings. INT8 often works with simpler calibration. INT4 usually exposes whether the reconstruction objective is strong enough. If a method’s advantage appears only at INT8, it may be less relevant for memory-constrained LLM deployment.</p>
-<p>ZeroQuant also raises a kernel question: weight-only INT4 reduces memory bandwidth, while W8A8 can use integer GEMM more directly. The best format depends on whether the target inference workload is memory-bound or compute-bound.</p>
-<h2 id="Reproduction-Checklist"><a href="#Reproduction-Checklist" class="headerlink" title="Reproduction Checklist"></a>Reproduction Checklist</h2><p>I would first quantize one Transformer layer and compare its output against the full precision layer on calibration sequences. Then stack quantized layers progressively. This reveals whether errors accumulate smoothly or whether a specific layer breaks the model.</p>
-<p>Layer-by-layer distillation also needs careful teacher forcing: the quantized layer should see representative inputs. If inputs come only from the full precision prefix but deployment uses quantized previous layers, there can be a mismatch. Progressive evaluation helps catch it.</p>
+<p>All crops below are taken from the original PDF.</p>
+<h2 id="Why-ZeroQuant-Matters"><a href="#Why-ZeroQuant-Matters" class="headerlink" title="Why ZeroQuant Matters"></a>Why ZeroQuant Matters</h2><p>Before ZeroQuant, there were already useful Transformer quantization papers. Q8BERT showed that BERT can tolerate 8-bit quantization with quantization-aware fine-tuning. Q-BERT pushed BERT weight precision down with Hessian information. But two gaps remained:</p>
+<ol>
+<li>Full QAT or hidden-state distillation becomes expensive when the model has hundreds of millions or billions of parameters.</li>
+<li>Accuracy-only quantization results do not prove that the method is useful for serving, because token-wise scales and low-bit formats can introduce extra quantize/dequantize kernels and memory movement.</li>
+</ol>
+<p>ZeroQuant sits exactly at that boundary. It tries to keep the user-facing behavior close to FP16, while making the quantization process cheap enough for large models.</p>
+<p>The paper evaluates:</p>
+<table>
+<thead>
+<tr>
+<th>Model family</th>
+<th>Examples in the paper</th>
+<th>Main benchmark</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Encoder-only</td>
+<td>BERT-Base, BERT-Large</td>
+<td>GLUE development sets</td>
+</tr>
+<tr>
+<td>Decoder-only</td>
+<td>GPT-3-style 350M and 1.3B</td>
+<td>20 zero-shot tasks plus Wikitext-2</td>
+</tr>
+<tr>
+<td>Larger open-source GPT models</td>
+<td>GPT-J 6B, GPT-NeoX 20B</td>
+<td>generation and zero-shot evaluation</td>
+</tr>
+</tbody></table>
+<p>The notation is <code>WxAy</code>: <code>x</code> bits for weights and <code>y</code> bits for activations. The paper also uses <code>W4/8</code> for a mixed setting where multi-head self-attention weights stay INT8 and feed-forward weights are pushed to INT4. This is a sensible compromise because the feed-forward connection is a large fraction of Transformer parameters.</p>
+<h2 id="The-Failure-Mode-Of-Naive-PTQ"><a href="#The-Failure-Mode-Of-Naive-PTQ" class="headerlink" title="The Failure Mode Of Naive PTQ"></a>The Failure Mode Of Naive PTQ</h2><p>Post-training quantization is attractive because it does not retrain the model. A common PTQ flow is:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. Run calibration data through the model.</span><br><span class="line">2. Estimate activation ranges.</span><br><span class="line">3. Quantize weights and activations with fixed scales.</span><br><span class="line">4. Evaluate the quantized model.</span><br></pre></td></tr></table></figure></div>
+
+<p>That is cheap, but it assumes that a small number of scales can represent the distributions well enough. ZeroQuant shows why this is fragile for Transformers.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ZeroQuant/fig1-range-imbalance.png"></p>
+<p><em>Figure 1. GPT-3 350M has large variation across token activation ranges and across rows of the attention output matrix. A single coarse scale either clips large values or wastes representational levels on smaller values.</em></p>
+<p>The left plot is the activation problem. Token hidden states in the same layer can have very different max-absolute ranges. If all tokens share one activation scale, the largest token range determines the scale, and small-range tokens get a coarse quantization grid.</p>
+<p>The right plot is the weight problem. Rows in the attention output matrix do not share the same magnitude. A matrix-wide scale is again inefficient: rows with small ranges are represented by too few integer values, and this becomes much worse when weights are pushed to INT4.</p>
+<p>The first PTQ table makes the diagnosis concrete.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ZeroQuant/table1-gpt350m-naive-ptq.png"></p>
+<p><em>Table 1. Naive PTQ on GPT-3 350M. Activation quantization hurts more than INT8 weight quantization, and mixed INT4/INT8 weights can destroy generation quality.</em></p>
+<p>The useful read is not only the average score:</p>
+<ul>
+<li><code>W8A16</code> is close to the FP16 baseline on the shown tasks. Weight-only INT8 is not the main problem here.</li>
+<li><code>W16A8</code> has a larger drop. Wikitext-2 perplexity moves from <code>21.5</code> to <code>24.6</code>, so activation quantization is already painful.</li>
+<li><code>W8A8</code> is worse again on Wikitext-2, with perplexity <code>26.2</code>.</li>
+<li><code>W4/8A16</code> collapses generation. Wikitext-2 becomes <code>1.76e5</code>, which is effectively unusable.</li>
+</ul>
+<p>This is why ZeroQuant is not a pure rounding paper. The method has to address the numerical range mismatch in both weights and activations.</p>
+<h2 id="Fine-Grained-Quantization"><a href="#Fine-Grained-Quantization" class="headerlink" title="Fine-Grained Quantization"></a>Fine-Grained Quantization</h2><p>ZeroQuant uses uniform symmetric scalar quantization. In plain notation:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">q = round(clamp(x / S, -2^(bit-1), 2^(bit-1)-1))</span><br></pre></td></tr></table></figure></div>
+
+<p>Here <code>S</code> is the scale. The important part is not the scalar quantizer itself; it is how the scale is chosen.</p>
+<h3 id="Group-Wise-Weight-Quantization"><a href="#Group-Wise-Weight-Quantization" class="headerlink" title="Group-Wise Weight Quantization"></a>Group-Wise Weight Quantization</h3><p>For a weight matrix <code>W</code>, ZeroQuant partitions the matrix into groups and quantizes each group separately. This gives each group its own scale. Compared with matrix-wise quantization, group-wise quantization reduces the penalty from rows or blocks with small magnitude.</p>
+<p>The group size is not arbitrary. The paper explicitly considers hardware constraints on NVIDIA Ampere GPUs, where Tensor Core throughput depends on WMMA tile shapes. This is the system-aware part of the design: very fine groups might improve accuracy, but if they do not map well to GPU kernels, the final model may not be faster.</p>
+<p>The appendix gives the concrete settings used in the experiments:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th align="right">Group count used for weight quantization</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BERT-Base</td>
+<td align="right">48 groups</td>
+</tr>
+<tr>
+<td>BERT-Large</td>
+<td align="right">64 groups</td>
+</tr>
+<tr>
+<td>GPT-3 350M</td>
+<td align="right">64 groups</td>
+</tr>
+<tr>
+<td>GPT-3 1.3B</td>
+<td align="right">128 groups</td>
+</tr>
+</tbody></table>
+<p>I read this as a core ZeroQuant principle: choose quantization granularity where the model distribution needs it, but keep the layout friendly to the backend.</p>
+<h3 id="Token-Wise-Activation-Quantization"><a href="#Token-Wise-Activation-Quantization" class="headerlink" title="Token-Wise Activation Quantization"></a>Token-Wise Activation Quantization</h3><p>The activation side is different because activations are dynamic. A static calibration range can be too conservative for many tokens and too small for outlier tokens.</p>
+<p>ZeroQuant instead uses token-wise activation quantization. Each token has its own activation range during inference, so the quantizer can adapt to token-level variation.</p>
+<p>The benefit is accuracy. The cost is that dynamic token-wise quantization can introduce extra operations:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FP16 activation -&gt; compute per-token scale -&gt; quantize -&gt; INT8 GEMM -&gt; dequantize</span><br></pre></td></tr></table></figure></div>
+
+<p>If those steps are implemented as separate kernels, the extra memory traffic can eat the speedup. That is why the method and the kernel design have to be read together.</p>
+<h2 id="Layer-By-Layer-Knowledge-Distillation"><a href="#Layer-By-Layer-Knowledge-Distillation" class="headerlink" title="Layer-By-Layer Knowledge Distillation"></a>Layer-By-Layer Knowledge Distillation</h2><p>W8A8 is the moderate target. For the more aggressive <code>W4/8</code> settings, ZeroQuant adds layer-by-layer knowledge distillation, abbreviated as LKD.</p>
+<p>The usual full-model distillation setup is expensive for large models:</p>
+<ul>
+<li>it may need both teacher and student models in memory;</li>
+<li>optimizer states are kept for many student parameters;</li>
+<li>training is end-to-end, so memory and compute scale with the whole model;</li>
+<li>original training data may not be available.</li>
+</ul>
+<p>ZeroQuant’s LKD makes the optimization local. For layer <code>L_k</code>, it compares the original FP layer with the quantized copy of the same layer. Only that layer is optimized.</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">input_k   = L_{k-1}(...L_2(L_1(X)))</span><br><span class="line">teacher_y = L_k(input_k)</span><br><span class="line">student_y = quantized_L_k(input_k)</span><br><span class="line">loss      = MSE(teacher_y, student_y)</span><br><span class="line"></span><br><span class="line">update only quantized_L_k</span><br><span class="line">then move to the next layer</span><br></pre></td></tr></table></figure></div>
+
+<p>This has three practical consequences.</p>
+<p>First, it does not need a separate full teacher model. The original layer acts as the teacher for the quantized layer.</p>
+<p>Second, optimizer memory is small because only one layer is being updated.</p>
+<p>Third, labels are not required. The objective is local feature reconstruction, not task supervision. This makes it possible to use alternative text data when the original pretraining corpus is unavailable.</p>
+<p>This local nature is also the limitation. LKD reconstructs one layer at a time. It can miss error accumulation across layers, and it is weaker than a fully tuned end-to-end student. But it is cheap enough to be practical, which is the whole point of the paper.</p>
+<h2 id="Quantization-Optimized-Kernels"><a href="#Quantization-Optimized-Kernels" class="headerlink" title="Quantization-Optimized Kernels"></a>Quantization-Optimized Kernels</h2><p>The kernel section is easy to skip, but it is essential. Token-wise activation quantization and group-wise weight quantization add scale handling around GEMM. A naive implementation can perform extra reads, writes, and kernel launches.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ZeroQuant/fig2-fused-int8-gemm.png"></p>
+<p><em>Figure 2. The normal path pays separate quantize and dequantize costs. ZeroQuant fuses activation quantization with the preceding operator and fuses dequantization into the GEMM epilogue.</em></p>
+<p>The paper’s backend uses CUTLASS INT8 GEMM and fusion:</p>
+<ul>
+<li>activation quantization is fused with preceding operations such as LayerNorm, GELU, or bias-add;</li>
+<li>INT32 GEMM accumulation is dequantized in the GEMM epilogue using activation and weight scales;</li>
+<li>the output is written back as FP16 when the next operator is still FP16;</li>
+<li>CUDA Graph support is used to reduce CPU launch overhead for small models such as BERT-Base.</li>
+</ul>
+<p>This explains why ZeroQuant can claim both accuracy and speed. Without these fusions, token-wise activation quantization would be a nice accuracy trick but a questionable serving method.</p>
+<h2 id="BERT-Results"><a href="#BERT-Results" class="headerlink" title="BERT Results"></a>BERT Results</h2><p>BERT is the cleanest place to see the difference between naive PTQ, ZeroQuant, and QAT.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ZeroQuant/table2-bertbase-results.png"></p>
+<p><em>Table 2. BERT-Base GLUE results. ZeroQuant recovers most of the W8A8 PTQ loss without QAT, and LKD helps the mixed INT4/INT8 settings.</em></p>
+<p>The headline numbers:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th align="right">Average score</th>
+<th align="right">Average quantization time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FP16 baseline <code>W16A16</code></td>
+<td align="right">83.95</td>
+<td align="right">N/A</td>
+</tr>
+<tr>
+<td><code>W8A8</code> PTQ</td>
+<td align="right">77.41</td>
+<td align="right">6 seconds</td>
+</tr>
+<tr>
+<td><code>W8A8</code> QAT</td>
+<td align="right">83.37</td>
+<td align="right">2900 seconds</td>
+</tr>
+<tr>
+<td><code>W8A8</code> ZeroQuant</td>
+<td align="right">83.75</td>
+<td align="right">0 seconds</td>
+</tr>
+<tr>
+<td><code>W4/8A8</code> ZeroQuant</td>
+<td align="right">81.55</td>
+<td align="right">0 seconds</td>
+</tr>
+<tr>
+<td><code>W4/8A8</code> ZeroQuant-LKD</td>
+<td align="right">82.71</td>
+<td align="right">31 seconds</td>
+</tr>
+</tbody></table>
+<p>For <code>W8A8</code>, ZeroQuant is almost at the FP16 average and slightly above the internal QAT row in this table, with no activation calibration cost. I would not over-read the small difference between <code>83.75</code> and <code>83.37</code>; the important point is that ZeroQuant is in the same accuracy band as QAT without QAT’s retraining cost.</p>
+<p>For <code>W4/8</code>, naive PTQ is not usable. <code>W4/8A16</code> PTQ averages <code>33.11</code>, close to random behavior on several tasks. ZeroQuant raises it to <code>81.65</code>, and LKD raises it again to <code>82.35</code>. The same pattern holds for <code>W4/8A8</code>: ZeroQuant gives <code>81.55</code>, and LKD improves it to <code>82.71</code>.</p>
+<p>The BERT-Large table in the paper follows the same broad pattern:</p>
+<ul>
+<li><code>W8A8</code> PTQ average drops to <code>73.54</code>;</li>
+<li><code>W8A8</code> ZeroQuant reaches <code>84.81</code> against an FP16 baseline of <code>85.03</code>;</li>
+<li><code>W4/8A8</code> ZeroQuant-LKD reaches <code>81.62</code>;</li>
+<li>LKD costs about <code>550</code> seconds per task on one A100, far below the reported QAT cost.</li>
+</ul>
+<p>The main caveat is RTE. Both QAT and ZeroQuant struggle more on RTE, which is a small dataset and often has high variance. This is a reminder that average GLUE scores can hide task-specific fragility.</p>
+<h2 id="GPT-3-Style-Results"><a href="#GPT-3-Style-Results" class="headerlink" title="GPT-3-Style Results"></a>GPT-3-Style Results</h2><p>Decoder-only generation makes the quantization problem sharper. A classification task can sometimes tolerate small hidden-state perturbations, but autoregressive generation exposes accumulated errors token by token.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ZeroQuant/table4-gpt350m-results.png"></p>
+<p><em>Table 4. GPT-3 350M results. ZeroQuant fixes most of the W8A8 PTQ damage, while LKD is needed for usable mixed INT4/INT8 generation.</em></p>
+<p>For GPT-3 350M, the <code>W8A8</code> result is the strongest moderate-precision claim:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th align="right">Average over 19 accuracy tasks</th>
+<th align="right">Wikitext-2 PPL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>W16A16</code></td>
+<td align="right">38.9</td>
+<td align="right">21.5</td>
+</tr>
+<tr>
+<td><code>W8A8</code> PTQ</td>
+<td align="right">37.8</td>
+<td align="right">26.2</td>
+</tr>
+<tr>
+<td><code>W8A8</code> ZeroQuant</td>
+<td align="right">38.7</td>
+<td align="right">21.7</td>
+</tr>
+</tbody></table>
+<p>ZeroQuant nearly removes the generation penalty: Wikitext-2 moves from PTQ’s <code>26.2</code> back to <code>21.7</code>, close to the FP16 baseline <code>21.5</code>.</p>
+<p>The low-bit setting is more revealing:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th align="right">Average over 19 accuracy tasks</th>
+<th align="right">Wikitext-2 PPL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>W4/8A16</code> ZeroQuant</td>
+<td align="right">33.5</td>
+<td align="right">88.6</td>
+</tr>
+<tr>
+<td><code>W4/8A16</code> ZeroQuant-LKD</td>
+<td align="right">37.0</td>
+<td align="right">30.6</td>
+</tr>
+<tr>
+<td><code>W4/8A8</code> ZeroQuant</td>
+<td align="right">33.4</td>
+<td align="right">92.1</td>
+</tr>
+<tr>
+<td><code>W4/8A8</code> ZeroQuant-LKD</td>
+<td align="right">36.6</td>
+<td align="right">31.1</td>
+</tr>
+</tbody></table>
+<p>LKD does not fully restore FP16 generation, but it changes the result from badly degraded to meaningfully usable. The paper reports that this LKD pass costs about <code>1.1</code> hours on one A100 for GPT-3 350M, which is tiny compared with pretraining.</p>
+<p>The GPT-3 1.3B table shows the same direction. <code>W8A8</code> ZeroQuant gets Wikitext-2 PPL <code>15.7</code>, close to FP16 <code>15.3</code> and better than PTQ <code>18.9</code>. For <code>W4/8</code>, LKD again improves both average accuracy and generation perplexity.</p>
+<h2 id="Latency"><a href="#Latency" class="headerlink" title="Latency"></a>Latency</h2><p>Accuracy preservation is only half the story. ZeroQuant also reports end-to-end latency with the fused INT8 path.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ZeroQuant/table6-bert-latency.png"></p>
+<p><em>Table 6. BERT latency on one A100. The W8A8 path gives roughly 2.27x to 5.19x speedup on BERT-Base and 2.47x to 5.01x on BERT-Large depending on sequence length and batch size.</em></p>
+<p>The speedup is larger at higher batch sizes because the integer GEMM path is better utilized and the fixed overhead is amortized. But the table also shows speedups at batch size 1, which matters for online serving.</p>
+<p>The paper also reports decoder-side speedups:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Quantized setting</th>
+<th>Reported latency result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GPT-3 350M</td>
+<td><code>W8A8</code></td>
+<td>4.16x speedup over FP16</td>
+</tr>
+<tr>
+<td>GPT-3 1.3B</td>
+<td><code>W8A8</code></td>
+<td>4.06x speedup over FP16</td>
+</tr>
+<tr>
+<td>GPT-J 6B</td>
+<td><code>W8A8</code></td>
+<td>29.13 ms to 7.94 ms for first-50-token generation, 3.67x</td>
+</tr>
+<tr>
+<td>GPT-NeoX 20B</td>
+<td><code>W8A8/16</code></td>
+<td>2 x 65 ms on two A100s to 1 x 25 ms on one A100, reported as 5.2x better efficiency</td>
+</tr>
+</tbody></table>
+<p>The GPT-NeoX 20B result has an important qualification. The paper could not quantize all activation inputs to self-attention in pure W8A8 without accuracy loss, so it uses <code>A8/16</code>: FP16 activation for self-attention calculation and INT8 elsewhere. This is a practical result, but it also shows that extra-large decoder models can still have sensitive activation paths.</p>
+<h2 id="Ablation-Which-Component-Matters"><a href="#Ablation-Which-Component-Matters" class="headerlink" title="Ablation: Which Component Matters?"></a>Ablation: Which Component Matters?</h2><p>The ablation table is one of the most useful parts of the paper because it separates the three pieces: group-wise weight quantization, token-wise activation quantization, and LKD.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ZeroQuant/table9-component-ablation.png"></p>
+<p><em>Table 9. BERT-Large ablation under <code>W4/8A8</code>. Group-wise weight quantization prevents collapse; token-wise activation quantization gives the largest additional gain; LKD adds a smaller but consistent improvement.</em></p>
+<p>The average score progression is clear:</p>
+<table>
+<thead>
+<tr>
+<th>Components</th>
+<th align="right">Average score</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>no GQ, no TQ, no LKD</td>
+<td align="right">35.85</td>
+</tr>
+<tr>
+<td>GQ only</td>
+<td align="right">66.52</td>
+</tr>
+<tr>
+<td>GQ + TQ</td>
+<td align="right">81.06</td>
+</tr>
+<tr>
+<td>GQ + TQ + LKD</td>
+<td align="right">81.62</td>
+</tr>
+</tbody></table>
+<p>My read:</p>
+<ul>
+<li>group-wise weight quantization is the first gate. Without it, mixed INT4/INT8 weights are too destructive;</li>
+<li>token-wise activation quantization is the biggest BERT-Large jump in this ablation, from <code>66.52</code> to <code>81.06</code>;</li>
+<li>LKD’s average gain is small on this BERT-Large table, but it matters more for GPT generation under <code>W4/8</code>.</li>
+</ul>
+<p>So I would not summarize ZeroQuant as “LKD solves PTQ.” The stronger summary is: <strong>fine-grained quantization solves most of the W8A8 and W4/8A8 representation issue, and LKD repairs the remaining low-bit damage when the quantized layer needs local reconstruction.</strong></p>
+<h2 id="Distillation-Without-Original-Data"><a href="#Distillation-Without-Original-Data" class="headerlink" title="Distillation Without Original Data"></a>Distillation Without Original Data</h2><p>Because LKD uses layer outputs rather than labels, it can use data from outside the original training set.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ZeroQuant/table10-lkd-data-source.png"></p>
+<p><em>Table 10. GPT-3 350M <code>W4/8A8</code> LKD with different data sources. Wikipedia data is close to original training data, and even random token data improves over no LKD.</em></p>
+<p>This table is interesting for deployment teams. The original pretraining data may be private, unavailable, or too large to reconstruct. ZeroQuant shows:</p>
+<ul>
+<li>no LKD: Wikitext-2 PPL <code>92.1</code>;</li>
+<li>random data LKD: PPL improves to <code>40.6</code>;</li>
+<li>Wikipedia data LKD: PPL improves to <code>30.4</code>;</li>
+<li>original data LKD: PPL <code>31.1</code>.</li>
+</ul>
+<p>The random-data result should not be overstated. It does not mean random data is as good as real text. But it does support the paper’s local-reconstruction argument: even random token sequences can provide enough layer input variation for the quantized layer to learn a better approximation of the FP layer.</p>
+<p>The Wikipedia result is more practically useful. A clean public text dataset can be enough for LKD when original data is not available.</p>
+<h2 id="Relationship-To-Later-LLM-Quantization"><a href="#Relationship-To-Later-LLM-Quantization" class="headerlink" title="Relationship To Later LLM Quantization"></a>Relationship To Later LLM Quantization</h2><p>ZeroQuant is not the final word on LLM quantization. Later methods became more specialized:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Main idea</th>
+<th>Difference from ZeroQuant</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LLM.int8()</td>
+<td>Keep outlier channels in higher precision</td>
+<td>Explicitly isolates activation outliers instead of relying mainly on token-wise quantization</td>
+</tr>
+<tr>
+<td>SmoothQuant</td>
+<td>Move activation outlier difficulty into weights through equivalent scaling</td>
+<td>Cleaner W8A8 transform for serving large LLMs</td>
+</tr>
+<tr>
+<td>GPTQ</td>
+<td>Weight-only second-order reconstruction</td>
+<td>Stronger local solver for low-bit weights, usually without activation quantization</td>
+</tr>
+<tr>
+<td>AWQ</td>
+<td>Activation-aware weight quantization</td>
+<td>Protects salient weight channels based on activation statistics</td>
+</tr>
+<tr>
+<td>ZeroQuant</td>
+<td>Fine-grained W8A8/W4/8A8 plus LKD and fused kernels</td>
+<td>Broader system recipe across BERT and GPT-style models</td>
+</tr>
+</tbody></table>
+<p>This is why ZeroQuant still matters. It makes the serving constraint explicit: a quantizer is not successful unless the backend can run it efficiently. It also shows that activation quantization is not a minor detail for generation models. W8A8 needs a real activation strategy, not just weight rounding.</p>
+<h2 id="Reproduction-Notes"><a href="#Reproduction-Notes" class="headerlink" title="Reproduction Notes"></a>Reproduction Notes</h2><p>If I were reproducing ZeroQuant, I would start smaller than the full paper:</p>
+<ol>
+<li>Pick one Transformer block and implement symmetric quantization for its linear layers.</li>
+<li>Compare matrix-wise weight quantization with group-wise weight quantization using layer-output error.</li>
+<li>Compare static activation calibration with token-wise dynamic activation quantization.</li>
+<li>Evaluate both classification accuracy and generation perplexity. Perplexity is more sensitive to accumulated quantization error.</li>
+<li>Add LKD for one quantized layer and verify that the local MSE objective reduces output error.</li>
+<li>Stack quantized layers progressively and check where error accumulation becomes visible.</li>
+<li>Only after the numerical path works, optimize the kernels. Otherwise it is hard to tell whether failures come from quantization math or backend layout.</li>
+</ol>
+<p>The kernel checks I would add:</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Scale layout matches GEMM tiling</td>
+<td>Bad scale reads can erase Tensor Core gains</td>
+</tr>
+<tr>
+<td>Quantization fused with LayerNorm/GELU/bias-add</td>
+<td>Separate kernels add memory traffic</td>
+</tr>
+<tr>
+<td>Dequantization in GEMM epilogue</td>
+<td>Avoids writing and rereading INT32 outputs</td>
+</tr>
+<tr>
+<td>Batch/sequence-specific schedules</td>
+<td>Small batch serving and large batch throughput have different bottlenecks</td>
+</tr>
+<tr>
+<td>CUDA Graph path for small models</td>
+<td>Kernel launch overhead can dominate BERT-Base latency</td>
+</tr>
+</tbody></table>
+<p>The most important experiment is not only “does W8A8 match FP16?” It is:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Does W8A8 match FP16 after measuring the real fused-kernel path,</span><br><span class="line">with the same sequence lengths and batch sizes used in serving?</span><br></pre></td></tr></table></figure></div>
+
+<p>Without that, a quantization paper can look good in accuracy tables and still fail as a deployment method.</p>
+<h2 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h2><p>ZeroQuant has several clear limitations.</p>
+<p>First, <code>W4/8</code> generation still needs LKD and remains worse than FP16. The paper makes the low-bit setting practical, but it does not make it free.</p>
+<p>Second, the local LKD objective does not directly optimize final task loss or long-range generation behavior. Layer-wise reconstruction can reduce local error while still allowing small errors to accumulate through the network.</p>
+<p>Third, the best results depend on custom kernels. Token-wise activation quantization is not automatically fast in a generic framework. The method assumes a backend that can fuse quantization and dequantization with GEMM-adjacent operators.</p>
+<p>Fourth, the GPT-NeoX 20B result uses <code>W8A8/16</code>, not pure W8A8 for every activation path. That is a useful engineering compromise, but it shows that some self-attention activations remain sensitive at larger scales.</p>
+<p>Finally, this paper predates the modern 4-bit LLM deployment stack. If the target is weight-only 4-bit serving for very large decoder-only models, GPTQ/AWQ-style methods may be closer baselines. If the target is true W8A8 serving with integer GEMM, ZeroQuant and SmoothQuant are more directly relevant.</p>
+<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>ZeroQuant’s main contribution is the combination:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fine-grained quantization</span><br><span class="line">+ layer-by-layer distillation for aggressive low-bit settings</span><br><span class="line">+ fused INT8 Transformer kernels</span><br><span class="line">= affordable PTQ that can actually serve large Transformers</span><br></pre></td></tr></table></figure></div>
+
+<p>The paper is worth reading because it does not separate algorithm and system concerns. Token-wise activation quantization fixes a real numerical problem, but it only becomes deployable after fusion. Group-wise weight quantization fixes a real representation problem, but the group layout has to respect GPU kernels. LKD helps low-bit weights, but it is designed around the memory constraints of large models.</p>
+<p>That is the enduring lesson: for large Transformer quantization, accuracy tables, calibration cost, memory layout, and kernel fusion are one problem.</p>
 
         </div>
 
@@ -589,6 +991,10 @@ mjx-container[display="true"] + br {
                 
                     <li class="tag-item">
                         <a href="/tags/Quantization/">#Quantization</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/LLM/">#LLM</a>&nbsp;
                     </li>
                 
                     <li class="tag-item">
@@ -646,8 +1052,8 @@ mjx-container[display="true"] + br {
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">ZeroQuant: Large Transformer PTQ</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Results"><span class="nav-text">Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Layer-Wise-Distillation-Versus-Full-QAT"><span class="nav-text">Layer-Wise Distillation Versus Full QAT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#What-To-Compare-Against"><span class="nav-text">What To Compare Against</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Source-Level-Notes"><span class="nav-text">Source-Level Notes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reading-Detail"><span class="nav-text">Reading Detail</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment-Reading"><span class="nav-text">Experiment Reading</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reproduction-Checklist"><span class="nav-text">Reproduction Checklist</span></a></li></ol>
+        <div class="page-title">ZeroQuant: Efficient and Affordable PTQ for Large Transformers</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-ZeroQuant-Matters"><span class="nav-text">Why ZeroQuant Matters</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Failure-Mode-Of-Naive-PTQ"><span class="nav-text">The Failure Mode Of Naive PTQ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fine-Grained-Quantization"><span class="nav-text">Fine-Grained Quantization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Group-Wise-Weight-Quantization"><span class="nav-text">Group-Wise Weight Quantization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Token-Wise-Activation-Quantization"><span class="nav-text">Token-Wise Activation Quantization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Layer-By-Layer-Knowledge-Distillation"><span class="nav-text">Layer-By-Layer Knowledge Distillation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Quantization-Optimized-Kernels"><span class="nav-text">Quantization-Optimized Kernels</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BERT-Results"><span class="nav-text">BERT Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GPT-3-Style-Results"><span class="nav-text">GPT-3-Style Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Latency"><span class="nav-text">Latency</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ablation-Which-Component-Matters"><span class="nav-text">Ablation: Which Component Matters?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Distillation-Without-Original-Data"><span class="nav-text">Distillation Without Original Data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Relationship-To-Later-LLM-Quantization"><span class="nav-text">Relationship To Later LLM Quantization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reproduction-Notes"><span class="nav-text">Reproduction Notes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Limitations"><span class="nav-text">Limitations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
 
     </div>
 </div>

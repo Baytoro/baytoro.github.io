@@ -489,20 +489,20 @@ mjx-container[display="true"] + br {
                 
                     <div id="home-article-thumbnail" class="relative h-[150px] overflow-hidden rounded-t-[10.8px] md:rounded-t-large -m-5 mb-3 sm:-m-6 sm:mb-4 md:-m-7 md:mb-5">
                         <a href="/2024/08/03/PowerInfer/">
-                            <img src="/_imgs/PowerInfer/thumbnail.png" alt="PowerInfer: Consumer-GPU LLM Serving" class="w-full h-full object-cover dark:brightness-75 transition-all" />
+                            <img src="/_imgs/PowerInfer/thumbnail.png" alt="PowerInfer: Fast LLM Serving on a Consumer GPU" class="w-full h-full object-cover dark:brightness-75 transition-all" />
                         </a>
                     </div>
                 
 
                 <h3 class="home-article-title">
                     <a href="/2024/08/03/PowerInfer/">
-                        PowerInfer: Consumer-GPU LLM Serving
+                        PowerInfer: Fast LLM Serving on a Consumer GPU
                     </a>
                 </h3>
 
                 <div class="home-article-content markdown-body">
                     
-                        <p>PowerInfer exploits activation sparsity to serve large LLMs on consumer GPUs with a CPU-GPU hybrid hot&#x2F;cold neuron layout.</p>
+                        <p>PowerInfer exploits activation locality to place hot neurons on GPU, execute cold neurons on CPU, and serve large LLMs on a single consumer-grade GPU.</p>
 
                     
                 </div>
@@ -545,6 +545,11 @@ mjx-container[display="true"] + br {
                     
                         <li>
                             | 
+                            <a href="/tags/Inference/">Inference</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
                             <a href="/tags/Serving/">Serving</a>&nbsp;
                         </li>
                     
@@ -553,7 +558,7 @@ mjx-container[display="true"] + br {
         
     </div>
 
-    <a href="/2024/08/03/PowerInfer/">Read more<span class="seo-reader-text">PowerInfer: Consumer-GPU LLM Serving</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2024/08/03/PowerInfer/">Read more<span class="seo-reader-text">PowerInfer: Fast LLM Serving on a Consumer GPU</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
             </li>
@@ -569,7 +574,7 @@ mjx-container[display="true"] + br {
                 
                     <div id="home-article-thumbnail" class="relative h-[150px] overflow-hidden rounded-t-[10.8px] md:rounded-t-large -m-5 mb-3 sm:-m-6 sm:mb-4 md:-m-7 md:mb-5">
                         <a href="/2024/06/11/RoBERTa/">
-                            <img src="/_imgs/RoBERTa/table1-dynamic-masking.png" alt="RoBERTa: A Robustly Optimized BERT Pretraining Approach" class="w-full h-full object-cover dark:brightness-75 transition-all" />
+                            <img src="/_imgs/RoBERTa/thumbnail.png" alt="RoBERTa: A Robustly Optimized BERT Pretraining Approach" class="w-full h-full object-cover dark:brightness-75 transition-all" />
                         </a>
                     </div>
                 
@@ -582,7 +587,7 @@ mjx-container[display="true"] + br {
 
                 <div class="home-article-content markdown-body">
                     
-                        <p>RoBERTa 证明 BERT 的很多提升来自训练 recipe，而不一定来自新结构。</p>
+                        <p>RoBERTa shows that a stronger BERT training recipe, not a new architecture, can explain much of the post-BERT progress on NLU benchmarks.</p>
 
                     
                 </div>
@@ -659,20 +664,20 @@ mjx-container[display="true"] + br {
                 
                     <div id="home-article-thumbnail" class="relative h-[150px] overflow-hidden rounded-t-[10.8px] md:rounded-t-large -m-5 mb-3 sm:-m-6 sm:mb-4 md:-m-7 md:mb-5">
                         <a href="/2024/05/19/SARATHI/">
-                            <img src="/_imgs/SARATHI/thumbnail.png" alt="SARATHI: Chunked Prefill Scheduling" class="w-full h-full object-cover dark:brightness-75 transition-all" />
+                            <img src="/_imgs/SARATHI/thumbnail.png" alt="SARATHI: Piggybacking Decodes with Chunked Prefills" class="w-full h-full object-cover dark:brightness-75 transition-all" />
                         </a>
                     </div>
                 
 
                 <h3 class="home-article-title">
                     <a href="/2024/05/19/SARATHI/">
-                        SARATHI: Chunked Prefill Scheduling
+                        SARATHI: Piggybacking Decodes with Chunked Prefills
                     </a>
                 </h3>
 
                 <div class="home-article-content markdown-body">
                     
-                        <p>SARATHI chunks prefill work so decode tokens can piggyback with prefills, improving LLM serving utilization under latency constraints.</p>
+                        <p>SARATHI splits prefill into compute-saturating chunks and builds decode-maximal batches so decode tokens can piggyback on prefill work.</p>
 
                     
                 </div>
@@ -695,7 +700,17 @@ mjx-container[display="true"] + br {
                     
                         
                         <li>
-                            <a href="/categories/Paper-Reading/">Paper Reading</a>&nbsp;
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
                         </li>
                     
                     
@@ -723,7 +738,7 @@ mjx-container[display="true"] + br {
         
     </div>
 
-    <a href="/2024/05/19/SARATHI/">Read more<span class="seo-reader-text">SARATHI: Chunked Prefill Scheduling</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2024/05/19/SARATHI/">Read more<span class="seo-reader-text">SARATHI: Piggybacking Decodes with Chunked Prefills</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
             </li>
@@ -739,20 +754,20 @@ mjx-container[display="true"] + br {
                 
                     <div id="home-article-thumbnail" class="relative h-[150px] overflow-hidden rounded-t-[10.8px] md:rounded-t-large -m-5 mb-3 sm:-m-6 sm:mb-4 md:-m-7 md:mb-5">
                         <a href="/2024/05/17/PACT/">
-                            <img src="/_imgs/PACT/thumbnail.png" alt="PACT: Learnable Activation Clipping" class="w-full h-full object-cover dark:brightness-75 transition-all" />
+                            <img src="/_imgs/PACT/thumbnail.png" alt="PACT: Parameterized Clipping Activation" class="w-full h-full object-cover dark:brightness-75 transition-all" />
                         </a>
                     </div>
                 
 
                 <h3 class="home-article-title">
                     <a href="/2024/05/17/PACT/">
-                        PACT: Learnable Activation Clipping
+                        PACT: Parameterized Clipping Activation
                     </a>
                 </h3>
 
                 <div class="home-article-content markdown-body">
                     
-                        <p>PACT turns activation clipping from a hand-tuned calibration choice into a learnable parameter for low-bit quantization-aware training.</p>
+                        <p>PACT learns activation clipping thresholds during QAT so low-bit activations keep enough resolution without saturating too much signal.</p>
 
                     
                 </div>
@@ -798,7 +813,7 @@ mjx-container[display="true"] + br {
         
     </div>
 
-    <a href="/2024/05/17/PACT/">Read more<span class="seo-reader-text">PACT: Learnable Activation Clipping</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2024/05/17/PACT/">Read more<span class="seo-reader-text">PACT: Parameterized Clipping Activation</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
             </li>
@@ -814,20 +829,20 @@ mjx-container[display="true"] + br {
                 
                     <div id="home-article-thumbnail" class="relative h-[150px] overflow-hidden rounded-t-[10.8px] md:rounded-t-large -m-5 mb-3 sm:-m-6 sm:mb-4 md:-m-7 md:mb-5">
                         <a href="/2024/05/02/PagedAttention/">
-                            <img src="/_imgs/PagedAttention/thumbnail.png" alt="PagedAttention: vLLM Memory Management" class="w-full h-full object-cover dark:brightness-75 transition-all" />
+                            <img src="/_imgs/PagedAttention/fig6-block-table-translation.png" alt="PagedAttention and vLLM: KV Cache Paging for High-Throughput LLM Serving" class="w-full h-full object-cover dark:brightness-75 transition-all" />
                         </a>
                     </div>
                 
 
                 <h3 class="home-article-title">
                     <a href="/2024/05/02/PagedAttention/">
-                        PagedAttention: vLLM Memory Management
+                        PagedAttention and vLLM: KV Cache Paging for High-Throughput LLM Serving
                     </a>
                 </h3>
 
                 <div class="home-article-content markdown-body">
                     
-                        <p>PagedAttention manages KV cache like virtual memory, reducing fragmentation and enabling high-throughput continuous batching in vLLM.</p>
+                        <p>PagedAttention turns KV cache into paged blocks, letting vLLM batch more sequences by reducing fragmentation and enabling copy-on-write sharing.</p>
 
                     
                 </div>
@@ -850,7 +865,17 @@ mjx-container[display="true"] + br {
                     
                         
                         <li>
-                            <a href="/categories/Paper-Reading/">Paper Reading</a>&nbsp;
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
                         </li>
                     
                     
@@ -870,6 +895,11 @@ mjx-container[display="true"] + br {
                     
                         <li>
                             | 
+                            <a href="/tags/KV-Cache/">KV-Cache</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
                             <a href="/tags/Serving/">Serving</a>&nbsp;
                         </li>
                     
@@ -878,7 +908,7 @@ mjx-container[display="true"] + br {
         
     </div>
 
-    <a href="/2024/05/02/PagedAttention/">Read more<span class="seo-reader-text">PagedAttention: vLLM Memory Management</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2024/05/02/PagedAttention/">Read more<span class="seo-reader-text">PagedAttention and vLLM: KV Cache Paging for High-Throughput LLM Serving</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
             </li>
@@ -992,7 +1022,7 @@ mjx-container[display="true"] + br {
 
                 <div class="home-article-content markdown-body">
                     
-                        <p>SqueezeLLM combines sensitivity-aware non-uniform quantization with a sparse outlier path to improve low-bit LLM weight compression.</p>
+                        <p>SqueezeLLM combines sensitivity-aware non-uniform codebooks with a small sparse FP16 path to make 3-bit LLM weight compression practical.</p>
 
                     
                 </div>
@@ -1036,6 +1066,11 @@ mjx-container[display="true"] + br {
                         <li>
                             | 
                             <a href="/tags/LLM/">LLM</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/Inference/">Inference</a>&nbsp;
                         </li>
                     
                 </ul>

@@ -18,22 +18,38 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="ViTAS adapts one-shot NAS to Vision Transformers and addresses channel fairness with cyclic weight sharing.">
+        <meta name="description" content="ViTAS makes one-shot Vision Transformer NAS more reliable by using cyclic channel sharing, identity shifting, and a weak superformer training recipe.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ViTAS: Vision Transformer Architecture Search">
 <meta property="og:url" content="https://baytoro.github.io/2022/08/24/ViTas/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="ViTAS adapts one-shot NAS to Vision Transformers and addresses channel fairness with cyclic weight sharing.">
+<meta property="og:description" content="ViTAS makes one-shot Vision Transformer NAS more reliable by using cyclic channel sharing, identity shifting, and a weak superformer training recipe.">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ViTas/table1-twins-search-space.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ViTas/table2-deit-search-space.png">
 <meta property="og:image" content="https://baytoro.github.io/_imgs/ViTas/fig1-overview.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ViTas/fig10-cyclic-groups.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ViTas/fig2-private-class-token.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ViTas/fig3-identity-shifting.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ViTas/table4-superformer-recipe-ablation.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ViTas/fig4-training-loss.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ViTas/fig5-ranking-correlation.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ViTas/table3-imagenet-twins.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ViTas/table6-imagenet-deit.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ViTas/table7-coco-transfer.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ViTas/table8-ade20k-transfer.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ViTas/fig9-transfer-curves.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ViTas/table9-vitas-ablation.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ViTas/fig8-autoformer-comparison.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/ViTas/fig11-searched-architectures.png">
 <meta property="article:published_time" content="2022-08-23T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-03T08:02:50.742Z">
+<meta property="article:modified_time" content="2026-07-13T03:07:05.820Z">
 <meta property="article:author" content="H.J. Chen">
 <meta property="article:tag" content="NAS">
 <meta property="article:tag" content="ViT">
 <meta property="article:tag" content="Vision">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://baytoro.github.io/_imgs/ViTas/fig1-overview.png">
+<meta name="twitter:image" content="https://baytoro.github.io/_imgs/ViTas/table1-twins-search-space.png">
     
     
     <!--- Icon Part-->
@@ -489,8 +505,8 @@ mjx-container[display="true"] + br {
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2026-07-03 16:02:50</span>
-            <span class="mobile">2026-07-03 16:02:50</span> -->
+            <!-- <span class="desktop">2026-07-13 11:07:05</span>
+            <span class="mobile">2026-07-13 11:07:05</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -504,7 +520,17 @@ mjx-container[display="true"] + br {
                     
                         
                         <li>
-                            <a href="/categories/Paper-Reading/">Paper Reading</a>&nbsp;
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
                         </li>
                     
                     
@@ -548,27 +574,486 @@ mjx-container[display="true"] + br {
 
 
         <div class="article-content markdown-body">
-            <blockquote>
-<p>Su X, You S, Xie J, et al. Vision Transformer Architecture Search. ECCV 2022.</p>
+            <p>Paper: <a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/2106.13700.pdf">ViTAS: Vision Transformer Architecture Search <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<blockquote>
+<p>Su X, You S, Xie J, Zheng M, Wang F, Qian C, Zhang C, Wang X, Xu C. ViTAS: Vision Transformer Architecture Search. ECCV 2022.</p>
 </blockquote>
-<p><a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/2106.13700.pdf">Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>ViTAS studies NAS for Vision Transformers. Transformer NAS is not just CNN NAS with different blocks. Width, heads, MLP ratio, token resolution, and stage design interact differently, and one-shot weight sharing can become fragile.</p>
-<h2 id="Why-Transformer-NAS-Is-Different"><a href="#Why-Transformer-NAS-Is-Different" class="headerlink" title="Why Transformer NAS Is Different"></a>Why Transformer NAS Is Different</h2><p>In CNN NAS, channel sharing and operation choices are already difficult. In ViT supernets, channel fairness becomes even more important because attention and MLP projections depend strongly on embedding dimensions.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ViTas/fig1-overview.png"></p>
-<p>The figure compares ordinary channel sharing and cyclic channel sharing. Cyclic sharing tries to ensure that different channels receive more balanced training.</p>
-<h2 id="Cyclic-Weight-Sharing"><a href="#Cyclic-Weight-Sharing" class="headerlink" title="Cyclic Weight Sharing"></a>Cyclic Weight Sharing</h2><p>If smaller subnets always use the first channels, those channels are trained more often than later channels. This creates unfair inherited weights and unreliable subnet ranking.</p>
-<p>Cyclic sharing rotates channel usage so that different subnets train different channel slices. The goal is to reduce ranking bias inside the supernet.</p>
-<h2 id="Search-Dimensions"><a href="#Search-Dimensions" class="headerlink" title="Search Dimensions"></a>Search Dimensions</h2><p>ViTAS searches dimensions such as:</p>
+<p>ViTAS is a Vision Transformer NAS paper, but the useful part is not only that it searches a better ViT backbone. The deeper point is about <strong>whether a one-shot Transformer supernet can rank candidate architectures fairly</strong>.</p>
+<p>The paper’s diagnosis is sharp:</p>
 <ul>
-<li>embedding/channel width;</li>
-<li>attention heads;</li>
-<li>MLP ratio;</li>
-<li>depth;</li>
-<li>stage structure.</li>
+<li>one-shot NAS trains a large supernet and lets candidate architectures inherit weights from it;</li>
+<li>in width/dimension search, common ordinal sharing gives small dimensions the first channels;</li>
+<li>those early channels are trained more often than later channels;</li>
+<li>for ViTs, where token embeddings and FC projections dominate the block, this channel imbalance makes inherited accuracy a biased estimator;</li>
+<li>if inherited accuracy is biased, the search loop can select architectures that merely received better shared weights.</li>
 </ul>
-<p>These dimensions are coupled. For example, changing embedding dimension affects head dimension and MLP cost.</p>
-<h2 id="Results-And-Interpretation"><a href="#Results-And-Interpretation" class="headerlink" title="Results And Interpretation"></a>Results And Interpretation</h2><p>The paper reports strong results on ImageNet and downstream vision tasks. The more reusable lesson is that Transformer supernet training must control channel sampling bias. Otherwise the search algorithm may simply select architectures that received better shared weights.</p>
-<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>ViTAS is important because it treats supernet fairness as a core problem. For Transformer NAS, reliable ranking is at least as important as the size of the search space.</p>
+<p>ViTAS attacks this with cyclic weight sharing for token embedding dimensions, then adds identity shifting and a weak superformer training recipe to stabilize search.</p>
+<p>All crops below are taken from the original PDF.</p>
+<h2 id="Why-ViT-NAS-Is-Not-Just-CNN-NAS"><a href="#Why-ViT-NAS-Is-Not-Just-CNN-NAS" class="headerlink" title="Why ViT NAS Is Not Just CNN NAS"></a>Why ViT NAS Is Not Just CNN NAS</h2><p>Vision Transformers expose several architecture dimensions at once:</p>
+<ul>
+<li>patch size or local/global attention granularity;</li>
+<li>number of attention heads;</li>
+<li>attention projection width;</li>
+<li>MLP hidden width;</li>
+<li>operation type in each layer;</li>
+<li>stage depth through identity operations.</li>
+</ul>
+<p>In a one-shot setting, a superformer must contain many candidates and give each candidate a meaningful inherited evaluation. This is already hard for CNNs. It becomes more fragile for ViTs because changing token embedding dimension changes the FC projections used by attention and MLP blocks.</p>
+<p>The paper uses two search spaces:</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ViTas/table1-twins-search-space.png"></p>
+<p><em>Table 1. Twins-based ViTAS space. It searches patch size/head choices, attention dimensions, MLP dimensions, and depth through TBS layers.</em></p>
+<p>For the Twins-small based space, the paper reports a search-space size around <code>1.1e54</code>, with FLOPs ranging from <code>0.02G</code> to <code>11.2G</code> and parameters from <code>0.16M</code> to <code>86.1M</code>.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ViTas/table2-deit-search-space.png"></p>
+<p><em>Table 2. DeiT-based ViTAS space. It searches patch size, head number, attention/MLP dimensions, and depth through vanilla ViT block vs identity choices.</em></p>
+<p>For the DeiT-small based space, the paper reports around <code>5.4e34</code> candidates, with FLOPs ranging from <code>0.1G</code> to <code>20.0G</code> and parameters from <code>0.5M</code> to <code>97.5M</code>.</p>
+<p>The search problem is roughly:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. Train a superformer over architecture choices A and dimension choices C.</span><br><span class="line">2. Evaluate sampled paths with inherited weights.</span><br><span class="line">3. Search for (architecture, dimensions) under a FLOPs budget.</span><br><span class="line">4. Retrain the selected architecture from scratch for final reporting.</span><br></pre></td></tr></table></figure></div>
+
+<p>The weak link is step 2. If the superformer trains some channels more than others, inherited validation accuracy is not a clean architecture score.</p>
+<h2 id="The-Channel-Fairness-Problem"><a href="#The-Channel-Fairness-Problem" class="headerlink" title="The Channel Fairness Problem"></a>The Channel Fairness Problem</h2><p>The core figure compares three ways to share channels when searching width.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ViTas/fig1-overview.png"></p>
+<p><em>Figure 1. Ordinal sharing over-trains early channels. Bilateral sharing reduces part of the imbalance but doubles the cost. Cyclic sharing aims to balance training time and channel influence with single-pass cost.</em></p>
+<p>In ordinal sharing, a candidate of width <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="0.781ex" height="1.52ex" role="img" focusable="false" viewBox="0 -661 345 672"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path></g></g></g></svg></mjx-container> uses the first <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="0.781ex" height="1.52ex" role="img" focusable="false" viewBox="0 -661 345 672"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path></g></g></g></svg></mjx-container> channels:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ordinal(width = i): use channels [1, 2, ..., i]</span><br></pre></td></tr></table></figure></div>
+
+<p>If the maximum width is <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="0.674ex" height="1.595ex" role="img" focusable="false" viewBox="0 -694 298 705"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D459" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path></g></g></g></svg></mjx-container>, channel 1 appears in every sampled width, while channel <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="0.674ex" height="1.595ex" role="img" focusable="false" viewBox="0 -694 298 705"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D459" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path></g></g></g></svg></mjx-container> appears only when the widest candidate is sampled. The paper writes the training count for channel <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="0.781ex" height="1.52ex" role="img" focusable="false" viewBox="0 -661 345 672"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path></g></g></g></svg></mjx-container> as <code>C_A(i) = l - i + 1</code>. That is the bias.</p>
+<p>This is dangerous in a supernet:</p>
+<ul>
+<li>narrow candidates inherit heavily trained early channels;</li>
+<li>wide candidates inherit a mix of heavily trained and under-trained channels;</li>
+<li>the search algorithm may confuse weight quality with architecture quality.</li>
+</ul>
+<p>BCNet-style bilateral sharing improves the picture by training from both sides, but it needs double training cost and still does not fully equalize the influence of each channel. ViTAS proposes cyclic sharing as a single-pass mapping.</p>
+<h2 id="Cyclic-Weight-Sharing"><a href="#Cyclic-Weight-Sharing" class="headerlink" title="Cyclic Weight Sharing"></a>Cyclic Weight Sharing</h2><p>ViTAS designs an indicator matrix for channel use. In plain notation:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">beta[i, j] = 1 if channel i is used by dimension j</span><br><span class="line">beta[i, j] = 0 otherwise</span><br></pre></td></tr></table></figure></div>
+
+<p>The mapping is chosen under two goals.</p>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Training fairness</td>
+<td>Each channel should be selected about the same number of times.</td>
+</tr>
+<tr>
+<td>Influence uniformity</td>
+<td>Each channel should contribute similar total gradient influence across the dimensions that use it.</td>
+</tr>
+</tbody></table>
+<p>The second condition is the more interesting one. In an FC layer, a dimension with more input channels distributes gradient contribution across more channels. The paper approximates the influence of a channel in a width-<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.462ex;" xmlns="http://www.w3.org/2000/svg" width="0.932ex" height="1.957ex" role="img" focusable="false" viewBox="0 -661 412 865"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D457" d="M297 596Q297 627 318 644T361 661Q378 661 389 651T403 623Q403 595 384 576T340 557Q322 557 310 567T297 596ZM288 376Q288 405 262 405Q240 405 220 393T185 362T161 325T144 293L137 279Q135 278 121 278H107Q101 284 101 286T105 299Q126 348 164 391T252 441Q253 441 260 441T272 442Q296 441 316 432Q341 418 354 401T367 348V332L318 133Q267 -67 264 -75Q246 -125 194 -164T75 -204Q25 -204 7 -183T-12 -137Q-12 -110 7 -91T53 -71Q70 -71 82 -81T95 -112Q95 -148 63 -167Q69 -168 77 -168Q111 -168 139 -140T182 -74L193 -32Q204 11 219 72T251 197T278 308T289 365Q289 372 288 376Z"></path></g></g></g></svg></mjx-container> layer as proportional to <code>1 / j</code>. Therefore, equal training count alone is not enough; the method also tries to equalize weighted influence.</p>
+<p>The final mapping is solved as a small quadratically constrained quadratic program over the binary assignment matrix. This sounds heavy, but it is not in the training loop. Once the mapping is selected, cyclic sharing is just an index mapping for channel slices.</p>
+<p>The appendix visualizes cyclic maps for different group counts:</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ViTas/fig10-cyclic-groups.png"></p>
+<p><em>Figure 10. Cyclic channel maps for group counts from 5 to 10. Red channels rotate across layer-width choices rather than staying fixed at the left side.</em></p>
+<p>For the blog-level takeaway, I read cyclic sharing as a fairness patch for width-search supernets:</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ordinal: small widths always see the same early channels</span><br><span class="line">cyclic:  width choices rotate through channel groups</span><br></pre></td></tr></table></figure></div>
+
+<p>This matters because ViTAS is not trying to search from a randomly initialized subnetwork each time. It relies on inherited weights. Any systematic imbalance in inherited weights directly biases the search.</p>
+<h2 id="Private-Class-Token"><a href="#Private-Class-Token" class="headerlink" title="Private Class Token"></a>Private Class Token</h2><p>Pure ViT and DeiT-style models use a class token. If patch size is searched, the number of patch tokens changes, and the class token interacts with different token layouts.</p>
+<p>ViTAS uses a private class token per patch-size setting.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ViTas/fig2-private-class-token.png"></p>
+<p><em>Figure 2. Different patch sizes get private class tokens, avoiding interference between paths with different token counts.</em></p>
+<p>The point is small but practical. The class token has very few parameters, so privatizing it barely changes memory or compute. But it avoids forcing architectures with different token grids to share one class-token parameter.</p>
+<h2 id="Identity-Shifting"><a href="#Identity-Shifting" class="headerlink" title="Identity Shifting"></a>Identity Shifting</h2><p>Depth search is implemented with identity operations. A layer can be a real operation or an identity, so the effective depth changes.</p>
+<p>The problem is that the same final architecture can be represented by multiple paths through the superformer. If identity operations are allowed anywhere, several path layouts can collapse to the same sequence of real operations. Those paths may train differently, which makes architecture evaluation noisy.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ViTas/fig3-identity-shifting.png"></p>
+<p><em>Figure 3. The original search space can map several superformer paths to the same architecture. ViTAS shifts identity operations deeper so each architecture has a cleaner path representation.</em></p>
+<p>ViTAS resolves this by arranging identity choices at deeper layers inside a stage. With three operation choices and twelve searched layers, the paper says this reduces the operation search space from <code>3^12</code> path layouts to <code>2^13 - 1</code> effective choices.</p>
+<p>The important part is not the exact count. The useful idea is that depth search should avoid many-to-one path encodings. Otherwise the superformer is asked to rank paths even when the final architecture is identical.</p>
+<h2 id="Superformer-Training-Recipe"><a href="#Superformer-Training-Recipe" class="headerlink" title="Superformer Training Recipe"></a>Superformer Training Recipe</h2><p>The authors found that a strong augmentation and regularization recipe can destabilize superformer training. That is slightly counterintuitive because strong recipes are usually helpful for final ViT training.</p>
+<p>For search, the superformer is not the final model. It is a ranking proxy. The paper therefore uses a weak recipe:</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ViTas/table4-superformer-recipe-ablation.png"></p>
+<p><em>Table 4. Weakening augmentation and regularization improves the searched/retrained model. The best searched Twins 1.4G model reaches 79.4% after retraining.</em></p>
+<p>The selected superformer search recipe is simple:</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Setting</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Epochs</td>
+<td>300</td>
+</tr>
+<tr>
+<td>Batch size</td>
+<td>1024</td>
+</tr>
+<tr>
+<td>Optimizer</td>
+<td>AdamW</td>
+</tr>
+<tr>
+<td>Learning rate</td>
+<td>0.001</td>
+</tr>
+<tr>
+<td>LR decay</td>
+<td>cosine</td>
+</tr>
+<tr>
+<td>Warmup</td>
+<td>5 epochs</td>
+</tr>
+</tbody></table>
+<p>The appendix clarifies that superformers for DeiT- and Twins-based spaces use the same search recipe. The final searched architectures are then retrained with the corresponding DeiT or Twins recipe.</p>
+<p>This separation is important:</p>
+<ul>
+<li>superformer training should make ranking stable;</li>
+<li>final retraining should make the chosen architecture strong.</li>
+</ul>
+<p>Treating those as the same objective can make the search proxy worse.</p>
+<h2 id="Training-Stability-Evidence"><a href="#Training-Stability-Evidence" class="headerlink" title="Training Stability Evidence"></a>Training Stability Evidence</h2><p>The loss curves are one of the most useful figures in the paper.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ViTas/fig4-training-loss.png"></p>
+<p><em>Figure 4. Cyclic sharing is slower in the first few epochs but reaches lower superformer loss later. Identity shifting also converges to a lower loss than the original path encoding.</em></p>
+<p>The paper’s interpretation:</p>
+<ul>
+<li>ordinal sharing can look better early because a subset of channels gets trained heavily;</li>
+<li>after enough epochs, that imbalance hurts the superformer as a whole;</li>
+<li>cyclic sharing trains more evenly and ends with lower loss;</li>
+<li>identity shifting removes redundant path encodings and also improves convergence.</li>
+</ul>
+<p>The text reports final training losses around <code>2.4</code> for the original identity setting and <code>1.5</code> with identity shifting on ImageNet-100. It also reports that searched architectures from the shifted setting reach <code>90.4%</code>, compared with <code>88.3%</code> from the original setting in that experiment.</p>
+<p>The ranking-correlation experiment is even closer to the NAS objective.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ViTas/fig5-ranking-correlation.png"></p>
+<p><em>Figure 5. Cyclic sharing gives higher Pearson, Spearman, and Kendall correlation over sampled paths than ordinal or bilateral sharing.</em></p>
+<p>This is the evidence I care about most. A superformer can have a nice validation loss and still rank candidates poorly. ViTAS explicitly checks correlation over 2000 sampled paths across FLOPs groups, which directly tests whether inherited evaluation is a better search signal.</p>
+<h2 id="ImageNet-Results-Twins-Space"><a href="#ImageNet-Results-Twins-Space" class="headerlink" title="ImageNet Results: Twins Space"></a>ImageNet Results: Twins Space</h2><p>ViTAS first searches in a Twins-based hierarchical transformer space.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ViTas/table3-imagenet-twins.png"></p>
+<p><em>Table 3. Searched Twins-based ViTAS models on ImageNet-1k under different FLOPs budgets.</em></p>
+<p>Key rows:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th align="right">FLOPs</th>
+<th align="right">Params</th>
+<th align="right">Top-1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Twins-T reimplementation</td>
+<td align="right">1.4G</td>
+<td align="right">11.5M</td>
+<td align="right">77.8%</td>
+</tr>
+<tr>
+<td>ViTAS-Twins-T</td>
+<td align="right">1.4G</td>
+<td align="right">13.8M</td>
+<td align="right">79.4%</td>
+</tr>
+<tr>
+<td>Twins-SVT-S reimplementation</td>
+<td align="right">2.9G</td>
+<td align="right">24.0M</td>
+<td align="right">81.6%</td>
+</tr>
+<tr>
+<td>ViTAS-Twins-S</td>
+<td align="right">3.0G</td>
+<td align="right">30.5M</td>
+<td align="right">82.0%</td>
+</tr>
+<tr>
+<td>Twins-SVT-B reimplementation</td>
+<td align="right">8.6G</td>
+<td align="right">56.0M</td>
+<td align="right">83.2%</td>
+</tr>
+<tr>
+<td>ViTAS-Twins-B</td>
+<td align="right">8.8G</td>
+<td align="right">66.0M</td>
+<td align="right">83.5%</td>
+</tr>
+<tr>
+<td>ViTAS-Twins-L</td>
+<td align="right">16.1G</td>
+<td align="right">124.8M</td>
+<td align="right">84.0%</td>
+</tr>
+</tbody></table>
+<p>The tiny result is the cleanest gain: ViTAS-Twins-T improves the reimplemented Twins-T by 1.6 percentage points at roughly the same FLOPs. At larger scales the gains are smaller but still positive.</p>
+<p>There is a tradeoff: ViTAS-Twins models often use more parameters and lower throughput than the nearest baseline. The paper reports FLOPs, parameters, and throughput together, which is good. The result should not be read as “searched is always faster.” It is more accurate to say that ViTAS finds stronger accuracy/compute points inside the chosen transformer space.</p>
+<h2 id="ImageNet-Results-DeiT-Space"><a href="#ImageNet-Results-DeiT-Space" class="headerlink" title="ImageNet Results: DeiT Space"></a>ImageNet Results: DeiT Space</h2><p>ViTAS also searches a pure DeiT-style space, without the hierarchical/local attention biases of Twins.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ViTas/table6-imagenet-deit.png"></p>
+<p><em>Table 6. DeiT-based ViTAS results on ImageNet-1k.</em></p>
+<p>The small-budget case:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th align="right">FLOPs</th>
+<th align="right">Top-1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DeiT-T reimplementation</td>
+<td align="right">1.3G</td>
+<td align="right">72.3%</td>
+</tr>
+<tr>
+<td>AutoFormer-T reimplementation</td>
+<td align="right">1.3G</td>
+<td align="right">74.7%</td>
+</tr>
+<tr>
+<td>ViTAS-DeiT-A</td>
+<td align="right">1.4G</td>
+<td align="right">75.6%</td>
+</tr>
+</tbody></table>
+<p>The larger case:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th align="right">FLOPs</th>
+<th align="right">Top-1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DeiT-S reimplementation</td>
+<td align="right">4.6G</td>
+<td align="right">79.9%</td>
+</tr>
+<tr>
+<td>AutoFormer-S reimplementation</td>
+<td align="right">5.1G</td>
+<td align="right">79.8%</td>
+</tr>
+<tr>
+<td>ViTAS-DeiT-B</td>
+<td align="right">4.9G</td>
+<td align="right">80.2%</td>
+</tr>
+</tbody></table>
+<p>The result is useful because it separates ViTAS from Twins-specific priors. Cyclic sharing and the stabilized superformer recipe still help in a DeiT-style space.</p>
+<h2 id="Transfer-To-Detection-And-Segmentation"><a href="#Transfer-To-Detection-And-Segmentation" class="headerlink" title="Transfer To Detection And Segmentation"></a>Transfer To Detection And Segmentation</h2><p>Searched ImageNet classifiers can fail to transfer. ViTAS evaluates the searched Twins backbones on COCO2017 and ADE20K.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ViTas/table7-coco-transfer.png"></p>
+<p><em>Table 7. COCO2017 object detection and instance segmentation transfer with Mask R-CNN and RetinaNet.</em></p>
+<p>Representative Mask R-CNN box AP:</p>
+<table>
+<thead>
+<tr>
+<th>Backbone</th>
+<th align="right">Mask R-CNN box AP</th>
+<th align="right">Mask AP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Twins-SVT-S reimplementation</td>
+<td align="right">43.5</td>
+<td align="right">40.1</td>
+</tr>
+<tr>
+<td>ViTAS-Twins-S</td>
+<td align="right">45.9</td>
+<td align="right">41.5</td>
+</tr>
+<tr>
+<td>Twins-SVT-B reimplementation</td>
+<td align="right">45.5</td>
+<td align="right">41.4</td>
+</tr>
+<tr>
+<td>ViTAS-Twins-B</td>
+<td align="right">47.6</td>
+<td align="right">42.9</td>
+</tr>
+<tr>
+<td>Twins-SVT-L reimplementation</td>
+<td align="right">45.9</td>
+<td align="right">41.6</td>
+</tr>
+<tr>
+<td>ViTAS-Twins-L</td>
+<td align="right">48.2</td>
+<td align="right">43.3</td>
+</tr>
+</tbody></table>
+<p>The RetinaNet side shows the same pattern: ViTAS backbones improve over the reimplemented Twins baselines across S/B/L sizes.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ViTas/table8-ade20k-transfer.png"></p>
+<p><em>Table 8. ADE20K semantic segmentation transfer with Semantic FPN and UperNet.</em></p>
+<p>Representative mIoU:</p>
+<table>
+<thead>
+<tr>
+<th>Backbone</th>
+<th align="right">Semantic FPN mIoU</th>
+<th align="right">UperNet mIoU</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Twins-SVT-S reimplementation</td>
+<td align="right">43.6</td>
+<td align="right">45.9</td>
+</tr>
+<tr>
+<td>ViTAS-Twins-S</td>
+<td align="right">46.6</td>
+<td align="right">47.9</td>
+</tr>
+<tr>
+<td>Twins-SVT-B reimplementation</td>
+<td align="right">45.5</td>
+<td align="right">47.7</td>
+</tr>
+<tr>
+<td>ViTAS-Twins-B</td>
+<td align="right">49.5</td>
+<td align="right">50.2</td>
+</tr>
+<tr>
+<td>Twins-SVT-L reimplementation</td>
+<td align="right">46.9</td>
+<td align="right">49.2</td>
+</tr>
+<tr>
+<td>ViTAS-Twins-L</td>
+<td align="right">50.4</td>
+<td align="right">51.3</td>
+</tr>
+</tbody></table>
+<p>The transfer results matter because they weaken a common NAS criticism: maybe the architecture only fits ImageNet classification. Here the searched backbones remain strong for dense prediction.</p>
+<p>The appendix plots the same comparison as curves:</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ViTas/fig9-transfer-curves.png"></p>
+<p><em>Figure 9. ViTAS transfer curves on ADE20K and COCO2017. Under similar FLOPs budgets, the searched backbones stay above the baseline curves.</em></p>
+<h2 id="Ablation-What-Actually-Matters"><a href="#Ablation-What-Actually-Matters" class="headerlink" title="Ablation: What Actually Matters"></a>Ablation: What Actually Matters</h2><p>The compact ablation table is the best summary of ViTAS as a method.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ViTas/table9-vitas-ablation.png"></p>
+<p><em>Table 9. Cyclic sharing improves over ordinal and bilateral sharing, and weak augmentation adds another large gain.</em></p>
+<p>The table can be read in two blocks.</p>
+<p>Without weak augmentation:</p>
+<table>
+<thead>
+<tr>
+<th>Sharing</th>
+<th align="right">Top-1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Ordinal</td>
+<td align="right">77.2%</td>
+</tr>
+<tr>
+<td>Bilateral</td>
+<td align="right">77.6%</td>
+</tr>
+<tr>
+<td>Cyclic</td>
+<td align="right">77.9%</td>
+</tr>
+</tbody></table>
+<p>With weak augmentation:</p>
+<table>
+<thead>
+<tr>
+<th>Sharing</th>
+<th align="right">Top-1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Ordinal + weak aug</td>
+<td align="right">78.1%</td>
+</tr>
+<tr>
+<td>Bilateral + weak aug</td>
+<td align="right">78.5%</td>
+</tr>
+<tr>
+<td>Cyclic + weak aug</td>
+<td align="right">79.4%</td>
+</tr>
+</tbody></table>
+<p>This says two things:</p>
+<ol>
+<li>cyclic sharing is better than the two channel-sharing baselines under the same augmentation regime;</li>
+<li>the superformer training recipe is not a side detail, because weak augmentation contributes a large part of the final gain.</li>
+</ol>
+<p>So I would not summarize ViTAS as only “cyclic weight sharing.” The method is a package: cyclic sharing, identity shifting, private class token for DeiT-style patch search, and a search-specific weak training recipe.</p>
+<h2 id="Comparison-With-AutoFormer"><a href="#Comparison-With-AutoFormer" class="headerlink" title="Comparison With AutoFormer"></a>Comparison With AutoFormer</h2><p>AutoFormer and ViTAS are close in time and motivation. Both are one-shot NAS methods for Vision Transformers. The difference is where they focus:</p>
+<table>
+<thead>
+<tr>
+<th>Paper</th>
+<th>Main issue</th>
+<th>Mechanism</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AutoFormer</td>
+<td>Make inherited subnet evaluation reliable in a ViT supernet</td>
+<td>weight entanglement</td>
+</tr>
+<tr>
+<td>ViTAS</td>
+<td>Make dimension/channel sharing fair in a ViT superformer</td>
+<td>cyclic channel sharing</td>
+</tr>
+</tbody></table>
+<p>The appendix compares the searched DeiT-T style architectures.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ViTas/fig8-autoformer-comparison.png"></p>
+<p><em>Figure 8. ViTAS and AutoFormer choose different DeiT-T width/head patterns. ViTAS keeps smaller dimensions in early layers and allocates more dimension/head budget later.</em></p>
+<p>The authors point out several patterns:</p>
+<ul>
+<li>ViTAS keeps smaller dimensions in earlier layers and more dimensions later.</li>
+<li>Early layers tend to use smaller attention dimensions than MLP output dimensions.</li>
+<li>Attention dimensions become larger in later layers.</li>
+<li>ViTAS uses fewer blocks under the tight 1.4G budget, while AutoFormer stays closer to DeiT-T’s layer count.</li>
+</ul>
+<p>This is not a universal design law, but it is a useful search result. Under a tight compute budget, the method prefers to save early-layer width and spend more capacity in later attention/head choices.</p>
+<h2 id="Searched-Architecture-Visualization"><a href="#Searched-Architecture-Visualization" class="headerlink" title="Searched Architecture Visualization"></a>Searched Architecture Visualization</h2><p>The appendix visualizes searched Twins architectures.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/ViTas/fig11-searched-architectures.png"></p>
+<p><em>Figure 11. Visualization of searched ViTAS-Twins architectures and dimension percentages.</em></p>
+<p>The figure is dense, but it gives an intuition for why NAS can still be useful even after strong manual ViT designs. The searched models do not simply scale every stage uniformly. They vary local/global choices, depth, and layer dimensions stage by stage.</p>
+<p>The paper’s appendix makes three practical observations from the searched architectures:</p>
+<ul>
+<li>in the last stage, local blocks can behave similarly to global blocks because the feature size is already small;</li>
+<li>dimension changes are more obvious in Twins-based architectures than in DeiT-based architectures;</li>
+<li>MLP and attention dimensions are not uniformly scaled together.</li>
+</ul>
+<p>Again, these are clues, not laws. But they are the kind of clues that make a NAS paper more useful than just a leaderboard entry.</p>
+<h2 id="Implementation-Notes"><a href="#Implementation-Notes" class="headerlink" title="Implementation Notes"></a>Implementation Notes</h2><p>If I were reproducing ViTAS, I would validate the proxy before trusting the final searched model.</p>
+<ol>
+<li>Implement the search space and make sure every sampled path has valid head/dimension divisibility.</li>
+<li>Build ordinal sharing first as a baseline; measure whether early channels receive more updates.</li>
+<li>Add cyclic channel mapping and verify training-count fairness across channel groups.</li>
+<li>Approximate influence balance for FC layers; check that cyclic reduces the channel influence gap.</li>
+<li>Add identity shifting for depth search; confirm that multiple superformer paths no longer collapse to the same final architecture.</li>
+<li>For DeiT-style patch-size search, keep private class tokens per patch size.</li>
+<li>Train a small superformer and compare inherited ranking against a small set of retrained candidates.</li>
+<li>Only then scale to ImageNet and evolutionary search.</li>
+</ol>
+<p>The paper uses evolutionary search under FLOPs constraints after superformer training. The appendix says it partitions dimensions into 10 groups, samples 50 architectures per budget range, and trains/retrains according to the reported recipes. The search details matter less than the estimator quality: if inherited accuracy is biased, a better evolutionary solver will still optimize the wrong signal.</p>
+<h2 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h2><p>ViTAS is a strong paper, but the boundaries are clear.</p>
+<ul>
+<li>The search space is still manually designed around DeiT and Twins. It does not discover entirely new attention operators or macro backbones.</li>
+<li>Cyclic sharing is designed for dimension search. It does not automatically solve every kind of operation-sharing bias.</li>
+<li>The influence calculation is a useful approximation for FC-heavy layers, not a full theory of supernet training dynamics.</li>
+<li>The compute budget is substantial: superformer training uses 300 ImageNet epochs, and the final architectures are retrained.</li>
+<li>Final results depend on the retraining recipe. The paper is careful to reimplement baselines under its recipe, but recipe sensitivity is always a concern in ViT comparisons.</li>
+<li>Throughput is not always better. Several ViTAS models trade more parameters or lower image/s for higher accuracy.</li>
+</ul>
+<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>ViTAS is worth remembering for one sentence:</p>
+<blockquote>
+<p>In Transformer NAS, inherited accuracy is only useful if the superformer trains dimensions fairly.</p>
+</blockquote>
+<p>The paper’s main contribution is not just a searched ViT model. It is the argument that ordinal channel sharing makes the superformer itself biased, and that cyclic channel sharing gives a more reliable ranking signal for token embedding dimensions.</p>
+<p>The strongest evidence is the combination of:</p>
+<ul>
+<li>Figure 1, which makes the channel imbalance visible;</li>
+<li>Figure 5, which tests ranking correlation directly;</li>
+<li>Table 9, which isolates cyclic sharing and weak augmentation;</li>
+<li>ImageNet results in both Twins and DeiT spaces;</li>
+<li>COCO/ADE transfer results showing the searched backbones are not ImageNet-only artifacts.</li>
+</ul>
+<p>That makes ViTAS a useful bridge between AutoFormer and later ViT search-space work such as S3. AutoFormer makes weight sharing more structured; ViTAS makes dimension sharing fairer; S3 later asks how to evolve the search space itself. All three are really about the same hidden problem: the supernet is the measurement instrument, and if the instrument is biased, NAS optimizes noise.</p>
 
         </div>
 
@@ -641,7 +1126,7 @@ mjx-container[display="true"] + br {
     <div class="post-toc">
         <div class="toc-title">On this page</div>
         <div class="page-title">ViTAS: Vision Transformer Architecture Search</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-Transformer-NAS-Is-Different"><span class="nav-text">Why Transformer NAS Is Different</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cyclic-Weight-Sharing"><span class="nav-text">Cyclic Weight Sharing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Dimensions"><span class="nav-text">Search Dimensions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Results-And-Interpretation"><span class="nav-text">Results And Interpretation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-ViT-NAS-Is-Not-Just-CNN-NAS"><span class="nav-text">Why ViT NAS Is Not Just CNN NAS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Channel-Fairness-Problem"><span class="nav-text">The Channel Fairness Problem</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cyclic-Weight-Sharing"><span class="nav-text">Cyclic Weight Sharing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Private-Class-Token"><span class="nav-text">Private Class Token</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Identity-Shifting"><span class="nav-text">Identity Shifting</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Superformer-Training-Recipe"><span class="nav-text">Superformer Training Recipe</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Training-Stability-Evidence"><span class="nav-text">Training Stability Evidence</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ImageNet-Results-Twins-Space"><span class="nav-text">ImageNet Results: Twins Space</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ImageNet-Results-DeiT-Space"><span class="nav-text">ImageNet Results: DeiT Space</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Transfer-To-Detection-And-Segmentation"><span class="nav-text">Transfer To Detection And Segmentation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ablation-What-Actually-Matters"><span class="nav-text">Ablation: What Actually Matters</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Comparison-With-AutoFormer"><span class="nav-text">Comparison With AutoFormer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Searched-Architecture-Visualization"><span class="nav-text">Searched Architecture Visualization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Implementation-Notes"><span class="nav-text">Implementation Notes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Limitations"><span class="nav-text">Limitations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
 
     </div>
 </div>

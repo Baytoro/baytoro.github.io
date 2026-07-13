@@ -18,21 +18,34 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="Primer uses program search over Transformer primitives and discovers small reusable block-level improvements.">
+        <meta name="description" content="Primer uses program search to find two simple Transformer block changes: squared ReLU and depthwise convolution in attention projections.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Primer: Searching for Efficient Transformers for Language Modeling">
+<meta property="og:title" content="Primer: Searching Transformer Primitives">
 <meta property="og:url" content="https://baytoro.github.io/2022/10/28/Primer/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Primer uses program search over Transformer primitives and discovers small reusable block-level improvements.">
+<meta property="og:description" content="Primer uses program search to find two simple Transformer block changes: squared ReLU and depthwise convolution in attention projections.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://baytoro.github.io/_imgs/Primer/fig1-overview.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/Primer/fig1-program-search-overview.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/Primer/fig4-primer-ez-modifications.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/Primer/fig5-squared-relu.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/Primer/fig6-search-task-speedups.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/Primer/table4-lm1b-search-numbers.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/Primer/fig7-power-law-scaling.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/Primer/fig9-transfer-speedups.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/Primer/table1-t5-compute.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/Primer/fig10-t5-compute-savings.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/Primer/fig11-one-shot-transfer.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/Primer/fig27-one-shot-tasks.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/Primer/fig26-ablation-insertion.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/Primer/fig23-transformer-primer-programs.png">
 <meta property="article:published_time" content="2022-10-27T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-03T08:02:50.741Z">
+<meta property="article:modified_time" content="2026-07-09T06:33:35.580Z">
 <meta property="article:author" content="H.J. Chen">
 <meta property="article:tag" content="NAS">
 <meta property="article:tag" content="Transformer">
+<meta property="article:tag" content="NLP">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://baytoro.github.io/_imgs/Primer/fig1-overview.png">
+<meta name="twitter:image" content="https://baytoro.github.io/_imgs/Primer/fig1-program-search-overview.png">
     
     
     <!--- Icon Part-->
@@ -44,7 +57,7 @@
     
     <title>
         
-            Primer: Searching for Efficient Transformers for Language Modeling -
+            Primer: Searching Transformer Primitives -
         
         Blog
     </title>
@@ -459,9 +472,9 @@ mjx-container[display="true"] + br {
             
                 
                 
-                <img src="/_imgs/Primer/thumbnail.png" alt="Primer: Searching for Efficient Transformers for Language Modeling" class="max-w-none"/>
+                <img src="/_imgs/Primer/thumbnail.png" alt="Primer: Searching Transformer Primitives" class="max-w-none"/>
                 
-                <h1 class="article-title-cover">Primer: Searching for Efficient Transformers for Language Modeling</h1>
+                <h1 class="article-title-cover">Primer: Searching Transformer Primitives</h1>
             
             </div>
             
@@ -488,8 +501,8 @@ mjx-container[display="true"] + br {
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2026-07-03 16:02:50</span>
-            <span class="mobile">2026-07-03 16:02:50</span> -->
+            <!-- <span class="desktop">2026-07-09 14:33:35</span>
+            <span class="mobile">2026-07-09 14:33:35</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -503,7 +516,17 @@ mjx-container[display="true"] + br {
                     
                         
                         <li>
-                            <a href="/categories/Paper-Reading/">Paper Reading</a>&nbsp;
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
                         </li>
                     
                     
@@ -522,6 +545,10 @@ mjx-container[display="true"] + br {
                 
                     <li>
                         | <a href="/tags/Transformer/">Transformer</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/NLP/">NLP</a>&nbsp;
                     </li>
                 
             </ul>
@@ -547,19 +574,114 @@ mjx-container[display="true"] + br {
 <p>So D R, Mańke W, Liu H, Dai Z, Shazeer N, Le Q V. Primer: Searching for Efficient Transformers for Language Modeling.</p>
 </blockquote>
 <p><a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/2109.08668.pdf">Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>Primer is an AutoML paper for Transformer language models. Unlike many NAS papers that search high-level macro-architectures, Primer searches over primitive operations inside Transformer blocks. The result is not a completely new model family, but a set of small changes that transfer well.</p>
-<h2 id="Search-Space"><a href="#Search-Space" class="headerlink" title="Search Space"></a>Search Space</h2><p>Primer uses a program-like search space. Candidate programs specify block-level transformations around attention and feed-forward sublayers.</p>
-<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/Primer/fig1-overview.png"></p>
-<p>The figure shows the search-over-programs setup. Candidate programs are composed from primitives and evaluated under a fixed budget.</p>
-<h2 id="What-The-Search-Found"><a href="#What-The-Search-Found" class="headerlink" title="What The Search Found"></a>What The Search Found</h2><p>Two notable changes are:</p>
-<h3 id="Squared-ReLU"><a href="#Squared-ReLU" class="headerlink" title="Squared ReLU"></a>Squared ReLU</h3><p>Instead of ordinary ReLU, Primer uses:</p>
-<p><mjx-container class="MathJax" jax="SVG" display="true"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="30.294ex" height="2.565ex" role="img" focusable="false" viewBox="0 -883.9 13390.1 1133.9"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mi"><path data-c="53" d="M55 507Q55 590 112 647T243 704H257Q342 704 405 641L426 672Q431 679 436 687T446 700L449 704Q450 704 453 704T459 705H463Q466 705 472 699V462L466 456H448Q437 456 435 459T430 479Q413 605 329 646Q292 662 254 662Q201 662 168 626T135 542Q135 508 152 480T200 435Q210 431 286 412T370 389Q427 367 463 314T500 191Q500 110 448 45T301 -21Q245 -21 201 -4T140 27L122 41Q118 36 107 21T87 -7T78 -21Q76 -22 68 -22H64Q61 -22 55 -16V101Q55 220 56 222Q58 227 76 227H89Q95 221 95 214Q95 182 105 151T139 90T205 42T305 24Q352 24 386 62T420 155Q420 198 398 233T340 281Q284 295 266 300Q261 301 239 306T206 314T174 325T141 343T112 367T85 402Q55 451 55 507Z"></path><path data-c="71" d="M33 218Q33 308 95 374T236 441H246Q330 441 381 372L387 364Q388 364 404 403L420 442H457V156Q457 -132 458 -134Q462 -142 470 -145Q491 -148 519 -148H535V-194H527L504 -193Q480 -192 453 -192T415 -191Q312 -191 303 -194H295V-148H311Q339 -148 360 -145Q369 -141 371 -135T373 -106V-41V49Q313 -11 236 -11Q154 -11 94 53T33 218ZM376 300Q346 389 278 401Q275 401 269 401T261 402Q211 400 171 350T131 214Q131 137 165 82T253 27Q296 27 328 54T376 118V300Z" transform="translate(556,0)"></path><path data-c="75" d="M383 58Q327 -10 256 -10H249Q124 -10 105 89Q104 96 103 226Q102 335 102 348T96 369Q86 385 36 385H25V408Q25 431 27 431L38 432Q48 433 67 434T105 436Q122 437 142 438T172 441T184 442H187V261Q188 77 190 64Q193 49 204 40Q224 26 264 26Q290 26 311 35T343 58T363 90T375 120T379 144Q379 145 379 161T380 201T380 248V315Q380 361 370 372T320 385H302V431Q304 431 378 436T457 442H464V264Q464 84 465 81Q468 61 479 55T524 46H542V0Q540 0 467 -5T390 -11H383V58Z" transform="translate(1084,0)"></path><path data-c="61" d="M137 305T115 305T78 320T63 359Q63 394 97 421T218 448Q291 448 336 416T396 340Q401 326 401 309T402 194V124Q402 76 407 58T428 40Q443 40 448 56T453 109V145H493V106Q492 66 490 59Q481 29 455 12T400 -6T353 12T329 54V58L327 55Q325 52 322 49T314 40T302 29T287 17T269 6T247 -2T221 -8T190 -11Q130 -11 82 20T34 107Q34 128 41 147T68 188T116 225T194 253T304 268H318V290Q318 324 312 340Q290 411 215 411Q197 411 181 410T156 406T148 403Q170 388 170 359Q170 334 154 320ZM126 106Q126 75 150 51T209 26Q247 26 276 49T315 109Q317 116 318 175Q318 233 317 233Q309 233 296 232T251 223T193 203T147 166T126 106Z" transform="translate(1640,0)"></path><path data-c="72" d="M36 46H50Q89 46 97 60V68Q97 77 97 91T98 122T98 161T98 203Q98 234 98 269T98 328L97 351Q94 370 83 376T38 385H20V408Q20 431 22 431L32 432Q42 433 60 434T96 436Q112 437 131 438T160 441T171 442H174V373Q213 441 271 441H277Q322 441 343 419T364 373Q364 352 351 337T313 322Q288 322 276 338T263 372Q263 381 265 388T270 400T273 405Q271 407 250 401Q234 393 226 386Q179 341 179 207V154Q179 141 179 127T179 101T180 81T180 66V61Q181 59 183 57T188 54T193 51T200 49T207 48T216 47T225 47T235 46T245 46H276V0H267Q249 3 140 3Q37 3 28 0H20V46H36Z" transform="translate(2140,0)"></path><path data-c="65" d="M28 218Q28 273 48 318T98 391T163 433T229 448Q282 448 320 430T378 380T406 316T415 245Q415 238 408 231H126V216Q126 68 226 36Q246 30 270 30Q312 30 342 62Q359 79 369 104L379 128Q382 131 395 131H398Q415 131 415 121Q415 117 412 108Q393 53 349 21T250 -11Q155 -11 92 58T28 218ZM333 275Q322 403 238 411H236Q228 411 220 410T195 402T166 381T143 340T127 274V267H333V275Z" transform="translate(2532,0)"></path><path data-c="64" d="M376 495Q376 511 376 535T377 568Q377 613 367 624T316 637H298V660Q298 683 300 683L310 684Q320 685 339 686T376 688Q393 689 413 690T443 693T454 694H457V390Q457 84 458 81Q461 61 472 55T517 46H535V0Q533 0 459 -5T380 -11H373V44L365 37Q307 -11 235 -11Q158 -11 96 50T34 215Q34 315 97 378T244 442Q319 442 376 393V495ZM373 342Q328 405 260 405Q211 405 173 369Q146 341 139 305T131 211Q131 155 138 120T173 59Q203 26 251 26Q322 26 373 103V342Z" transform="translate(2976,0)"></path><path data-c="52" d="M130 622Q123 629 119 631T103 634T60 637H27V683H202H236H300Q376 683 417 677T500 648Q595 600 609 517Q610 512 610 501Q610 468 594 439T556 392T511 361T472 343L456 338Q459 335 467 332Q497 316 516 298T545 254T559 211T568 155T578 94Q588 46 602 31T640 16H645Q660 16 674 32T692 87Q692 98 696 101T712 105T728 103T732 90Q732 59 716 27T672 -16Q656 -22 630 -22Q481 -16 458 90Q456 101 456 163T449 246Q430 304 373 320L363 322L297 323H231V192L232 61Q238 51 249 49T301 46H334V0H323Q302 3 181 3Q59 3 38 0H27V46H60Q102 47 111 49T130 61V622ZM491 499V509Q491 527 490 539T481 570T462 601T424 623T362 636Q360 636 340 636T304 637H283Q238 637 234 628Q231 624 231 492V360H289Q390 360 434 378T489 456Q491 467 491 499Z" transform="translate(3532,0)"></path><path data-c="65" d="M28 218Q28 273 48 318T98 391T163 433T229 448Q282 448 320 430T378 380T406 316T415 245Q415 238 408 231H126V216Q126 68 226 36Q246 30 270 30Q312 30 342 62Q359 79 369 104L379 128Q382 131 395 131H398Q415 131 415 121Q415 117 412 108Q393 53 349 21T250 -11Q155 -11 92 58T28 218ZM333 275Q322 403 238 411H236Q228 411 220 410T195 402T166 381T143 340T127 274V267H333V275Z" transform="translate(4268,0)"></path><path data-c="4C" d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q48 680 182 680Q324 680 348 683H360V637H333Q273 637 258 635T233 622L232 342V129Q232 57 237 52Q243 47 313 47Q384 47 410 53Q470 70 498 110T536 221Q536 226 537 238T540 261T542 272T562 273H582V268Q580 265 568 137T554 5V0H25V46H58Q100 47 109 49T128 61V622Z" transform="translate(4712,0)"></path><path data-c="55" d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q57 680 180 680Q315 680 324 683H335V637H302Q262 636 251 634T233 622L232 418V291Q232 189 240 145T280 67Q325 24 389 24Q454 24 506 64T571 183Q575 206 575 410V598Q569 608 565 613T541 627T489 637H472V683H481Q496 680 598 680T715 683H724V637H707Q634 633 622 598L621 399Q620 194 617 180Q617 179 615 171Q595 83 531 31T389 -22Q304 -22 226 33T130 192Q129 201 128 412V622Z" transform="translate(5337,0)"></path></g></g><g data-mml-node="mo" transform="translate(6087,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(6476,0)"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g><g data-mml-node="mo" transform="translate(7048,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="mo" transform="translate(7714.8,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(8770.6,0)"><g data-mml-node="mi"><path data-c="52" d="M130 622Q123 629 119 631T103 634T60 637H27V683H202H236H300Q376 683 417 677T500 648Q595 600 609 517Q610 512 610 501Q610 468 594 439T556 392T511 361T472 343L456 338Q459 335 467 332Q497 316 516 298T545 254T559 211T568 155T578 94Q588 46 602 31T640 16H645Q660 16 674 32T692 87Q692 98 696 101T712 105T728 103T732 90Q732 59 716 27T672 -16Q656 -22 630 -22Q481 -16 458 90Q456 101 456 163T449 246Q430 304 373 320L363 322L297 323H231V192L232 61Q238 51 249 49T301 46H334V0H323Q302 3 181 3Q59 3 38 0H27V46H60Q102 47 111 49T130 61V622ZM491 499V509Q491 527 490 539T481 570T462 601T424 623T362 636Q360 636 340 636T304 637H283Q238 637 234 628Q231 624 231 492V360H289Q390 360 434 378T489 456Q491 467 491 499Z"></path><path data-c="65" d="M28 218Q28 273 48 318T98 391T163 433T229 448Q282 448 320 430T378 380T406 316T415 245Q415 238 408 231H126V216Q126 68 226 36Q246 30 270 30Q312 30 342 62Q359 79 369 104L379 128Q382 131 395 131H398Q415 131 415 121Q415 117 412 108Q393 53 349 21T250 -11Q155 -11 92 58T28 218ZM333 275Q322 403 238 411H236Q228 411 220 410T195 402T166 381T143 340T127 274V267H333V275Z" transform="translate(736,0)"></path><path data-c="4C" d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q48 680 182 680Q324 680 348 683H360V637H333Q273 637 258 635T233 622L232 342V129Q232 57 237 52Q243 47 313 47Q384 47 410 53Q470 70 498 110T536 221Q536 226 537 238T540 261T542 272T562 273H582V268Q580 265 568 137T554 5V0H25V46H58Q100 47 109 49T128 61V622Z" transform="translate(1180,0)"></path><path data-c="55" d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q57 680 180 680Q315 680 324 683H335V637H302Q262 636 251 634T233 622L232 418V291Q232 189 240 145T280 67Q325 24 389 24Q454 24 506 64T571 183Q575 206 575 410V598Q569 608 565 613T541 627T489 637H472V683H481Q496 680 598 680T715 683H724V637H707Q634 633 622 598L621 399Q620 194 617 180Q617 179 615 171Q595 83 531 31T389 -22Q304 -22 226 33T130 192Q129 201 128 412V622Z" transform="translate(1805,0)"></path></g></g><g data-mml-node="mo" transform="translate(11325.6,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(11714.6,0)"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g><g data-mml-node="msup" transform="translate(12286.6,0)"><g data-mml-node="mo"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="mn" transform="translate(422,413) scale(0.707)"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g></g><g data-mml-node="mo" transform="translate(13112.1,0)"><path data-c="2E" d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60Z"></path></g></g></g></svg></mjx-container></p>
-<p>This is a simple activation change, but it later appeared in several efficient Transformer and LLM designs.</p>
-<h3 id="Depthwise-Convolution-After-Attention-Projections"><a href="#Depthwise-Convolution-After-Attention-Projections" class="headerlink" title="Depthwise Convolution After Attention Projections"></a>Depthwise Convolution After Attention Projections</h3><p>Primer also adds depthwise convolution around attention projections. This injects local mixing into the Transformer block without replacing attention.</p>
-<h2 id="Why-This-Matters"><a href="#Why-This-Matters" class="headerlink" title="Why This Matters"></a>Why This Matters</h2><p>The discovered changes are local and interpretable. They can be inserted into existing Transformer recipes and ablated directly. That makes them more useful than a complicated searched architecture that is hard to analyze.</p>
-<h2 id="Search-As-Idea-Generation"><a href="#Search-As-Idea-Generation" class="headerlink" title="Search As Idea Generation"></a>Search As Idea Generation</h2><p>Primer is a good example of AutoML as architecture idea generation. The search process finds candidate primitives, and humans then test whether those primitives transfer to larger models.</p>
-<p>The key question is transferability. A primitive found on a proxy task is only valuable if it remains useful at larger scale.</p>
-<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>Primer’s most important output is not the search algorithm itself. It is the evidence that primitive-level search can discover simple Transformer block changes that human designers can reuse.</p>
+<p>Primer is a useful AutoML paper because its output is not an opaque architecture that only works inside one search codebase. The search finds two small Transformer block changes that are easy to reimplement: squared ReLU in the feed-forward network and depthwise convolution in the attention projections.</p>
+<p>That makes the paper more interesting than a normal “NAS beats baseline” result. The search acts as an idea generator, and the real contribution is the evidence that the discovered primitives transfer across codebases, datasets, hardware, and larger model sizes.</p>
+<p>All figures and tables below are cropped from the original paper PDF.</p>
+<h2 id="Search-Over-Programs"><a href="#Search-Over-Programs" class="headerlink" title="Search Over Programs"></a>Search Over Programs</h2><p>Primer searches over decoder-block programs written from TensorFlow-style primitives. A candidate architecture is represented as a DNA. The DNA contains subprograms, each subprogram contains instructions, and those instructions are translated into TensorFlow code.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/Primer/fig1-program-search-overview.png"></p>
+<p>This is a lower-level search space than most NAS work. Instead of choosing only a layer type or a macro cell topology, the search can compose primitive operations inside the Transformer block. That is why the final result can look like a small local edit rather than a brand-new model family.</p>
+<p>The search objective is still pragmatic: evaluate candidates on an auto-regressive language modeling proxy task, then keep the architectural ideas that improve compute efficiency without requiring a new optimizer recipe.</p>
+<h2 id="The-Two-Useful-Changes"><a href="#The-Two-Useful-Changes" class="headerlink" title="The Two Useful Changes"></a>The Two Useful Changes</h2><p>The paper names the simpler, easy-to-adopt variant Primer-EZ. It keeps the two changes that explain most of the gains:</p>
+<ol>
+<li>Replace feed-forward ReLU with squared ReLU.</li>
+<li>Add spatial depthwise convolution after the Q, K, and V projections in multi-head attention.</li>
+</ol>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/Primer/fig4-primer-ez-modifications.png"></p>
+<p>The left diagram is Multi-DConv-Head Attention, or MDHA. After each per-head Q, K, and V projection, Primer applies a causal 3x1 depthwise convolution along the sequence dimension. This injects a small amount of local mixing before attention. It does not remove attention, and it does not change the global attention path.</p>
+<p>The middle diagram is the feed-forward change. The ordinary activation is replaced with <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="29.665ex" height="2.452ex" role="img" focusable="false" viewBox="0 -833.9 13112.1 1083.9"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mi"><path data-c="53" d="M55 507Q55 590 112 647T243 704H257Q342 704 405 641L426 672Q431 679 436 687T446 700L449 704Q450 704 453 704T459 705H463Q466 705 472 699V462L466 456H448Q437 456 435 459T430 479Q413 605 329 646Q292 662 254 662Q201 662 168 626T135 542Q135 508 152 480T200 435Q210 431 286 412T370 389Q427 367 463 314T500 191Q500 110 448 45T301 -21Q245 -21 201 -4T140 27L122 41Q118 36 107 21T87 -7T78 -21Q76 -22 68 -22H64Q61 -22 55 -16V101Q55 220 56 222Q58 227 76 227H89Q95 221 95 214Q95 182 105 151T139 90T205 42T305 24Q352 24 386 62T420 155Q420 198 398 233T340 281Q284 295 266 300Q261 301 239 306T206 314T174 325T141 343T112 367T85 402Q55 451 55 507Z"></path><path data-c="71" d="M33 218Q33 308 95 374T236 441H246Q330 441 381 372L387 364Q388 364 404 403L420 442H457V156Q457 -132 458 -134Q462 -142 470 -145Q491 -148 519 -148H535V-194H527L504 -193Q480 -192 453 -192T415 -191Q312 -191 303 -194H295V-148H311Q339 -148 360 -145Q369 -141 371 -135T373 -106V-41V49Q313 -11 236 -11Q154 -11 94 53T33 218ZM376 300Q346 389 278 401Q275 401 269 401T261 402Q211 400 171 350T131 214Q131 137 165 82T253 27Q296 27 328 54T376 118V300Z" transform="translate(556,0)"></path><path data-c="75" d="M383 58Q327 -10 256 -10H249Q124 -10 105 89Q104 96 103 226Q102 335 102 348T96 369Q86 385 36 385H25V408Q25 431 27 431L38 432Q48 433 67 434T105 436Q122 437 142 438T172 441T184 442H187V261Q188 77 190 64Q193 49 204 40Q224 26 264 26Q290 26 311 35T343 58T363 90T375 120T379 144Q379 145 379 161T380 201T380 248V315Q380 361 370 372T320 385H302V431Q304 431 378 436T457 442H464V264Q464 84 465 81Q468 61 479 55T524 46H542V0Q540 0 467 -5T390 -11H383V58Z" transform="translate(1084,0)"></path><path data-c="61" d="M137 305T115 305T78 320T63 359Q63 394 97 421T218 448Q291 448 336 416T396 340Q401 326 401 309T402 194V124Q402 76 407 58T428 40Q443 40 448 56T453 109V145H493V106Q492 66 490 59Q481 29 455 12T400 -6T353 12T329 54V58L327 55Q325 52 322 49T314 40T302 29T287 17T269 6T247 -2T221 -8T190 -11Q130 -11 82 20T34 107Q34 128 41 147T68 188T116 225T194 253T304 268H318V290Q318 324 312 340Q290 411 215 411Q197 411 181 410T156 406T148 403Q170 388 170 359Q170 334 154 320ZM126 106Q126 75 150 51T209 26Q247 26 276 49T315 109Q317 116 318 175Q318 233 317 233Q309 233 296 232T251 223T193 203T147 166T126 106Z" transform="translate(1640,0)"></path><path data-c="72" d="M36 46H50Q89 46 97 60V68Q97 77 97 91T98 122T98 161T98 203Q98 234 98 269T98 328L97 351Q94 370 83 376T38 385H20V408Q20 431 22 431L32 432Q42 433 60 434T96 436Q112 437 131 438T160 441T171 442H174V373Q213 441 271 441H277Q322 441 343 419T364 373Q364 352 351 337T313 322Q288 322 276 338T263 372Q263 381 265 388T270 400T273 405Q271 407 250 401Q234 393 226 386Q179 341 179 207V154Q179 141 179 127T179 101T180 81T180 66V61Q181 59 183 57T188 54T193 51T200 49T207 48T216 47T225 47T235 46T245 46H276V0H267Q249 3 140 3Q37 3 28 0H20V46H36Z" transform="translate(2140,0)"></path><path data-c="65" d="M28 218Q28 273 48 318T98 391T163 433T229 448Q282 448 320 430T378 380T406 316T415 245Q415 238 408 231H126V216Q126 68 226 36Q246 30 270 30Q312 30 342 62Q359 79 369 104L379 128Q382 131 395 131H398Q415 131 415 121Q415 117 412 108Q393 53 349 21T250 -11Q155 -11 92 58T28 218ZM333 275Q322 403 238 411H236Q228 411 220 410T195 402T166 381T143 340T127 274V267H333V275Z" transform="translate(2532,0)"></path><path data-c="64" d="M376 495Q376 511 376 535T377 568Q377 613 367 624T316 637H298V660Q298 683 300 683L310 684Q320 685 339 686T376 688Q393 689 413 690T443 693T454 694H457V390Q457 84 458 81Q461 61 472 55T517 46H535V0Q533 0 459 -5T380 -11H373V44L365 37Q307 -11 235 -11Q158 -11 96 50T34 215Q34 315 97 378T244 442Q319 442 376 393V495ZM373 342Q328 405 260 405Q211 405 173 369Q146 341 139 305T131 211Q131 155 138 120T173 59Q203 26 251 26Q322 26 373 103V342Z" transform="translate(2976,0)"></path><path data-c="52" d="M130 622Q123 629 119 631T103 634T60 637H27V683H202H236H300Q376 683 417 677T500 648Q595 600 609 517Q610 512 610 501Q610 468 594 439T556 392T511 361T472 343L456 338Q459 335 467 332Q497 316 516 298T545 254T559 211T568 155T578 94Q588 46 602 31T640 16H645Q660 16 674 32T692 87Q692 98 696 101T712 105T728 103T732 90Q732 59 716 27T672 -16Q656 -22 630 -22Q481 -16 458 90Q456 101 456 163T449 246Q430 304 373 320L363 322L297 323H231V192L232 61Q238 51 249 49T301 46H334V0H323Q302 3 181 3Q59 3 38 0H27V46H60Q102 47 111 49T130 61V622ZM491 499V509Q491 527 490 539T481 570T462 601T424 623T362 636Q360 636 340 636T304 637H283Q238 637 234 628Q231 624 231 492V360H289Q390 360 434 378T489 456Q491 467 491 499Z" transform="translate(3532,0)"></path><path data-c="65" d="M28 218Q28 273 48 318T98 391T163 433T229 448Q282 448 320 430T378 380T406 316T415 245Q415 238 408 231H126V216Q126 68 226 36Q246 30 270 30Q312 30 342 62Q359 79 369 104L379 128Q382 131 395 131H398Q415 131 415 121Q415 117 412 108Q393 53 349 21T250 -11Q155 -11 92 58T28 218ZM333 275Q322 403 238 411H236Q228 411 220 410T195 402T166 381T143 340T127 274V267H333V275Z" transform="translate(4268,0)"></path><path data-c="4C" d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q48 680 182 680Q324 680 348 683H360V637H333Q273 637 258 635T233 622L232 342V129Q232 57 237 52Q243 47 313 47Q384 47 410 53Q470 70 498 110T536 221Q536 226 537 238T540 261T542 272T562 273H582V268Q580 265 568 137T554 5V0H25V46H58Q100 47 109 49T128 61V622Z" transform="translate(4712,0)"></path><path data-c="55" d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q57 680 180 680Q315 680 324 683H335V637H302Q262 636 251 634T233 622L232 418V291Q232 189 240 145T280 67Q325 24 389 24Q454 24 506 64T571 183Q575 206 575 410V598Q569 608 565 613T541 627T489 637H472V683H481Q496 680 598 680T715 683H724V637H707Q634 633 622 598L621 399Q620 194 617 180Q617 179 615 171Q595 83 531 31T389 -22Q304 -22 226 33T130 192Q129 201 128 412V622Z" transform="translate(5337,0)"></path></g></g><g data-mml-node="mo" transform="translate(6087,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(6476,0)"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g><g data-mml-node="mo" transform="translate(7048,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="mo" transform="translate(7714.8,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(8770.6,0)"><g data-mml-node="mi"><path data-c="52" d="M130 622Q123 629 119 631T103 634T60 637H27V683H202H236H300Q376 683 417 677T500 648Q595 600 609 517Q610 512 610 501Q610 468 594 439T556 392T511 361T472 343L456 338Q459 335 467 332Q497 316 516 298T545 254T559 211T568 155T578 94Q588 46 602 31T640 16H645Q660 16 674 32T692 87Q692 98 696 101T712 105T728 103T732 90Q732 59 716 27T672 -16Q656 -22 630 -22Q481 -16 458 90Q456 101 456 163T449 246Q430 304 373 320L363 322L297 323H231V192L232 61Q238 51 249 49T301 46H334V0H323Q302 3 181 3Q59 3 38 0H27V46H60Q102 47 111 49T130 61V622ZM491 499V509Q491 527 490 539T481 570T462 601T424 623T362 636Q360 636 340 636T304 637H283Q238 637 234 628Q231 624 231 492V360H289Q390 360 434 378T489 456Q491 467 491 499Z"></path><path data-c="65" d="M28 218Q28 273 48 318T98 391T163 433T229 448Q282 448 320 430T378 380T406 316T415 245Q415 238 408 231H126V216Q126 68 226 36Q246 30 270 30Q312 30 342 62Q359 79 369 104L379 128Q382 131 395 131H398Q415 131 415 121Q415 117 412 108Q393 53 349 21T250 -11Q155 -11 92 58T28 218ZM333 275Q322 403 238 411H236Q228 411 220 410T195 402T166 381T143 340T127 274V267H333V275Z" transform="translate(736,0)"></path><path data-c="4C" d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q48 680 182 680Q324 680 348 683H360V637H333Q273 637 258 635T233 622L232 342V129Q232 57 237 52Q243 47 313 47Q384 47 410 53Q470 70 498 110T536 221Q536 226 537 238T540 261T542 272T562 273H582V268Q580 265 568 137T554 5V0H25V46H58Q100 47 109 49T128 61V622Z" transform="translate(1180,0)"></path><path data-c="55" d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q57 680 180 680Q315 680 324 683H335V637H302Q262 636 251 634T233 622L232 418V291Q232 189 240 145T280 67Q325 24 389 24Q454 24 506 64T571 183Q575 206 575 410V598Q569 608 565 613T541 627T489 637H472V683H481Q496 680 598 680T715 683H724V637H707Q634 633 622 598L621 399Q620 194 617 180Q617 179 615 171Q595 83 531 31T389 -22Q304 -22 226 33T130 192Q129 201 128 412V622Z" transform="translate(1805,0)"></path></g></g><g data-mml-node="mo" transform="translate(11325.6,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(11714.6,0)"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g><g data-mml-node="msup" transform="translate(12286.6,0)"><g data-mml-node="mo"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="mn" transform="translate(422,363) scale(0.707)"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g></g></g></g></svg></mjx-container>. The shape is simple, but it changes the activation’s asymptotic behavior and overlaps with some of the benefits that gated linear unit variants try to capture.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/Primer/fig5-squared-relu.png"></p>
+<p>The right plot in this figure is the part I would pay attention to. In the paper’s C4 language-modeling comparison, squared ReLU is better than ReLU, GELU, Swish, ReGLU, and SwiGLU under the reported setup. That does not mean squared ReLU dominates everywhere, but it explains why the authors considered it a reusable primitive instead of a search artifact.</p>
+<h2 id="Search-Task-Evidence"><a href="#Search-Task-Evidence" class="headerlink" title="Search-Task Evidence"></a>Search-Task Evidence</h2><p>The first empirical check is the LM1B proxy task with roughly 35M-parameter models. The paper compares vanilla Transformer, Transformer+GELU, Transformer++, Primer, and Primer-EZ across Tensor2Tensor, T5, TPUv2, and V100 settings.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/Primer/fig6-search-task-speedups.png"></p>
+<p>Speedup here means compute needed to reach the same quality as the vanilla Transformer baseline trained for the full budget. On the search task, Primer and Primer-EZ are consistently above 1.7x.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/Primer/table4-lm1b-search-numbers.png"></p>
+<p>Some exact rows from the table:</p>
+<ul>
+<li>Tensor2Tensor on TPUv2: vanilla Transformer reaches 35.44 PPLX, Primer reaches 33.77, and Primer-EZ reaches 33.53 with a 2.34x speedup.</li>
+<li>Tensor2Tensor on V100: vanilla Transformer reaches 37.19 PPLX, Primer reaches 35.06, and Primer-EZ reaches 35.16 with a 2.03x speedup.</li>
+<li>T5 on TPUv2: vanilla Transformer reaches 23.30 PPLX, Primer reaches 22.71, and Primer-EZ reaches 22.62 with a 1.75x speedup.</li>
+</ul>
+<p>Two details matter. First, Primer-EZ is not slower because of the extra depthwise convolution; its step rate is slightly lower in some rows, but the quality gain more than pays for it. Second, the result transfers from Tensor2Tensor to T5. That is a stronger signal than a single-codebase search win.</p>
+<h2 id="Scaling-Law-View"><a href="#Scaling-Law-View" class="headerlink" title="Scaling-Law View"></a>Scaling-Law View</h2><p>The authors then ask whether the gain survives when model size and training compute vary. They sweep layer count, model width, feed-forward projection ratio, and training budget, then plot validation loss versus TPUv2 hours.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/Primer/fig7-power-law-scaling.png"></p>
+<p>The key visual claim is that the lines remain roughly parallel in log-log space. Primer is not just better at one point; it shifts the loss-compute curve. When curves are parallel, a vertical improvement can be interpreted as a compute reduction at a fixed target quality.</p>
+<p>This is also where the paper’s argument becomes more deployment-relevant. A fixed final perplexity target is common in real training decisions: if a model variant reaches that target earlier, it saves accelerator time even if each step is not dramatically faster.</p>
+<h2 id="Transfer-Beyond-The-Proxy"><a href="#Transfer-Beyond-The-Proxy" class="headerlink" title="Transfer Beyond The Proxy"></a>Transfer Beyond The Proxy</h2><p>Proxy-task NAS results often fail when moved to larger data, larger budgets, or different implementation stacks. Primer spends a lot of the paper showing the opposite direction: the same primitives continue to help on C4, PG19, Switch Transformer, and Synthesizer variants.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/Primer/fig9-transfer-speedups.png"></p>
+<p>The C4 and PG19 bars are the cleanest transfer result. Primer and Primer-EZ remain more efficient than the baselines after moving from the small LM1B search setup to larger datasets and longer training. The Switch and Synthesizer cases are also useful because they show the primitives are not only compatible with vanilla dense Transformers.</p>
+<p>The larger T5-scale comparison is especially direct. The paper copies the original T5 auto-regressive language-modeling setup at 537M parameters and compares the compute needed to hit target perplexities.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/Primer/table1-t5-compute.png"></p>
+<table>
+<thead>
+<tr>
+<th align="right">Target PPLX</th>
+<th>Model</th>
+<th align="right">Steps</th>
+<th align="right">TPUv3 hours</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">13.25</td>
+<td>Original T5</td>
+<td align="right">1M</td>
+<td align="right">15.7K</td>
+</tr>
+<tr>
+<td align="right">13.25</td>
+<td>T5++</td>
+<td align="right">251K</td>
+<td align="right">4.6K</td>
+</tr>
+<tr>
+<td align="right">13.25</td>
+<td>Primer</td>
+<td align="right">207K</td>
+<td align="right">3.8K</td>
+</tr>
+<tr>
+<td align="right">12.69</td>
+<td>T5++</td>
+<td align="right">1M</td>
+<td align="right">16.5K</td>
+</tr>
+<tr>
+<td align="right">12.69</td>
+<td>Primer</td>
+<td align="right">480K</td>
+<td align="right">8.3K</td>
+</tr>
+<tr>
+<td align="right">12.35</td>
+<td>Primer</td>
+<td align="right">1M</td>
+<td align="right">17.3K</td>
+</tr>
+</tbody></table>
+<p>At the original T5 quality target, Primer reaches parity with about 3.8K TPUv3 hours instead of 15.7K. The paper reports this as roughly 4.2x less compute than the original T5 architecture.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/Primer/fig10-t5-compute-savings.png"></p>
+<p>The compute-saving curve is worth reading carefully. The saving factor grows as training continues because the Primer and T5 perplexity curves separate asymptotically. This also means the reported saving depends on the target quality. The higher the quality target, the more important the shape of the whole training curve becomes.</p>
+<h2 id="One-Shot-Transfer-At-Larger-Scale"><a href="#One-Shot-Transfer-At-Larger-Scale" class="headerlink" title="One-Shot Transfer At Larger Scale"></a>One-Shot Transfer At Larger Scale</h2><p>The last main experiment moves to 1.9B parameters and one-shot downstream evaluation, following the style of GPT-3-style pretraining evaluation. This is not a direct GPT-3 comparison; it is a controlled comparison between Transformer+GELU and Primer under the paper’s setup.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/Primer/fig11-one-shot-transfer.png"></p>
+<p>Primer with 24K TPUv4 hours roughly matches Transformer+GELU with 72K TPUv4 hours on the averaged pretraining and one-shot bars. With the same 72K-hour budget, Primer is ahead.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/Primer/fig27-one-shot-tasks.png"></p>
+<p>The per-task grid is noisier than the averaged figure, as expected. The useful conclusion is not that Primer wins every task. The useful conclusion is that the training-efficiency gain is not limited to validation perplexity; it mostly carries into downstream one-shot task scores.</p>
+<h2 id="Which-Pieces-Actually-Matter"><a href="#Which-Pieces-Actually-Matter" class="headerlink" title="Which Pieces Actually Matter?"></a>Which Pieces Actually Matter?</h2><p>One reason I like this paper is that it does not stop at “the searched model is better.” It runs insertion and ablation studies to see which modifications are robust.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/Primer/fig26-ablation-insertion.png"></p>
+<p>In the insertion study, each modification is added to a vanilla Transformer. In the ablation study, each modification is removed from Primer. Positive values mean the modification is beneficial under the paper’s normalization.</p>
+<p>The result separates “found by search” from “worth recommending.” A larger 12x feed-forward projection helps at this small scale, but the paper does not recommend it as the simple transferable recipe. The two robust and easy pieces are MDHA and squared ReLU, which become Primer-EZ.</p>
+<h2 id="Full-Program-View"><a href="#Full-Program-View" class="headerlink" title="Full Program View"></a>Full Program View</h2><p>The appendix expands the full Transformer and Primer programs into primitive operations. This figure is dense, but it is a useful reminder of what the search actually changed.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/Primer/fig23-transformer-primer-programs.png"></p>
+<p>The orange nodes are Primer’s differences. Some of them are more complicated than the two Primer-EZ edits. That is the reason Primer-EZ matters: it turns a searched program into a small recipe a practitioner can implement without importing the whole search system.</p>
+<h2 id="Engineering-Notes-And-Limits"><a href="#Engineering-Notes-And-Limits" class="headerlink" title="Engineering Notes And Limits"></a>Engineering Notes And Limits</h2><p>Primer is strongest as evidence for primitive-level architecture search, not as a universal Transformer replacement.</p>
+<ul>
+<li>The search task is small: about 35M parameters, LM1B, and short sequences. The paper does run larger transfer experiments, but the discovered primitives still come from a proxy setting.</li>
+<li>The main focus is decoder-only auto-regressive language modeling. The paper’s appendix discusses masked language modeling, but the authors explicitly treat encoder or encoder-decoder search as future work.</li>
+<li>Depthwise convolution inside attention projections is not free. Whether MDHA helps wall-clock latency depends on the runtime kernel, sequence length, batch size, and hardware. The paper reports training compute savings, but an inference system still needs direct measurement.</li>
+<li>Squared ReLU is simple enough to try almost anywhere, but activation changes can interact with initialization, normalization, optimizer settings, and mixed precision.</li>
+</ul>
+<p>The broader lesson is that NAS can be most useful when it returns simple hypotheses. Primer’s search found candidates, but the paper’s value comes from the follow-up: transfer tests, ablations, scaling curves, and a simplified recipe.</p>
+<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>Primer is not important because it discovered a mysterious architecture. It is important because it shows that searching at the primitive level can surface small Transformer edits that humans can understand, ablate, and reuse.</p>
+<p>The practical recipe is Primer-EZ: use squared ReLU in the feed-forward block and add causal depthwise convolution after Q, K, and V projections. The practical caution is that the recipe should be benchmarked in the target codebase. The paper makes a strong case that it transfers, but the real unit of evidence is still measured compute, not architectural elegance.</p>
 
         </div>
 
@@ -574,6 +696,10 @@ mjx-container[display="true"] + br {
                 
                     <li class="tag-item">
                         <a href="/tags/Transformer/">#Transformer</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/NLP/">#NLP</a>&nbsp;
                     </li>
                 
             </ul>
@@ -627,8 +753,8 @@ mjx-container[display="true"] + br {
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">Primer: Searching for Efficient Transformers for Language Modeling</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Space"><span class="nav-text">Search Space</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#What-The-Search-Found"><span class="nav-text">What The Search Found</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Squared-ReLU"><span class="nav-text">Squared ReLU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Depthwise-Convolution-After-Attention-Projections"><span class="nav-text">Depthwise Convolution After Attention Projections</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-This-Matters"><span class="nav-text">Why This Matters</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-As-Idea-Generation"><span class="nav-text">Search As Idea Generation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
+        <div class="page-title">Primer: Searching Transformer Primitives</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Over-Programs"><span class="nav-text">Search Over Programs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Two-Useful-Changes"><span class="nav-text">The Two Useful Changes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Task-Evidence"><span class="nav-text">Search-Task Evidence</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Scaling-Law-View"><span class="nav-text">Scaling-Law View</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Transfer-Beyond-The-Proxy"><span class="nav-text">Transfer Beyond The Proxy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#One-Shot-Transfer-At-Larger-Scale"><span class="nav-text">One-Shot Transfer At Larger Scale</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Which-Pieces-Actually-Matter"><span class="nav-text">Which Pieces Actually Matter?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Full-Program-View"><span class="nav-text">Full Program View</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Engineering-Notes-And-Limits"><span class="nav-text">Engineering Notes And Limits</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
 
     </div>
 </div>

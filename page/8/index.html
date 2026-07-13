@@ -502,7 +502,7 @@ mjx-container[display="true"] + br {
 
                 <div class="home-article-content markdown-body">
                     
-                        <p>Zen-NAS searches CNN architectures using a zero-shot expressivity score instead of training candidates.</p>
+                        <p>Zen-NAS ranks CNN architectures at initialization with a BN-rescaled expressivity score, then searches ImageNet-scale networks without training candidates.</p>
 
                     
                 </div>
@@ -541,6 +541,11 @@ mjx-container[display="true"] + br {
                         <li>
                             
                             <a href="/tags/NAS/">NAS</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/Zero-Shot/">Zero-Shot</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -639,20 +644,20 @@ mjx-container[display="true"] + br {
                 
                     <div id="home-article-thumbnail" class="relative h-[150px] overflow-hidden rounded-t-[10.8px] md:rounded-t-large -m-5 mb-3 sm:-m-6 sm:mb-4 md:-m-7 md:mb-5">
                         <a href="/2022/04/07/QBERT/">
-                            <img src="/_imgs/QBERT/thumbnail.png" alt="Q-BERT: Hessian-Aware BERT Quantization" class="w-full h-full object-cover dark:brightness-75 transition-all" />
+                            <img src="/_imgs/QBERT/thumbnail.png" alt="Q-BERT: Hessian Based Ultra Low Precision Quantization of BERT" class="w-full h-full object-cover dark:brightness-75 transition-all" />
                         </a>
                     </div>
                 
 
                 <h3 class="home-article-title">
                     <a href="/2022/04/07/QBERT/">
-                        Q-BERT: Hessian-Aware BERT Quantization
+                        Q-BERT: Hessian Based Ultra Low Precision Quantization of BERT
                     </a>
                 </h3>
 
                 <div class="home-article-content markdown-body">
                     
-                        <p>Q-BERT applies Hessian-aware mixed precision and group-wise quantization to ultra-low precision BERT.</p>
+                        <p>A detailed reading of Q-BERT, including Hessian-aware mixed precision, group-wise quantization, module sensitivity, and ultra-low-bit BERT results.</p>
 
                     
                 </div>
@@ -698,12 +703,17 @@ mjx-container[display="true"] + br {
                             <a href="/tags/BERT/">BERT</a>&nbsp;
                         </li>
                     
+                        <li>
+                            | 
+                            <a href="/tags/Compression/">Compression</a>&nbsp;
+                        </li>
+                    
                 </ul>
             </span>
         
     </div>
 
-    <a href="/2022/04/07/QBERT/">Read more<span class="seo-reader-text">Q-BERT: Hessian-Aware BERT Quantization</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2022/04/07/QBERT/">Read more<span class="seo-reader-text">Q-BERT: Hessian Based Ultra Low Precision Quantization of BERT</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
             </li>
@@ -732,7 +742,7 @@ mjx-container[display="true"] + br {
 
                 <div class="home-article-content markdown-body">
                     
-                        <p>Zero-cost NAS proxies estimate architecture quality from initialization signals instead of training every candidate.</p>
+                        <p>Zero-cost NAS proxies rank architectures from initialization signals, replacing many reduced-training evaluations with one minibatch-level score.</p>
 
                     
                 </div>
@@ -1044,20 +1054,20 @@ mjx-container[display="true"] + br {
                 
                     <div id="home-article-thumbnail" class="relative h-[150px] overflow-hidden rounded-t-[10.8px] md:rounded-t-large -m-5 mb-3 sm:-m-6 sm:mb-4 md:-m-7 md:mb-5">
                         <a href="/2021/12/24/Q8BERT/">
-                            <img src="/_imgs/Q8BERT/thumbnail.png" alt="Q8BERT: 8-bit BERT Quantization" class="w-full h-full object-cover dark:brightness-75 transition-all" />
+                            <img src="/_imgs/Q8BERT/table1-glue-squad-results.png" alt="Q8BERT: 8-bit Quantization-Aware Training for BERT" class="w-full h-full object-cover dark:brightness-75 transition-all" />
                         </a>
                     </div>
                 
 
                 <h3 class="home-article-title">
                     <a href="/2021/12/24/Q8BERT/">
-                        Q8BERT: 8-bit BERT Quantization
+                        Q8BERT: 8-bit Quantization-Aware Training for BERT
                     </a>
                 </h3>
 
                 <div class="home-article-content markdown-body">
                     
-                        <p>Q8BERT uses quantization-aware training to run BERT inference with 8-bit matrix multiplications while keeping downstream accuracy.</p>
+                        <p>Q8BERT quantizes BERT embedding and fully connected GEMM paths to INT8 with quantization-aware fine-tuning while leaving numerically sensitive nonlinear operators in FP32.</p>
 
                     
                 </div>
@@ -1080,7 +1090,17 @@ mjx-container[display="true"] + br {
                     
                         
                         <li>
-                            <a href="/categories/Paper-Reading/">Paper Reading</a>&nbsp;
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
                         </li>
                     
                     
@@ -1108,7 +1128,7 @@ mjx-container[display="true"] + br {
         
     </div>
 
-    <a href="/2021/12/24/Q8BERT/">Read more<span class="seo-reader-text">Q8BERT: 8-bit BERT Quantization</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2021/12/24/Q8BERT/">Read more<span class="seo-reader-text">Q8BERT: 8-bit Quantization-Aware Training for BERT</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
             </li>

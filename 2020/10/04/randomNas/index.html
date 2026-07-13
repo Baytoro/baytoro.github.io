@@ -18,20 +18,29 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="This paper argues that random search is a necessary NAS baseline and that many reported gains depend on evaluation protocol details.">
+        <meta name="description" content="Random Search and Reproducibility for NAS shows why NAS papers need strong random-search, weight-sharing, and reproducibility baselines.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Random Search and Reproducibility for Neural Architecture Search">
+<meta property="og:title" content="Random Search and Reproducibility for NAS">
 <meta property="og:url" content="https://baytoro.github.io/2020/10/04/randomNas/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="This paper argues that random search is a necessary NAS baseline and that many reported gains depend on evaluation protocol details.">
+<meta property="og:description" content="Random Search and Reproducibility for NAS shows why NAS papers need strong random-search, weight-sharing, and reproducibility baselines.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://baytoro.github.io/_imgs/randomNas/fig1-overview.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/randomNas/fig1-nas-components.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/randomNas/table1-reproducibility-status.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/randomNas/fig2-ptb-recurrent-cell.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/randomNas/fig3-cifar-cells.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/randomNas/table2-ptb-main-results.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/randomNas/table3-ptb-stage2-results.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/randomNas/table4-ptb-ranking.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/randomNas/table5-cifar-main-results.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/randomNas/table6-cifar-stage2-results.png">
+<meta property="og:image" content="https://baytoro.github.io/_imgs/randomNas/table8-cifar-reproducibility.png">
 <meta property="article:published_time" content="2020-10-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-03T08:02:50.743Z">
+<meta property="article:modified_time" content="2026-07-09T09:16:19.867Z">
 <meta property="article:author" content="H.J. Chen">
 <meta property="article:tag" content="NAS">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://baytoro.github.io/_imgs/randomNas/fig1-overview.png">
+<meta name="twitter:image" content="https://baytoro.github.io/_imgs/randomNas/fig1-nas-components.png">
     
     
     <!--- Icon Part-->
@@ -43,7 +52,7 @@
     
     <title>
         
-            Random Search and Reproducibility for Neural Architecture Search -
+            Random Search and Reproducibility for NAS -
         
         Blog
     </title>
@@ -458,9 +467,9 @@ mjx-container[display="true"] + br {
             
                 
                 
-                <img src="/_imgs/randomNas/thumbnail.png" alt="Random Search and Reproducibility for Neural Architecture Search" class="max-w-none"/>
+                <img src="/_imgs/randomNas/thumbnail.png" alt="Random Search and Reproducibility for NAS" class="max-w-none"/>
                 
-                <h1 class="article-title-cover">Random Search and Reproducibility for Neural Architecture Search</h1>
+                <h1 class="article-title-cover">Random Search and Reproducibility for NAS</h1>
             
             </div>
             
@@ -487,8 +496,8 @@ mjx-container[display="true"] + br {
     
         <!-- <span class="article-date article-meta-item"> -->
             <!-- <i class="fa-regular fa-wrench"></i>&nbsp; -->
-            <!-- <span class="desktop">2026-07-03 16:02:50</span>
-            <span class="mobile">2026-07-03 16:02:50</span> -->
+            <!-- <span class="desktop">2026-07-09 17:16:19</span>
+            <span class="mobile">2026-07-09 17:16:19</span> -->
             <!-- <span class="hover-info">Updated</span> -->
         <!-- </span> -->
     
@@ -502,7 +511,17 @@ mjx-container[display="true"] + br {
                     
                         
                         <li>
-                            <a href="/categories/Paper-Reading/">Paper Reading</a>&nbsp;
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
                         </li>
                     
                     
@@ -541,58 +560,212 @@ mjx-container[display="true"] + br {
             <blockquote>
 <p>Li L, Talwalkar A. Random Search and Reproducibility for Neural Architecture Search. UAI 2020.</p>
 </blockquote>
-<p><a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/1902.07638.pdf">Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>This paper is not trying to propose a more sophisticated NAS algorithm. Its value is methodological. It asks a blunt question: are many NAS methods really better than random search once search space, training recipe, evaluation budget, and retraining protocol are controlled?</p>
-<p>That question is still worth asking.</p>
-<h2 id="Search-Method-vs-Evaluation-Method"><a href="#Search-Method-vs-Evaluation-Method" class="headerlink" title="Search Method vs Evaluation Method"></a>Search Method vs Evaluation Method</h2><p>NAS experiments mix several components:</p>
 <ul>
-<li>search space;</li>
-<li>search method;</li>
-<li>evaluation method;</li>
-<li>early stopping or weight sharing;</li>
-<li>final retraining recipe.</li>
+<li><a class="link" target="_blank" rel="noopener" href="https://arxiv.org/pdf/1902.07638.pdf">Paper <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link" target="_blank" rel="noopener" href="https://github.com/liamcli/randomNAS_release">Code <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
 </ul>
-<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/randomNas/fig1-overview.png"></p>
-<p>The figure separates search space, search method, and evaluation method. A method may look strong because it uses a better evaluation recipe, not because the search strategy itself is better.</p>
-<h2 id="Random-Search-As-A-Baseline"><a href="#Random-Search-As-A-Baseline" class="headerlink" title="Random Search As A Baseline"></a>Random Search As A Baseline</h2><p>Random search is stronger than it sounds when the search space is well designed. If many architectures in a search space are reasonable, uniform sampling can find competitive models with enough trials.</p>
-<p>This does not mean random search is always best. It means random search is the minimum baseline. If a new NAS method cannot beat it under the same budget and recipe, the method has not shown a search contribution.</p>
-<h2 id="Reproducibility-Protocol"><a href="#Reproducibility-Protocol" class="headerlink" title="Reproducibility Protocol"></a>Reproducibility Protocol</h2><p>A fair NAS experiment should report:</p>
+<p>This paper is useful because it attacks a boring but important question: when a NAS method looks good, how much of the gain comes from the search algorithm itself, and how much comes from the search space, the training recipe, the evaluation shortcut, or the final retraining protocol?</p>
+<p>The answer is uncomfortable. In the DARTS-style PTB and CIFAR-10 spaces, carefully implemented random search is a hard baseline. Random search with early stopping already reaches competitive results, and random search with weight sharing can match or beat several specialized NAS methods under similar budgets.</p>
+<h2 id="NAS-As-Hyperparameter-Optimization"><a href="#NAS-As-Hyperparameter-Optimization" class="headerlink" title="NAS As Hyperparameter Optimization"></a>NAS As Hyperparameter Optimization</h2><p>The paper frames NAS as a special case of hyperparameter optimization. There are three moving parts:</p>
+<ul>
+<li>the search space, such as a cell DAG or a macro architecture;</li>
+<li>the search method, such as random search, RL, evolution, or gradient-based optimization;</li>
+<li>the evaluation method, such as full training, partial training, or weight sharing.</li>
+</ul>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/randomNas/fig1-nas-components.png" alt="NAS components"></p>
+<p>This split is the main mental model of the paper. If a new algorithm is evaluated with a stronger training recipe or cheaper evaluation oracle than the baseline, it is not clear whether the algorithm did the work.</p>
+<p>For NAS papers I think the minimum unit test should be:</p>
 <table>
 <thead>
 <tr>
-<th>Item</th>
-<th>Why it matters</th>
+<th>Check</th>
+<th>What it catches</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>search space</td>
-<td>a good space can make any method look good</td>
+<td>Same search space</td>
+<td>Avoids crediting a hand-designed space to the search method</td>
 </tr>
 <tr>
-<td>number of queries</td>
-<td>budget determines best-so-far curves</td>
+<td>Same evaluation budget</td>
+<td>Makes best-so-far comparisons meaningful</td>
 </tr>
 <tr>
-<td>early stopping</td>
-<td>can change architecture ranking</td>
+<td>Same final training recipe</td>
+<td>Prevents retraining tricks from looking like search improvements</td>
 </tr>
 <tr>
-<td>final training recipe</td>
-<td>augmentation and epochs dominate results</td>
+<td>Multiple random seeds</td>
+<td>Measures variance instead of one lucky architecture</td>
 </tr>
 <tr>
-<td>seeds</td>
-<td>NAS variance is often large</td>
-</tr>
-<tr>
-<td>released architectures</td>
-<td>enables independent retraining</td>
+<td>Released code and architecture</td>
+<td>Allows independent retraining and debugging</td>
 </tr>
 </tbody></table>
-<p>Without these details, reported GPU-day comparisons are hard to interpret.</p>
-<h2 id="Weight-Sharing-Warning"><a href="#Weight-Sharing-Warning" class="headerlink" title="Weight Sharing Warning"></a>Weight Sharing Warning</h2><p>Weight sharing reduces evaluation cost, but it introduces ranking bias. A child architecture may look good because it received better shared weights, not because it trains well from scratch.</p>
-<p>The paper’s criticism is not anti-NAS. It is anti-confounding. NAS papers should isolate the contribution of the search algorithm from the contribution of the search space and evaluation pipeline.</p>
-<h2 id="Takeaway"><a href="#Takeaway" class="headerlink" title="Takeaway"></a>Takeaway</h2><p>Random search is the unit test for NAS. Before accepting a new search algorithm, check whether it beats random search in the same space, with the same budget, the same seeds, and the same final training recipe.</p>
+<h2 id="Reproducibility-Audit"><a href="#Reproducibility-Audit" class="headerlink" title="Reproducibility Audit"></a>Reproducibility Audit</h2><p>The authors first audit recent NAS papers. Their table checks whether a paper releases architecture-search code, model-evaluation code, random seeds, and hyperparameter-tuning details.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/randomNas/table1-reproducibility-status.png" alt="Reproducibility status of NAS publications"></p>
+<p>The important point is not that every paper is careless. NAS experiments are expensive, often multi-stage, and sensitive to implementation details. The problem is that missing seeds or missing hyperparameter logs make it impossible to separate an algorithmic contribution from a lucky or under-documented experimental setup.</p>
+<p>The paper distinguishes two levels:</p>
+<ul>
+<li>Exact reproducibility: rerun the same code with the same seed and get the same result.</li>
+<li>Broad reproducibility: repeat the experiment with different seeds or equivalent code and get statistically similar conclusions.</li>
+</ul>
+<p>Exact reproducibility is a low bar for a single-machine deterministic setup. Broad reproducibility is the bar that matters for judging whether a NAS method is robust.</p>
+<h2 id="Method-Random-Search-With-Weight-Sharing"><a href="#Method-Random-Search-With-Weight-Sharing" class="headerlink" title="Method: Random Search With Weight Sharing"></a>Method: Random Search With Weight Sharing</h2><p>The paper evaluates two random-search baselines:</p>
+<ul>
+<li>Random search with early stopping. This uses ASHA to allocate more budget to promising architectures and stop poor ones early.</li>
+<li>Random search with weight sharing. This samples architectures uniformly, trains one shared-weight supernet by activating one architecture per minibatch, then scores many sampled architectures using the shared weights.</li>
+</ul>
+<p>The second baseline is the most interesting one. It removes the sophisticated controller from methods like ENAS and keeps the cheap evaluation mechanism. If that baseline works, then the search controller may not be the main contribution.</p>
+<p>For PTB, the search space is a recurrent-cell DAG with (N=8) intermediate nodes. Each node selects a previous node as input and an operation from <code>tanh</code>, <code>relu</code>, <code>sigmoid</code>, or <code>identity</code>.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/randomNas/fig2-ptb-recurrent-cell.png" alt="PTB recurrent cell found by random search with weight sharing"></p>
+<p>For CIFAR-10, the setup follows the DARTS normal-cell and reduction-cell space.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/randomNas/fig3-cifar-cells.png" alt="CIFAR-10 normal and reduction cells found by random search with weight sharing"></p>
+<p>The search algorithm is simple, but the meta-hyperparameters are not. The result changes with the number of search epochs, batch size, network size, gradient clipping, number of sampled architectures, and final retraining length.</p>
+<h2 id="PTB-Results"><a href="#PTB-Results" class="headerlink" title="PTB Results"></a>PTB Results</h2><p>The PTB table is the cleanest evidence that random search is not a strawman.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/randomNas/table2-ptb-main-results.png" alt="PTB main comparison"></p>
+<p>Key rows from the table:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="right">Test perplexity</th>
+<th align="right">Total search cost</th>
+<th>Search method</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ENAS, published</td>
+<td align="right">56.3</td>
+<td align="right">N/A</td>
+<td>RL</td>
+</tr>
+<tr>
+<td>DARTS second order, published</td>
+<td align="right">55.7</td>
+<td align="right">2 GPU days</td>
+<td>gradient-based</td>
+</tr>
+<tr>
+<td>DARTS second order, reproduced</td>
+<td align="right">55.9</td>
+<td align="right">2 GPU days</td>
+<td>gradient-based</td>
+</tr>
+<tr>
+<td>ASHA baseline</td>
+<td align="right">56.4</td>
+<td align="right">2 GPU days</td>
+<td>random</td>
+</tr>
+<tr>
+<td>Random search WS</td>
+<td align="right">55.5</td>
+<td align="right">1.25 GPU days</td>
+<td>random</td>
+</tr>
+</tbody></table>
+<p>Random search with weight sharing gets 55.5 test perplexity, better than the reproduced DARTS run and the ASHA baseline in this setup. This does not prove that random search is universally better. It proves that the NAS comparison is weak if it does not include this baseline.</p>
+<p>The paper then digs into stage (2), where candidate architectures are retrained with a proxyless network for 300 epochs before choosing what to fully evaluate.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/randomNas/table3-ptb-stage2-results.png" alt="PTB stage-2 intermediate results"></p>
+<p>The table shows that the best Random (4) run has validation perplexity 63.8 after stage (2), close to the best published DARTS intermediate result. A second Random (4) run is worse, which is already a warning that a single search run is not enough.</p>
+<p>The ranking table makes that warning more concrete.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/randomNas/table4-ptb-ranking.png" alt="PTB ranking instability across epochs"></p>
+<p>At 300 epochs, several methods are close. By 3600 epochs, Random (4) Run 1 becomes best, while Random (4) Run 2 ends fourth. Intermediate validation rank is a noisy selection signal.</p>
+<h2 id="CIFAR-10-Results"><a href="#CIFAR-10-Results" class="headerlink" title="CIFAR-10 Results"></a>CIFAR-10 Results</h2><p>The CIFAR-10 comparison is less one-sided, but it makes the same methodological point.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/randomNas/table5-cifar-main-results.png" alt="CIFAR-10 main comparison"></p>
+<p>Key rows:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="right">Best test error</th>
+<th align="right">Average test error</th>
+<th align="right">Total search cost</th>
+<th>Search method</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ENAS, published</td>
+<td align="right">2.89</td>
+<td align="right">N/A</td>
+<td align="right">N/A</td>
+<td>RL</td>
+</tr>
+<tr>
+<td>DARTS second order, published</td>
+<td align="right">N/A</td>
+<td align="right">2.76 +/- 0.09</td>
+<td align="right">5 GPU days</td>
+<td>gradient-based</td>
+</tr>
+<tr>
+<td>DARTS second order, reproduced</td>
+<td align="right">2.62</td>
+<td align="right">2.78 +/- 0.12</td>
+<td align="right">10 GPU days</td>
+<td>gradient-based</td>
+</tr>
+<tr>
+<td>ASHA baseline</td>
+<td align="right">2.85</td>
+<td align="right">3.03 +/- 0.13</td>
+<td align="right">9 GPU days</td>
+<td>random</td>
+</tr>
+<tr>
+<td>Random search WS</td>
+<td align="right">2.71</td>
+<td align="right">2.85 +/- 0.08</td>
+<td align="right">9.7 GPU days</td>
+<td>random</td>
+</tr>
+</tbody></table>
+<p>Random search with weight sharing is competitive with the published DARTS/ENAS-style results, although the reproduced DARTS run still has the best average in this table. The important part is that the random baseline is in the same performance regime.</p>
+<p>The authors also tune the random-search-with-weight-sharing setup. This table is a good reminder that even a “random” baseline has important engineering choices.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/randomNas/table6-cifar-stage2-results.png" alt="CIFAR-10 stage-2 intermediate results"></p>
+<p>The large proxyless setting, lower gradient clipping, and more evaluated architectures improve the random-search baseline. Without reporting those tuning choices, it would be easy to compare against a weak version of the baseline.</p>
+<h2 id="Broad-Reproducibility"><a href="#Broad-Reproducibility" class="headerlink" title="Broad Reproducibility"></a>Broad Reproducibility</h2><p>The paper repeats CIFAR-10 random search with weight sharing across six independent runs.</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/_imgs/randomNas/table8-cifar-reproducibility.png" alt="Broad reproducibility of CIFAR-10 random search with weight sharing"></p>
+<p>The six-run average is 2.92 test error. Runs 1 to 3 are around 2.85 to 2.88, while Runs 4 to 6 degrade to 2.95, 2.98, and 3.00. This is still competitive, but the spread is large enough that reporting only the best discovered architecture would be misleading.</p>
+<p>This is the most useful practical lesson for me: NAS results need distributions, not just a best architecture and a GPU-day number.</p>
+<h2 id="Cost-Accounting"><a href="#Cost-Accounting" class="headerlink" title="Cost Accounting"></a>Cost Accounting</h2><p>The computational-cost section is short but important. The paper compares cost per architecture under three evaluation styles:</p>
+<table>
+<thead>
+<tr>
+<th>Evaluation style</th>
+<th align="right">PTB cost per architecture</th>
+<th align="right">CIFAR-10 cost per architecture</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Full training</td>
+<td align="right">0.5 GPU days</td>
+<td align="right">4 GPU hours</td>
+</tr>
+<tr>
+<td>ASHA partial training</td>
+<td align="right">9 minutes</td>
+<td align="right">19 minutes</td>
+</tr>
+<tr>
+<td>Random search WS, amortized</td>
+<td align="right">0.2 minutes</td>
+<td align="right">0.8 minutes</td>
+</tr>
+</tbody></table>
+<p>Weight sharing makes each architecture extremely cheap to score, but that number can hide the real total cost. If many supernet trials, seed sweeps, and final retraining runs are needed to get a stable result, the headline search cost is not the whole story.</p>
+<h2 id="Takeaways"><a href="#Takeaways" class="headerlink" title="Takeaways"></a>Takeaways</h2><p>Random search is not the conclusion of NAS. It is the control experiment.</p>
+<p>My takeaways:</p>
+<ul>
+<li>A NAS method should beat random search in the same search space and under the same final training recipe.</li>
+<li>Early stopping and weight sharing are evaluation methods, not search algorithms by themselves.</li>
+<li>Intermediate validation rankings can change after longer retraining, so short proxy evaluations need skepticism.</li>
+<li>Reproducibility requires seeds, code, architecture definitions, and hyperparameter-tuning logs.</li>
+<li>Best-run reporting is fragile. Average, variance, and rerun cost are part of the result.</li>
+</ul>
+<p>The paper is a useful calibration point: before trusting a more complex NAS controller, first make the random baseline strong enough that beating it actually means something.</p>
 
         </div>
 
@@ -656,8 +829,8 @@ mjx-container[display="true"] + br {
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">Random Search and Reproducibility for Neural Architecture Search</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Method-vs-Evaluation-Method"><span class="nav-text">Search Method vs Evaluation Method</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Random-Search-As-A-Baseline"><span class="nav-text">Random Search As A Baseline</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reproducibility-Protocol"><span class="nav-text">Reproducibility Protocol</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Weight-Sharing-Warning"><span class="nav-text">Weight Sharing Warning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaway"><span class="nav-text">Takeaway</span></a></li></ol>
+        <div class="page-title">Random Search and Reproducibility for NAS</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#NAS-As-Hyperparameter-Optimization"><span class="nav-text">NAS As Hyperparameter Optimization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reproducibility-Audit"><span class="nav-text">Reproducibility Audit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Method-Random-Search-With-Weight-Sharing"><span class="nav-text">Method: Random Search With Weight Sharing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PTB-Results"><span class="nav-text">PTB Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CIFAR-10-Results"><span class="nav-text">CIFAR-10 Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Broad-Reproducibility"><span class="nav-text">Broad Reproducibility</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cost-Accounting"><span class="nav-text">Cost Accounting</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaways"><span class="nav-text">Takeaways</span></a></li></ol>
 
     </div>
 </div>

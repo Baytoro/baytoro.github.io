@@ -502,7 +502,7 @@ mjx-container[display="true"] + br {
 
                 <div class="home-article-content markdown-body">
                     
-                        <p>RPTQ reduces LLM activation quantization error by reordering channels so grouped quantization sees more homogeneous distributions.</p>
+                        <p>RPTQ clusters activation channels by range and reorders them so low-bit group quantization uses scale parameters on more homogeneous channel groups.</p>
 
                     
                 </div>
@@ -525,7 +525,17 @@ mjx-container[display="true"] + br {
                     
                         
                         <li>
-                            <a href="/categories/Paper-Reading/">Paper Reading</a>&nbsp;
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
                         </li>
                     
                     
@@ -569,20 +579,20 @@ mjx-container[display="true"] + br {
                 
                     <div id="home-article-thumbnail" class="relative h-[150px] overflow-hidden rounded-t-[10.8px] md:rounded-t-large -m-5 mb-3 sm:-m-6 sm:mb-4 md:-m-7 md:mb-5">
                         <a href="/2023/12/27/SpQR/">
-                            <img src="/_imgs/SpQR/thumbnail.png" alt="SpQR: Sparse-Quantized LLM Weights" class="w-full h-full object-cover dark:brightness-75 transition-all" />
+                            <img src="/_imgs/SpQR/thumbnail.png" alt="SpQR: Sparse-Quantized LLM Weight Compression" class="w-full h-full object-cover dark:brightness-75 transition-all" />
                         </a>
                     </div>
                 
 
                 <h3 class="home-article-title">
                     <a href="/2023/12/27/SpQR/">
-                        SpQR: Sparse-Quantized LLM Weights
+                        SpQR: Sparse-Quantized LLM Weight Compression
                     </a>
                 </h3>
 
                 <div class="home-article-content markdown-body">
                     
-                        <p>SpQR stores ordinary weights in a dense low-bit format while keeping a small set of outlier weights in a sparse high-precision component.</p>
+                        <p>SpQR stores ordinary LLM weights in low-bit groups while isolating high-sensitivity outlier weights in a sparse high-precision path.</p>
 
                     
                 </div>
@@ -628,12 +638,17 @@ mjx-container[display="true"] + br {
                             <a href="/tags/LLM/">LLM</a>&nbsp;
                         </li>
                     
+                        <li>
+                            | 
+                            <a href="/tags/Inference/">Inference</a>&nbsp;
+                        </li>
+                    
                 </ul>
             </span>
         
     </div>
 
-    <a href="/2023/12/27/SpQR/">Read more<span class="seo-reader-text">SpQR: Sparse-Quantized LLM Weights</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2023/12/27/SpQR/">Read more<span class="seo-reader-text">SpQR: Sparse-Quantized LLM Weight Compression</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
             </li>
@@ -827,7 +842,7 @@ mjx-container[display="true"] + br {
 
                 <div class="home-article-content markdown-body">
                     
-                        <p>QLoRA keeps the frozen base LLM in 4-bit NF4 format and trains LoRA adapters through it, making large-model fine-tuning memory-efficient.</p>
+                        <p>QLoRA combines NF4 storage, double quantization, paged optimizers, and LoRA adapters to make high-quality large-model fine-tuning fit on much smaller GPUs.</p>
 
                     
                 </div>
@@ -850,7 +865,17 @@ mjx-container[display="true"] + br {
                     
                         
                         <li>
-                            <a href="/categories/Paper-Reading/">Paper Reading</a>&nbsp;
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
                         </li>
                     
                     
@@ -974,20 +999,20 @@ mjx-container[display="true"] + br {
                 
                     <div id="home-article-thumbnail" class="relative h-[150px] overflow-hidden rounded-t-[10.8px] md:rounded-t-large -m-5 mb-3 sm:-m-6 sm:mb-4 md:-m-7 md:mb-5">
                         <a href="/2022/12/12/S3Vit/">
-                            <img src="/_imgs/S3Vit/thumbnail.png" alt="S3: ViT Search Space Search" class="w-full h-full object-cover dark:brightness-75 transition-all" />
+                            <img src="/_imgs/S3Vit/thumbnail.png" alt="S3: Searching Vision Transformer Search Spaces" class="w-full h-full object-cover dark:brightness-75 transition-all" />
                         </a>
                     </div>
                 
 
                 <h3 class="home-article-title">
                     <a href="/2022/12/12/S3Vit/">
-                        S3: ViT Search Space Search
+                        S3: Searching Vision Transformer Search Spaces
                     </a>
                 </h3>
 
                 <div class="home-article-content markdown-body">
                     
-                        <p>S3 treats the search space itself as an object to optimize for Vision Transformer NAS.</p>
+                        <p>S3 treats the Vision Transformer search space itself as a NAS target, then searches architectures inside the evolved space.</p>
 
                     
                 </div>
@@ -1043,7 +1068,7 @@ mjx-container[display="true"] + br {
         
     </div>
 
-    <a href="/2022/12/12/S3Vit/">Read more<span class="seo-reader-text">S3: ViT Search Space Search</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2022/12/12/S3Vit/">Read more<span class="seo-reader-text">S3: Searching Vision Transformer Search Spaces</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
             </li>
@@ -1072,7 +1097,7 @@ mjx-container[display="true"] + br {
 
                 <div class="home-article-content markdown-body">
                     
-                        <p>SmoothQuant migrates quantization difficulty from activations to weights with an equivalent channel-wise scaling transform, enabling W8A8 LLM inference.</p>
+                        <p>SmoothQuant migrates activation outlier difficulty into weights through an equivalent per-channel scaling transform, enabling regular W8A8 INT8 GEMM for LLM inference.</p>
 
                     
                 </div>
@@ -1139,20 +1164,20 @@ mjx-container[display="true"] + br {
                 
                     <div id="home-article-thumbnail" class="relative h-[150px] overflow-hidden rounded-t-[10.8px] md:rounded-t-large -m-5 mb-3 sm:-m-6 sm:mb-4 md:-m-7 md:mb-5">
                         <a href="/2022/11/22/ZeroQuant/">
-                            <img src="/_imgs/ZeroQuant/thumbnail.png" alt="ZeroQuant: Large Transformer PTQ" class="w-full h-full object-cover dark:brightness-75 transition-all" />
+                            <img src="/_imgs/ZeroQuant/thumbnail.png" alt="ZeroQuant: Efficient and Affordable PTQ for Large Transformers" class="w-full h-full object-cover dark:brightness-75 transition-all" />
                         </a>
                     </div>
                 
 
                 <h3 class="home-article-title">
                     <a href="/2022/11/22/ZeroQuant/">
-                        ZeroQuant: Large Transformer PTQ
+                        ZeroQuant: Efficient and Affordable PTQ for Large Transformers
                     </a>
                 </h3>
 
                 <div class="home-article-content markdown-body">
                     
-                        <p>ZeroQuant combines fine-grained transformer quantization with layer-wise distillation to make large-scale INT8&#x2F;INT4 PTQ affordable.</p>
+                        <p>ZeroQuant makes post-training quantization practical for large Transformers with fine-grained W8A8&#x2F;W4A8 quantization, layer-by-layer distillation, and fused INT8 kernels.</p>
 
                     
                 </div>
@@ -1175,7 +1200,17 @@ mjx-container[display="true"] + br {
                     
                         
                         <li>
-                            <a href="/categories/Paper-Reading/">Paper Reading</a>&nbsp;
+                            <a href="/categories/Work-hard/">Work hard</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/Work-hard/PaperReading/">PaperReading</a>&nbsp;
                         </li>
                     
                     
@@ -1195,6 +1230,11 @@ mjx-container[display="true"] + br {
                     
                         <li>
                             | 
+                            <a href="/tags/LLM/">LLM</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
                             <a href="/tags/Transformer/">Transformer</a>&nbsp;
                         </li>
                     
@@ -1203,7 +1243,7 @@ mjx-container[display="true"] + br {
         
     </div>
 
-    <a href="/2022/11/22/ZeroQuant/">Read more<span class="seo-reader-text">ZeroQuant: Large Transformer PTQ</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2022/11/22/ZeroQuant/">Read more<span class="seo-reader-text">ZeroQuant: Efficient and Affordable PTQ for Large Transformers</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
             </li>
@@ -1219,7 +1259,7 @@ mjx-container[display="true"] + br {
                 
                     <div id="home-article-thumbnail" class="relative h-[150px] overflow-hidden rounded-t-[10.8px] md:rounded-t-large -m-5 mb-3 sm:-m-6 sm:mb-4 md:-m-7 md:mb-5">
                         <a href="/2022/11/19/SwitchTransformer/">
-                            <img src="/_imgs/SwitchTransformer/fig1-scaling-curves.png" alt="Switch Transformers: Scaling to Trillion Parameter Models with Simple and Efficient Sparsity" class="w-full h-full object-cover dark:brightness-75 transition-all" />
+                            <img src="/_imgs/SwitchTransformer/thumbnail.png" alt="Switch Transformers: Scaling to Trillion Parameter Models with Simple and Efficient Sparsity" class="w-full h-full object-cover dark:brightness-75 transition-all" />
                         </a>
                     </div>
                 
@@ -1232,7 +1272,7 @@ mjx-container[display="true"] + br {
 
                 <div class="home-article-content markdown-body">
                     
-                        <p>Switch Transformer 用 top-1 MoE routing 扩大参数量，同时保持每个 token 的计算量可控。</p>
+                        <p>Switch Transformer simplifies MoE routing to top-1 expert selection, making sparse trillion-parameter pretraining practical under fixed per-token compute.</p>
 
                     
                 </div>
