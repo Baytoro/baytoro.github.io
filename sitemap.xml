@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://baytoro.github.io/2021/07/19/AdaBert/</loc>
+    
+    <lastmod>2026-08-12</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://baytoro.github.io/2022/11/03/ZeroQ/</loc>
     
     <lastmod>2026-07-13</lastmod>
@@ -848,7 +857,7 @@
   </url>
   
   <url>
-    <loc>https://baytoro.github.io/2021/11/27/FbnetV2/</loc>
+    <loc>https://baytoro.github.io/2022/09/03/FedMask/</loc>
     
     <lastmod>2026-07-03</lastmod>
     
@@ -857,7 +866,7 @@
   </url>
   
   <url>
-    <loc>https://baytoro.github.io/2022/09/03/FedMask/</loc>
+    <loc>https://baytoro.github.io/2021/11/27/FbnetV2/</loc>
     
     <lastmod>2026-07-03</lastmod>
     
@@ -1001,7 +1010,7 @@
   </url>
   
   <url>
-    <loc>https://baytoro.github.io/2025/03/18/Eagle/</loc>
+    <loc>https://baytoro.github.io/2023/12/20/ELECTRA/</loc>
     
     <lastmod>2026-07-03</lastmod>
     
@@ -1010,7 +1019,7 @@
   </url>
   
   <url>
-    <loc>https://baytoro.github.io/2023/12/20/ELECTRA/</loc>
+    <loc>https://baytoro.github.io/2025/03/18/Eagle/</loc>
     
     <lastmod>2026-07-03</lastmod>
     
@@ -1118,7 +1127,7 @@
   </url>
   
   <url>
-    <loc>https://baytoro.github.io/2024/08/04/BART/</loc>
+    <loc>https://baytoro.github.io/2021/09/17/BERT/</loc>
     
     <lastmod>2026-07-03</lastmod>
     
@@ -1127,7 +1136,7 @@
   </url>
   
   <url>
-    <loc>https://baytoro.github.io/2021/09/17/BERT/</loc>
+    <loc>https://baytoro.github.io/2024/08/04/BART/</loc>
     
     <lastmod>2026-07-03</lastmod>
     
@@ -1145,15 +1154,6 @@
   </url>
   
   <url>
-    <loc>https://baytoro.github.io/2021/07/19/AdaBert/</loc>
-    
-    <lastmod>2026-07-03</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://baytoro.github.io/2023/12/14/AdaRound/</loc>
     
     <lastmod>2026-07-03</lastmod>
@@ -1163,7 +1163,7 @@
   </url>
   
   <url>
-    <loc>https://baytoro.github.io/2020/05/13/AmoebaNet/</loc>
+    <loc>https://baytoro.github.io/2020/02/29/AttentionIsAllYouNeed/</loc>
     
     <lastmod>2026-07-03</lastmod>
     
@@ -1172,7 +1172,7 @@
   </url>
   
   <url>
-    <loc>https://baytoro.github.io/2020/02/29/AttentionIsAllYouNeed/</loc>
+    <loc>https://baytoro.github.io/2020/05/13/AmoebaNet/</loc>
     
     <lastmod>2026-07-03</lastmod>
     
@@ -1217,7 +1217,7 @@
   </url>
   
   <url>
-    <loc>https://baytoro.github.io/essays/index.html</loc>
+    <loc>https://baytoro.github.io/masonry/index.html</loc>
     
     <lastmod>2026-07-01</lastmod>
     
@@ -1226,7 +1226,7 @@
   </url>
   
   <url>
-    <loc>https://baytoro.github.io/masonry/index.html</loc>
+    <loc>https://baytoro.github.io/essays/index.html</loc>
     
     <lastmod>2026-07-01</lastmod>
     
@@ -1237,7 +1237,7 @@
 
   <url>
     <loc>https://baytoro.github.io/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -1245,175 +1245,175 @@
   
   <url>
     <loc>https://baytoro.github.io/tags/Quantization/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/LLM/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/NAS/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/BERT/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/Compression/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/AIGC/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/Transformer/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/ViT/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/Vision/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/NLP/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/Mobile/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/Multimodal/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/Triton/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/MoE/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/CUDA/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/Runtime/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/FL/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/KV-Cache/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/Inference/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/Serving/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/Pruning/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/AutoML/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/Benchmark/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/LoRA/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/tags/Zero-Shot/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -1422,28 +1422,28 @@
   
   <url>
     <loc>https://baytoro.github.io/categories/Paper-Reading/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/categories/Engineering-Notes/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/categories/Work-hard/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://baytoro.github.io/categories/Work-hard/PaperReading/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>

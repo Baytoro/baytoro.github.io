@@ -1,6 +1,7 @@
 const audioList = [];
 const isFixed = theme.plugins.aplayer.type == "fixed";
 const isMini = theme.plugins.aplayer.type == "mini";
+const preload = theme.plugins.aplayer.preload || "none";
 
 for (const audio of theme.plugins.aplayer.audios) {
   const a = {
@@ -18,12 +19,14 @@ if (isMini) {
   const ap = new APlayer({
     container: document.getElementById("aplayer"),
     mini: true,
+    preload,
     audio: audioList,
   });
 } else if (isFixed) {
   const ap = new APlayer({
     container: document.getElementById("aplayer"),
     fixed: true,
+    preload,
     audio: audioList,
   });
 }

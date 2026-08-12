@@ -1,56 +1,14 @@
 import { main } from "../main.js";
 
-const elementCode = ".mermaid";
-
-const saveOriginalData = function () {
-  return new Promise((resolve, reject) => {
-    try {
-      var els = document.querySelectorAll(elementCode),
-        count = els.length;
-      els.forEach((element) => {
-        element.setAttribute("data-original-code", element.innerHTML);
-        count--;
-        if (count == 0) {
-          resolve();
-        }
-      });
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
-
-const resetProcessed = function () {
-  return new Promise((resolve, reject) => {
-    try {
-      var els = document.querySelectorAll(elementCode),
-        count = els.length;
-      els.forEach((element) => {
-        if (element.getAttribute("data-original-code") != null) {
-          element.removeAttribute("data-processed");
-          element.innerHTML = element.getAttribute("data-original-code");
-        }
-        count--;
-        if (count == 0) {
-          resolve();
-        }
-      });
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
 export const ModeToggle = {
   modeToggleButton_dom: null,
   iconDom: null,
   mermaidLightTheme: null,
   mermaidDarkTheme: null,
 
-  async mermaidInit(theme) {
-    if (window.mermaid) {
-      await resetProcessed();
-      mermaid.initialize({ theme });
-      mermaid.init({ theme }, document.querySelectorAll(elementCode));
+  async mermaidInit(themeName) {
+    if (window.redefineMermaid) {
+      await window.redefineMermaid.render(themeName);
     }
   },
 
@@ -133,7 +91,7 @@ export const ModeToggle = {
     });
   },
 
-  async init() {
+  init() {
     this.modeToggleButton_dom = document.querySelector(
       ".tool-dark-light-toggle",
     );
@@ -153,9 +111,6 @@ export const ModeToggle = {
     this.initModeStatus();
     this.initModeToggleButton();
     this.initModeAutoTrigger();
-    try {
-      await saveOriginalData().catch(console.error);
-    } catch (error) {}
   },
 };
 

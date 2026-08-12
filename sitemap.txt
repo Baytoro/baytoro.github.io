@@ -1,3 +1,4 @@
+https://baytoro.github.io/2021/07/19/AdaBert/
 https://baytoro.github.io/2022/11/03/ZeroQ/
 https://baytoro.github.io/2022/11/22/ZeroQuant/
 https://baytoro.github.io/2020/11/18/ViT/
@@ -92,8 +93,8 @@ https://baytoro.github.io/2021/11/09/IBERT/
 https://baytoro.github.io/2023/05/28/INQ/
 https://baytoro.github.io/2020/07/30/IntegerOnlyQuant/
 https://baytoro.github.io/2020/02/03/Fbnet/
-https://baytoro.github.io/2021/11/27/FbnetV2/
 https://baytoro.github.io/2022/09/03/FedMask/
+https://baytoro.github.io/2021/11/27/FbnetV2/
 https://baytoro.github.io/2022/09/28/FedNas/
 https://baytoro.github.io/2025/03/09/FlashInfer/
 https://baytoro.github.io/2021/04/10/GPT1/
@@ -109,8 +110,8 @@ https://baytoro.github.io/2024/12/23/DeepSeekV2/
 https://baytoro.github.io/2025/01/29/DeepSeekV3/
 https://baytoro.github.io/2025/02/06/DistServe/
 https://baytoro.github.io/2021/12/22/DrNas/
-https://baytoro.github.io/2025/03/18/Eagle/
 https://baytoro.github.io/2023/12/20/ELECTRA/
+https://baytoro.github.io/2025/03/18/Eagle/
 https://baytoro.github.io/2022/08/28/Edd/
 https://baytoro.github.io/2020/01/12/Enas/
 https://baytoro.github.io/2021/12/15/FQViT/
@@ -122,19 +123,18 @@ https://baytoro.github.io/2021/06/08/Bananas/
 https://baytoro.github.io/2020/08/30/BigBird/
 https://baytoro.github.io/2021/10/15/BigNas/
 https://baytoro.github.io/2022/09/19/AutoFormer/
-https://baytoro.github.io/2024/08/04/BART/
 https://baytoro.github.io/2021/09/17/BERT/
+https://baytoro.github.io/2024/08/04/BART/
 https://baytoro.github.io/2021/10/10/BRECQ/
-https://baytoro.github.io/2021/07/19/AdaBert/
 https://baytoro.github.io/2023/12/14/AdaRound/
-https://baytoro.github.io/2020/05/13/AmoebaNet/
 https://baytoro.github.io/2020/02/29/AttentionIsAllYouNeed/
+https://baytoro.github.io/2020/05/13/AmoebaNet/
 https://baytoro.github.io/2024/01/26/AWQ/
 https://baytoro.github.io/about/index.html
 https://baytoro.github.io/tags/index.html
 https://baytoro.github.io/categories/index.html
-https://baytoro.github.io/essays/index.html
 https://baytoro.github.io/masonry/index.html
+https://baytoro.github.io/essays/index.html
 https://baytoro.github.io/
 https://baytoro.github.io/tags/Quantization/
 https://baytoro.github.io/tags/LLM/
